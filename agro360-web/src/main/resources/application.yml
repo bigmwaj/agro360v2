@@ -1,0 +1,17 @@
+spring: 
+   application:
+      name: agro360-web
+   jpa:
+      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+      hibernate.ddl-auto: update
+   datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/agro360_dev
+      username: agro360
+      password: Agro360@123       
+   devtools:
+      add-properties: true
+      livereload:
+         enabled: true       
+server:
+   port: 8080
