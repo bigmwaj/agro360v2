@@ -18,14 +18,18 @@ import lombok.EqualsAndHashCode;
 
 @IdClass(CasierPk.class)
 public class CasierDto extends AbstractDto {
+	
+	public static final int CODE_LENGTH = 16;
 
 	@Id
 	@ManyToOne()
 	@JoinColumn(name = "MAGASIN_CODE", updatable = false)
+	@EqualsAndHashCode.Include()
 	private MagasinDto magasin;
 
 	@Id
-	@Column(name = "CASIER_CODE", updatable = false, length = 16)
+	@Column(name = "CASIER_CODE", updatable = false, length = CODE_LENGTH)
+	@EqualsAndHashCode.Include()
 	private String casierCode;
 
 	@Column(name = "DESCRIPTION", length = 64)

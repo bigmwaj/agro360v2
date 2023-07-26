@@ -1,5 +1,7 @@
 package com.agro360.dto.stock;
 
+import com.agro360.dto.common.AbstractLineDto;
+
 import lombok.Getter;
 import lombok.Setter;
 

@@ -22,6 +22,7 @@ public class ArticleDto extends AbstractDto
 {
 	@Id
 	@Column(name = "ARTICLE_CODE", updatable = false, length = 16)
+	@EqualsAndHashCode.Include()
 	private String articleCode;
 
 	@Column(name = "DESCRIPTION", length = 64)

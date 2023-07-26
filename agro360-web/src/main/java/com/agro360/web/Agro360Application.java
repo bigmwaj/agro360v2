@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 	"com.agro360.web.controller",
 	"com.agro360.web.mapper",
 	"com.agro360.service.mapper",
+	"com.agro360.service.rule",
+	"com.agro360.service.envelop",
 	"com.agro360.service.logic",
 })
 @EntityScan(basePackages = {

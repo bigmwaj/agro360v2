@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class CategoryHierarchieBean extends AbstractEditFormBean{
+public class CategoryBean extends AbstractEditFormBean{
 
 	private static final long serialVersionUID = 4953208601044344467L;
 	
@@ -19,5 +19,5 @@ public class CategoryHierarchieBean extends AbstractEditFormBean{
 	
 	private FieldMetadata<String> description = new FieldMetadata<>();
 
-	private List<CategoryHierarchieBean> children = new ArrayList<>();
+	private List<CategoryBean> children = new ArrayList<>();
 }

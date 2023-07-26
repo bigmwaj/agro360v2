@@ -20,6 +20,7 @@ public class TiersDto extends AbstractDto {
 
 	@Id
 	@Column(name = "TIERS_CODE", updatable = false, length = 16)
+	@EqualsAndHashCode.Include()
 	private String tiersCode;
 
 	@Enumerated(EnumType.STRING)

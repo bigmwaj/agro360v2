@@ -1,14 +1,15 @@
 package com.agro360.service.logic.common;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import com.agro360.dao.common.IDao;
 import com.agro360.dto.common.AbstractDto;
 
-public abstract class AbstractService<E extends AbstractDto, K extends Serializable, Dao extends IDao<E, K>> {
+public abstract class AbstractService<E extends AbstractDto, K> {
 	
-	public abstract Dao getDao();
+	protected IDao<E, K> dao;
+	
+	protected abstract IDao<E, K> getDao();
 
 	public E save(E dto) {
 		dto.setCreateBy("A.MOUAFO");
@@ -18,4 +19,7 @@ public abstract class AbstractService<E extends AbstractDto, K extends Serializa
 		return getDao().save(dto);
 	}
 
+	public void delete(E dto) {
+		getDao().delete(dto);
+	}
 }

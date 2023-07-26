@@ -17,6 +17,7 @@ public class UniteDto extends AbstractDto
 
 	@Id
 	@Column(name = "UNITE_CODE", updatable = false, length = 16)
+	@EqualsAndHashCode.Include()
 	private String uniteCode;
 
 	@Column(name = "DESCRIPTION", length = 64)

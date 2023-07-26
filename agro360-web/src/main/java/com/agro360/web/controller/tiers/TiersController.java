@@ -28,7 +28,7 @@ public class TiersController extends AbstractController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<TiersBean> loadAction(@PathVariable String id) {
-		return ResponseEntity.ok(tiersService.load(id));
+		return ResponseEntity.ok(tiersService.findTiersByCode(id));
 	}
 
 	@PutMapping

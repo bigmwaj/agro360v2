@@ -1,18 +1,12 @@
 package com.agro360.service.mapper.tiers;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
-import com.agro360.dao.tiers.ITiersCategoryDao;
 import com.agro360.dao.tiers.ITiersDao;
-import com.agro360.dto.tiers.TiersCategoryDto;
 import com.agro360.dto.tiers.TiersDto;
 import com.agro360.service.bean.tiers.TiersBean;
 import com.agro360.service.mapper.common.AbstractMapper;
@@ -22,17 +16,14 @@ import com.agro360.vd.tiers.TiersTypeEnumVd;
 
 @Component
 public class TiersMapper extends AbstractMapper {
-	
-	public final static String OPTION_CATEGORY_KEY = "CATEGORY";
+
+	public final static String OPTION_MAP_TIERS_CATEGORY_KEY = "MAP_TIERS_CATEGORY";
 
 	@Autowired
 	private ITiersDao tiersDao;
 
 	@Autowired
-	private ITiersCategoryDao tiersCategoryDao;
-
-	@Autowired
-	private TiersCategoryHierarchieMapper tiersCategoryMapper;
+	private TiersCategoryMapper tiersCategoryMapper;
 
 	public TiersBean mapToBean(TiersDto dto) {
 		return mapToBean(dto, null);
@@ -59,23 +50,12 @@ public class TiersMapper extends AbstractMapper {
 			bean.getTiersName().setValue(Constants.FULL_NAME_FN.apply(dto.getLastName(), dto.getFirstName()));
 		}
 
-		if (options.containsKey(OPTION_CATEGORY_KEY) 
-				&& Objects.equals(Boolean.TRUE, options.get(OPTION_CATEGORY_KEY))) {
-			bean.setCategoriesHierarchie(tiersCategoryMapper.mapToBean(getTiersCategories(dto)));
+		Object mapTiersCategory = options.getOrDefault(OPTION_MAP_TIERS_CATEGORY_KEY, null);
+		if (mapTiersCategory instanceof Boolean && (Boolean) mapTiersCategory) {
+			bean.setCategoriesHierarchie(tiersCategoryMapper.mapToTiersCategoryHierarchieBean(dto));
 		}
 
 		return bean;
-	}
-
-	private List<TiersCategoryDto> getTiersCategories(TiersDto tiers) {
-		if (tiers == null || tiers.getTiersCode() == null || tiers.getTiersCode().isBlank()) {
-			return Collections.emptyList();
-		}
-
-		Example<TiersCategoryDto> ex = Example.of(new TiersCategoryDto());
-		ex.getProbe().setTiersCode(tiers.getTiersCode());
-
-		return tiersCategoryDao.findAll(ex);
 	}
 
 	public TiersDto mapToDto(TiersBean bean) {

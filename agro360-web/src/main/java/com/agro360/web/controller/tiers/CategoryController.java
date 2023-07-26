@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agro360.service.bean.tiers.CategoryHierarchieBean;
+import com.agro360.service.bean.tiers.CategoryBean;
 import com.agro360.service.logic.tiers.CategoryService;
 import com.agro360.service.utils.Message;
 import com.agro360.web.controller.common.AbstractController;
@@ -28,19 +28,18 @@ public class CategoryController extends AbstractController {
 	private CategoryService categoryService;
 
 	@GetMapping()
-	public ResponseEntity<CategoryHierarchieBean> indexAction(@RequestParam(required = false) Optional<Integer> deep) {
-		System.out.println(deep);
-		return ResponseEntity.ok(categoryService.loadRootCategory(deep));
+	public ResponseEntity<CategoryBean> indexAction(@RequestParam(required = false) Optional<Integer> deep) {
+		return ResponseEntity.ok(categoryService.findRootCategory(deep));
 	}
 
 	@GetMapping("/children/{id}")
-	public ResponseEntity<List<CategoryHierarchieBean>> childrenAction(String id) {
-		List<CategoryHierarchieBean> beans = categoryService.loadChildrenCategory(id);
+	public ResponseEntity<List<CategoryBean>> childrenAction(String id) {
+		List<CategoryBean> beans = categoryService.findChildrenCategory(id);
 		return ResponseEntity.ok(beans);
 	}
 
 	@PutMapping("/edit")
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CategoryHierarchieBean bean, BindingResult br) {
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CategoryBean bean, BindingResult br) {
 		List<Message> messages = categoryService.save(bean);
 		ModelMap model = new ModelMap("messages", messages);
 		return ResponseEntity.ok(model);

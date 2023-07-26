@@ -11,7 +11,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class TiersCategoryHierarchieBean extends AbstractBean{
+public class TiersCategoryBean extends AbstractBean{
 	
 	private static final long serialVersionUID = 8023125234394845154L;
 
@@ -21,7 +21,7 @@ public class TiersCategoryHierarchieBean extends AbstractBean{
 	
 	private FieldMetadata<Boolean> selected = new FieldMetadata<>();
 
-	private List<TiersCategoryHierarchieBean> children = new ArrayList<>();
+	private List<TiersCategoryBean> children = new ArrayList<>();
 
 	@Override
 	public String toString() {

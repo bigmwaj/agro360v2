@@ -2,6 +2,7 @@ package com.agro360.service.mapper.tiers;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
 import com.agro360.dao.tiers.ITiersCategoryDao;
@@ -16,28 +18,29 @@ import com.agro360.dto.tiers.CategoryDto;
 import com.agro360.dto.tiers.TiersCategoryDto;
 import com.agro360.dto.tiers.TiersCategoryPk;
 import com.agro360.dto.tiers.TiersDto;
-import com.agro360.service.bean.tiers.TiersCategoryHierarchieBean;
+import com.agro360.service.bean.tiers.TiersBean;
+import com.agro360.service.bean.tiers.TiersCategoryBean;
 import com.agro360.service.mapper.common.AbstractMapper;
 
 @Component
-public class TiersCategoryHierarchieMapper extends AbstractMapper {
+public class TiersCategoryMapper extends AbstractMapper {
 
-	private static final String ROOT_CATEGORY_NOT_FOUND = "Catégorie ROOT introuvable";
+	private static final String ROOT_CATEGORY_NOT_FOUND = "Catégorie ROOT introuvable!";
 	
 	@Autowired
 	private ITiersCategoryDao tiersCategoryDao;
 
-	public TiersCategoryHierarchieBean mapToBean(CategoryDto dto) {
-		TiersCategoryHierarchieBean bean = new TiersCategoryHierarchieBean();
-		bean.getCategoryCode().setValue(dto.getCategoryCode());
-		bean.getDescription().setValue(dto.getDescription());
+	public TiersCategoryBean mapToBean(TiersCategoryDto dto) {
+		var bean = new TiersCategoryBean();
+		bean.getCategoryCode().setValue(dto.getCategory().getCategoryCode());
+		bean.getDescription().setValue(dto.getCategory().getDescription());
 
 		return bean;
 	}
 	
-	public TiersCategoryDto mapToDto(TiersDto tiers, TiersCategoryHierarchieBean bean) {
+	public TiersCategoryDto mapToDto(TiersBean tiersBean, TiersCategoryBean bean) {
 		TiersCategoryDto dto = new TiersCategoryDto();
-		dto.setTiersCode(tiers.getTiersCode());
+		dto.setTiersCode(tiersBean.getTiersCode().getValue());
 		dto.setCategory(new CategoryDto());
 		dto.getCategory().setCategoryCode(bean.getCategoryCode().getValue());
 		if( tiersCategoryDao.existsById(new TiersCategoryPk(dto)) ) {
@@ -47,30 +50,30 @@ public class TiersCategoryHierarchieMapper extends AbstractMapper {
 		return dto;
 	}
 
-	public TiersCategoryHierarchieBean mapToBean(CategoryDto category, Map<CategoryDto, Set<CategoryDto>> hierarchie) {
-		TiersCategoryHierarchieBean bean = mapToBean(category);
+	private TiersCategoryBean mapToBean(CategoryDto category, Map<CategoryDto, Set<CategoryDto>> hierarchie) {
+		TiersCategoryBean bean = mapToBean(new TiersCategoryDto(category));
 		Set<CategoryDto> children = hierarchie.get(category);
 		bean.getSelected().setValue(children.isEmpty());
 		for (CategoryDto child : children) {
-			TiersCategoryHierarchieBean childBean = mapToBean(child, hierarchie);
+			TiersCategoryBean childBean = mapToBean(child, hierarchie);
 			bean.getChildren().add(childBean);
 		}
 		return bean;
 	}
 	
-	private void reduceToSelectedTiersCategories(List<TiersCategoryDto> selectedTiersCategories, TiersDto tiers, TiersCategoryHierarchieBean bean) {
+	private void reduceToSelectedTiersCategories(List<TiersCategoryDto> selectedTiersCategories, TiersBean tiersBean, TiersCategoryBean bean) {
 		if( Boolean.TRUE.equals(bean.getSelected().getValue()) ) {
-			selectedTiersCategories.add(mapToDto(tiers, bean));
+			selectedTiersCategories.add(mapToDto(tiersBean, bean));
 		}
-		for (TiersCategoryHierarchieBean childBean : bean.getChildren()) {
-			reduceToSelectedTiersCategories(selectedTiersCategories, tiers, childBean);
+		for (TiersCategoryBean childBean : bean.getChildren()) {
+			reduceToSelectedTiersCategories(selectedTiersCategories, tiersBean, childBean);
 		}
 	}
 
-	public List<TiersCategoryDto> reduceToSelectedTiersCategories(TiersDto tiers, TiersCategoryHierarchieBean hierarchie) {
+	public List<TiersCategoryDto> reduceToSelectedTiersCategories(TiersBean tiersBean, TiersCategoryBean hierarchie) {
 		List<TiersCategoryDto> selectedTiersCategories = new ArrayList<>();
-		for (TiersCategoryHierarchieBean childBean : hierarchie.getChildren()) {
-			reduceToSelectedTiersCategories(selectedTiersCategories, tiers, childBean);
+		for (TiersCategoryBean childBean : hierarchie.getChildren()) {
+			reduceToSelectedTiersCategories(selectedTiersCategories, tiersBean, childBean);
 		}
 		return selectedTiersCategories;
 	}
@@ -80,13 +83,25 @@ public class TiersCategoryHierarchieMapper extends AbstractMapper {
 				.orElseThrow(() -> new RuntimeException(ROOT_CATEGORY_NOT_FOUND));
 	}
 
-	public TiersCategoryHierarchieBean mapToBean(List<TiersCategoryDto> tiersCategories) {
-		Map<CategoryDto, Set<CategoryDto>> hierarchie = mapToParentChildCategories(tiersCategories);
+
+	private List<TiersCategoryDto> getTiersCategories(TiersDto tiers) {
+		if (tiers == null || tiers.getTiersCode() == null || tiers.getTiersCode().isBlank()) {
+			return Collections.emptyList();
+		}
+
+		Example<TiersCategoryDto> ex = Example.of(new TiersCategoryDto());
+		ex.getProbe().setTiersCode(tiers.getTiersCode());
+
+		return tiersCategoryDao.findAll(ex);
+	}
+
+	public TiersCategoryBean mapToTiersCategoryHierarchieBean(TiersDto tiersDto) {
+		var tiersCategories = getTiersCategories(tiersDto);
+		var hierarchie = mapToParentChildCategories(tiersCategories);
 		CategoryDto root = getRootCategory(hierarchie.keySet());
 		return mapToBean(root, hierarchie);
 	}
 	
-
 	private void mapToParentChildCategories(Map<CategoryDto, Set<CategoryDto>> parentChildMap, CategoryDto category) {
 		CategoryDto parent = category.getParent();
 		if (parent != null) {

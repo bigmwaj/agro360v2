@@ -18,6 +18,7 @@ public class CategoryDto extends AbstractDto{
 
 	@Id
 	@Column(name = "CATEGORY_CODE", updatable = false)
+	@EqualsAndHashCode.Include()
 	private String categoryCode;
 
 	@Column(name = "DESCRIPTION", length = 64)

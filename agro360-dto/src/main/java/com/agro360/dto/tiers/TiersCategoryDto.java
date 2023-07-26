@@ -31,10 +31,12 @@ public class TiersCategoryDto extends AbstractDto {
 	@Id
 	@ManyToOne()
 	@JoinColumn(name = "CATEGORY_CODE", updatable = false)
+	@EqualsAndHashCode.Include()
 	private CategoryDto category;
 
 	@Id
 	@Column(name = "TIERS_CODE", updatable = false)
+	@EqualsAndHashCode.Include()
 	private String tiersCode;
 
 }

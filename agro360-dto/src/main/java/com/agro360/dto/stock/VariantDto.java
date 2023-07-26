@@ -23,10 +23,12 @@ public class VariantDto extends AbstractDto
 	@Id
 	@ManyToOne()
 	@JoinColumn(name = "ARTICLE_CODE", updatable = false)
+	@EqualsAndHashCode.Include()
 	private ArticleDto article;
 
 	@Id
 	@Column(name = "VARIANT_CODE", updatable = false, length = 16)
+	@EqualsAndHashCode.Include()
 	private String variantCode;
 
 	@Column(name = "DESCRIPTION", length = 64)

@@ -1,0 +1,105 @@
+package com.agro360.service.logic.stock;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
+
+import com.agro360.dao.common.IDao;
+import com.agro360.dao.stock.ICasierDao;
+import com.agro360.dto.stock.CasierDto;
+import com.agro360.dto.stock.CasierPk;
+import com.agro360.dto.stock.MagasinDto;
+import com.agro360.service.bean.stock.CasierBean;
+import com.agro360.service.bean.stock.MagasinBean;
+import com.agro360.service.logic.common.AbstractService;
+import com.agro360.service.mapper.stock.CasierMapper;
+import com.agro360.service.utils.Message;
+
+@Service
+public class CasierService extends AbstractService<CasierDto, CasierPk> {
+
+	private static final String CREATE_SUCCESS = "Enregistrement créé avec succès!";
+
+	private static final String UPDATE_SUCCESS = "Enregistrement modifié avec succès!";
+
+	private static final String DELETE_SUCCESS = "Enregistrement supprimé avec succès!";
+
+	@Autowired
+	ICasierDao dao;
+
+	@Autowired
+	CasierMapper mapper;
+
+	@Override
+	protected IDao<CasierDto, CasierPk> getDao() {
+		return dao;
+	}
+
+	private List<Message> deleteCasier(MagasinBean magasinBean, List<CasierDto> existingCasiers) {
+		List<Message> messages = new ArrayList<>();
+		dao.deleteAll(existingCasiers);
+		return messages;
+	}
+
+	private List<Message> synchCasiers(MagasinDto magasin, MagasinBean magasinBean, CasierBean bean, List<CasierDto> existingCasiers) {
+		CasierDto dto = mapper.mapToDto(magasin, magasinBean, bean);
+		List<Message> messages = new ArrayList<>();
+
+		switch (bean.getAction()) {
+		case CREATE:
+			save(dto);
+			messages.add(Message.success(CREATE_SUCCESS));
+			break;
+			
+		case UPDATE:
+			save(dto);
+			messages.add(Message.success(UPDATE_SUCCESS));
+			break;
+
+		case DELETE:
+			if (existingCasiers.contains(dto)) {
+				delete(dto);
+				messages.add(Message.success(DELETE_SUCCESS));
+			}else {
+				messages.add(Message.warn(String.format("Le casier %s n'existe pas!", bean.getCasierCode().getValue())));
+			}
+			break;
+		default:
+		}
+
+		return messages;
+	}
+
+	public List<Message> synchCasiers(MagasinDto magasin, MagasinBean magasinBean) {
+		List<Message> messages = new ArrayList<>();
+		List<CasierDto> existingCasiers = findCasiers(magasinBean);
+
+		switch (magasinBean.getAction()) {
+		case CREATE:
+		case UPDATE:
+			List<CasierBean> casiers = magasinBean.getCasiers();
+			for (CasierBean bean : casiers) {
+				messages.addAll(synchCasiers(magasin, magasinBean, bean, existingCasiers));
+			}
+			break;
+
+		case DELETE:
+			messages.addAll(deleteCasier(magasinBean, existingCasiers));
+			break;
+		default:
+		}
+
+		return messages;
+	}
+
+	private List<CasierDto> findCasiers(MagasinBean magasinBean) {
+		Example<CasierDto> ex = Example.of(new CasierDto());
+		ex.getProbe().setMagasin(new MagasinDto());
+		ex.getProbe().getMagasin().setMagasinCode(magasinBean.getMagasinCode().getValue());
+
+		return dao.findAll(ex);
+	}
+}

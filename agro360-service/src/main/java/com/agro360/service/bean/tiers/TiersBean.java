@@ -40,9 +40,9 @@ public class TiersBean extends AbstractEditFormBean{
 
 	private FieldMetadata<String> country = new FieldMetadata<>();
 
-	private TiersCategoryHierarchieBean categoriesHierarchie = new TiersCategoryHierarchieBean();
+	private TiersCategoryBean categoriesHierarchie = new TiersCategoryBean();
 
-	public void setCategoriesHierarchie(TiersCategoryHierarchieBean categoriesHierarchie) {
+	public void setCategoriesHierarchie(TiersCategoryBean categoriesHierarchie) {
 		this.categoriesHierarchie = categoriesHierarchie;
 	}
 	

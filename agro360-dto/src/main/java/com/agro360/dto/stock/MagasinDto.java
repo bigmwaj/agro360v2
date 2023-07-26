@@ -16,6 +16,7 @@ public class MagasinDto extends AbstractDto {
 
 	@Id
 	@Column(name = "MAGASIN_CODE", updatable = false, length = 16)
+	@EqualsAndHashCode.Include()
 	private String magasinCode;
 
 	@Column(name = "DESCRIPTION", length = 64)
