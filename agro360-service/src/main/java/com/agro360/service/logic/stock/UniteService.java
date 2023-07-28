@@ -41,6 +41,10 @@ public class UniteService extends AbstractService<UniteDto, String> {
 	}
 
 	public List<Message> save(UniteBean bean) {
+		if( bean.getAction() == null ) {
+			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
+		}
+		
 		UniteDto dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 

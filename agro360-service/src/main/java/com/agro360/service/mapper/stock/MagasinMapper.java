@@ -29,12 +29,12 @@ public class MagasinMapper extends AbstractMapper {
 	CasierMapper casierMapper;
 
 	public MagasinBean mapToBean(MagasinDto dto, Map<String, Object> options) {
+		var mapCasier = options.getOrDefault(OPTION_MAP_CASIER_KEY, null);
 		var bean = new MagasinBean();
 
 		bean.getMagasinCode().setValue(dto.getMagasinCode());
 		bean.getDescription().setValue(dto.getDescription());
 
-		var mapCasier = options.getOrDefault(OPTION_MAP_CASIER_KEY, null);
 		if (mapCasier instanceof Boolean && (Boolean) mapCasier) {
 			var ex = Example.of(new CasierDto());
 			ex.getProbe().setMagasin(new MagasinDto());
@@ -51,12 +51,9 @@ public class MagasinMapper extends AbstractMapper {
 	}
 
 	public MagasinDto mapToDto(MagasinBean bean) {
-		var dto = new MagasinDto();
-		dto.setMagasinCode(bean.getMagasinCode().getValue());
-		if (dto.getMagasinCode() != null && dao.existsById(dto.getMagasinCode())) {
-			dto = dao.getById(dto.getMagasinCode());
-		}
-		dto.setDescription(bean.getDescription().getValue());
+		MagasinDto dto = StockSharedMapperHelper.mapToDto(dao, bean);
+
+		setDtoValue(dto::setDescription, bean.getDescription());
 		return dto;
 	}
 }

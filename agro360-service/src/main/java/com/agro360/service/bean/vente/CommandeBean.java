@@ -3,6 +3,7 @@ package com.agro360.service.bean.vente;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.agro360.service.bean.common.AbstractEditFormBean;
 import com.agro360.service.bean.stock.MagasinBean;
@@ -40,5 +41,15 @@ public class CommandeBean extends AbstractEditFormBean {
 	private FieldMetadata<String> adresse = new FieldMetadata<>();
 	
 	private List<LigneBean> lignes = new ArrayList<>();
+	
+	public void setClient(TiersBean client) {
+		Objects.requireNonNull(client);
+		this.client = client;
+	}
+	
+	public void setMagasin(MagasinBean magasin) {
+		Objects.requireNonNull(magasin);
+		this.magasin = magasin;
+	}
 	
 }

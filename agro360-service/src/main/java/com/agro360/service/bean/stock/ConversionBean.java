@@ -1,5 +1,7 @@
 package com.agro360.service.bean.stock;
 
+import java.util.Objects;
+
 import com.agro360.service.bean.common.AbstractEditFormBean;
 import com.agro360.service.metadata.FieldMetadata;
 
@@ -17,6 +19,7 @@ public class ConversionBean extends AbstractEditFormBean {
 	private UniteBean unite = new UniteBean();
 	
 	public void setUnite(UniteBean unite) {
+		Objects.requireNonNull(unite);
 		this.unite = unite;
 	}
 }

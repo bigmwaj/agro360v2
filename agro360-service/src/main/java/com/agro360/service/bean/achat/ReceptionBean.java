@@ -1,6 +1,7 @@
 package com.agro360.service.bean.achat;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import com.agro360.service.bean.common.AbstractEditFormBean;
 import com.agro360.service.bean.stock.MagasinBean;
@@ -14,15 +15,11 @@ import lombok.Getter;
 @EqualsAndHashCode(callSuper = false)
 public class ReceptionBean extends AbstractEditFormBean {
 
-	private static final long serialVersionUID = 1647090333349627006L;
-
-	private FieldMetadata<Long> receptionId = new FieldMetadata<>();
+	private static final long serialVersionUID = -16328407145183398L;
 
 	private LigneBean ligne = new LigneBean();
 
 	private FieldMetadata<String> description = new FieldMetadata<>();
-
-	private FieldMetadata<StatutReceptionEnumVd> statut = new FieldMetadata<>();
 
 	private FieldMetadata<Double> prixUnitaire = new FieldMetadata<>();
 
@@ -34,4 +31,18 @@ public class ReceptionBean extends AbstractEditFormBean {
 
 	private FieldMetadata<String> casierCode = new FieldMetadata<>();
 	
+	private FieldMetadata<Long> receptionId = new FieldMetadata<>();
+	
+	private FieldMetadata<StatutReceptionEnumVd> statut = new FieldMetadata<>();
+
+	public void setMagasin(MagasinBean magasin) {
+		Objects.requireNonNull(magasin);
+		this.magasin = magasin;
+	}
+
+	public void setLigne(LigneBean ligne) {
+		Objects.requireNonNull(ligne);
+		this.ligne = ligne;
+	}
+
 }

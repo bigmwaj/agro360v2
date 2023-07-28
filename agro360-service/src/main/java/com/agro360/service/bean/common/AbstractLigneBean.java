@@ -1,5 +1,8 @@
 package com.agro360.service.bean.common;
 
+import java.util.Objects;
+
+import com.agro360.dto.common.AbstractLigneDto;
 import com.agro360.service.bean.stock.ArticleBean;
 import com.agro360.service.bean.stock.UniteBean;
 import com.agro360.service.bean.stock.VariantBean;
@@ -11,11 +14,11 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public abstract class AbstractLigneBean extends AbstractEditFormBean {
+public abstract class AbstractLigneBean<E extends AbstractLigneDto> extends AbstractEditFormBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 
-	private FieldMetadata<Long> lineId = new FieldMetadata<>();
+	private FieldMetadata<Long> ligneId = new FieldMetadata<>();
 
 	private FieldMetadata<Integer> numero = new FieldMetadata<>();
 
@@ -32,4 +35,19 @@ public abstract class AbstractLigneBean extends AbstractEditFormBean {
 	private FieldMetadata<Double> quantite = new FieldMetadata<>();
 
 	private FieldMetadata<Double> prixUnitaire = new FieldMetadata<>();
+	
+	public void setUnite(UniteBean unite) {
+		Objects.requireNonNull(unite);
+		this.unite = unite;
+	}
+	
+	public void setArticle(ArticleBean article) {
+		Objects.requireNonNull(article);
+		this.article = article;
+	}
+	
+	public void setVariant(VariantBean variant) {
+		Objects.requireNonNull(variant);
+		this.variant = variant;
+	}
 }

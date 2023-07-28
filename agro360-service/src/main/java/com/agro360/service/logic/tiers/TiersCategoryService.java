@@ -24,7 +24,7 @@ import com.agro360.service.mapper.tiers.TiersCategoryMapper;
 import com.agro360.service.utils.Message;
 
 @Service
-public class TiersCategoryService extends AbstractService<TiersCategoryDto, TiersCategoryPk>{
+class TiersCategoryService extends AbstractService<TiersCategoryDto, TiersCategoryPk>{
 
 	private static final String ROOT_CATEGORY_NOT_FOUND_MSG = "La catégorie n'a pas été trouvée!";
 	

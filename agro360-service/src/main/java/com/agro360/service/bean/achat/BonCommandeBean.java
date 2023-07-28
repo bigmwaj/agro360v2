@@ -3,6 +3,7 @@ package com.agro360.service.bean.achat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.agro360.service.bean.common.AbstractEditFormBean;
 import com.agro360.service.bean.tiers.TiersBean;
@@ -36,4 +37,9 @@ public class BonCommandeBean extends AbstractEditFormBean {
 	
 	private List<LigneBean> lignes = new ArrayList<>();
 	
+	
+	public void setFournisseur(TiersBean fournisseur) {
+		Objects.requireNonNull(fournisseur);
+		this.fournisseur = fournisseur;
+	}
 }

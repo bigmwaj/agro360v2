@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.agro360.service.utils.Message;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,35 +16,39 @@ public class FieldMetadata<T> {
 
 	private T value;
 
-	private boolean required;
+	@JsonIgnore
+	private transient boolean required;
 
-	private boolean editable;
+	@JsonIgnore
+	private transient boolean editable = true;
 
-	private Integer maxLength;
+	@JsonIgnore
+	private transient Integer maxLength;
 
-	private Double max;
+	@JsonIgnore
+	private transient Double max;
 
-	private Double min;
+	@JsonIgnore
+	private transient Double min;
 
-	private Map<String, Object> valueOptions;
+	@JsonIgnore
+	private transient Map<String, Object> valueOptions;
 
-	private String tooltip;
+	@JsonIgnore
+	private transient String tooltip;
 
-	private String icon;
+	@JsonIgnore
+	private transient String icon;
 
+	@JsonIgnore
 	private final List<Message> messages = new ArrayList<>();
-
-	@Override
-	public String toString() {
-		return "FieldMetadata [value=" + value + "]";
-	}
-
+	
 	public void addMessage(Message message) {
 		messages.add(message);
 	}
 
 	public boolean hasAnyError() {
-		return messages.stream().map(Message::getType).anyMatch(Message.TYPE.ERROR::equals);
+		return Message.hasAnyError(messages);
 	}
 
 }

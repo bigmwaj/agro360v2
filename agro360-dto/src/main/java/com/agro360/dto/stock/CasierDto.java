@@ -15,7 +15,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "STOCK_TBL_CASIER")
-
 @IdClass(CasierPk.class)
 public class CasierDto extends AbstractDto {
 	

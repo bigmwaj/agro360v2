@@ -33,21 +33,18 @@ public class VariantMapper extends AbstractMapper {
 		VariantDto dto = null;
 		var articleCode = articleBean.getArticleCode().getValue();
 		var variantCode = bean.getVariantCode().getValue();
+		
+		VariantPk pk;
 
-		if (Objects.nonNull(articleCode) && Objects.nonNull(variantCode)) {
-			var pk = new VariantPk(articleCode, variantCode);
-			if (dao.existsById(pk)) {
-				dto = dao.getById(pk);
-			}
-		}
-		if (dto == null) {
+		if (Objects.nonNull(articleCode) && Objects.nonNull(variantCode) && dao.existsById(pk = new VariantPk(articleCode, variantCode))) {
+			dto = dao.getById(pk);
+		}else {
 			dto = new VariantDto();
-		} else {
-			var article = articleDao.findById(articleCode).orElseThrow();
 			dto.setVariantCode(variantCode);
-			dto.setArticle(article);
 		}
-		dto.setDescription(bean.getDescription().getValue());
+		
+		dto.setArticle(StockSharedMapperHelper.mapToDto(articleDao, articleBean));
+		setDtoValue(dto::setDescription,bean.getDescription());
 		return dto;
 	}
 }

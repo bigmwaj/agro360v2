@@ -1,7 +1,5 @@
 package com.agro360.service.mapper.stock;
 
-import java.util.Objects;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,15 +23,9 @@ public class UniteMapper extends AbstractMapper {
 	}
 
 	public UniteDto mapToDto(UniteBean bean) {
-		var uniteCode = bean.getUniteCode().getValue();
-		var dto = new UniteDto();
-		dto.setUniteCode(uniteCode);
-
-		if (Objects.nonNull(uniteCode) && dao.existsById(uniteCode)) {
-			dto = dao.findById(uniteCode).orElseThrow();
-		}
-		dto.setDescription(bean.getDescription().getValue());
-		dto.setAbreviation(bean.getAbreviation().getValue());
+		var dto = StockSharedMapperHelper.mapToDto(dao, bean);
+		setDtoValue(dto::setDescription, bean.getDescription());
+		setDtoValue(dto::setAbreviation, bean.getAbreviation());
 		return dto;
 	}
 }

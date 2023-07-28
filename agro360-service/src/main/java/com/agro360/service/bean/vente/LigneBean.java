@@ -1,5 +1,8 @@
 package com.agro360.service.bean.vente;
 
+import java.util.Objects;
+
+import com.agro360.dto.vente.LigneDto;
 import com.agro360.service.bean.common.AbstractLigneBean;
 import com.agro360.service.bean.stock.MagasinBean;
 import com.agro360.service.metadata.FieldMetadata;
@@ -9,7 +12,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class LigneBean extends AbstractLigneBean {
+public class LigneBean extends AbstractLigneBean<LigneDto> {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 
@@ -22,4 +25,9 @@ public class LigneBean extends AbstractLigneBean {
 	private FieldMetadata<Boolean> nonEmballee = new FieldMetadata<>();
 
 	private FieldMetadata<Boolean> nonCartonnee = new FieldMetadata<>();
+	
+	public void setMagasin(MagasinBean magasin) {
+		Objects.requireNonNull(magasin);
+		this.magasin = magasin;
+	}
 }

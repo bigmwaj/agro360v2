@@ -1,5 +1,7 @@
 package com.agro360.service.logic.tiers;
 
+import static com.agro360.service.mapper.tiers.TiersMapper.OPTION_MAP_TIERS_CATEGORY_KEY;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,42 +49,42 @@ public class TiersService extends AbstractService<TiersDto, String> {
 	}
 
 	public List<TiersBean> search(TiersSearchBean bean) {
-		var example = Example.of(new TiersDto());
+		var probe = new TiersDto();
+		var matcher = ExampleMatcher.matchingAll();
 
 		if (bean.getTiersCode() != null) {
-			example.getProbe().setTiersCode(bean.getTiersCode().getValue());
+			probe.setTiersCode(bean.getTiersCode().getValue());
+			matcher = matcher.withMatcher("tiersCode", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 		}
 
 		if (bean.getTiersName() != null) {
-			example.getProbe().setName(bean.getTiersName().getValue());
-			example.getProbe().setFirstName(bean.getTiersName().getValue());
-			example.getProbe().setLastName(bean.getTiersName().getValue());
-			example.getMatcher().withIgnoreCase().withMatcher("name",
-					ExampleMatcher.GenericPropertyMatchers.contains());
-			example.getMatcher().withIgnoreCase().withMatcher("firstName",
-					ExampleMatcher.GenericPropertyMatchers.contains());
-			example.getMatcher().withIgnoreCase().withMatcher("lastName",
-					ExampleMatcher.GenericPropertyMatchers.contains());
+//			probe.setName(bean.getTiersName().getValue());
+			probe.setFirstName(bean.getTiersName().getValue());
+//			probe.setLastName(bean.getTiersName().getValue());
+
+//			matcher = matcher.withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+			matcher = matcher.withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+//			matcher = matcher.withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 		}
 
 		if (bean.getEmail() != null) {
-			example.getProbe().setEmail(bean.getEmail().getValue());
-			example.getMatcher().withIgnoreCase().withMatcher("email",
-					ExampleMatcher.GenericPropertyMatchers.contains());
+			probe.setEmail(bean.getEmail().getValue());
+			matcher = matcher.withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 		}
 
 		if (bean.getPhone() != null) {
-			example.getProbe().setPhone(bean.getPhone().getValue());
-			example.getMatcher().withMatcher("phone", ExampleMatcher.GenericPropertyMatchers.endsWith());
+			probe.setPhone(bean.getPhone().getValue());
+			matcher = matcher.withMatcher("phone", ExampleMatcher.GenericPropertyMatchers.endsWith());
 		}
 
 		if (bean.getStatus() != null) {
-			example.getProbe().setStatus((TiersStatusEnumVd) bean.getStatus().getValue());
+			probe.setStatus((TiersStatusEnumVd) bean.getStatus().getValue());
 		}
 
 		if (bean.getTiersType() != null) {
-			example.getProbe().setTiersType(bean.getTiersType().getValue());
+			probe.setTiersType(bean.getTiersType().getValue());
 		}
+		var example = Example.of(probe, matcher);
 		return dao.findAll(example).stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 
@@ -120,8 +122,8 @@ public class TiersService extends AbstractService<TiersDto, String> {
 		return messages;
 	}
 
-	public TiersBean findTiersByCode(String id) {
-		return dao.findById(id).map(e -> mapper.mapToBean(e, Map.of(TiersMapper.OPTION_MAP_TIERS_CATEGORY_KEY, true)))
+	public TiersBean findById(String id) {
+		return dao.findById(id).map(e -> mapper.mapToBean(e, Map.of(OPTION_MAP_TIERS_CATEGORY_KEY, true)))
 				.orElseThrow();
 	}
 

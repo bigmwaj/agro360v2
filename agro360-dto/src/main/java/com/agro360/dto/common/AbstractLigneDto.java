@@ -22,13 +22,13 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @MappedSuperclass
-public abstract class AbstractLineDto extends AbstractDto {
+public abstract class AbstractLigneDto extends AbstractDto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "LIGNE_ID", nullable = false, updatable = false)
 	@EqualsAndHashCode.Include()
-	private Long lineId;
+	private Long ligneId;
 
 	@Column(name = "NUMERO", nullable = false)
 	private Integer numero;

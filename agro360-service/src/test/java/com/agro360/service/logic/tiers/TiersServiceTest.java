@@ -90,7 +90,7 @@ public class TiersServiceTest {
 		// When
 		//when(tiersMapper.g(code)).thenReturn(findById(code));	
 		when(tiersDao.findById(code)).thenReturn(findById(code));	
-		TiersBean bean = service.findTiersByCode(code);
+		TiersBean bean = service.findById(code);
 		
 		// Then
 		assertAll(

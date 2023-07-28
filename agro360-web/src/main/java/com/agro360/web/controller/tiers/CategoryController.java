@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.service.bean.tiers.CategoryBean;
 import com.agro360.service.logic.tiers.CategoryService;
-import com.agro360.service.utils.Message;
 import com.agro360.web.controller.common.AbstractController;
 
 @RestController()
@@ -34,14 +33,14 @@ public class CategoryController extends AbstractController {
 
 	@GetMapping("/children/{id}")
 	public ResponseEntity<List<CategoryBean>> childrenAction(String id) {
-		List<CategoryBean> beans = categoryService.findChildrenCategory(id);
+		var beans = categoryService.findChildrenCategory(id);
 		return ResponseEntity.ok(beans);
 	}
 
 	@PutMapping("/edit")
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CategoryBean bean, BindingResult br) {
-		List<Message> messages = categoryService.save(bean);
-		ModelMap model = new ModelMap("messages", messages);
+		var messages = categoryService.save(bean);
+		var model = new ModelMap("messages", messages);
 		return ResponseEntity.ok(model);
 	}
 

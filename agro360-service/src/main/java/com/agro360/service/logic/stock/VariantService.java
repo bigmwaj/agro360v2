@@ -1,6 +1,7 @@
 package com.agro360.service.logic.stock;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,9 +75,14 @@ public class VariantService extends AbstractService<VariantDto, VariantPk> {
 	}
 
 	public List<Message> synchVariants(ArticleBean articleBean) {
+		if( articleBean.getAction() == null ) {
+			return Collections.emptyList();
+		}
+		
 		List<Message> messages = new ArrayList<>();
 		List<VariantDto> existingVariants = findVariants(articleBean);
 
+		
 		switch (articleBean.getAction()) {
 		case CREATE:
 		case UPDATE:

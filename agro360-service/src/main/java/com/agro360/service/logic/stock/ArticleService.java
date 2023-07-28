@@ -10,12 +10,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dto.stock.ArticleDto;
 import com.agro360.service.bean.stock.ArticleBean;
+import com.agro360.service.bean.stock.ArticleSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.ArticleMapper;
 import com.agro360.service.utils.Message;
@@ -46,11 +48,22 @@ public class ArticleService extends AbstractService<ArticleDto, String> {
 		return dao;
 	}
 
-	public List<ArticleBean> search() {
-		return dao.findAll().stream().map(mapper::mapToBean).collect(Collectors.toList());
+	public List<ArticleBean> search(ArticleSearchBean searchBean) {
+		var example = Example.of(new ArticleDto());
+		if( searchBean.getArticleCode().getValue() != null ) {
+			example.getProbe().setArticleCode(searchBean.getArticleCode().getValue());
+		}
+		if( searchBean.getTypeArticle().getValue() != null ) {
+			example.getProbe().setTypeArticle(searchBean.getTypeArticle().getValue());
+		}
+		return dao.findAll(example).stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 
 	public List<Message> save(ArticleBean bean) {
+		if( bean.getAction() == null ) {
+			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
+		}
+		
 		ArticleDto dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 

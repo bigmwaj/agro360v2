@@ -1,6 +1,7 @@
 package com.agro360.service.logic.stock;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,14 +75,18 @@ public class ConversionService extends AbstractService<ConversionDto, Conversion
 	}
 
 	public List<Message> synchConversions(ArticleBean articleBean) {
+		if( articleBean.getAction() == null ) {
+			return Collections.emptyList();
+		}
+		
 		List<Message> messages = new ArrayList<>();
 		List<ConversionDto> existingConversions = findConversions(articleBean);
 
 		switch (articleBean.getAction()) {
 		case CREATE:
 		case UPDATE:
-			List<ConversionBean> casiers = articleBean.getConversions();
-			for (ConversionBean bean : casiers) {
+			List<ConversionBean> conversions = articleBean.getConversions();
+			for (ConversionBean bean : conversions) {
 				messages.addAll(synchConversions(articleBean, bean, existingConversions));
 			}
 			break;

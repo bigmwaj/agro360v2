@@ -6,6 +6,6 @@ import com.agro360.dao.common.IDao;
 import com.agro360.dto.achat.LigneDto;
 
 @Repository(value = "achat/ILigneDao")
-public interface ILigneDao extends IDao<LigneDto, String>{
+public interface ILigneDao extends IDao<LigneDto, Long>{
 
 }

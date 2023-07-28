@@ -1,5 +1,7 @@
 package com.agro360.service.utils;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -16,6 +18,10 @@ public class Message {
 	private Message(TYPE type, String message) {
 		this.message = message;
 		this.type = type;
+	}
+	
+	public static boolean hasAnyError(List<Message> messages) {
+		return messages.stream().map(Message::getType).anyMatch(Message.TYPE.ERROR::equals);
 	}
 	
 	public static final Message info(String message) {

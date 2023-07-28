@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.service.bean.stock.UniteBean;
 import com.agro360.service.logic.stock.UniteService;
-import com.agro360.service.utils.Message;
 import com.agro360.web.controller.common.AbstractController;
 
 @RestController()
@@ -38,8 +37,8 @@ public class UniteController extends AbstractController {
 
 	@PutMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated UniteBean bean, BindingResult br) {
-		List<Message> messages = uniteService.save(bean);
-		ModelMap model = new ModelMap("messages", messages);
+		var messages = uniteService.save(bean);
+		var model = new ModelMap("messages", messages);
 		return ResponseEntity.ok(model);
 	}
 }

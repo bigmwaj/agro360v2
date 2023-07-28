@@ -30,10 +30,10 @@ public class CategoryMapper extends AbstractMapper {
 		bean.getCategoryCode().setValue(dto.getCategoryCode());
 		bean.getDescription().setValue(dto.getDescription());
 		Object deep = options.getOrDefault(OPTION_HIRARCHIE_DEEP_KEY, null);
-		if( deep instanceof Integer && ((Integer)deep) > 0 ) {
-			Integer remainDeep = ((Integer)deep) - 1;
-			List<CategoryBean> children = findChildren(dto)
-					.stream().map(e -> mapToBean(e, Map.of(OPTION_HIRARCHIE_DEEP_KEY, remainDeep))).toList();
+		if (deep instanceof Integer && ((Integer) deep) > 0) {
+			Integer remainDeep = ((Integer) deep) - 1;
+			List<CategoryBean> children = findChildren(dto).stream()
+					.map(e -> mapToBean(e, Map.of(OPTION_HIRARCHIE_DEEP_KEY, remainDeep))).toList();
 			bean.getChildren().addAll(children);
 		}
 		return bean;
@@ -42,17 +42,17 @@ public class CategoryMapper extends AbstractMapper {
 	public CategoryDto mapToDto(CategoryBean bean) {
 		CategoryDto dto = new CategoryDto();
 		dto.setCategoryCode(bean.getCategoryCode().getValue());
-		
+
 		if (categoryDao.existsById(dto.getCategoryCode())) {
 			dto = categoryDao.getById(dto.getCategoryCode());
 		}
-		dto.setDescription(bean.getDescription().getValue());
+		setDtoValue(dto::setDescription, bean.getDescription());
 
 		return dto;
 	}
-	
-	private List<CategoryDto> findChildren(CategoryDto parentDto){
-		Example<CategoryDto> ex = Example.of(new CategoryDto());
+
+	private List<CategoryDto> findChildren(CategoryDto parentDto) {
+		var ex = Example.of(new CategoryDto());
 		ex.getProbe().setParent(new CategoryDto());
 		ex.getProbe().getParent().setCategoryCode(parentDto.getCategoryCode());
 		return categoryDao.findAll(ex);

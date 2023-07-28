@@ -1,5 +1,7 @@
 package com.agro360.service.logic.stock;
 
+import static com.agro360.service.mapper.stock.MagasinMapper.OPTION_MAP_CASIER_KEY;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,11 +22,11 @@ import com.agro360.service.utils.Message;
 @Service
 public class MagasinService extends AbstractService<MagasinDto, String> {
 
-	private static final String CREATE_SUCCESS = "Enregistrement créé avec succès!";
+	private static final String CREATE_SUCCESS = "Succès création du magasin %s!";
 
-	private static final String UPDATE_SUCCESS = "Enregistrement modifié avec succès!";
+	private static final String UPDATE_SUCCESS = "Succès modification du magasin %s!";
 
-	private static final String DELETE_SUCCESS = "Enregistrement supprimé avec succès!";
+	private static final String DELETE_SUCCESS = "Succès suppression du magasin %s!";
 
 	@Autowired
 	IMagasinDao dao;
@@ -45,26 +47,30 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 	}
 
 	public List<Message> save(MagasinBean bean) {
+		if( bean.getAction() == null ) {
+			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
+		}
+		
 		MagasinDto dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
 		switch (bean.getAction()) {
 		case CREATE:
 			save(dto);
-			messages.add(Message.success(CREATE_SUCCESS));
+			messages.add(Message.success(String.format(CREATE_SUCCESS, dto.getMagasinCode())));
 			messages.addAll(casierService.synchCasiers(dto, bean));
 			break;
 
 		case UPDATE:
 			save(dto);
-			messages.add(Message.success(UPDATE_SUCCESS));
+			messages.add(Message.success(String.format(UPDATE_SUCCESS, dto.getMagasinCode())));
 			messages.addAll(casierService.synchCasiers(dto, bean));
 			break;
 
 		case DELETE:
 			messages.addAll(casierService.synchCasiers(dto, bean));
 			delete(dto);
-			messages.add(Message.success(DELETE_SUCCESS));
+			messages.add(Message.success(String.format(DELETE_SUCCESS, dto.getMagasinCode())));
 			break;
 		default:
 			return Collections.singletonList(Message.warn("Aucune action à effectuer"));
@@ -73,6 +79,6 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 	}
 
 	public MagasinBean findById(String id) {
-		return dao.findById(id).map(e -> mapper.mapToBean(e, Map.of(MagasinMapper.OPTION_MAP_CASIER_KEY, true))).orElseThrow();
+		return dao.findById(id).map(e -> mapper.mapToBean(e, Map.of(OPTION_MAP_CASIER_KEY, true))).orElseThrow();
 	}
 }

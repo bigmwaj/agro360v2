@@ -1,6 +1,6 @@
 package com.agro360.service.mapper.tiers;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import com.agro360.dto.tiers.TiersDto;
 import com.agro360.service.bean.tiers.TiersBean;
 import com.agro360.service.mapper.common.AbstractMapper;
 import com.agro360.service.utils.Constants;
-import com.agro360.vd.common.EditActionEnumVd;
 import com.agro360.vd.tiers.TiersTypeEnumVd;
 
 @Component
@@ -26,7 +25,7 @@ public class TiersMapper extends AbstractMapper {
 	private TiersCategoryMapper tiersCategoryMapper;
 
 	public TiersBean mapToBean(TiersDto dto) {
-		return mapToBean(dto, null);
+		return mapToBean(dto, Collections.emptyMap());
 	}
 
 	public TiersBean mapToBean(TiersDto dto, Map<String, Object> options) {
@@ -59,29 +58,20 @@ public class TiersMapper extends AbstractMapper {
 	}
 
 	public TiersDto mapToDto(TiersBean bean) {
-		TiersDto dto = new TiersDto();
-		dto.setTiersCode(bean.getTiersCode().getValue());
-		boolean shouldExist = Arrays.stream(EditActionEnumVd.values()).filter(e -> !EditActionEnumVd.CREATE.equals(e))
-				.filter(e -> e.equals(bean.getAction())).findAny().isPresent();
-		if (shouldExist) {
-			if (tiersDao.existsById(dto.getTiersCode())) {
-				dto = tiersDao.getById(dto.getTiersCode());
-			} else {
-				throw new RuntimeException(String.format("Le tiers de code %s doit exister", dto.getTiersCode()));
-			}
-		}
 
-		dto.setAddress(bean.getAddress().getValue());
-		dto.setCity(bean.getCity().getValue());
-		dto.setCountry(bean.getCountry().getValue());
-		dto.setEmail(bean.getEmail().getValue());
-		dto.setPhone(bean.getPhone().getValue());
-		dto.setFirstName(bean.getFirstName().getValue());
-		dto.setLastName(bean.getLastName().getValue());
-		dto.setStatus(bean.getStatus().getValue());
-		dto.setName(bean.getName().getValue());
-		dto.setTiersType(bean.getTiersType().getValue());
-		dto.setTitle(bean.getTitle().getValue());
+		TiersDto dto = TiersSharedMapperHelper.mapToDto(tiersDao, bean);
+
+		setDtoValue(dto::setAddress, bean.getAddress());
+		setDtoValue(dto::setCity, bean.getCity());
+		setDtoValue(dto::setCountry, bean.getCountry());
+		setDtoValue(dto::setEmail, bean.getEmail());
+		setDtoValue(dto::setPhone, bean.getPhone());
+		setDtoValue(dto::setFirstName, bean.getFirstName());
+		setDtoValue(dto::setLastName, bean.getLastName());
+		setDtoValue(dto::setStatus, bean.getStatus());
+		setDtoValue(dto::setName, bean.getName());
+		setDtoValue(dto::setTiersType, bean.getTiersType());
+		setDtoValue(dto::setTitle, bean.getTitle());
 
 		return dto;
 	}

@@ -89,7 +89,7 @@ public class TiersCategoryMapper extends AbstractMapper {
 			return Collections.emptyList();
 		}
 
-		Example<TiersCategoryDto> ex = Example.of(new TiersCategoryDto());
+		var ex = Example.of(new TiersCategoryDto());
 		ex.getProbe().setTiersCode(tiers.getTiersCode());
 
 		return tiersCategoryDao.findAll(ex);
@@ -98,18 +98,21 @@ public class TiersCategoryMapper extends AbstractMapper {
 	public TiersCategoryBean mapToTiersCategoryHierarchieBean(TiersDto tiersDto) {
 		var tiersCategories = getTiersCategories(tiersDto);
 		var hierarchie = mapToParentChildCategories(tiersCategories);
-		CategoryDto root = getRootCategory(hierarchie.keySet());
+		var root = getRootCategory(hierarchie.keySet());
 		return mapToBean(root, hierarchie);
 	}
 	
 	private void mapToParentChildCategories(Map<CategoryDto, Set<CategoryDto>> parentChildMap, CategoryDto category) {
-		CategoryDto parent = category.getParent();
+		var parent = category.getParent();
 		if (parent != null) {
 			if (!parentChildMap.containsKey(parent)) {
 				parentChildMap.put(parent, new HashSet<>());
 			}
 			parentChildMap.get(parent).add(category);
 			mapToParentChildCategories(parentChildMap, parent);
+		}
+		if (!parentChildMap.containsKey(category)) {
+			parentChildMap.put(category, new HashSet<>());
 		}
 	}
 

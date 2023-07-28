@@ -27,7 +27,7 @@ public class ArticleMapper extends AbstractMapper {
 
 	@Autowired
 	IArticleDao dao;
-	
+
 	@Autowired
 	IUniteDao uniteDao;
 
@@ -36,7 +36,7 @@ public class ArticleMapper extends AbstractMapper {
 
 	@Autowired
 	IConversionDao conversionDao;
-	
+
 	@Autowired
 	UniteMapper uniteMapper;
 
@@ -52,8 +52,8 @@ public class ArticleMapper extends AbstractMapper {
 		bean.getArticleCode().setValue(dto.getArticleCode());
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getTypeArticle().setValue(dto.getTypeArticle());
-		
-		if( dto.getUnite() != null ) {
+
+		if (dto.getUnite() != null) {
 			bean.setUnite(uniteMapper.mapToBean(dto.getUnite()));
 		}
 
@@ -73,8 +73,7 @@ public class ArticleMapper extends AbstractMapper {
 			ex.getProbe().setArticle(new ArticleDto());
 			ex.getProbe().getArticle().setArticleCode(dto.getArticleCode());
 
-			var conversionBeans = conversionDao.findAll(ex).stream().map(conversionMapper::mapToBean)
-					.toList();
+			var conversionBeans = conversionDao.findAll(ex).stream().map(conversionMapper::mapToBean).toList();
 			bean.getConversions().addAll(conversionBeans);
 		}
 
@@ -86,22 +85,11 @@ public class ArticleMapper extends AbstractMapper {
 	}
 
 	public ArticleDto mapToDto(ArticleBean bean) {
-		var dto = new ArticleDto();
-		var articleCode = bean.getArticleCode().getValue();
-		dto.setArticleCode(articleCode);
+		ArticleDto dto = StockSharedMapperHelper.mapToDto(dao, bean);
+		dto.setUnite(StockSharedMapperHelper.mapToDto(uniteDao, bean.getUnite()));
 		
-		if (Objects.nonNull(articleCode) && dao.existsById(articleCode)) {
-			dto = dao.findById(articleCode).orElseThrow();
-		}else {
-			var uniteCode = bean.getUnite().getUniteCode().getValue();
-			if( Objects.nonNull(uniteCode) && dao.existsById(uniteCode)) {
-				var unite = uniteDao.findById(uniteCode).orElseThrow();
-				dto.setUnite(unite);
-			}
-		}
-		
-		dto.setDescription(bean.getDescription().getValue());
-		dto.setTypeArticle(bean.getTypeArticle().getValue());
+		setDtoValue(dto::setDescription,bean.getDescription());
+		setDtoValue(dto::setTypeArticle,bean.getTypeArticle());
 
 		return dto;
 	}

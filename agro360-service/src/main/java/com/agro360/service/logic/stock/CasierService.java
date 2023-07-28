@@ -1,6 +1,7 @@
 package com.agro360.service.logic.stock;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,11 @@ import com.agro360.service.utils.Message;
 @Service
 public class CasierService extends AbstractService<CasierDto, CasierPk> {
 
-	private static final String CREATE_SUCCESS = "Enregistrement créé avec succès!";
+	private static final String CREATE_SUCCESS = "Succès création du casier %s du magasin %s!";
 
-	private static final String UPDATE_SUCCESS = "Enregistrement modifié avec succès!";
+	private static final String UPDATE_SUCCESS = "Succès modification du casier %s du magasin %s!";
 
-	private static final String DELETE_SUCCESS = "Enregistrement supprimé avec succès!";
+	private static final String DELETE_SUCCESS = "Succès suppression du casier %s du magasin %s!";
 
 	@Autowired
 	ICasierDao dao;
@@ -45,26 +46,30 @@ public class CasierService extends AbstractService<CasierDto, CasierPk> {
 	}
 
 	private List<Message> synchCasiers(MagasinDto magasin, MagasinBean magasinBean, CasierBean bean, List<CasierDto> existingCasiers) {
-		CasierDto dto = mapper.mapToDto(magasin, magasinBean, bean);
+		if( bean.getAction() == null ) {
+			return Collections.emptyList();
+		}
+		
 		List<Message> messages = new ArrayList<>();
-
+		var dto = mapper.mapToDto(magasin, magasinBean, bean);
 		switch (bean.getAction()) {
 		case CREATE:
 			save(dto);
-			messages.add(Message.success(CREATE_SUCCESS));
+			messages.add(Message.success(String.format(CREATE_SUCCESS, dto.getCasierCode(), magasin.getMagasinCode())));
 			break;
-			
+
 		case UPDATE:
 			save(dto);
-			messages.add(Message.success(UPDATE_SUCCESS));
+			messages.add(Message.success(String.format(UPDATE_SUCCESS, dto.getCasierCode(), magasin.getMagasinCode())));
 			break;
 
 		case DELETE:
 			if (existingCasiers.contains(dto)) {
 				delete(dto);
-				messages.add(Message.success(DELETE_SUCCESS));
-			}else {
-				messages.add(Message.warn(String.format("Le casier %s n'existe pas!", bean.getCasierCode().getValue())));
+				messages.add(Message.success(String.format(DELETE_SUCCESS, dto.getCasierCode(), magasin.getMagasinCode())));
+			} else {
+				messages.add(
+						Message.warn(String.format("Le casier %s n'existe pas!", bean.getCasierCode().getValue())));
 			}
 			break;
 		default:
@@ -75,13 +80,13 @@ public class CasierService extends AbstractService<CasierDto, CasierPk> {
 
 	public List<Message> synchCasiers(MagasinDto magasin, MagasinBean magasinBean) {
 		List<Message> messages = new ArrayList<>();
-		List<CasierDto> existingCasiers = findCasiers(magasinBean);
+		var existingCasiers = findCasiers(magasinBean);
 
 		switch (magasinBean.getAction()) {
 		case CREATE:
 		case UPDATE:
-			List<CasierBean> casiers = magasinBean.getCasiers();
-			for (CasierBean bean : casiers) {
+			var casiers = magasinBean.getCasiers();
+			for (var bean : casiers) {
 				messages.addAll(synchCasiers(magasin, magasinBean, bean, existingCasiers));
 			}
 			break;
