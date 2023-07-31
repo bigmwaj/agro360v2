@@ -16,16 +16,16 @@ import com.agro360.service.mapper.common.AbstractMapper;
 public class ConversionMapper extends AbstractMapper {
 
 	@Autowired
-	IConversionDao dao;
+	private IConversionDao dao;
 
 	@Autowired
-	IUniteDao uniteDao;
+	private IUniteDao uniteDao;
 
 	@Autowired
-	IArticleDao articleDao;
+	private IArticleDao articleDao;
 
 	@Autowired
-	UniteMapper uniteMapper;
+	private UniteMapper uniteMapper;
 
 	public ConversionBean mapToBean(ConversionDto dto) {
 		var bean = new ConversionBean();

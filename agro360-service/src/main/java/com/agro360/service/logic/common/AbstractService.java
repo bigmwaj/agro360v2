@@ -6,9 +6,9 @@ import com.agro360.dao.common.IDao;
 import com.agro360.dto.common.AbstractDto;
 
 public abstract class AbstractService<E extends AbstractDto, K> {
-	
+
 	protected IDao<E, K> dao;
-	
+
 	protected abstract IDao<E, K> getDao();
 
 	public E save(E dto) {

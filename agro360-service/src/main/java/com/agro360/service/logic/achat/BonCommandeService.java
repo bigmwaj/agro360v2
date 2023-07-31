@@ -13,6 +13,7 @@ import com.agro360.dao.common.IDao;
 import com.agro360.dao.achat.IBonCommandeDao;
 import com.agro360.dto.achat.BonCommandeDto;
 import com.agro360.service.bean.achat.BonCommandeBean;
+import com.agro360.service.bean.achat.BonCommandeSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.achat.BonCommandeMapper;
 import com.agro360.service.utils.Message;
@@ -40,7 +41,7 @@ public class BonCommandeService extends AbstractService<BonCommandeDto, String> 
 		return dao;
 	}
 
-	public List<BonCommandeBean> search() {
+	public List<BonCommandeBean> search(BonCommandeSearchBean searchBean) {
 		return dao.findAll().stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 

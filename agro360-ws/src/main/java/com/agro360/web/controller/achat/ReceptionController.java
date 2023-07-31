@@ -36,8 +36,8 @@ public class ReceptionController extends AbstractController {
 	public ResponseEntity<Object> searchAction(@PathVariable String bonCommandeCode, @RequestParam String formModel) {
 		Object model = new Object();
 		switch (formModel) {
-		case "reception-input-model":
-			model = receptionService.getReceptionInputForm(bonCommandeCode);
+		case "lignes-non-receptionnees":
+			model = receptionService.rechercherLignesNonReceptionneesEtMapperEnReceptions(bonCommandeCode);
 			break;
 
 		default:

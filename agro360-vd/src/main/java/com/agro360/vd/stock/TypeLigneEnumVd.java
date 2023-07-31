@@ -7,6 +7,8 @@ public enum TypeLigneEnumVd {
 	ARTC("Article"), 
 	CMDE("Commande");
 	
+	public static final int COLUMN_LENGTH = 4;
+	
 	private final String libelle;
 	
 	private TypeLigneEnumVd(String libelle) {

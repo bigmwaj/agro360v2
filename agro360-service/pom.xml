@@ -12,7 +12,7 @@
 	<packaging>jar</packaging>
 	<artifactId>agro360-service</artifactId>
 	<name>agro360-service</name>
-	<description>Services principaux</description>
+	<description>Business Logic Project</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

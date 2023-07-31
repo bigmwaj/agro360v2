@@ -5,7 +5,6 @@ import java.util.Objects;
 import com.agro360.dto.common.AbstractLigneDto;
 import com.agro360.service.bean.stock.ArticleBean;
 import com.agro360.service.bean.stock.UniteBean;
-import com.agro360.service.bean.stock.VariantBean;
 import com.agro360.service.metadata.FieldMetadata;
 import com.agro360.vd.stock.TypeLigneEnumVd;
 
@@ -22,12 +21,6 @@ public abstract class AbstractLigneBean<E extends AbstractLigneDto> extends Abst
 
 	private FieldMetadata<Integer> numero = new FieldMetadata<>();
 
-	private UniteBean unite = new UniteBean();
-
-	private ArticleBean article = new ArticleBean();
-
-	private VariantBean variant = new VariantBean();
-
 	private FieldMetadata<TypeLigneEnumVd> typeLigne = new FieldMetadata<>();
 
 	private FieldMetadata<String> description = new FieldMetadata<>();
@@ -35,6 +28,12 @@ public abstract class AbstractLigneBean<E extends AbstractLigneDto> extends Abst
 	private FieldMetadata<Double> quantite = new FieldMetadata<>();
 
 	private FieldMetadata<Double> prixUnitaire = new FieldMetadata<>();
+	
+	private FieldMetadata<String> variantCode = new FieldMetadata<>();
+
+	private UniteBean unite = new UniteBean();
+
+	private ArticleBean article = new ArticleBean();
 	
 	public void setUnite(UniteBean unite) {
 		Objects.requireNonNull(unite);
@@ -44,10 +43,5 @@ public abstract class AbstractLigneBean<E extends AbstractLigneDto> extends Abst
 	public void setArticle(ArticleBean article) {
 		Objects.requireNonNull(article);
 		this.article = article;
-	}
-	
-	public void setVariant(VariantBean variant) {
-		Objects.requireNonNull(variant);
-		this.variant = variant;
 	}
 }

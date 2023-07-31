@@ -19,16 +19,15 @@ import com.agro360.service.bean.tiers.CategoryBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.tiers.CategoryMapper;
 import com.agro360.service.utils.Message;
-import com.agro360.vd.common.EditActionEnumVd;
 
 @Service
 public class CategoryService extends AbstractService<CategoryDto, String> {
 
-	private static final String CREATE_SUCCESS = "Enregistrement créé avec succès!";
+	private static final String CREATE_SUCCESS = "La catégorie %s de parent %s créée avec succès";
 
-	private static final String UPDATE_SUCCESS = "Enregistrement modifié avec succès!";
+	private static final String UPDATE_SUCCESS = "La catégorie %s de parent %s modifiée avec succès";
 
-	private static final String DELETE_SUCCESS = "Enregistrement supprimé avec succès!";
+	private static final String DELETE_SUCCESS = "La catégorie %s de parent %s supprimée avec succès";
 
 	@Autowired
 	private ICategoryDao dao;
@@ -41,49 +40,59 @@ public class CategoryService extends AbstractService<CategoryDto, String> {
 		return dao;
 	}
 
-	protected List<Message> _save(CategoryBean bean) {
+	private void save(CategoryDto parent, CategoryBean bean, List<Message> messages) {
 		var dto = mapper.mapToDto(bean);
-		List<Message> messages = new ArrayList<>();
+		dto.setParent(parent);
 
 		switch (bean.getAction()) {
 		case CREATE:
-			dao.save(dto);
-			messages.add(Message.success(CREATE_SUCCESS));
+			save(dto);
+			messages.add(Message.success(String.format(CREATE_SUCCESS, dto.getCategoryCode(), parent.getCategoryCode())));
 			break;
 
 		case UPDATE:
-			dao.save(dto);
-			messages.add(Message.success(UPDATE_SUCCESS));
+			save(dto);
+			messages.add(Message.success(String.format(UPDATE_SUCCESS, dto.getCategoryCode(), parent.getCategoryCode())));
 			break;
 
 		case DELETE:
-			dao.delete(dto);
-			messages.add(Message.success(DELETE_SUCCESS));
-			break;
+			delete(dto);
+			messages.add(Message.success(String.format(DELETE_SUCCESS, dto.getCategoryCode(), parent.getCategoryCode())));
+			return;
 
 		default:
-			return Collections.singletonList(Message.warn("Aucune action à effectuer"));
+			messages.add(Message.warn("Aucune action à effectuer"));
+			return;
 		}
+		
+		var children = bean.getChildren();
+		if (children != null && !children.isEmpty()) {
+			for (CategoryBean childBean : children) {
+				save(dto, childBean, messages);
+			}
+		}		
+	}
+	
+	public List<Message> save(CategoryBean rootBean) {
+		var rootCategory = mapper.mapToDto(rootBean);
+		List<Message> messages = new ArrayList<>();
+		
+		var children = rootBean.getChildren();
+		if (children != null && !children.isEmpty()) {
+			for (CategoryBean childBean : children) {
+				save(rootCategory, childBean, messages);
+			}
+		}		
 		return messages;
 	}
 
-	public List<Message> save(CategoryBean bean) {
-		var messages = _save(bean);
-		var children = bean.getChildren();
-		if (children != null && !children.isEmpty()) {
-			for (CategoryBean b : bean.getChildren()) {
-				messages.addAll(save(b));
-				if (b.getAction().equals(EditActionEnumVd.DELETE)) {
-					continue;
-				}
-			}
-		}
-		return messages;
+	private Map<String, Object> mapDeep(Integer deep) {
+		return Map.of(OPTION_HIRARCHIE_DEEP_KEY, deep);
 	}
 
 	public CategoryBean findRootCategory(Optional<Integer> deep) {
 		var root = dao.getById("ROOT");
-		var options = deep.map(Object.class::cast).map(e -> Map.of(OPTION_HIRARCHIE_DEEP_KEY, e)).orElse(Collections.emptyMap());
+		var options = deep.map(this::mapDeep).orElse(Collections.emptyMap());
 		return mapper.mapToBean(root, options);
 	}
 

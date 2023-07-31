@@ -46,7 +46,7 @@ public class CommandeDto extends AbstractDto
 	private Boolean livree;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = 4)
+	@Column(name = "STATUT", nullable = false, length = StatutCommandeEnumVd.COLUMN_LENGTH)
 	private StatutCommandeEnumVd statut;
 
 	@Column(name = "DESCRIPTION", length = 255)

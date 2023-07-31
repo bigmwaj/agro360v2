@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
@@ -25,7 +24,7 @@ import lombok.EqualsAndHashCode;
 public abstract class AbstractLigneDto extends AbstractDto {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "LIGNE_ID", nullable = false, updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long ligneId;
@@ -41,15 +40,11 @@ public abstract class AbstractLigneDto extends AbstractDto {
 	@JoinColumn(name = "ARTICLE_CODE", nullable = false)
 	private ArticleDto article;
 
-	@ManyToOne()
-	@JoinColumns({
-	  @JoinColumn(name = "VARIANT_CODE", insertable = false, updatable = false),
-	  @JoinColumn(name = "ARTICLE_CODE", insertable = false, updatable = false)
-	})
-	private VariantDto variant;
+	@Column(name = "VARIANT_CODE", length = VariantDto.VARIANT_CODE_LENGTH)
+	private String variantCode;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TYPE_LIGNE", nullable = false, updatable = false, length = 16)
+	@Column(name = "TYPE_LIGNE", nullable = false, updatable = false, length = TypeLigneEnumVd.COLUMN_LENGTH)
 	private TypeLigneEnumVd typeLigne;
 
 	@Column(name = "DESCRIPTION", length = 128)

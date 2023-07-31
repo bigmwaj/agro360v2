@@ -17,7 +17,7 @@ import lombok.EqualsAndHashCode;
 public class CategoryDto extends AbstractDto{
 
 	@Id
-	@Column(name = "CATEGORY_CODE", updatable = false)
+	@Column(name = "CATEGORY_CODE", updatable = false, length = 16)
 	@EqualsAndHashCode.Include()
 	private String categoryCode;
 

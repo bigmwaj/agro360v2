@@ -2,7 +2,6 @@ package com.agro360.service.mapper.common;
 
 import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,34 +9,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dao.stock.IUniteDao;
-import com.agro360.dao.stock.IVariantDao;
 import com.agro360.dto.common.AbstractLigneDto;
-import com.agro360.dto.stock.VariantPk;
 import com.agro360.service.bean.common.AbstractLigneBean;
 import com.agro360.service.mapper.stock.ArticleMapper;
 import com.agro360.service.mapper.stock.StockSharedMapperHelper;
 import com.agro360.service.mapper.stock.UniteMapper;
-import com.agro360.service.mapper.stock.VariantMapper;
 
 public abstract class AstractLigneMapper<E extends AbstractLigneDto> extends AbstractMapper {
 
 	@Autowired
-	UniteMapper uniteMapper;
+	private UniteMapper uniteMapper;
 
 	@Autowired
-	IUniteDao uniteDao;
+	private IUniteDao uniteDao;
 
 	@Autowired
-	ArticleMapper articleMapper;
+	private ArticleMapper articleMapper;
 
 	@Autowired
-	IArticleDao articleDao;
-
-	@Autowired
-	VariantMapper variantMapper;
-
-	@Autowired
-	IVariantDao variantDao;
+	private IArticleDao articleDao;
 
 	protected abstract IDao<E, Long> getDao();
 
@@ -52,6 +42,7 @@ public abstract class AstractLigneMapper<E extends AbstractLigneDto> extends Abs
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getQuantite().setValue(dto.getQuantite());
 		bean.getPrixUnitaire().setValue(dto.getPrixUnitaire());
+		bean.getVariantCode().setValue(dto.getVariantCode());
 
 		if (dto.getUnite() != null) {
 			bean.setUnite(uniteMapper.mapToBean(dto.getUnite()));
@@ -61,17 +52,13 @@ public abstract class AstractLigneMapper<E extends AbstractLigneDto> extends Abs
 			bean.setArticle(articleMapper.mapToBean(dto.getArticle()));
 		}
 
-		if (dto.getVariant() != null) {
-			bean.setVariant(variantMapper.mapToBean(dto.getVariant()));
-		}
-
 		return bean;
 	}
 
 	public E mapToDto(AbstractLigneBean<E> bean, Supplier<E> newDtoSpl) {
 		var id = bean.getLigneId().getValue();
 		E dto = null;
-		if (Objects.nonNull(id) && getDao().existsById(id)) {
+		if ( null != id && getDao().existsById(id)) {
 			dto = getDao().getById(id);
 		} else {
 			dto = newDtoSpl.get();
@@ -83,17 +70,10 @@ public abstract class AstractLigneMapper<E extends AbstractLigneDto> extends Abs
 		setDtoValue(dto::setDescription, bean.getDescription());
 		setDtoValue(dto::setQuantite, bean.getQuantite());
 		setDtoValue(dto::setPrixUnitaire, bean.getPrixUnitaire());
+		setDtoValue(dto::setVariantCode, bean.getVariantCode());
 
 		dto.setUnite(StockSharedMapperHelper.mapToDto(uniteDao, bean.getUnite()));
 		dto.setArticle(StockSharedMapperHelper.mapToDto(articleDao, bean.getArticle()));
-
-		String articleCode = bean.getArticle().getArticleCode().getValue();
-		String variantCode = bean.getVariant().getVariantCode().getValue();
-		VariantPk variantPk = null;
-		if (null != articleCode && null != variantCode
-				&& variantDao.existsById(variantPk = new VariantPk(articleCode, variantCode))) {
-			dto.setVariant(variantDao.getById(variantPk));
-		}
 		return dto;
 	}
 }

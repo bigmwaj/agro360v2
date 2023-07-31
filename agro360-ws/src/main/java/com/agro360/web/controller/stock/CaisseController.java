@@ -1,5 +1,6 @@
-package com.agro360.web.controller.vente;
+package com.agro360.web.controller.stock;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,30 +15,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agro360.service.bean.vente.CommandeBean;
-import com.agro360.service.logic.vente.CommandeService;
+import com.agro360.service.bean.stock.CaisseBean;
+import com.agro360.service.logic.stock.CaisseService;
 import com.agro360.web.controller.common.AbstractController;
 
 @RestController()
-@RequestMapping("/vente/commande")
-public class CommandeController extends AbstractController {
+@RequestMapping("/stock/caisse")
+public class CaisseController extends AbstractController {
 
 	@Autowired
-	private CommandeService commandeService;
+	private CaisseService caisseService;
 
 	@GetMapping()
-	public ResponseEntity<List<CommandeBean>> searchAction() {
-		return ResponseEntity.ok(commandeService.search());
+	public ResponseEntity<List<CaisseBean>> searchAction() {
+		return ResponseEntity.ok(caisseService.search());
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<CommandeBean> loadAction(@PathVariable String id) {
-		return ResponseEntity.ok(commandeService.findById(id));
+	@GetMapping("/{magasin}/{agent}/{journee}")
+	public ResponseEntity<CaisseBean> loadAction(@PathVariable String magasin, @PathVariable String agent, @PathVariable LocalDate journee) {
+		return ResponseEntity.ok(caisseService.findById(magasin, agent, journee));
 	}
 
 	@PutMapping
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CommandeBean bean, BindingResult br) {
-		var messages = commandeService.save(bean);
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CaisseBean bean, BindingResult br) {
+		var messages = caisseService.save(bean);
 		var model = new ModelMap("messages", messages);
 		return ResponseEntity.ok(model);
 	}

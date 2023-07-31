@@ -26,7 +26,7 @@ public class LigneDto extends AbstractLigneDto
 	@JoinColumn(name = "MAGASIN_CODE")
 	private MagasinDto magasin;
 
-	@Column(name = "CASIER_CODE", length = CasierDto.CODE_LENGTH)
+	@Column(name = "CASIER_CODE", length = CasierDto.CASIER_CODE_LENGTH)
 	private String casierCode;
 
 	@Column(name = "NON_FACTURABLE")

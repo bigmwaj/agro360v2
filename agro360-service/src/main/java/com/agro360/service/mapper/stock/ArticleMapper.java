@@ -26,22 +26,22 @@ public class ArticleMapper extends AbstractMapper {
 	public final static String OPTION_MAP_CONVERSION_KEY = "MAP_CONVERSION";
 
 	@Autowired
-	IArticleDao dao;
+	private IArticleDao dao;
 
 	@Autowired
-	IUniteDao uniteDao;
+	private IUniteDao uniteDao;
 
 	@Autowired
-	IVariantDao variantDao;
+	private IVariantDao variantDao;
 
 	@Autowired
-	IConversionDao conversionDao;
+	private IConversionDao conversionDao;
 
 	@Autowired
-	UniteMapper uniteMapper;
+	private UniteMapper uniteMapper;
 
 	@Autowired
-	VariantMapper variantMapper;
+	private VariantMapper variantMapper;
 
 	@Autowired
 	ConversionMapper conversionMapper;

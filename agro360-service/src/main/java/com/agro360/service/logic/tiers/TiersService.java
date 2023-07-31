@@ -21,18 +21,19 @@ import com.agro360.service.bean.tiers.TiersSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.tiers.TiersMapper;
 import com.agro360.service.utils.Message;
+import com.agro360.vd.common.EditActionEnumVd;
 import com.agro360.vd.tiers.TiersStatusEnumVd;
 
 @Service
 public class TiersService extends AbstractService<TiersDto, String> {
 
-	private static final String CREATE_SUCCESS = "Enregistrement créé avec succès!";
+	private static final String CREATE_SUCCESS = "Tiers %s de type %s créé avec succès";
 
-	private static final String UPDATE_SUCCESS = "Enregistrement modifié avec succès!";
+	private static final String UPDATE_SUCCESS = "Tiers %s de type %s modifié avec succès";
 
-	private static final String DELETE_SUCCESS = "Enregistrement supprimé avec succès!";
+	private static final String DELETE_SUCCESS = "Tiers %s de type %s supprimé avec succès";
 
-	private static final String CHANGE_STS_SUCCESS = "Statut enregistrement modifié avec succès!";
+	private static final String CHANGE_STS_SUCCESS = "Statut du tiers %s de type %s modifié avec succès";
 
 	@Autowired
 	private ITiersDao dao;
@@ -91,29 +92,28 @@ public class TiersService extends AbstractService<TiersDto, String> {
 	public List<Message> save(TiersBean bean) {
 		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
-
+		
 		switch (bean.getAction()) {
 		case CREATE:
-			save(dto);
-			messages.add(Message.success(CREATE_SUCCESS));
-			messages.addAll(tiersCategoryService.synchTiersCategories(bean, bean.getCategoriesHierarchie()));
-			break;
-
 		case UPDATE:
 			save(dto);
-			messages.add(Message.success(UPDATE_SUCCESS));
+			if( bean.getAction() == EditActionEnumVd.CREATE) {
+				messages.add(Message.success(String.format(CREATE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
+			}else {
+				messages.add(Message.success(String.format(UPDATE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
+			}
 			messages.addAll(tiersCategoryService.synchTiersCategories(bean, bean.getCategoriesHierarchie()));
 			break;
 
 		case CHANGE_STATUS:
 			save(dto);
-			messages.add(Message.success(CHANGE_STS_SUCCESS));
+			messages.add(Message.success(String.format(CHANGE_STS_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
 			break;
 
 		case DELETE:
 			messages.addAll(tiersCategoryService.synchTiersCategories(bean, bean.getCategoriesHierarchie()));
 			delete(dto);
-			messages.add(Message.success(DELETE_SUCCESS));
+			messages.add(Message.success(String.format(DELETE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
 			break;
 		default:
 			return Collections.singletonList(Message.warn("Aucune action à effectuer"));

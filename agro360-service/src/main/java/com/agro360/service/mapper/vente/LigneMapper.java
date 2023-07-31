@@ -21,16 +21,16 @@ import com.agro360.service.mapper.stock.StockSharedMapperHelper;
 public class LigneMapper extends AstractLigneMapper<LigneDto> {
 
 	@Autowired
-	ILigneDao dao;
+	private ILigneDao dao;
 
 	@Autowired
-	MagasinMapper magasinMapper;
+	private MagasinMapper magasinMapper;
 
 	@Autowired
-	IMagasinDao magasinDao;
+	private IMagasinDao magasinDao;
 
 	@Autowired
-	ICommandeDao commandeDao;
+	private ICommandeDao commandeDao;
 
 	@Override
 	protected IDao<LigneDto, Long> getDao() {

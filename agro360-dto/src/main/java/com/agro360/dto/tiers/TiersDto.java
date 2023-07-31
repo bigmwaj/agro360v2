@@ -17,9 +17,11 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "TIERS_TBL_TIERS")
 public class TiersDto extends AbstractDto {
+	
+	public static final int TIERS_CODE_LENGTH = 16;
 
 	@Id
-	@Column(name = "TIERS_CODE", updatable = false, length = 16)
+	@Column(name = "TIERS_CODE", updatable = false, length = TIERS_CODE_LENGTH)
 	@EqualsAndHashCode.Include()
 	private String tiersCode;
 
@@ -46,16 +48,16 @@ public class TiersDto extends AbstractDto {
 	@Column(name = "PHONE", nullable = false, length = 16)
 	private String phone;
 
-	@Column(name = "EMAIL", nullable = false, length = 16)
+	@Column(name = "EMAIL", nullable = false, length = 32)
 	private String email;
 
 	@Column(name = "ADDRESS", length = 64)
 	private String address;
 
-	@Column(name = "CITY")
+	@Column(name = "CITY", length = 16)
 	private String city;
 
-	@Column(name = "COUNTRY")
+	@Column(name = "COUNTRY", length = 16)
 	private String country;
 	
 }

@@ -11,6 +11,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 import com.agro360.dto.common.AbstractLigneDto;
+import com.agro360.vd.stock.StatutCaisseEnumVd;
 import com.agro360.vd.stock.TypeOperationEnumVd;
 
 import lombok.Data;
@@ -22,17 +23,19 @@ import lombok.EqualsAndHashCode;
 public class OperationCaisseDto extends AbstractLigneDto{
 
 	@ManyToOne()
-	@JoinColumns({ 
-		@JoinColumn(name = "AGENT_CODE", insertable = false, updatable = false),
-		@JoinColumn(name = "JOURNEE", insertable = false, updatable = false) 
+	@JoinColumns({
+		@JoinColumn(name = "MAGASIN_CODE", updatable = false, nullable = false, referencedColumnName = "MAGASIN_CODE"),
+		@JoinColumn(name = "AGENT_CODE", updatable = false, nullable = false, referencedColumnName = "AGENT_CODE"),
+		@JoinColumn(name = "JOURNEE", updatable = false, nullable = false, referencedColumnName = "JOURNEE") 
 	})
 	private CaisseDto caisse;
-
+	
 	@Column(name = "DATE_OPERATION", nullable = false)
 	private LocalDateTime dateOperation;
-
+	
+	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TYPE_OPERATION", nullable = false)
+	@Column(name = "TYPE_OPERATION", nullable = false, length = StatutCaisseEnumVd.COLUMN_LENGTH)
 	private TypeOperationEnumVd typeOperation;
 
 }

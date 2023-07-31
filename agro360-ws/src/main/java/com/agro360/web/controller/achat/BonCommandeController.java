@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.service.bean.achat.BonCommandeBean;
+import com.agro360.service.bean.achat.BonCommandeSearchBean;
 import com.agro360.service.logic.achat.BonCommandeService;
 import com.agro360.service.utils.Message;
 import com.agro360.web.controller.common.AbstractController;
@@ -27,8 +28,8 @@ public class BonCommandeController extends AbstractController {
 	private BonCommandeService bonCommandeService;
 
 	@GetMapping()
-	public ResponseEntity<List<BonCommandeBean>> searchAction() {
-		return ResponseEntity.ok(bonCommandeService.search());
+	public ResponseEntity<List<BonCommandeBean>> searchAction(@RequestBody @Validated BonCommandeSearchBean searchBean) {
+		return ResponseEntity.ok(bonCommandeService.search(searchBean));
 	}
 
 	@GetMapping("/{id}")

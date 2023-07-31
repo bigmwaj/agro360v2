@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -19,6 +20,7 @@ import com.agro360.service.bean.achat.ReceptionBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.achat.ReceptionMapper;
 import com.agro360.service.utils.Message;
+import com.agro360.vd.achat.StatutReceptionEnumVd;
 
 @Service
 public class ReceptionService extends AbstractService<ReceptionDto, Long> {
@@ -33,7 +35,7 @@ public class ReceptionService extends AbstractService<ReceptionDto, Long> {
 
 	@Autowired
 	IReceptionDao dao;
-	
+
 	@Autowired
 	ILigneDao ligneDao;
 
@@ -93,19 +95,34 @@ public class ReceptionService extends AbstractService<ReceptionDto, Long> {
 	public List<Message> save(List<ReceptionBean> beans) {
 		return beans.stream().map(this::save).flatMap(List::stream).toList();
 	}
-	
-	private List<LigneDto> findLignesBonCommande(String bonCommandeCode){
+
+	private List<LigneDto> rechercherLignesBonCommande(String bonCommandeCode) {
 		var ex = Example.of(new LigneDto());
 		ex.getProbe().setBonCommande(new BonCommandeDto());
 		ex.getProbe().getBonCommande().setBonCommandeCode(bonCommandeCode);
-		
+
 		return ligneDao.findAll(ex);
-		
+
 	}
-	
-	public List<ReceptionBean> getReceptionInputForm(String bonCommandeCode){
-		var lignes = findLignesBonCommande(bonCommandeCode);
-		return lignes.stream().map(mapper::mapToBean).toList();
+
+	private Stream<ReceptionDto> rechercherReceptionsNonAnnullees(LigneDto ligne) {
+		var ex = Example.of(new ReceptionDto());
+		ex.getProbe().setLigne(new LigneDto());
+		ex.getProbe().getLigne().setLigneId(ligne.getLigneId());
+		ex.getProbe().getLigne().setBonCommande(new BonCommandeDto());
+		ex.getProbe().getLigne().getBonCommande().setBonCommandeCode(ligne.getBonCommande().getBonCommandeCode());
+		return dao.findAll(ex).stream().filter(e -> !StatutReceptionEnumVd.ANNL.equals(e.getStatut()));
+
+	}
+
+	private ReceptionBean mapToBeanAvecQuantitesRestantes(LigneDto ligne) {
+		Double qteRecue = rechercherReceptionsNonAnnullees(ligne).mapToDouble(ReceptionDto::getQuantite).sum();
+		return mapper.mapToBean(ligne, ligne.getQuantite() - qteRecue);
+	}
+
+	public List<ReceptionBean> rechercherLignesNonReceptionneesEtMapperEnReceptions(String bonCommandeCode) {
+		return rechercherLignesBonCommande(bonCommandeCode).stream().map(this::mapToBeanAvecQuantitesRestantes)
+				.filter(e -> e.getQuantite().getValue() > 0).toList();
 	}
 
 }

@@ -40,7 +40,7 @@ public class CategoryMapper extends AbstractMapper {
 	}
 
 	public CategoryDto mapToDto(CategoryBean bean) {
-		CategoryDto dto = new CategoryDto();
+		var dto = new CategoryDto();
 		dto.setCategoryCode(bean.getCategoryCode().getValue());
 
 		if (categoryDao.existsById(dto.getCategoryCode())) {

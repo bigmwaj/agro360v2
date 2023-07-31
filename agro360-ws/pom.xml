@@ -10,9 +10,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>jar</packaging>
-	<artifactId>agro360-web</artifactId>
-	<name>agro360-web</name>
-	<description>Services partagés</description>
+	<artifactId>agro360-ws</artifactId>
+	<name>agro360-ws</name>
+	<description>Web Services Project</description>
 	<dependencies>	
 		
 		<dependency>

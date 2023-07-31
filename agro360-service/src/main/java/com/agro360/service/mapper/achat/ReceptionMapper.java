@@ -21,33 +21,37 @@ import com.agro360.service.mapper.stock.StockSharedMapperHelper;
 public class ReceptionMapper extends AbstractMapper {
 
 	@Autowired
-	IReceptionDao dao;
+	private IReceptionDao dao;
 
 	@Autowired
-	IMagasinDao magasinDao;
+	private IMagasinDao magasinDao;
 
 	@Autowired
-	MagasinMapper magasinMapper;
+	private MagasinMapper magasinMapper;
 
 	@Autowired
-	ILigneDao ligneDao;
+	private ILigneDao ligneDao;
 
 	@Autowired
-	LigneMapper ligneMapper;
+	private LigneMapper ligneMapper;
 	
 	public ReceptionBean mapToBean(ReceptionDto dto) {
 		return mapToBean(dto, Collections.emptyMap());
 	}
 
-	public ReceptionBean mapToBean(LigneDto dto) {
+	public ReceptionBean mapToBean(LigneDto dto, Double quantite) {
 		var bean = new ReceptionBean();
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getPrixUnitaire().setValue(dto.getPrixUnitaire());
-		bean.getQuantite().setValue(dto.getQuantite());
+		bean.getQuantite().setValue(quantite);
 		bean.getDateReception().setValue(LocalDateTime.now());
 		bean.getCasierCode().setValue(null);
 		bean.setLigne(ligneMapper.mapToBean(dto));
 		return bean;
+	}
+
+	public ReceptionBean mapToBean(LigneDto dto) {
+		return mapToBean(dto, dto.getQuantite());
 	}
 
 	public ReceptionBean mapToBean(ReceptionDto dto, Map<String, Object> options) {

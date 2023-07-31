@@ -15,7 +15,7 @@ import com.agro360.service.mapper.common.AbstractMapper;
 public class CasierMapper extends AbstractMapper {
 
 	@Autowired
-	ICasierDao dao;
+	private ICasierDao dao;
 
 	public CasierBean mapToBean(CasierDto dto) {
 		var bean = new CasierBean();

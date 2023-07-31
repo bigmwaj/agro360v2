@@ -5,6 +5,8 @@ public enum StatutReceptionEnumVd {
     APPR("Approuvée"),
     ANNL("Annulée");
 	
+	public static final int COLUMN_LENGTH = 4;
+	
 	private final String libelle;
     
     StatutReceptionEnumVd(String libelle) {

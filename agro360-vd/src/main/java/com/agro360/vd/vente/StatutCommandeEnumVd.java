@@ -7,6 +7,8 @@ public enum StatutCommandeEnumVd {
     ANNL("Annulée"),
     REJT("Rejetée");
 	
+	public static final int COLUMN_LENGTH = 4;
+	
 	private final String libelle;
     
 	StatutCommandeEnumVd(String libelle) {

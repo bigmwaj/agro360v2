@@ -39,7 +39,7 @@ public class ReceptionDto extends AbstractDto
 	private String description;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = 4)
+	@Column(name = "STATUT", nullable = false, length = StatutReceptionEnumVd.COLUMN_LENGTH)
 	private StatutReceptionEnumVd statut;
 
 	@Column(name = "PRIX_UNITAIRE", nullable = false, precision = 16, scale = 4)
@@ -55,7 +55,7 @@ public class ReceptionDto extends AbstractDto
 	@JoinColumn(name = "MAGASIN_CODE", nullable = false)
 	private MagasinDto magasin;
 
-	@Column(name = "CASIER_CODE", length = CasierDto.CODE_LENGTH)
+	@Column(name = "CASIER_CODE", length = CasierDto.CASIER_CODE_LENGTH)
 	private String casierCode;
 
 }

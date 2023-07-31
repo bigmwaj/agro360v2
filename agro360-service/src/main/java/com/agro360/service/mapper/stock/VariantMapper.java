@@ -17,10 +17,10 @@ import com.agro360.service.mapper.common.AbstractMapper;
 public class VariantMapper extends AbstractMapper {
 
 	@Autowired
-	IVariantDao dao;
+	private IVariantDao dao;
 
 	@Autowired
-	IArticleDao articleDao;
+	private IArticleDao articleDao;
 
 	public VariantBean mapToBean(VariantDto dto) {
 		var bean = new VariantBean();

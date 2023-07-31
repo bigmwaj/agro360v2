@@ -23,19 +23,19 @@ public class BonCommandeMapper extends AbstractMapper {
 	public final static String OPTION_MAP_LIGNE_KEY = "MAP_LIGNE";
 
 	@Autowired
-	IBonCommandeDao dao;
+	private IBonCommandeDao dao;
 
 	@Autowired
-	TiersMapper tiersMapper;
+	private TiersMapper tiersMapper;
 
 	@Autowired
-	ITiersDao tiersDao;
+	private ITiersDao tiersDao;
 
 	@Autowired
-	ILigneDao ligneDao;
+	private ILigneDao ligneDao;
 
 	@Autowired
-	LigneMapper ligneMapper;
+	private LigneMapper ligneMapper;
 
 	public BonCommandeBean mapToBean(BonCommandeDto dto) {
 		return mapToBean(dto, Collections.emptyMap());

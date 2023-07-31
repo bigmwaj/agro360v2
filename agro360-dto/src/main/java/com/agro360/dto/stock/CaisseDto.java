@@ -26,7 +26,13 @@ public class CaisseDto extends AbstractDto {
 
 	@Id
 	@ManyToOne()
-	@JoinColumn(name = "AGENT_CODE", nullable = false, updatable = false)
+	@JoinColumn(name = "MAGASIN_CODE", nullable = false, updatable = false, referencedColumnName = "MAGASIN_CODE")
+	@EqualsAndHashCode.Include()
+	private MagasinDto magasin;
+	
+	@Id
+	@ManyToOne()
+	@JoinColumn(name = "AGENT_CODE", nullable = false, updatable = false, referencedColumnName = "TIERS_CODE")
 	@EqualsAndHashCode.Include()
 	private TiersDto agent;
 
@@ -36,7 +42,7 @@ public class CaisseDto extends AbstractDto {
 	private LocalDate journee;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = 8)
+	@Column(name = "STATUT", nullable = false, length = StatutCaisseEnumVd.COLUMN_LENGTH)
 	private StatutCaisseEnumVd statut;
 
 	@Column(name = "NOTE", length = 128)

@@ -5,6 +5,8 @@ public enum TypeArticleEnumVd {
 	
 	SSTD("Serv. Standard");
 	
+	public static final int COLUMN_LENGTH = 4;
+	
 	private final String libelle;
 	
 	private TypeArticleEnumVd(String libelle) {

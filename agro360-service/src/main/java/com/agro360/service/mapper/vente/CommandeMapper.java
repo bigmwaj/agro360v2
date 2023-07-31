@@ -26,25 +26,25 @@ public class CommandeMapper extends AbstractMapper {
 	public final static String OPTION_MAP_LIGNE_KEY = "MAP_LIGNE";
 
 	@Autowired
-	ICommandeDao dao;
+	private ICommandeDao dao;
 
 	@Autowired
-	ITiersDao tiersDao;
+	private ITiersDao tiersDao;
 
 	@Autowired
-	TiersMapper tiersMapper;
+	private TiersMapper tiersMapper;
 
 	@Autowired
-	MagasinMapper magasinMapper;
+	private MagasinMapper magasinMapper;
 
 	@Autowired
-	IMagasinDao magasinDao;
+	private IMagasinDao magasinDao;
 
 	@Autowired
-	ILigneDao ligneDao;
+	private ILigneDao ligneDao;
 
 	@Autowired
-	LigneMapper ligneMapper;
+	private LigneMapper ligneMapper;
 
 	public CommandeBean mapToBean(CommandeDto dto) {
 		return mapToBean(dto, Collections.emptyMap());

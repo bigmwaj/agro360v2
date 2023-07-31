@@ -11,6 +11,8 @@ public class CaissePk implements Serializable {
 
 	private static final long serialVersionUID = -7643918247496362428L;
 
+	private String magasin;
+	
 	private String agent;
 
 	private LocalDate journee;
@@ -19,14 +21,16 @@ public class CaissePk implements Serializable {
 		super();
 	}
 
-	public CaissePk(String agent, LocalDate journee) {
+	public CaissePk(String magasin, String agent, LocalDate journee) {
 		super();
+		this.magasin = magasin;
 		this.agent = agent;
 		this.journee = journee;
 	}
 
 	public CaissePk(CaisseDto dto) {
 		super();
+		this.magasin = dto.getMagasin().getMagasinCode();
 		this.agent = dto.getAgent().getTiersCode();
 		this.journee = dto.getJournee();
 	}
@@ -37,12 +41,12 @@ public class CaissePk implements Serializable {
 			return false;
 		}
 		CaissePk pk = (CaissePk) obj;
-		return Objects.equals(agent, pk.agent) && Objects.equals(journee, pk.journee);
+		return Objects.equals(magasin, pk.magasin) && Objects.equals(agent, pk.agent) && Objects.equals(journee, pk.journee);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(agent, journee);
+		return Objects.hash(magasin, agent, journee);
 	}
 
 }

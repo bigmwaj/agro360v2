@@ -18,10 +18,10 @@ import com.agro360.service.mapper.common.AstractLigneMapper;
 public class LigneMapper extends AstractLigneMapper<LigneDto> {
 
 	@Autowired
-	ILigneDao dao;
+	private ILigneDao dao;
 	
 	@Autowired
-	IBonCommandeDao bonCommandeDao;
+	private IBonCommandeDao bonCommandeDao;
 
 	@Override
 	protected IDao<LigneDto, Long> getDao() {

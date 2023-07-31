@@ -6,6 +6,8 @@ public enum TiersTypeEnumVd {
 	
 	COMPANY("Company");
 	
+	public static final int COLUMN_LENGTH = 8;
+	
 	private final String libelle;
 	
 	private TiersTypeEnumVd(String libelle) {

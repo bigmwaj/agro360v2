@@ -9,6 +9,8 @@ public enum StatutBonCommandeEnumVd {
     RECP("Recep. Partielle"),
     RECT("Recep. Totale");
 	
+	public static final int COLUMN_LENGTH = 4;
+	
 	private final String libelle;
     
     StatutBonCommandeEnumVd(String libelle) {

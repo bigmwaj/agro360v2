@@ -33,7 +33,7 @@ public class ArticleDto extends AbstractDto
 	private UniteDto unite;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TYPE_ARTICLE", nullable = false, updatable = false, length = 8)
+	@Column(name = "TYPE_ARTICLE", nullable = false, updatable = false, length = TypeArticleEnumVd.COLUMN_LENGTH)
 	private TypeArticleEnumVd typeArticle;
 
 }

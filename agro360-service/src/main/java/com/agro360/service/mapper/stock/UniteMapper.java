@@ -12,7 +12,7 @@ import com.agro360.service.mapper.common.AbstractMapper;
 public class UniteMapper extends AbstractMapper {
 
 	@Autowired
-	IUniteDao dao;
+	private IUniteDao dao;
 
 	public UniteBean mapToBean(UniteDto dto) {
 		var bean = new UniteBean();

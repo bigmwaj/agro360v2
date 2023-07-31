@@ -34,7 +34,7 @@
 		<module>agro360-dto</module>
 		<module>agro360-dao</module>
 		<module>agro360-service</module>
-		<module>agro360-web</module>
+		<module>agro360-ws</module>
 	</modules>
 
 	<dependencies>

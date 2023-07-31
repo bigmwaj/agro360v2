@@ -37,10 +37,10 @@ public class BonCommandeDto extends AbstractDto {
 	private TiersDto fournisseur;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = 4)
+	@Column(name = "STATUT", nullable = false, length = StatutBonCommandeEnumVd.COLUMN_LENGTH)
 	private StatutBonCommandeEnumVd statut;
 
-	@Column(name = "DESCRIPTION", length = 255)
+	@Column(name = "DESCRIPTION", length = 256)
 	private String description;
 
 	@Column(name = "VILLE", nullable = false, length = 16)
