@@ -15,7 +15,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "STOCK_TBL_CONVERSION")
-
 @IdClass(ConversionPk.class)
 public class ConversionDto extends AbstractDto
 {	

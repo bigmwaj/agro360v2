@@ -1,6 +1,6 @@
 package com.agro360.service.bean.vente;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +22,7 @@ public class CommandeBean extends AbstractEditFormBean {
 
 	private FieldMetadata<String>  commandeCode = new FieldMetadata<>();
 
-	private FieldMetadata<LocalDateTime> dateCommande = new FieldMetadata<>();
+	private FieldMetadata<LocalDate> dateCommande = new FieldMetadata<>();
 
 	private TiersBean client = new TiersBean();
 

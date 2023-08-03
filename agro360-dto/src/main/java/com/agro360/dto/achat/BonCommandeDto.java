@@ -1,6 +1,6 @@
 package com.agro360.dto.achat;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,8 +29,8 @@ public class BonCommandeDto extends AbstractDto {
 	@Column(name = "LIVRAISON", updatable = false, length = 16)
 	private Boolean livraison;
 
-	@Column(name = "DATE_COMMANDE_CODE", nullable = false)
-	private LocalDateTime dateBonCommande;
+	@Column(name = "DATE_BON_COMMANDE", nullable = false)
+	private LocalDate dateBonCommande;
 
 	@ManyToOne()
 	@JoinColumn(name = "FOURNISSEUR_CODE", nullable = false)

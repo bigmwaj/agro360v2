@@ -1,6 +1,6 @@
 package com.agro360.service.bean.achat;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +23,7 @@ public class BonCommandeBean extends AbstractEditFormBean {
 
 	private FieldMetadata<Boolean> livraison = new FieldMetadata<>();
 
-	private FieldMetadata<LocalDateTime> dateBonCommande = new FieldMetadata<>();
+	private FieldMetadata<LocalDate> dateBonCommande = new FieldMetadata<>();
 
 	private TiersBean fournisseur = new TiersBean();
 

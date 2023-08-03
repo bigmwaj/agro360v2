@@ -1,6 +1,6 @@
 package com.agro360.dto.vente;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,7 +29,7 @@ public class CommandeDto extends AbstractDto
 	private String commandeCode;
 
 	@Column(name = "DATE_COMMANDE", nullable = false)
-	private LocalDateTime dateCommande;
+	private LocalDate dateCommande;
 
 	@ManyToOne()
 	@JoinColumn(name = "CLIENT_CODE", nullable = false)
