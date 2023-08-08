@@ -17,7 +17,7 @@ import com.agro360.service.bean.stock.CaisseBean;
 import com.agro360.service.bean.stock.OperationCaisseBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.OperationCaisseMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service()
 public class OperationCaisseService extends AbstractService<OperationCaisseDto, Long> {

@@ -14,7 +14,7 @@ import com.agro360.dto.stock.UniteDto;
 import com.agro360.service.bean.stock.UniteBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.UniteMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service
 public class UniteService extends AbstractService<UniteDto, String> {

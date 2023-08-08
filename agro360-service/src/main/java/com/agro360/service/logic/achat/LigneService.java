@@ -16,7 +16,7 @@ import com.agro360.service.bean.achat.BonCommandeBean;
 import com.agro360.service.bean.achat.LigneBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.achat.LigneMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service(value = "achat/LigneService")
 public class LigneService extends AbstractService<LigneDto, Long> {

@@ -20,7 +20,7 @@ import com.agro360.service.bean.stock.ArticleBean;
 import com.agro360.service.bean.stock.ArticleSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.ArticleMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service
 public class ArticleService extends AbstractService<ArticleDto, String> {

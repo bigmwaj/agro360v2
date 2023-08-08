@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class AbstractEditFormBean extends AbstractBean{
+public class AbstractFormBean extends AbstractBean{
 
 	private static final long serialVersionUID = 4953208601044344467L;
 	

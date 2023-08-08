@@ -1,6 +1,6 @@
 package com.agro360.service.bean.tiers;
 
-import com.agro360.service.bean.common.AbstractEditFormBean;
+import com.agro360.service.bean.common.AbstractFormBean;
 import com.agro360.service.metadata.FieldMetadata;
 import com.agro360.vd.tiers.TiersStatusEnumVd;
 import com.agro360.vd.tiers.TiersTypeEnumVd;
@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class TiersBean extends AbstractEditFormBean{
+public class TiersBean extends AbstractFormBean{
 
 	private static final long serialVersionUID = 4953208601044344467L;
 	

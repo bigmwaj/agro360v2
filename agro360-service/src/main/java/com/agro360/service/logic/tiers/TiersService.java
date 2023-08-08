@@ -20,7 +20,7 @@ import com.agro360.service.bean.tiers.TiersBean;
 import com.agro360.service.bean.tiers.TiersSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.tiers.TiersMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 import com.agro360.vd.common.EditActionEnumVd;
 import com.agro360.vd.tiers.TiersStatusEnumVd;
 

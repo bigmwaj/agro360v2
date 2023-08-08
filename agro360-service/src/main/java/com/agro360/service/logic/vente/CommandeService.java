@@ -16,7 +16,7 @@ import com.agro360.service.bean.vente.CommandeBean;
 import com.agro360.service.bean.vente.CommandeSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.vente.CommandeMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service
 public class CommandeService extends AbstractService<CommandeDto, String> {

@@ -10,7 +10,6 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>com.agro360</groupId>
 	<artifactId>agro360-project-main</artifactId>
 	<version>1.0.0</version>

@@ -17,7 +17,7 @@ import com.agro360.service.bean.stock.ConversionBean;
 import com.agro360.service.bean.stock.ArticleBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.ConversionMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service
 public class ConversionService extends AbstractService<ConversionDto, ConversionPk> {

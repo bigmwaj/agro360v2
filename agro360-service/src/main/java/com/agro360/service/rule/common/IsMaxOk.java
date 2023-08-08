@@ -5,8 +5,8 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.agro360.service.bean.common.AbstractBean;
+import com.agro360.service.message.Message;
 import com.agro360.service.metadata.FieldMetadata;
-import com.agro360.service.utils.Message;
 
 @Component
 public class IsMaxOk extends AbstractValidationRule {

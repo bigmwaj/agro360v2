@@ -22,11 +22,5 @@ public class TiersCategoryBean extends AbstractBean{
 	private FieldMetadata<Boolean> selected = new FieldMetadata<>();
 
 	private List<TiersCategoryBean> children = new ArrayList<>();
-
-	@Override
-	public String toString() {
-		return "TiersCategoryEditFormBean [categoryCode=" + categoryCode + ", description=" + description
-				+ ", selected=" + selected + ", children=" + children + "]";
-	}
 	
 }

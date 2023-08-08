@@ -1,0 +1,11 @@
+<h1 class="small h3 mb-4 text-gray-800" aria-label="breadcrumb">
+    <span class="breadcrumb rounded-0">
+        <span class="breadcrumb-item">
+            <a [routerLink]="'/'"><i class="fas fa-home"></i></a>
+        </span>
+        <span *ngFor="let item of breadcrumbItems" class="breadcrumb-item" [class.active]="item.active">
+            <a *ngIf="!item.active; else active" (click)="processClick(item)" href="javascript:void(0);" innerHTML={{item.label}}>{{item.label}}</a>
+            <ng-template #active><span innerHTML={{item.label}}>{{item.label}}</span></ng-template>
+        </span>
+    </span>
+</h1>

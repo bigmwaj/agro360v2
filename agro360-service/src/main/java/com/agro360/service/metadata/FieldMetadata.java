@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;

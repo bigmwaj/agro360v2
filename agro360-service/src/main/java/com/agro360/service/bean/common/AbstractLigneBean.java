@@ -13,7 +13,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public abstract class AbstractLigneBean<E extends AbstractLigneDto> extends AbstractEditFormBean {
+public abstract class AbstractLigneBean<E extends AbstractLigneDto> extends AbstractFormBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 

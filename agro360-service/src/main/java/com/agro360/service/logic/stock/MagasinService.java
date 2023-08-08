@@ -17,7 +17,7 @@ import com.agro360.dto.stock.MagasinDto;
 import com.agro360.service.bean.stock.MagasinBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.MagasinMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service
 public class MagasinService extends AbstractService<MagasinDto, String> {

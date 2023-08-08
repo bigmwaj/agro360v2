@@ -16,7 +16,7 @@ import com.agro360.service.bean.achat.BonCommandeBean;
 import com.agro360.service.bean.achat.BonCommandeSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.achat.BonCommandeMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service
 public class BonCommandeService extends AbstractService<BonCommandeDto, String> {

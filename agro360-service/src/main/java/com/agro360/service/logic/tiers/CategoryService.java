@@ -18,7 +18,7 @@ import com.agro360.dto.tiers.CategoryDto;
 import com.agro360.service.bean.tiers.CategoryBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.tiers.CategoryMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service
 public class CategoryService extends AbstractService<CategoryDto, String> {

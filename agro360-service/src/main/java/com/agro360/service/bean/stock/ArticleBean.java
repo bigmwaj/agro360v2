@@ -3,7 +3,7 @@ package com.agro360.service.bean.stock;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.agro360.service.bean.common.AbstractEditFormBean;
+import com.agro360.service.bean.common.AbstractFormBean;
 import com.agro360.service.metadata.FieldMetadata;
 import com.agro360.vd.stock.TypeArticleEnumVd;
 
@@ -12,7 +12,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class ArticleBean extends AbstractEditFormBean {
+public class ArticleBean extends AbstractFormBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 

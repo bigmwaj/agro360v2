@@ -19,7 +19,7 @@ import com.agro360.dto.achat.ReceptionDto;
 import com.agro360.service.bean.achat.ReceptionBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.achat.ReceptionMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 import com.agro360.vd.achat.StatutReceptionEnumVd;
 
 @Service

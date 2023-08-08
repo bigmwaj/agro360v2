@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agro360.service.bean.achat.BonCommandeBean;
 import com.agro360.service.bean.achat.BonCommandeSearchBean;
 import com.agro360.service.logic.achat.BonCommandeService;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 import com.agro360.ws.controller.common.AbstractController;
 
 @RestController()

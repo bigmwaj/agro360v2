@@ -21,7 +21,7 @@ import com.agro360.service.bean.tiers.TiersBean;
 import com.agro360.service.bean.tiers.TiersCategoryBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.tiers.TiersCategoryMapper;
-import com.agro360.service.utils.Message;
+import com.agro360.service.message.Message;
 
 @Service
 class TiersCategoryService extends AbstractService<TiersCategoryDto, TiersCategoryPk>{
