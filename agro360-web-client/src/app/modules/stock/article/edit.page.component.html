@@ -1,0 +1,105 @@
+<div>
+    <button>Retour</button>
+    |
+    <button>Enregistrer</button>
+    <button>Supprimer</button>
+    |
+    <button>Ajouter</button>
+    <button>Copier</button>
+    |
+    <button>Unités</button>
+</div>
+
+<h1>Edition Article {{ articleCode }}</h1>
+
+<fieldset>
+    <legend>
+        Détails de l'article
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Type</th>
+                    <th colspan="2">Unité de Base</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="bean">
+                <tr>
+                    <td>{{ bean.articleCode.value }}</td>
+                    <td>{{ bean.typeArticle.value }}</td>
+                    <td>{{ bean.unite.uniteCode.value }}</td>
+                    <td>{{ bean.unite.description.value }}</td>
+                    <td>{{ bean.description.value }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>
+
+<fieldset>
+    <legend>
+        Variantes
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Description</th>
+                    <th>
+                        <button>Ajouter</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="bean">
+                <tr *ngFor="let bean of bean.variants">
+                    <td>{{ bean.variantCode.value }}</td>
+                    <td>{{ bean.description.value }}</td>
+                    <td>
+                        <button>Supprimer</button>
+                        <button>Copier</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>
+
+<fieldset>
+    <legend>
+        Autres unités
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="2">Unité</th>
+                    <th>Facteur</th>
+                    <th>
+                        <button>Ajouter</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="bean">
+                <tr *ngFor="let bean of bean.conversions">
+                    <td>{{ bean.unite.uniteCode.value }}</td>
+                    <td>{{ bean.unite.description.value }}</td>
+                    <td>{{ bean.facteur.value }}</td>
+                    <td>
+                        <button>Supprimer</button>
+                        <button>Copier</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>
+
+<div>
+    <br />
+    <button>Enregistrer</button>
+    <button>Annuler</button>
+</div>

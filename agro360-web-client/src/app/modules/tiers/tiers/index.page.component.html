@@ -1,0 +1,58 @@
+<h1>Gestion des Tiers</h1>
+<fieldset>
+    <legend>
+        Recherche
+        <div>
+            <button (click)="addAction()">Ajouter</button>
+        </div>
+    </legend>
+</fieldset>
+
+<fieldset>
+    <legend>
+        Liste des Tiers
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"/></th>
+                    <th>Code</th>
+                    <th>Type</th>
+                    <th>Libelle</th>
+                    <th>Statut</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Pays</th>
+                    <th>Ville</th>
+                    <th>Adresse</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="beans">
+                <tr *ngFor="let bean of beans">
+                    <td><input type="checkbox"/></td>
+                    <td><a (click)="editAction(bean)">{{ bean.tiersCode.value }}</a> </td>
+                    <td>{{ bean.tiersType.value }}</td>
+                    <td>{{ bean.tiersName.value }}</td>
+                    <td>{{ bean.status.value }}</td>
+                    <td>{{ bean.phone.value }}</td>
+                    <td>{{ bean.email.value }}</td>
+                    <td>{{ bean.country.value }}</td>
+                    <td>{{ bean.city.value }}</td>
+                    <td>{{ bean.address.value }}</td>
+                    <td>
+                        <button (click)="editAction(bean)">Editer</button>
+                        <button (click)="copyAction(bean)">Copier</button>
+                        <button (click)="deleteAction(bean)">Supprimer</button>
+                        <button (click)="changeStatusAction(bean)">Désactiver</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>
+
+<tiers-category-edit-modal>
+    
+</tiers-category-edit-modal>

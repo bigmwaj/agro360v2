@@ -1,6 +1,6 @@
 package com.agro360.ws.controller.stock;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +27,8 @@ public class ArticleController extends AbstractController {
 	private ArticleService articleService;
 
 	@GetMapping()
-	public ResponseEntity<List<ArticleBean>> searchAction(@RequestBody @Validated ArticleSearchBean searchBean) {
-		return ResponseEntity.ok(articleService.search(searchBean));
+	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<ArticleSearchBean> searchBean) {
+		return ResponseEntity.ok(new ModelMap("records", articleService.search(searchBean.orElse(new ArticleSearchBean()))));
 	}
 
 	@GetMapping("/{id}")

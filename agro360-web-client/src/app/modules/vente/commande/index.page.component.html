@@ -1,0 +1,56 @@
+<h1>Gestion des Article</h1>
+<fieldset>
+    <legend>
+        Recherche
+        <div>
+            <button (click)="addAction()">Ajouter</button>
+        </div>
+    </legend>
+</fieldset>
+
+<fieldset>
+    <legend>
+        Liste des Tiers
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"/></th>
+                    <th>Code</th>
+                    <th>Statut</th>
+                    <th>Date</th>
+                    <th>Magasin</th>
+                    <th colspan="2">Client</th>
+                    <th>Ville</th>
+                    <th>Adresse</th>
+                    <th>Transport Requis?</th>
+                    <th>Livrée?</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="beans">
+                <tr *ngFor="let bean of beans">
+                    <td><input type="checkbox"/></td>
+                    <td><a (click)="editAction(bean)">{{ bean.commandeCode.value }}</a></td>
+                    <td>{{ bean.statut.value }}</td>
+                    <td>{{ bean.dateCommande.value }}</td>
+                    <td>{{ bean.magasin.magasinCode.value }}</td>
+                    <td>{{ bean.client.tiersCode.value }}</td>
+                    <td>{{ bean.client.tiersName.value }}</td>
+                    <td>{{ bean.ville.value }}</td>
+                    <td>{{ bean.adresse.value }}</td>
+                    <td>{{ bean.transportRequis.value }}</td>
+                    <td>{{ bean.livree.value }}</td>
+                    <td>{{ bean.description.value }}</td>
+                    <td>
+                        <button (click)="editAction(bean)">Editer</button>
+                        <button (click)="copyAction(bean)">Copier</button>
+                        <button (click)="deleteAction(bean)">Supprimer</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>

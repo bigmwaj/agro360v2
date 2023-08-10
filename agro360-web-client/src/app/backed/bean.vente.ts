@@ -4,17 +4,12 @@ import { AbstractBean, AbstractFormBean, AbstractLigneBean } from './bean.common
 import { TiersBean } from './bean.tiers';
 import { MagasinBean } from './bean.stock';
 
-export interface CommandeBean extends AbstractFormBean {
-	description: FieldMetadata<string>;
+export interface CommandeSearchBean extends AbstractBean {
 	commandeCode: FieldMetadata<string>;
-	dateCommande: FieldMetadata<any>;
-	livree: FieldMetadata<boolean>;
-	magasin: MagasinBean;
-	client: TiersBean;
-	statut: FieldMetadata<StatutCommandeEnumVd>;
-	adresse: FieldMetadata<string>;
-	lignes: Array<LigneBean>;
-	transportRequis: FieldMetadata<boolean>;
+	statutDans: FieldMetadata<any>;
+	client: FieldMetadata<string>;
+	dateCommandeFin: FieldMetadata<any>;
+	dateCommandeDebut: FieldMetadata<any>;
 	ville: FieldMetadata<string>;
 };
 
@@ -26,11 +21,16 @@ export interface LigneBean extends AbstractLigneBean {
 	nonCartonnee: FieldMetadata<boolean>;
 };
 
-export interface CommandeSearchBean extends AbstractBean {
+export interface CommandeBean extends AbstractFormBean {
+	description: FieldMetadata<string>;
 	commandeCode: FieldMetadata<string>;
-	statutDans: FieldMetadata<any>;
-	client: FieldMetadata<string>;
-	dateCommandeFin: FieldMetadata<any>;
-	dateCommandeDebut: FieldMetadata<any>;
+	dateCommande: FieldMetadata<any>;
+	livree: FieldMetadata<boolean>;
+	magasin: MagasinBean;
+	client: TiersBean;
+	statut: FieldMetadata<StatutCommandeEnumVd>;
+	adresse: FieldMetadata<string>;
+	lignes: Array<LigneBean>;
+	transportRequis: FieldMetadata<boolean>;
 	ville: FieldMetadata<string>;
 };

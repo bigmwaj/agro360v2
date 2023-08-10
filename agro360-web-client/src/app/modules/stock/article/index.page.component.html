@@ -1,0 +1,44 @@
+<h1>Gestion des Article</h1>
+<fieldset>
+    <legend>
+        Recherche
+        <div>
+            <button (click)="addAction()">Ajouter</button>
+        </div>
+    </legend>
+</fieldset>
+
+<fieldset>
+    <legend>
+        Liste des Tiers
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox"/></th>
+                    <th>Code</th>
+                    <th>Type</th>
+                    <th colspan="2">Unité de Base</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="beans">
+                <tr *ngFor="let bean of beans">
+                    <td><input type="checkbox"/></td>
+                    <td><a (click)="editAction(bean)">{{ bean.articleCode.value }}</a> </td>
+                    <td>{{ bean.typeArticle.value }}</td>
+                    <td>{{ bean.unite.uniteCode.value }}</td>
+                    <td>{{ bean.unite.description.value }}</td>
+                    <td>{{ bean.description.value }}</td>
+                    <td>
+                        <button (click)="editAction(bean)">Editer</button>
+                        <button (click)="copyAction(bean)">Copier</button>
+                        <button (click)="deleteAction(bean)">Supprimer</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>

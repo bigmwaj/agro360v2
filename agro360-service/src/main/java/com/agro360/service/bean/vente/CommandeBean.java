@@ -20,7 +20,7 @@ public class CommandeBean extends AbstractFormBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 
-	private FieldMetadata<String>  commandeCode = new FieldMetadata<>();
+	private FieldMetadata<String> commandeCode = new FieldMetadata<>();
 
 	private FieldMetadata<LocalDate> dateCommande = new FieldMetadata<>();
 
@@ -39,17 +39,17 @@ public class CommandeBean extends AbstractFormBean {
 	private FieldMetadata<String> ville = new FieldMetadata<>();
 
 	private FieldMetadata<String> adresse = new FieldMetadata<>();
-	
+
 	private List<LigneBean> lignes = new ArrayList<>();
-	
+
 	public void setClient(TiersBean client) {
 		Objects.requireNonNull(client);
 		this.client = client;
 	}
-	
+
 	public void setMagasin(MagasinBean magasin) {
 		Objects.requireNonNull(magasin);
 		this.magasin = magasin;
 	}
-	
+
 }

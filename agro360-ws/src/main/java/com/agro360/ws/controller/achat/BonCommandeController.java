@@ -1,6 +1,7 @@
 package com.agro360.ws.controller.achat;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class BonCommandeController extends AbstractController {
 	private BonCommandeService bonCommandeService;
 
 	@GetMapping()
-	public ResponseEntity<List<BonCommandeBean>> searchAction(@RequestBody @Validated BonCommandeSearchBean searchBean) {
-		return ResponseEntity.ok(bonCommandeService.search(searchBean));
+	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<BonCommandeSearchBean> searchBean) {
+		return ResponseEntity.ok(new ModelMap("records", bonCommandeService.search(searchBean.orElse(new BonCommandeSearchBean()))));
 	}
 
 	@GetMapping("/{id}")

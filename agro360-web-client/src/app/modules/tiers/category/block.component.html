@@ -1,0 +1,16 @@
+<div *ngIf="bean">
+    <div>
+        <input type="checkbox"/>
+        <strong>
+            {{ bean.categoryCode.value }}
+        </strong>
+        <span>
+            {{ bean.description.value }}
+        </span>
+    </div>    
+    <div *ngIf="bean.children" style="margin-left:32px;">
+        <div *ngFor="let child of bean.children">
+            <tiers-category-category-block [bean] = "child"></tiers-category-category-block>
+        </div>
+    </div>
+</div>

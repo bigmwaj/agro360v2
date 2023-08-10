@@ -2,13 +2,11 @@ import { FieldMetadata } from './metadata';
 import { AbstractBean, AbstractFormBean } from './bean.common';
 import { TiersStatusEnumVd, TiersTypeEnumVd } from './vd.tiers';
 
-export interface TiersSearchBean extends AbstractBean {
-	tiersName: FieldMetadata<string>;
-	phone: FieldMetadata<string>;
-	tiersCode: FieldMetadata<string>;
-	email: FieldMetadata<string>;
-	tiersType: FieldMetadata<TiersTypeEnumVd>;
-	status: FieldMetadata<TiersStatusEnumVd>;
+export interface TiersCategoryBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	selected: FieldMetadata<boolean>;
+	children: Array<TiersCategoryBean>;
+	categoryCode: FieldMetadata<string>;
 };
 
 export interface CategoryBean extends AbstractFormBean {
@@ -17,11 +15,13 @@ export interface CategoryBean extends AbstractFormBean {
 	categoryCode: FieldMetadata<string>;
 };
 
-export interface TiersCategoryBean extends AbstractBean {
-	description: FieldMetadata<string>;
-	selected: FieldMetadata<boolean>;
-	children: Array<TiersCategoryBean>;
-	categoryCode: FieldMetadata<string>;
+export interface TiersSearchBean extends AbstractBean {
+	tiersName: FieldMetadata<string>;
+	phone: FieldMetadata<string>;
+	tiersCode: FieldMetadata<string>;
+	email: FieldMetadata<string>;
+	tiersType: FieldMetadata<TiersTypeEnumVd>;
+	status: FieldMetadata<TiersStatusEnumVd>;
 };
 
 export interface TiersBean extends AbstractFormBean {

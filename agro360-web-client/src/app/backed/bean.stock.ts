@@ -3,6 +3,22 @@ import { StatutCaisseEnumVd, TypeArticleEnumVd, TypeOperationEnumVd } from './vd
 import { AbstractBean, AbstractFormBean, AbstractLigneBean } from './bean.common';
 import { TiersBean } from './bean.tiers';
 
+export interface ArticleSearchBean extends AbstractBean {
+	articleCode: FieldMetadata<string>;
+	typeArticle: FieldMetadata<TypeArticleEnumVd>;
+};
+
+export interface OperationCaisseBean extends AbstractLigneBean {
+	typeOperation: FieldMetadata<TypeOperationEnumVd>;
+	dateOperation: FieldMetadata<any>;
+};
+
+export interface UniteBean extends AbstractFormBean {
+	description: FieldMetadata<string>;
+	abreviation: FieldMetadata<string>;
+	uniteCode: FieldMetadata<string>;
+};
+
 export interface ArticleBean extends AbstractFormBean {
 	unite: UniteBean;
 	description: FieldMetadata<string>;
@@ -12,14 +28,9 @@ export interface ArticleBean extends AbstractFormBean {
 	conversions: Array<ConversionBean>;
 };
 
-export interface VariantBean extends AbstractFormBean {
+export interface CasierBean extends AbstractFormBean {
+	casierCode: FieldMetadata<string>;
 	description: FieldMetadata<string>;
-	variantCode: FieldMetadata<string>;
-};
-
-export interface ConversionBean extends AbstractFormBean {
-	unite: UniteBean;
-	facteur: FieldMetadata<number>;
 };
 
 export interface CaisseBean extends AbstractFormBean {
@@ -31,9 +42,9 @@ export interface CaisseBean extends AbstractFormBean {
 	journee: FieldMetadata<any>;
 };
 
-export interface CasierBean extends AbstractFormBean {
-	casierCode: FieldMetadata<string>;
-	description: FieldMetadata<string>;
+export interface ConversionBean extends AbstractFormBean {
+	unite: UniteBean;
+	facteur: FieldMetadata<number>;
 };
 
 export interface MagasinBean extends AbstractFormBean {
@@ -42,18 +53,7 @@ export interface MagasinBean extends AbstractFormBean {
 	casiers: Array<CasierBean>;
 };
 
-export interface UniteBean extends AbstractFormBean {
+export interface VariantBean extends AbstractFormBean {
 	description: FieldMetadata<string>;
-	abreviation: FieldMetadata<string>;
-	uniteCode: FieldMetadata<string>;
-};
-
-export interface ArticleSearchBean extends AbstractBean {
-	articleCode: FieldMetadata<string>;
-	typeArticle: FieldMetadata<TypeArticleEnumVd>;
-};
-
-export interface OperationCaisseBean extends AbstractLigneBean {
-	typeOperation: FieldMetadata<TypeOperationEnumVd>;
-	dateOperation: FieldMetadata<any>;
+	variantCode: FieldMetadata<string>;
 };

@@ -1,3 +1,3 @@
 
-export type TiersTypeEnumVd = "PERSON" | "COMPANY";
 export type TiersStatusEnumVd = "ACTIVE";
+export type TiersTypeEnumVd = "PERSON" | "COMPANY";

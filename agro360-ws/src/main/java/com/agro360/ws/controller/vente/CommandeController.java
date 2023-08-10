@@ -1,6 +1,6 @@
 package com.agro360.ws.controller.vente;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +27,8 @@ public class CommandeController extends AbstractController {
 	private CommandeService commandeService;
 
 	@GetMapping()
-	public ResponseEntity<List<CommandeBean>> searchAction(@RequestBody @Validated CommandeSearchBean searchBean) {
-		return ResponseEntity.ok(commandeService.search(searchBean));
+	public ResponseEntity<ModelMap> searchAction(@RequestBody @Validated Optional<CommandeSearchBean> searchBean) {
+		return ResponseEntity.ok(new ModelMap("records", commandeService.search(searchBean.orElse(new CommandeSearchBean()))));
 	}
 
 	@GetMapping("/{id}")

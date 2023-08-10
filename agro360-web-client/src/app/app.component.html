@@ -1,13 +1,35 @@
-<h1>Hello world!</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Menu</th>
+            <th>Contenu</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <ul>
+                    <li>
+                        <a href="/tiers/tiers">Gestion des tiers</a>
+                    </li>
+                    <li>                        
+                        <a href="/stock/article">Gestion des article</a>
+                    </li>
+                    <li>                        
+                        <a href="/vente/commande">Gestion des commande</a>
+                    </li>
+                    <li>                        
+                        <a href="/achat/bon-commande">Gestion des bons de commande</a>
+                    </li>
+                    <li>                        
+                        <a href="/production/avicole/cycle">Gestion des cycles de production</a>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <router-outlet></router-outlet>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-<form class="example-form">
-    <mat-form-field class="example-full-width">
-        <mat-label>Email</mat-label>
-        <input type="email" matInput placeholder="Ex. pat@example.com">
-        <mat-hint>Errors appear instantly!</mat-hint>
-        <mat-error>
-            Please enter a valid email address
-        </mat-error>
-    </mat-form-field>
-</form>
-<router-outlet></router-outlet>

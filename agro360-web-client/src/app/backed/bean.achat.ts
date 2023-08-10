@@ -4,8 +4,25 @@ import { AbstractBean, AbstractFormBean, AbstractLigneBean } from './bean.common
 import { TiersBean } from './bean.tiers';
 import { MagasinBean } from './bean.stock';
 
-export interface LigneBean extends AbstractLigneBean {
+export interface ReceptionInputBean extends AbstractFormBean {
+	description: FieldMetadata<string>;
+	casierCode: FieldMetadata<string>;
+	quantite: FieldMetadata<number>;
+	dateReception: FieldMetadata<any>;
+	magasin: MagasinBean;
+	prixUnitaire: FieldMetadata<number>;
+	ligne: LigneBean;
+};
 
+export interface BonCommandeBean extends AbstractFormBean {
+	bonCommandeCode: FieldMetadata<string>;
+	dateBonCommande: FieldMetadata<any>;
+	description: FieldMetadata<string>;
+	lignes: Array<LigneBean>;
+	magasin: MagasinBean;
+	statut: FieldMetadata<StatutBonCommandeEnumVd>;
+	fournisseur: TiersBean;
+	livraison: FieldMetadata<boolean>;
 };
 
 export interface ReceptionBean extends AbstractFormBean {
@@ -20,26 +37,8 @@ export interface ReceptionBean extends AbstractFormBean {
 	statut: FieldMetadata<StatutReceptionEnumVd>;
 };
 
-export interface BonCommandeBean extends AbstractFormBean {
-	bonCommandeCode: FieldMetadata<string>;
-	dateBonCommande: FieldMetadata<any>;
-	description: FieldMetadata<string>;
-	lignes: Array<LigneBean>;
-	statut: FieldMetadata<StatutBonCommandeEnumVd>;
-	fournisseur: TiersBean;
-	adresse: FieldMetadata<string>;
-	livraison: FieldMetadata<boolean>;
-	ville: FieldMetadata<string>;
-};
+export interface LigneBean extends AbstractLigneBean {
 
-export interface ReceptionInputBean extends AbstractFormBean {
-	description: FieldMetadata<string>;
-	casierCode: FieldMetadata<string>;
-	quantite: FieldMetadata<number>;
-	dateReception: FieldMetadata<any>;
-	magasin: MagasinBean;
-	prixUnitaire: FieldMetadata<number>;
-	ligne: LigneBean;
 };
 
 export interface BonCommandeSearchBean extends AbstractBean {

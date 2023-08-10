@@ -1,6 +1,6 @@
 package com.agro360.ws.controller.tiers;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +27,9 @@ public class TiersController extends AbstractController {
 	private TiersService tiersService;
 
 	@GetMapping()
-	public ResponseEntity<List<TiersBean>> searchAction(@RequestBody @Validated TiersSearchBean searchForm,
+	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<TiersSearchBean> searchForm,
 			BindingResult br) {
-		return ResponseEntity.ok(tiersService.search(searchForm));
+		return ResponseEntity.ok(new ModelMap("records", tiersService.search(searchForm.orElse(new TiersSearchBean()))));
 	}
 
 	@GetMapping("/{id}")

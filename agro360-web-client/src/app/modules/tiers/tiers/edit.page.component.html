@@ -1,0 +1,68 @@
+<div>
+    <button>Retour</button>
+    |
+    <button>Enregistrer</button>
+    <button>Supprimer</button>
+    |
+    <button>Ajouter</button>
+    <button>Copier</button>
+    |
+    <button>Catégories</button>
+</div>
+
+<h1>Tiers {{ tiersCode }}</h1>
+
+<fieldset>
+    <legend>
+        Détails du Tiers
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Type</th>
+                    <th>Nom Société</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Statut</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Pays</th>
+                    <th>Ville</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="bean">
+                    <td>{{ bean.tiersCode.value }}</td>
+                    <td>{{ bean.tiersType.value }}</td>
+                    <td>{{ bean.name.value }}</td>
+                    <td>{{ bean.firstName.value }}</td>
+                    <td>{{ bean.lastName.value }}</td>
+                    <td>{{ bean.status.value }}</td>
+                    <td>{{ bean.phone.value }}</td>
+                    <td>{{ bean.email.value }}</td>
+                    <td>{{ bean.country.value }}</td>
+                    <td>{{ bean.city.value }}</td>
+                    <td>{{ bean.address.value }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>
+
+<fieldset>
+    <legend>
+        Catégorie 
+    </legend>
+    <section *ngIf="bean">
+        <app-tiers-category-block [bean] = "bean.categoriesHierarchie"></app-tiers-category-block>
+    </section>
+</fieldset>
+
+<div>
+    <br/>
+    <button>Enregistrer</button>
+    <button>Annuler</button>
+</div>
