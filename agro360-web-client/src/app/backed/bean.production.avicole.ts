@@ -9,6 +9,11 @@ export interface MetadataBean extends AbstractFormBean {
 	metadataCode: FieldMetadata<string>;
 };
 
+export interface OperationBean extends AbstractLigneBean {
+	rubrique: FieldMetadata<RubriqueEnumVd>;
+	phase: FieldMetadata<PhaseEnumVd>;
+};
+
 export interface JourneeBean extends AbstractFormBean {
 	cycle: CycleBean;
 	numeroJournee: FieldMetadata<number>;
@@ -24,9 +29,4 @@ export interface CycleBean extends AbstractFormBean {
 	datePlanifiee: FieldMetadata<any>;
 	cycleCode: FieldMetadata<string>;
 	quantiteEffective: FieldMetadata<number>;
-};
-
-export interface OperationBean extends AbstractLigneBean {
-	rubrique: FieldMetadata<RubriqueEnumVd>;
-	phase: FieldMetadata<PhaseEnumVd>;
 };

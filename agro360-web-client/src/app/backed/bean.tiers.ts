@@ -9,12 +9,6 @@ export interface TiersCategoryBean extends AbstractBean {
 	categoryCode: FieldMetadata<string>;
 };
 
-export interface CategoryBean extends AbstractFormBean {
-	description: FieldMetadata<string>;
-	children: Array<CategoryBean>;
-	categoryCode: FieldMetadata<string>;
-};
-
 export interface TiersSearchBean extends AbstractBean {
 	tiersName: FieldMetadata<string>;
 	phone: FieldMetadata<string>;
@@ -22,6 +16,12 @@ export interface TiersSearchBean extends AbstractBean {
 	email: FieldMetadata<string>;
 	tiersType: FieldMetadata<TiersTypeEnumVd>;
 	status: FieldMetadata<TiersStatusEnumVd>;
+};
+
+export interface CategoryBean extends AbstractFormBean {
+	description: FieldMetadata<string>;
+	children: Array<CategoryBean>;
+	categoryCode: FieldMetadata<string>;
 };
 
 export interface TiersBean extends AbstractFormBean {

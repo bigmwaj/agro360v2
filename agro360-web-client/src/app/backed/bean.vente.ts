@@ -4,6 +4,14 @@ import { AbstractBean, AbstractFormBean, AbstractLigneBean } from './bean.common
 import { TiersBean } from './bean.tiers';
 import { MagasinBean } from './bean.stock';
 
+export interface LigneBean extends AbstractLigneBean {
+	nonFacturable: FieldMetadata<boolean>;
+	casierCode: FieldMetadata<string>;
+	nonEmballee: FieldMetadata<boolean>;
+	magasin: MagasinBean;
+	nonCartonnee: FieldMetadata<boolean>;
+};
+
 export interface CommandeSearchBean extends AbstractBean {
 	commandeCode: FieldMetadata<string>;
 	statutDans: FieldMetadata<any>;
@@ -11,14 +19,6 @@ export interface CommandeSearchBean extends AbstractBean {
 	dateCommandeFin: FieldMetadata<any>;
 	dateCommandeDebut: FieldMetadata<any>;
 	ville: FieldMetadata<string>;
-};
-
-export interface LigneBean extends AbstractLigneBean {
-	nonFacturable: FieldMetadata<boolean>;
-	casierCode: FieldMetadata<string>;
-	nonEmballee: FieldMetadata<boolean>;
-	magasin: MagasinBean;
-	nonCartonnee: FieldMetadata<boolean>;
 };
 
 export interface CommandeBean extends AbstractFormBean {

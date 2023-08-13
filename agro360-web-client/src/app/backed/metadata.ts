@@ -3,7 +3,7 @@ import { Message } from './message';
 export interface FieldMetadata<T> {
 	editable: boolean;
 	valueOptions: any;
-	value: T;
+	value: any;
 	required: boolean;
 	min: number;
 	tooltip: string;

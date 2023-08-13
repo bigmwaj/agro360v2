@@ -1,7 +1,9 @@
 package com.agro360.service.mapper.tiers;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,6 +13,7 @@ import com.agro360.dto.tiers.TiersDto;
 import com.agro360.service.bean.tiers.TiersBean;
 import com.agro360.service.mapper.common.AbstractMapper;
 import com.agro360.service.utils.Constants;
+import com.agro360.vd.tiers.TiersStatusEnumVd;
 import com.agro360.vd.tiers.TiersTypeEnumVd;
 
 @Component
@@ -37,10 +40,20 @@ public class TiersMapper extends AbstractMapper {
 		bean.getPhone().setValue(dto.getPhone());
 		bean.getFirstName().setValue(dto.getFirstName());
 		bean.getLastName().setValue(dto.getLastName());
+		
+		var statutOptions = Arrays.stream(TiersStatusEnumVd.values())
+				.collect(Collectors.toMap(e -> e, TiersStatusEnumVd::getLibelle));
 		bean.getStatus().setValue(dto.getStatus());
+		bean.getStatus().setValueOptions(statutOptions);
+		
 		bean.getName().setValue(dto.getName());
 		bean.getTiersCode().setValue(dto.getTiersCode());
+		
+		var typeTiersOptions = Arrays.stream(TiersTypeEnumVd.values())
+				.collect(Collectors.toMap(e -> e, TiersTypeEnumVd::getLibelle));
 		bean.getTiersType().setValue(dto.getTiersType());
+		bean.getTiersType().setValueOptions(typeTiersOptions);
+		
 		bean.getTitle().setValue(dto.getTitle());
 
 		if (TiersTypeEnumVd.COMPANY.equals(dto.getTiersType())) {

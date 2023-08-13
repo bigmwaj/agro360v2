@@ -1,0 +1,106 @@
+<div>
+    <button>Retour</button>
+    |
+    <button>Enregistrer</button>
+    <button>Supprimer</button>
+    |
+    <button>Ajouter</button>
+    <button>Copier</button>
+    |
+    <button>Unités</button>
+</div>
+
+<h1>Edition Commande {{ commandeCode }}</h1>
+
+<fieldset>
+    <legend>
+        Détails du bon de commande
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th colspan="2">Client</th>
+                    <th>Magasin</th>
+                    <th>Livrée?</th>
+                    <th>Transport Requis?</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="bean">
+                <tr>
+                    <td>{{ bean.commandeCode.value }}</td>
+                    <td>{{ bean.dateCommande.value }}</td>
+                    <td>{{ bean.statut.value }}</td>
+                    <td>{{ bean.magasin.magasinCode.value }}</td>
+                    <td>{{ bean.client.tiersCode.value }}</td>
+                    <td>{{ bean.client.tiersName.value }}</td>
+                    <td>{{ bean.livree.value }}</td>
+                    <td>{{ bean.transportRequis.value }}</td>
+                    <td>{{ bean.description.value }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>
+
+<fieldset>
+    <legend>
+        Lignes
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Type</th>
+                    <th colspan="3">Article</th>
+                    <th colspan="2">Unite</th>
+                    <th>Quantité</th>
+                    <th>Prix Unitaire</th>
+                    <th>Magasin</th>
+                    <th>Casier</th>
+                    <th title="Non Facturable?">NF</th>
+                    <th title="Non Emballée?">NE</th>
+                    <th title="Non Cartonnée?">NC</th>
+                    <th>Description</th>
+                    <th>
+                        <button>Ajouter</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="bean">
+                <tr *ngFor="let bean of bean.lignes">
+                    <td>{{ bean.numero.value }}</td>
+                    <td>{{ bean.typeLigne.value }}</td>
+                    <td>{{ bean.article.articleCode.value }}</td>
+                    <td>{{ bean.article.description.value }}</td>
+                    <td>{{ bean.variantCode.value }}</td>
+                    <td>{{ bean.unite.uniteCode.value }}</td>
+                    <td>{{ bean.unite.description.value }}</td>
+                    <td>{{ bean.quantite.value }}</td>
+                    <td>{{ bean.prixUnitaire.value }}</td>
+                    <td>{{ bean.magasin.magasinCode.value }}</td>
+                    <td>{{ bean.casierCode.value }}</td>
+                    <td>{{ bean.nonFacturable.value }}</td>
+                    <td>{{ bean.nonEmballee.value }}</td>
+                    <td>{{ bean.nonCartonnee.value }}</td>
+                    <td>{{ bean.description.value }}</td>
+                    <td>
+                        <button>Supprimer</button>
+                        <button>Copier</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>
+
+<div>
+    <br />
+    <button>Enregistrer</button>
+    <button>Annuler</button>
+</div>

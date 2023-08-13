@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TiersCategoryBean } from 'src/app/backed/bean.tiers';
+import { MatTreeModule } from '@angular/material/tree';
 
 @Component({
-    selector: 'app-tiers-category-block',
+    selector: 'tiers-tiers-category-block',
     templateUrl: './category.block.component.html'
 })
 export class CategoryBlockComponent implements OnInit {

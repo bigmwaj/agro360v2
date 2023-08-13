@@ -37,7 +37,7 @@ public class CategoryController extends AbstractController {
 		return ResponseEntity.ok(beans);
 	}
 
-	@PutMapping("/edit")
+	@PutMapping()
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CategoryBean bean, BindingResult br) {
 		var messages = categoryService.save(bean);
 		var model = new ModelMap("messages", messages);

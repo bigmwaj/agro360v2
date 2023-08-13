@@ -9,7 +9,7 @@ interface CommandeModel extends CommandeBean{
 }
 
 @Component({
-    selector: 'app-commande-index-page',
+    selector: 'vente-commande-index-page',
     templateUrl: './index.page.component.html'
 })
 export class IndexPageComponent implements OnInit {

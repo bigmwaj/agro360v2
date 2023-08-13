@@ -1,0 +1,94 @@
+<div>
+    <button>Retour</button>
+    |
+    <button>Enregistrer</button>
+    <button>Supprimer</button>
+    |
+    <button>Ajouter</button>
+    <button>Copier</button>
+    |
+    <button>Unités</button>
+</div>
+
+<h1>Edition Bon de Commande {{ bonCommandeCode }}</h1>
+
+<fieldset>
+    <legend>
+        Détails du bon de commande
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Date</th>
+                    <th>Statut</th>
+                    <th colspan="2">Fournisseur</th>
+                    <th>Magasin</th>
+                    <th>Livraison?</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="bean">
+                <tr>
+                    <td>{{ bean.bonCommandeCode.value }}</td>
+                    <td>{{ bean.dateBonCommande.value }}</td>
+                    <td>{{ bean.statut.value }}</td>
+                    <td>{{ bean.fournisseur.tiersCode.value }}</td>
+                    <td>{{ bean.fournisseur.tiersName.value }}</td>
+                    <td>{{ bean.magasin.magasinCode.value }}</td>
+                    <td>{{ bean.livraison.value }}</td>
+                    <td>{{ bean.description.value }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>
+
+<fieldset>
+    <legend>
+        Lignes
+    </legend>
+    <section>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Type</th>
+                    <th colspan="3">Article</th>
+                    <th colspan="2">Unite</th>
+                    <th>Quantité</th>
+                    <th>Prix Unitaire</th>
+                    <th>Description</th>
+                    <th>
+                        <button>Ajouter</button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody *ngIf="bean">
+                <tr *ngFor="let bean of bean.lignes">
+                    <td>{{ bean.numero.value }}</td>
+                    <td>{{ bean.typeLigne.value }}</td>
+                    <td>{{ bean.article.articleCode.value }}</td>
+                    <td>{{ bean.article.description.value }}</td>
+                    <td>{{ bean.variantCode.value }}</td>
+                    <td>{{ bean.unite.uniteCode.value }}</td>
+                    <td>{{ bean.unite.description.value }}</td>
+                    <td>{{ bean.quantite.value }}</td>
+                    <td>{{ bean.prixUnitaire.value }}</td>
+                    <td>{{ bean.description.value }}</td>
+                    <td>
+                        <button>Supprimer</button>
+                        <button>Copier</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</fieldset>
+
+<div>
+    <br />
+    <button>Enregistrer</button>
+    <button>Annuler</button>
+</div>

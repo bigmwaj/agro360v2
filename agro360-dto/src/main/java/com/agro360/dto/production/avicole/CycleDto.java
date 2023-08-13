@@ -38,11 +38,17 @@ public class CycleDto extends AbstractDto {
 	@Column(name = "DESCRIPTION", length = 64)
 	private String description;
 
+	@Column(name = "RACE_PLAN", nullable = false)
+	private String racePlanifiee;
+
 	@Column(name = "QTE_PLAN", nullable = false)
 	private Double quantitePlanifiee;
 
 	@Column(name = "DATE_PLAN", nullable = false)
 	private LocalDate datePlanifiee;
+	
+	@Column(name = "RACE_EFF")
+	private String raceEffective;
 
 	@Column(name = "QTE_EFF")
 	private Double quantiteEffective;

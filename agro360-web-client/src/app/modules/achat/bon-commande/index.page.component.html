@@ -2,10 +2,13 @@
 <fieldset>
     <legend>
         Recherche
-        <div>
-            <button (click)="addAction()">Ajouter</button>
-        </div>
     </legend>
+    <section>
+        <button>Rechercher</button>
+        <button>Initialiser</button>
+        |
+        <button (click)="addAction()">Ajouter</button>
+    </section>
 </fieldset>
 
 <fieldset>
@@ -16,7 +19,7 @@
         <table>
             <thead>
                 <tr>
-                    <th><input type="checkbox"/></th>
+                    <th><input type="checkbox" /></th>
                     <th>Code</th>
                     <th>Date</th>
                     <th>Statut</th>
@@ -24,18 +27,18 @@
                     <th>Magasin</th>
                     <th>Livraison?</th>
                     <th>Description</th>
-                    <th>Actions</th>
+                    <th><button>Ajouter</button> </th>
                 </tr>
             </thead>
             <tbody *ngIf="beans">
                 <tr *ngFor="let bean of beans">
-                    <td><input type="checkbox"/></td>
+                    <td><input type="checkbox" /></td>
                     <td><a (click)="editAction(bean)">{{ bean.bonCommandeCode.value }}</a> </td>
                     <td>{{ bean.dateBonCommande.value }}</td>
                     <td>{{ bean.statut.value }}</td>
-                    <td>{{ bean.magasin.magasinCode.value }}</td>
                     <td>{{ bean.fournisseur.tiersCode.value }}</td>
                     <td>{{ bean.fournisseur.tiersName.value }}</td>
+                    <td>{{ bean.magasin.magasinCode.value }}</td>
                     <td>{{ bean.livraison.value }}</td>
                     <td>{{ bean.description.value }}</td>
                     <td>

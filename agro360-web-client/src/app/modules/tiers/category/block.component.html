@@ -1,12 +1,13 @@
 <div *ngIf="bean">
     <div>
-        <input type="checkbox"/>
         <strong>
-            {{ bean.categoryCode.value }}
+            <input type="text" [value]="bean.categoryCode.value"/>
         </strong>
         <span>
-            {{ bean.description.value }}
+            <input type="text" [value]="bean.description.value"/>
         </span>
+        <button>Ajouter</button>
+        <button>Supprimer</button>
     </div>    
     <div *ngIf="bean.children" style="margin-left:32px;">
         <div *ngFor="let child of bean.children">

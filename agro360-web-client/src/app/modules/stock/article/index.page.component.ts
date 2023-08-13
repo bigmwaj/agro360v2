@@ -9,7 +9,7 @@ interface ArticleModel extends ArticleBean {
 }
 
 @Component({
-    selector: 'app-article-index-page',
+    selector: 'stock-article-index-page',
     templateUrl: './index.page.component.html'
 })
 export class IndexPageComponent implements OnInit {

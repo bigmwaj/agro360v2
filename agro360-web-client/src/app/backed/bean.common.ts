@@ -7,6 +7,10 @@ export interface AbstractBean {
 
 };
 
+export interface AbstractFormBean extends AbstractBean {
+	action: EditActionEnumVd;
+};
+
 export interface AbstractLigneBean extends AbstractFormBean {
 	unite: UniteBean;
 	typeLigne: FieldMetadata<TypeLigneEnumVd>;
@@ -17,8 +21,4 @@ export interface AbstractLigneBean extends AbstractFormBean {
 	article: ArticleBean;
 	variantCode: FieldMetadata<string>;
 	numero: FieldMetadata<number>;
-};
-
-export interface AbstractFormBean extends AbstractBean {
-	action: EditActionEnumVd;
 };

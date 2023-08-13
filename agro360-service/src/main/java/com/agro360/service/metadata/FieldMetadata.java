@@ -31,8 +31,7 @@ public class FieldMetadata<T> {
 	@JsonIgnore
 	private transient Double min;
 
-	@JsonIgnore
-	private transient Map<String, Object> valueOptions;
+	private transient Map<T, String> valueOptions;
 
 	@JsonIgnore
 	private transient String tooltip;

@@ -2,9 +2,9 @@ package com.agro360.vd.tiers;
 
 public enum TiersTypeEnumVd {
 
-	PERSON("Person"),
+	PERSON("Personne"),
 	
-	COMPANY("Company");
+	COMPANY("Société");
 	
 	public static final int COLUMN_LENGTH = 8;
 	

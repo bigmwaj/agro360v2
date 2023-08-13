@@ -1,11 +1,41 @@
+<div>
+    <button>Ajouter</button>
+    |
+    <button>Catégories</button>
+</div>
 <h1>Gestion des Tiers</h1>
 <fieldset>
     <legend>
         Recherche
-        <div>
-            <button (click)="addAction()">Ajouter</button>
-        </div>
     </legend>
+    <section>
+        <mat-grid-list cols="3" rowHeight="8:1" *ngIf="searchForm">
+            <mat-grid-tile>
+                <input-text-field [field]="searchForm.tiersCode" [label]="'Code'"></input-text-field>
+                <input-text-field [field]="searchForm.tiersType" [label]="'Type'"></input-text-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <input-text-field [field]="searchForm.status" [label]="'Statut'"></input-text-field>
+                <input-text-field [field]="searchForm.tiersName" [label]="'Nom'"></input-text-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <input-text-field [field]="searchForm.phone" [label]="'Téléphone'"></input-text-field>
+                <input-text-field [field]="searchForm.email" [label]="'Email'"></input-text-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <div>
+            <button mat-mini-fab color="primary">
+                <mat-icon>search</mat-icon>
+            </button>
+            <button mat-mini-fab color="primary">
+                <mat-icon>reset</mat-icon>
+            </button>
+            |
+            <button mat-mini-fab color="primary" (click)="addAction()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+    </section>
 </fieldset>
 
 <fieldset>
@@ -13,46 +43,102 @@
         Liste des Tiers
     </legend>
     <section>
-        <table>
-            <thead>
-                <tr>
-                    <th><input type="checkbox"/></th>
-                    <th>Code</th>
-                    <th>Type</th>
-                    <th>Libelle</th>
-                    <th>Statut</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Pays</th>
-                    <th>Ville</th>
-                    <th>Adresse</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody *ngIf="beans">
-                <tr *ngFor="let bean of beans">
-                    <td><input type="checkbox"/></td>
-                    <td><a (click)="editAction(bean)">{{ bean.tiersCode.value }}</a> </td>
-                    <td>{{ bean.tiersType.value }}</td>
-                    <td>{{ bean.tiersName.value }}</td>
-                    <td>{{ bean.status.value }}</td>
-                    <td>{{ bean.phone.value }}</td>
-                    <td>{{ bean.email.value }}</td>
-                    <td>{{ bean.country.value }}</td>
-                    <td>{{ bean.city.value }}</td>
-                    <td>{{ bean.address.value }}</td>
-                    <td>
-                        <button (click)="editAction(bean)">Editer</button>
-                        <button (click)="copyAction(bean)">Copier</button>
-                        <button (click)="deleteAction(bean)">Supprimer</button>
-                        <button (click)="changeStatusAction(bean)">Désactiver</button>
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="select">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                        </mat-checkbox>
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <mat-checkbox (click)="$event.stopPropagation()"
+                            (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
+                            [aria-label]="checkboxLabel(row)">
+                        </mat-checkbox>
                     </td>
-                </tr>
-            </tbody>
-        </table>
+                </ng-container>
+
+                <ng-container matColumnDef="tiersCode">
+                    <th mat-header-cell *matHeaderCellDef>Code</th>
+                    <td mat-cell *matCellDef="let element">{{element.tiersCode.value}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="tiersType">
+                    <th mat-header-cell *matHeaderCellDef>Type</th>
+                    <td mat-cell *matCellDef="let element">{{element.tiersType.value}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="tiersName">
+                    <th mat-header-cell *matHeaderCellDef>Libelle</th>
+                    <td mat-cell *matCellDef="let element">{{element.tiersName.value}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Statut</th>
+                    <td mat-cell *matCellDef="let element">{{element.status.value}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef>Téléphone</th>
+                    <td mat-cell *matCellDef="let element">{{element.phone.value}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef>Email</th>
+                    <td mat-cell *matCellDef="let element">{{element.email.value}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="country">
+                    <th mat-header-cell *matHeaderCellDef>Pays</th>
+                    <td mat-cell *matCellDef="let element">{{element.country.value}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="city">
+                    <th mat-header-cell *matHeaderCellDef>Ville</th>
+                    <td mat-cell *matCellDef="let element">{{element.city.value}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="address">
+                    <th mat-header-cell *matHeaderCellDef>Adresse</th>
+                    <td mat-cell *matCellDef="let element">{{element.address.value}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <button mat-mini-fab color="primary">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-mini-fab color="primary" title="Afficher" (click)="editAction(element)">
+                            <mat-icon>preview</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="primary" title="Copier" (click)="copyAction(element)">
+                            <mat-icon>content_copy</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="primary" title="Supprimer" (click)="deleteAction(element)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="primary" title="Changer Statut"
+                            (click)="changeStatusAction(element)">
+                            <mat-icon>schema</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </div>
+
     </section>
 </fieldset>
 
 <tiers-category-edit-modal>
-    
+
 </tiers-category-edit-modal>

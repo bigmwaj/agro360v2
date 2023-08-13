@@ -1,6 +1,7 @@
 https://www.angularjswiki.com/material/
 https://material.angular.io/
 https://angular.io/
+https://fonts.google.com/icons
 
 # Agro360WebClient
 

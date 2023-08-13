@@ -27,20 +27,21 @@ public class TiersController extends AbstractController {
 	private TiersService tiersService;
 
 	@GetMapping()
-	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<TiersSearchBean> searchForm,
-			BindingResult br) {
-		return ResponseEntity.ok(new ModelMap("records", tiersService.search(searchForm.orElse(new TiersSearchBean()))));
+	public ResponseEntity<ModelMap> searchAction(@RequestBody @Validated Optional<TiersSearchBean> searchForm, BindingResult br) {		
+		var records = tiersService.search(searchForm.orElse(new TiersSearchBean()));
+		var model = new ModelMap(RECORDS_MODEL_KEY, records);	
+		return ResponseEntity.ok(model);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<TiersBean> loadAction(@PathVariable String id) {
+	public ResponseEntity<TiersBean> loadTiersByIdAction(@PathVariable String id) {
 		return ResponseEntity.ok(tiersService.findById(id));
 	}
 
 	@PutMapping
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated TiersBean bean, BindingResult br) {
+	public ResponseEntity<ModelMap> saveTiersAction(@RequestBody @Validated TiersBean bean, BindingResult br) {
 		var messages = tiersService.save(bean);
-		var model = new ModelMap("messages", messages);		
+		var model = new ModelMap(MESSAGES_MODEL_KEY, messages);		
 		return ResponseEntity.ok(model);
 	}
 

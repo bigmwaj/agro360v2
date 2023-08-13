@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatTreeFlatDataSource } from '@angular/material/tree';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TiersBean } from 'src/app/backed/bean.tiers';
 
@@ -10,7 +11,7 @@ interface TiersModel extends TiersBean{
 }
 
 @Component({
-    selector: 'app-tiers-edit-page',
+    selector: 'tiers-tiers-edit-page',
     templateUrl: './edit.page.component.html'
 })
 export class EditPageComponent implements OnInit {
@@ -18,6 +19,7 @@ export class EditPageComponent implements OnInit {
     tiersCode: string|null;
     
     bean : TiersModel;
+
 
     constructor(private router: Router,
         private route:ActivatedRoute, 
@@ -29,7 +31,7 @@ export class EditPageComponent implements OnInit {
 
             if( this.tiersCode != null ){
                 this.http
-                    .get<any>(BASE_URL +`/${this.tiersCode}`)
+                    .get<any>(BASE_URL + `/${this.tiersCode}`)
                     .subscribe(data => this.bean = data);
             }else{
                 this.bean = <TiersModel>{};

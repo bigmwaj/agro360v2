@@ -13,6 +13,8 @@ import { StockModule } from './modules/stock/stock.module';
 import { AchatModule } from './modules/achat/achat.module';
 import { VenteModule } from './modules/vente/vente.module';
 import { ProductionAvicoleModule } from './modules/production/avicole/production.avicole.module';
+import {MatTableModule} from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -21,11 +23,14 @@ import { ProductionAvicoleModule } from './modules/production/avicole/production
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatSlideToggleModule,
-    MatButtonModule,
     BrowserAnimationsModule,
-    MatInputModule,
     HttpClientModule,
+
+    /*MatSlideToggleModule,
+    MatButtonModule,
+    MatInputModule,
+    MatTableModule,*/
+
     TiersModule,
     StockModule,
     AchatModule,

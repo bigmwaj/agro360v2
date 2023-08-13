@@ -1,20 +1,19 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StockRoutingModule } from './stock-routing.module';
 import { IndexPageComponent } from './article/index.page.component';
 import { EditPageComponent } from './article/edit.page.component';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
     declarations: [
         IndexPageComponent,
         EditPageComponent
     ],
-    imports: [
+    imports: [        
         CommonModule,
-        FormsModule,
-        ReactiveFormsModule,
-        StockRoutingModule
+        SharedModule,
+        StockRoutingModule,
     ],
     providers: [
 

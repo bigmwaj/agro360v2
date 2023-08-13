@@ -17,7 +17,7 @@ export class EditModalComponent implements OnInit {
 
     ngOnInit(): void {
         this.http
-            .get(BASE_URL + '')
+            .get(BASE_URL + '?deep=4')
             .pipe(map((data: any) => data))
             .subscribe(data => this.bean = <CategoryBean>data);
     }

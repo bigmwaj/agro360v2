@@ -9,7 +9,7 @@ interface BonCommandeModel extends BonCommandeBean{
 }
 
 @Component({
-    selector: 'app-bon-commande-index-page',
+    selector: 'achat-bonCommande-index-page',
     templateUrl: './index.page.component.html'
 })
 export class IndexPageComponent implements OnInit {

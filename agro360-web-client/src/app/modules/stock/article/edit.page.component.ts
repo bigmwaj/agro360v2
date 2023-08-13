@@ -10,7 +10,7 @@ interface ArticleModel extends ArticleBean {
 }
 
 @Component({
-    selector: 'app-article-edit-page',
+    selector: 'stock-article-edit-page',
     templateUrl: './edit.page.component.html'
 })
 export class EditPageComponent implements OnInit {

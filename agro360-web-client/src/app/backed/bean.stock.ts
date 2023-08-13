@@ -13,10 +13,20 @@ export interface OperationCaisseBean extends AbstractLigneBean {
 	dateOperation: FieldMetadata<any>;
 };
 
-export interface UniteBean extends AbstractFormBean {
+export interface VariantBean extends AbstractFormBean {
 	description: FieldMetadata<string>;
-	abreviation: FieldMetadata<string>;
-	uniteCode: FieldMetadata<string>;
+	variantCode: FieldMetadata<string>;
+};
+
+export interface ConversionBean extends AbstractFormBean {
+	unite: UniteBean;
+	facteur: FieldMetadata<number>;
+};
+
+export interface MagasinBean extends AbstractFormBean {
+	description: FieldMetadata<string>;
+	magasinCode: FieldMetadata<string>;
+	casiers: Array<CasierBean>;
 };
 
 export interface ArticleBean extends AbstractFormBean {
@@ -26,6 +36,12 @@ export interface ArticleBean extends AbstractFormBean {
 	typeArticle: FieldMetadata<TypeArticleEnumVd>;
 	variants: Array<VariantBean>;
 	conversions: Array<ConversionBean>;
+};
+
+export interface UniteBean extends AbstractFormBean {
+	description: FieldMetadata<string>;
+	abreviation: FieldMetadata<string>;
+	uniteCode: FieldMetadata<string>;
 };
 
 export interface CasierBean extends AbstractFormBean {
@@ -40,20 +56,4 @@ export interface CaisseBean extends AbstractFormBean {
 	operationsCaisse: Array<OperationCaisseBean>;
 	magasin: MagasinBean;
 	journee: FieldMetadata<any>;
-};
-
-export interface ConversionBean extends AbstractFormBean {
-	unite: UniteBean;
-	facteur: FieldMetadata<number>;
-};
-
-export interface MagasinBean extends AbstractFormBean {
-	description: FieldMetadata<string>;
-	magasinCode: FieldMetadata<string>;
-	casiers: Array<CasierBean>;
-};
-
-export interface VariantBean extends AbstractFormBean {
-	description: FieldMetadata<string>;
-	variantCode: FieldMetadata<string>;
 };

@@ -9,7 +9,7 @@ interface CycleModel extends CycleBean{
 }
 
 @Component({
-    selector: 'app-cycle-index-page',
+    selector: 'production-avicole-cycle-index-page',
     templateUrl: './index.page.component.html'
 })
 export class IndexPageComponent implements OnInit {
