@@ -53,7 +53,7 @@ public class TiersCategoryMapper extends AbstractMapper {
 		dto.setCategory(new CategoryDto());
 		dto.getCategory().setCategoryCode(bean.getCategoryCode().getValue());
 		if (tiersCategoryDao.existsById(new TiersCategoryPk(dto))) {
-			dto = tiersCategoryDao.getById(new TiersCategoryPk(dto));
+			dto = tiersCategoryDao.getReferenceById(new TiersCategoryPk(dto));
 		}
 
 		return dto;

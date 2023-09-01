@@ -15,11 +15,11 @@ public class TiersCategoryBean extends AbstractBean{
 	
 	private static final long serialVersionUID = 8023125234394845154L;
 
-	private FieldMetadata<String> categoryCode = new FieldMetadata<>();
+	private FieldMetadata<String> categoryCode = new FieldMetadata<>("Code");
 	
-	private FieldMetadata<String> description = new FieldMetadata<>();
+	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 	
-	private FieldMetadata<Boolean> selected = new FieldMetadata<>();
+	private FieldMetadata<Boolean> selected = new FieldMetadata<>("Sélectionné?");
 
 	private List<TiersCategoryBean> children = new ArrayList<>();
 	

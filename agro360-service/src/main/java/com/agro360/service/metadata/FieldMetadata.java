@@ -14,34 +14,53 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class FieldMetadata<T> {
 
+	private final String __TYPE__ = "FIELD_METADATA";
+
+	public FieldMetadata() {
+	}
+
+	public FieldMetadata(String label) {
+		this.label = label;
+	}
+
+	public FieldMetadata(String label, Map<Object, String> valueOptions) {
+		this.label = label;
+		this.valueOptions = valueOptions;
+	}
+
 	private T value;
 
-	@JsonIgnore
-	private transient boolean required;
+	private String valueI18n;
+
+	private String label;
 
 	@JsonIgnore
-	private transient boolean editable = true;
+	private boolean required;
+
+	private boolean valueChanged;
 
 	@JsonIgnore
-	private transient Integer maxLength;
+	private boolean editable = true;
 
 	@JsonIgnore
-	private transient Double max;
+	private Integer maxLength;
 
 	@JsonIgnore
-	private transient Double min;
-
-	private transient Map<T, String> valueOptions;
+	private Double max;
 
 	@JsonIgnore
-	private transient String tooltip;
+	private Double min;
+
+	private Map<Object, String> valueOptions;
 
 	@JsonIgnore
-	private transient String icon;
+	private String tooltip;
 
 	@JsonIgnore
+	private String icon;
+
 	private final List<Message> messages = new ArrayList<>();
-	
+
 	public void addMessage(Message message) {
 		messages.add(message);
 	}

@@ -16,10 +16,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "STOCK_TBL_VARIANT")
 @IdClass(VariantPk.class)
-public class VariantDto extends AbstractDto 
-{
+public class VariantDto extends AbstractDto {
 	public static final int VARIANT_CODE_LENGTH = 16;
-	
+
 	@Id
 	@ManyToOne()
 	@JoinColumn(name = "ARTICLE_CODE", updatable = false, nullable = false)

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class TiersService extends AbstractService<TiersDto, String> {
 	private static final String DELETE_SUCCESS = "Tiers %s de type %s supprimé avec succès";
 
 	private static final String CHANGE_STS_SUCCESS = "Statut du tiers %s de type %s modifié avec succès";
+	
+	private static final String DTO_NOT_FOUND = "Aucun de code %s n'a été trouvé";
 
 	@Autowired
 	private ITiersDao dao;
@@ -48,19 +52,50 @@ public class TiersService extends AbstractService<TiersDto, String> {
 	protected IDao<TiersDto, String> getDao() {
 		return dao;
 	}
+	
+	public TiersBean initEditFormBean(String tiersCode) {
+		var dto = dao.findById(tiersCode).orElseThrow(dtoNotFoundEx(tiersCode));
+		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_TIERS_CATEGORY_KEY, true));
+		return bean;
+	}
+	
+	public TiersBean initDeleteFormBean(String tiersCode) {
+		var bean = dao.findById(tiersCode).map(mapper::mapToBean)
+				.orElseThrow(dtoNotFoundEx(tiersCode));
+		bean.setAction(EditActionEnumVd.DELETE);
+		return bean;
+	}
+	
+	public TiersBean initChangeStatusFormBean(String tiersCode) {
+		var bean = dao.findById(tiersCode).map(mapper::mapToBean)
+				.orElseThrow(dtoNotFoundEx(tiersCode));
+		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
+		return bean;
+	}
 
-	public List<TiersBean> search(TiersSearchBean bean) {
+	public TiersBean initCreateFormBean(Optional<String> copyFrom) {
+		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(TiersDto::new);
+		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_TIERS_CATEGORY_KEY, true));
+		bean.initForCreateForm();
+		return bean;
+	}
+
+	public TiersSearchBean initSearchFormBean() {
+		return mapper.mapToSearchBean();
+	}
+
+	public List<TiersBean> search(TiersSearchBean searchBean) {
 		var probe = new TiersDto();
 		var matcher = ExampleMatcher.matchingAll();
 
-		if (bean.getTiersCode() != null) {
-			probe.setTiersCode(bean.getTiersCode().getValue());
+		if (searchBean.getTiersCode() != null) {
+			probe.setTiersCode(searchBean.getTiersCode().getValue());
 			matcher = matcher.withMatcher("tiersCode", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 		}
 
-		if (bean.getTiersName() != null) {
+		if (searchBean.getTiersName() != null) {
 //			probe.setName(bean.getTiersName().getValue());
-			probe.setFirstName(bean.getTiersName().getValue());
+			probe.setFirstName(searchBean.getTiersName().getValue());
 //			probe.setLastName(bean.getTiersName().getValue());
 
 //			matcher = matcher.withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
@@ -68,22 +103,22 @@ public class TiersService extends AbstractService<TiersDto, String> {
 //			matcher = matcher.withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 		}
 
-		if (bean.getEmail() != null) {
-			probe.setEmail(bean.getEmail().getValue());
+		if (searchBean.getEmail() != null) {
+			probe.setEmail(searchBean.getEmail().getValue());
 			matcher = matcher.withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
 		}
 
-		if (bean.getPhone() != null) {
-			probe.setPhone(bean.getPhone().getValue());
+		if (searchBean.getPhone() != null) {
+			probe.setPhone(searchBean.getPhone().getValue());
 			matcher = matcher.withMatcher("phone", ExampleMatcher.GenericPropertyMatchers.endsWith());
 		}
 
-		if (bean.getStatus() != null) {
-			probe.setStatus((TiersStatusEnumVd) bean.getStatus().getValue());
+		if (searchBean.getStatus() != null) {
+			probe.setStatus((TiersStatusEnumVd) searchBean.getStatus().getValue());
 		}
 
-		if (bean.getTiersType() != null) {
-			probe.setTiersType(bean.getTiersType().getValue());
+		if (searchBean.getTiersType() != null) {
+			probe.setTiersType(searchBean.getTiersType().getValue());
 		}
 		var example = Example.of(probe, matcher);
 		return dao.findAll(example).stream().map(mapper::mapToBean).collect(Collectors.toList());
@@ -92,28 +127,32 @@ public class TiersService extends AbstractService<TiersDto, String> {
 	public List<Message> save(TiersBean bean) {
 		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
-		
+
 		switch (bean.getAction()) {
 		case CREATE:
 		case UPDATE:
 			save(dto);
-			if( bean.getAction() == EditActionEnumVd.CREATE) {
-				messages.add(Message.success(String.format(CREATE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
-			}else {
-				messages.add(Message.success(String.format(UPDATE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
+			if (bean.getAction() == EditActionEnumVd.CREATE) {
+				messages.add(Message.success(
+						String.format(CREATE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
+			} else {
+				messages.add(Message.success(
+						String.format(UPDATE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
 			}
 			messages.addAll(tiersCategoryService.synchTiersCategories(bean, bean.getCategoriesHierarchie()));
 			break;
 
 		case CHANGE_STATUS:
 			save(dto);
-			messages.add(Message.success(String.format(CHANGE_STS_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
+			messages.add(Message.success(
+					String.format(CHANGE_STS_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
 			break;
 
 		case DELETE:
 			messages.addAll(tiersCategoryService.synchTiersCategories(bean, bean.getCategoriesHierarchie()));
 			delete(dto);
-			messages.add(Message.success(String.format(DELETE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
+			messages.add(Message.success(
+					String.format(DELETE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
 			break;
 		default:
 			return Collections.singletonList(Message.warn("Aucune action à effectuer"));
@@ -121,10 +160,9 @@ public class TiersService extends AbstractService<TiersDto, String> {
 
 		return messages;
 	}
-
-	public TiersBean findById(String id) {
-		return dao.findById(id).map(e -> mapper.mapToBean(e, Map.of(OPTION_MAP_TIERS_CATEGORY_KEY, true)))
-				.orElseThrow();
+	
+	private Supplier<RuntimeException> dtoNotFoundEx(String tiersCode){
+		return () -> new RuntimeException(String.format(DTO_NOT_FOUND, tiersCode));	
 	}
 
 }

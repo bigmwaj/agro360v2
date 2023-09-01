@@ -8,4 +8,5 @@ import com.agro360.dto.achat.BonCommandeDto;
 @Repository
 public interface IBonCommandeDao extends IDao<BonCommandeDto, String>{
 
+	
 }

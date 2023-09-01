@@ -6,6 +6,7 @@ import { IndexPageComponent } from './bon-commande/index.page.component';
 const routes: Routes = [
     { path: 'achat/bon-commande', component: IndexPageComponent },
     { path: 'achat/bon-commande/index', component: IndexPageComponent },
+    { path: 'achat/bon-commande/create', component: EditPageComponent },
     { path: 'achat/bon-commande/edit/:bonCommandeCode', component: EditPageComponent },
 ];
 

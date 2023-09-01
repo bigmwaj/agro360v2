@@ -17,8 +17,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @MappedSuperclass
 public abstract class AbstractDto {
-	
-	protected static String TEMP_PREF = "###";
 
 	@Column(name = "CREATED_BY", nullable = false, updatable = false, length = TiersDto.TIERS_CODE_LENGTH)
 	private String createBy;

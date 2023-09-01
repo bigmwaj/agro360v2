@@ -3,21 +3,25 @@ package com.agro360.service.logic.stock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.dao.common.IDao;
+import com.agro360.dao.stock.IUniteDao;
 import com.agro360.dao.stock.IVariantDao;
+import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.VariantDto;
 import com.agro360.dto.stock.VariantPk;
-import com.agro360.dto.stock.ArticleDto;
-import com.agro360.service.bean.stock.VariantBean;
 import com.agro360.service.bean.stock.ArticleBean;
+import com.agro360.service.bean.stock.VariantBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.VariantMapper;
 import com.agro360.service.message.Message;
+import com.agro360.vd.common.EditActionEnumVd;
 
 @Service
 public class VariantService extends AbstractService<VariantDto, VariantPk> {
@@ -30,6 +34,9 @@ public class VariantService extends AbstractService<VariantDto, VariantPk> {
 
 	@Autowired
 	IVariantDao dao;
+	
+	@Autowired
+	IUniteDao uniteDao;
 
 	@Autowired
 	VariantMapper mapper;
@@ -107,5 +114,16 @@ public class VariantService extends AbstractService<VariantDto, VariantPk> {
 		ex.getProbe().getArticle().setArticleCode(articleBean.getArticleCode().getValue());
 
 		return dao.findAll(ex);
+	}
+
+	public VariantBean initCreateFormBean(String articleCode, Optional<String> copyFrom) {
+		Objects.requireNonNull(articleCode);
+		
+		var dto = copyFrom.map(e -> new VariantPk(articleCode, e))
+				.map(dao::findById)
+				.flatMap(e -> e).orElseGet(VariantDto::new);
+		var bean = mapper.mapToBean(dto);
+		bean.setAction(EditActionEnumVd.CREATE);
+		return bean;
 	}
 }

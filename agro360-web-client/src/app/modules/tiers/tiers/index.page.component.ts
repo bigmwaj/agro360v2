@@ -1,23 +1,39 @@
-import { SelectionModel } from '@angular/cdk/collections';
-import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTable, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { TiersBean, TiersSearchBean } from 'src/app/backed/bean.tiers';
+import { BeanList } from 'src/app/common/bean.list';
+import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
+import { ChangeStatusDialogComponent } from './change-status.dialog.component';
+import { DeleteDialogComponent } from './delete.dialog.component';
+import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'src/app/common/shared.module';
+
+const BASE_URL = "http://localhost:8080";
 
 @Component({
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatCheckboxModule,
+        MatTableModule,
+        SharedModule
+    ],
     selector: 'tiers-tiers-index-page',
     templateUrl: './index.page.component.html'
 })
-export class IndexPageComponent implements OnInit {
+export class IndexPageComponent extends BeanList<TiersBean> implements OnInit {
 
     searchForm: TiersSearchBean;
-
-    dataSource: MatTableDataSource<TiersBean>;
-
-    @ViewChild(MatPaginator) paginator: MatPaginator;
 
     displayedColumns: string[] = [
         'select',
@@ -33,58 +49,55 @@ export class IndexPageComponent implements OnInit {
         'actions'
     ];
 
-    selection = new SelectionModel<TiersBean>(true, []);
+    @ViewChild(MatTable)
+    public table: MatTable<TiersBean>;
 
-    constructor(private router: Router,
+    constructor(
+        private router: Router,
         private route: ActivatedRoute,
-        private http: HttpClient) { }
+        private http: HttpClient,
+        public dialog: MatDialog
+    ) {
+        super()
+    }
+
+    override getViewChild(): MatTable<TiersBean> {
+        return this.table;
+    }
+
+    getKeyLabel(bean: TiersBean): string {
+        return bean.tiersCode.value;
+    }
 
     ngOnInit(): void {
+        this.resetSearchFormAction()
+    }
 
+    resetSearchFormAction() {
         this.http
-            .get("http://localhost:8080/tiers/tiers-form/search-tiers-form")
-            .pipe(map((data: any) => data))
+            .get(BASE_URL + "/tiers/tiers/search-form")
             .subscribe(data => {
                 this.searchForm = <TiersSearchBean>data;
+                this.searchAction();
             });
+    }
 
+    searchAction() {
+        let objJsonStr = JSON.stringify(this.searchForm);
+        let objJsonB64 = btoa(objJsonStr);
+
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append('q', objJsonB64);
         this.http
-            .get("http://localhost:8080/tiers/tiers")
+            .get(BASE_URL + "/tiers/tiers", { params: queryParams })
             .pipe(map((data: any) => data))
             .subscribe(data => {
-                this.dataSource = new MatTableDataSource<TiersBean>(data.records);
-                this.dataSource.paginator = this.paginator;
+                this.setData(data.records);
             });
-    }
-
-    /** Whether the number of selected elements matches the total number of rows. */
-    isAllSelected() {
-        const numSelected = this.selection.selected.length;
-        const numRows = this.dataSource != null ? this.dataSource.data.length : 0;
-        return numSelected === numRows;
-    }
-
-    /** Selects all rows if they are not all selected; otherwise clear selection. */
-    toggleAllRows() {
-        if (this.isAllSelected()) {
-            this.selection.clear();
-            return;
-        }
-
-        this.selection.select(...this.dataSource.data);
-    }
-
-    /** The label for the checkbox on the passed row */
-    checkboxLabel(row?: TiersBean): string {
-        if (!row) {
-            return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-        }
-        return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.tiersCode.value}`;
     }
 
     addAction() {
-        console.log('On crée');
-        //this.router.navigate(['create'], { relativeTo: this.route })
+        this.router.navigate(['create'], { relativeTo: this.route })
     }
 
     editAction(bean: TiersBean) {
@@ -92,18 +105,18 @@ export class IndexPageComponent implements OnInit {
     }
 
     copyAction(bean: TiersBean) {
-        this.router.navigate(['edit', bean.tiersCode.value], { relativeTo: this.route })
+        this.router.navigate(['create'], { relativeTo: this.route, queryParams: { 'copyFrom': bean.tiersCode.value } })
     }
 
     changeStatusAction(bean: TiersBean) {
-        // Open Dialog
+        this.dialog.open(ChangeStatusDialogComponent, { data: { tiersCode: bean.tiersCode.value } });
     }
 
     deleteAction(bean: TiersBean) {
-        // Open Dialog
+        this.dialog.open(DeleteDialogComponent, { data: { tiersCode: bean.tiersCode.value } });
     }
 
-    editCategoryAction() {
-        // Open Dialog
+    categoryAction() {
+        this.dialog.open(CategoryIndexModalComponent);
     }
 }

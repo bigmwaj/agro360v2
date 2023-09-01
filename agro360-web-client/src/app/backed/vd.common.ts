@@ -1,3 +1,3 @@
 
-export type MessageTypeEnumVd = "INFO" | "ERROR" | "WARN" | "SUCCESS";
-export type EditActionEnumVd = "CHANGE_STATUS" | "DELETE" | "SYNC" | "CREATE" | "UPDATE";
+export enum MessageTypeEnumVd { WARN = 'WARN', ERROR = 'ERROR', INFO = 'INFO', SUCCESS = 'SUCCESS' };
+export enum EditActionEnumVd { CHANGE_STATUS = 'CHANGE_STATUS', DELETE = 'DELETE', SYNC = 'SYNC', UPDATE = 'UPDATE', CREATE = 'CREATE' };

@@ -1,3 +1,3 @@
 
-export type TiersStatusEnumVd = "ACTIVE";
-export type TiersTypeEnumVd = "PERSON" | "COMPANY";
+export enum TiersStatusEnumVd { INACTIVE = 'INACTIVE', ACTIVE = 'ACTIVE' };
+export enum TiersTypeEnumVd { PERSON = 'PERSON', COMPANY = 'COMPANY' };

@@ -14,12 +14,10 @@ import com.agro360.vd.stock.TypeArticleEnumVd;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "STOCK_TBL_ARTICLE")
-public class ArticleDto extends AbstractDto 
-{
+public class ArticleDto extends AbstractDto {
 	@Id
 	@Column(name = "ARTICLE_CODE", updatable = false, length = 16)
 	@EqualsAndHashCode.Include()

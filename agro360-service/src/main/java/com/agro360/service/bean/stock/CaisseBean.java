@@ -5,31 +5,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.agro360.service.bean.common.AbstractFormBean;
+import com.agro360.service.bean.common.AbstractStatusTrackingFormBean;
 import com.agro360.service.bean.tiers.TiersBean;
 import com.agro360.service.metadata.FieldMetadata;
-import com.agro360.vd.stock.StatutCaisseEnumVd;
+import com.agro360.vd.stock.StatusCaisseEnumVd;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class CaisseBean extends AbstractFormBean {
+public class CaisseBean extends AbstractStatusTrackingFormBean<StatusCaisseEnumVd> {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 
-	private FieldMetadata<LocalDate> journee = new FieldMetadata<>();
+	private FieldMetadata<LocalDate> journee = new FieldMetadata<>("Journée");
 
-	private FieldMetadata<StatutCaisseEnumVd> statut = new FieldMetadata<>();
+	private FieldMetadata<StatusCaisseEnumVd> status = new FieldMetadata<>("Statut", getOptionsMap(StatusCaisseEnumVd.values(), StatusCaisseEnumVd::getLibelle));
 
-	private FieldMetadata<String> note = new FieldMetadata<>();
+	private FieldMetadata<String> note = new FieldMetadata<>("Note");
+	
+	private FieldMetadata<Double> depense = new FieldMetadata<>("Dépense");	
+	
+	private FieldMetadata<Double> recette = new FieldMetadata<>("Recette");	
+	
+	private FieldMetadata<Double> solde = new FieldMetadata<>("Solde");	
+
+	private FieldMetadata<String> plusVendus = new FieldMetadata<>("Les plus vendus");
+	
+	private FieldMetadata<String> plusAchetes = new FieldMetadata<>("Les plus achetés");
 	
 	private TiersBean agent = new TiersBean();
 
 	private MagasinBean magasin = new MagasinBean();
 
-	private List<OperationCaisseBean> operationsCaisse = new ArrayList<>();
+	private List<OperationCaisseBean> operations = new ArrayList<>();
 	
 	public void setMagasin(MagasinBean magasin) {
 		Objects.requireNonNull(magasin);

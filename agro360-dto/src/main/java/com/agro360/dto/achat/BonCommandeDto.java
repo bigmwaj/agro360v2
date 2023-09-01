@@ -10,10 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.agro360.dto.common.AbstractDto;
+import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.stock.MagasinDto;
 import com.agro360.dto.tiers.TiersDto;
-import com.agro360.vd.achat.StatutBonCommandeEnumVd;
+import com.agro360.vd.achat.StatusBonCommandeEnumVd;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,13 +21,13 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "ACHAT_TBL_BC")
-public class BonCommandeDto extends AbstractDto {
+public class BonCommandeDto extends AbstractStatusTrackingDto<StatusBonCommandeEnumVd> {
 	@Id
 	@Column(name = "BON_COMMANDE_CODE", updatable = false, length = 16)
 	@EqualsAndHashCode.Include()
 	private String bonCommandeCode;
 
-	@Column(name = "LIVRAISON", updatable = false, length = 16)
+	@Column(name = "LIVRAISON")
 	private Boolean livraison;
 
 	@Column(name = "DATE_BON_COMMANDE", nullable = false)
@@ -42,8 +42,8 @@ public class BonCommandeDto extends AbstractDto {
 	private MagasinDto magasin;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = StatutBonCommandeEnumVd.COLUMN_LENGTH)
-	private StatutBonCommandeEnumVd statut;
+	@Column(name = "STATUS", nullable = false, length = StatusBonCommandeEnumVd.COLUMN_LENGTH)
+	private StatusBonCommandeEnumVd status;
 
 	@Column(name = "DESCRIPTION", length = 256)
 	private String description;

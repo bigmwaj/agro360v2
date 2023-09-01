@@ -10,7 +10,7 @@ public class VenteSharedMapperHelper {
 		var commandeCode = bean.getCommandeCode().getValue();
 		CommandeDto commande;
 		if (null != commandeCode && commandeDao.existsById(commandeCode)) {
-			commande = commandeDao.getById(commandeCode);
+			commande = commandeDao.getReferenceById(commandeCode);
 		} else {
 			commande = new CommandeDto();
 			commande.setCommandeCode(commandeCode);

@@ -1,0 +1,92 @@
+import { CommonModule } from '@angular/common';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTable, MatTableModule } from '@angular/material/table';
+import { map } from 'rxjs';
+import { CasierBean } from 'src/app/backed/bean.stock';
+import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { BeanList } from 'src/app/common/bean.list';
+import { SharedModule } from 'src/app/common/shared.module';
+
+const BASE_URL = "http://localhost:8080";
+
+@Component({
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatCheckboxModule,
+        MatTableModule,
+        SharedModule
+    ],
+    selector: 'stock-magasin-edit-casier-list',
+    templateUrl: './edit.casier.list.component.html'
+})
+export class EditCasierListComponent extends BeanList<CasierBean> implements OnInit {
+
+    getKeyLabel(bean: CasierBean): string {
+        return bean.casierCode.value;
+    }
+
+    @Input()
+    magasinCode: string;
+
+    @Input()
+    casiers: Array<CasierBean>;
+
+    @ViewChild(MatTable)
+    table: MatTable<CasierBean>;
+
+    displayedColumns: string[] = [
+        'select',
+        'casierCode',
+        'description',
+        'actions'
+    ];
+
+    constructor(private http: HttpClient) {
+        super()
+    }
+
+    override getViewChild(): MatTable<CasierBean> {
+        return this.table;
+    }
+
+    ngOnInit(): void {
+        this.setData(this.casiers)
+    }
+
+    private __add(queryParams: HttpParams) {
+        this.http
+            .get(BASE_URL + "/stock/magasin/casier/create-form", { params: queryParams })
+            .pipe(map((data: any) => data))
+            .subscribe(data => {
+                this.addItem(<CasierBean>data);
+            });
+    }
+
+    addAction() {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append('magasinCode', this.magasinCode);
+
+        this.__add(queryParams);
+    }
+
+    copyAction(casier: CasierBean) {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append('magasinCode', this.magasinCode);
+        queryParams = queryParams.append('copyFrom', casier.casierCode.value);
+
+        this.__add(queryParams);
+    }
+
+    deleteAction(casier: CasierBean) {
+        casier.action = EditActionEnumVd.DELETE;
+    }
+}

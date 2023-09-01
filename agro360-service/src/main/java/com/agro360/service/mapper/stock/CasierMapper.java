@@ -32,7 +32,7 @@ public class CasierMapper extends AbstractMapper {
 		CasierPk pk;
 
 		if (null != magasinCode && null != casierCode && dao.existsById(pk = new CasierPk(magasinCode, casierCode))) {
-			dto = dao.getById(pk);
+			dto = dao.getReferenceById(pk);
 		} else {
 			dto = new CasierDto();
 			dto.setMagasin(magasin);

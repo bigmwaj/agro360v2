@@ -52,7 +52,7 @@ public class LigneMapper extends AstractLigneMapper<LigneDto> {
 		if (null != dto.getMagasin()) {
 			bean.setMagasin(magasinMapper.mapToBean(dto.getMagasin()));
 		}
-
+		
 		return bean;
 	}
 

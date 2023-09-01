@@ -8,38 +8,75 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.service.bean.stock.ArticleBean;
 import com.agro360.service.bean.stock.ArticleSearchBean;
+import com.agro360.service.bean.stock.ConversionBean;
+import com.agro360.service.bean.stock.VariantBean;
 import com.agro360.service.logic.stock.ArticleService;
+import com.agro360.service.logic.stock.ConversionService;
+import com.agro360.service.logic.stock.VariantService;
 import com.agro360.ws.controller.common.AbstractController;
 
-@RestController()
+@RestController
 @RequestMapping("/stock/article")
 public class ArticleController extends AbstractController {
 
 	@Autowired
 	private ArticleService articleService;
+	
+	@Autowired
+	private VariantService variantService;
+	
+	@Autowired
+	private ConversionService conversionService;
 
-	@GetMapping()
-	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<ArticleSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap("records", articleService.search(searchBean.orElse(new ArticleSearchBean()))));
+	@GetMapping
+	public ResponseEntity<ModelMap> searchAction(
+			@RequestBody(required = false) @Validated Optional<ArticleSearchBean> searchBean) {
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, articleService
+				.search(searchBean.orElse(new ArticleSearchBean()))));
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<ArticleBean> loadAction(@PathVariable String id) {
-		return ResponseEntity.ok(articleService.findById(id));
-	}
-
-	@PutMapping
+	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated ArticleBean bean, BindingResult br) {
 		var messages = articleService.save(bean);
-		var model = new ModelMap("messages", messages);
+		var model = new ModelMap(MESSAGES_MODEL_KEY, messages);
 		return ResponseEntity.ok(model);
+	}
+	
+	@GetMapping("/search-form")
+	public ResponseEntity<ArticleSearchBean> getSearchFormAction() {
+		return ResponseEntity.ok(articleService.initSearchFormBean());
+	}
+	
+	@GetMapping("/update-form")
+	public ResponseEntity<ArticleBean> getEditFormAction(@RequestParam String articleCode) {
+		return ResponseEntity.ok(articleService.initEditFormBean(articleCode));
+	}
+
+	@GetMapping("/create-form")
+	public ResponseEntity<ArticleBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
+		return ResponseEntity.ok(articleService.initCreateFormBean(copyFrom));
+	}
+
+	@GetMapping("/delete-form")
+	public ResponseEntity<ArticleBean> getDeleteFormAction(@RequestParam String articleCode) {
+		return ResponseEntity.ok(articleService.initDeleteFormBean(articleCode));
+	}
+	
+	@GetMapping("/variant/create-form")
+	public ResponseEntity<VariantBean> getVariantCreateFormAction(@RequestParam String articleCode, @RequestParam Optional<String> copyFrom) {
+		return ResponseEntity.ok(variantService.initCreateFormBean(articleCode, copyFrom));
+	}
+	
+	@GetMapping("/conversion/create-form")
+	public ResponseEntity<ConversionBean> getConversionCreateFormAction(@RequestParam String articleCode, @RequestParam Optional<String> copyFrom) {
+		return ResponseEntity.ok(conversionService.initCreateFormBean(articleCode, copyFrom));
 	}
 }

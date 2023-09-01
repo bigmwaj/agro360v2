@@ -14,16 +14,16 @@ public class TiersSearchBean extends AbstractBean{
 
 	private static final long serialVersionUID = 355487810396906725L;
 
-	private FieldMetadata<String> tiersCode = new FieldMetadata<>();
+	private FieldMetadata<String> tiersCode = new FieldMetadata<>("Code");
 
-	private FieldMetadata<TiersTypeEnumVd> tiersType = new FieldMetadata<>();
+	private FieldMetadata<TiersTypeEnumVd> tiersType = new FieldMetadata<>("Type");
 
-	private FieldMetadata<TiersStatusEnumVd> status = new FieldMetadata<>();
+	private FieldMetadata<TiersStatusEnumVd> status = new FieldMetadata<>("Statut");
 
-	private FieldMetadata<String> tiersName = new FieldMetadata<>();
+	private FieldMetadata<String> tiersName = new FieldMetadata<>("Nom du Tiers");
 
-	private FieldMetadata<String> phone = new FieldMetadata<>();
+	private FieldMetadata<String> phone = new FieldMetadata<>("Téléphone");
 
-	private FieldMetadata<String> email = new FieldMetadata<>();
+	private FieldMetadata<String> email = new FieldMetadata<>("Email");
 	
 }

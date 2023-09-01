@@ -11,7 +11,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 
 import com.agro360.dto.common.AbstractLigneDto;
-import com.agro360.vd.stock.StatutCaisseEnumVd;
+import com.agro360.vd.stock.StatusCaisseEnumVd;
 import com.agro360.vd.stock.TypeOperationEnumVd;
 
 import lombok.Data;
@@ -35,7 +35,7 @@ public class OperationCaisseDto extends AbstractLigneDto{
 	
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TYPE_OPERATION", nullable = false, length = StatutCaisseEnumVd.COLUMN_LENGTH)
+	@Column(name = "TYPE_OPERATION", nullable = false, length = StatusCaisseEnumVd.COLUMN_LENGTH)
 	private TypeOperationEnumVd typeOperation;
 
 }

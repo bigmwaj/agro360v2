@@ -14,11 +14,13 @@ import com.agro360.dao.vente.ILigneDao;
 import com.agro360.dto.vente.CommandeDto;
 import com.agro360.dto.vente.LigneDto;
 import com.agro360.service.bean.vente.CommandeBean;
+import com.agro360.service.bean.vente.CommandeSearchBean;
 import com.agro360.service.mapper.common.AbstractMapper;
 import com.agro360.service.mapper.stock.MagasinMapper;
 import com.agro360.service.mapper.stock.StockSharedMapperHelper;
 import com.agro360.service.mapper.tiers.TiersMapper;
 import com.agro360.service.mapper.tiers.TiersSharedMapperHelper;
+import com.agro360.vd.vente.StatusCommandeEnumVd;
 
 @Component
 public class CommandeMapper extends AbstractMapper {
@@ -45,6 +47,12 @@ public class CommandeMapper extends AbstractMapper {
 
 	@Autowired
 	private LigneMapper ligneMapper;
+	
+	public CommandeSearchBean mapToSearchBean() {
+		var bean = new CommandeSearchBean();
+		setMap(bean.getStatusIn()::setValueOptions, StatusCommandeEnumVd.values(), StatusCommandeEnumVd::getLibelle);
+		return bean;
+	}
 
 	public CommandeBean mapToBean(CommandeDto dto) {
 		return mapToBean(dto, Collections.emptyMap());
@@ -56,10 +64,12 @@ public class CommandeMapper extends AbstractMapper {
 		bean.getDateCommande().setValue(dto.getDateCommande());
 		bean.getTransportRequis().setValue(dto.getTransportRequis());
 		bean.getLivree().setValue(dto.getLivree());
-		bean.getStatut().setValue(dto.getStatut());
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getVille().setValue(dto.getVille());
 		bean.getAdresse().setValue(dto.getAdresse());
+		
+		setMap(bean.getStatus()::setValueOptions, StatusCommandeEnumVd.values(),StatusCommandeEnumVd::getLibelle);
+		bean.getStatus().setValue(dto.getStatus());
 
 		if (dto.getClient() != null) {
 			bean.setClient(tiersMapper.mapToBean(dto.getClient()));
@@ -79,6 +89,7 @@ public class CommandeMapper extends AbstractMapper {
 			var ligneBeans = ligneDao.findAll(ex).stream().map(ligneMapper::mapToBean).toList();
 			bean.getLignes().addAll(ligneBeans);
 		}
+		
 
 		return bean;
 	}
@@ -90,7 +101,7 @@ public class CommandeMapper extends AbstractMapper {
 		setDtoValue(dto::setDateCommande, bean.getDateCommande());
 		setDtoValue(dto::setTransportRequis, bean.getTransportRequis());
 		setDtoValue(dto::setLivree, bean.getLivree());
-		setDtoValue(dto::setStatut, bean.getStatut());
+		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setDescription, bean.getDescription());
 		setDtoValue(dto::setVille, bean.getVille());
 		setDtoValue(dto::setAdresse, bean.getAdresse());

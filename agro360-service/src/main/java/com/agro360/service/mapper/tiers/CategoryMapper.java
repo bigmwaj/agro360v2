@@ -36,6 +36,7 @@ public class CategoryMapper extends AbstractMapper {
 					.map(e -> mapToBean(e, Map.of(OPTION_HIRARCHIE_DEEP_KEY, remainDeep))).toList();
 			bean.getChildren().addAll(children);
 		}
+
 		return bean;
 	}
 
@@ -44,7 +45,7 @@ public class CategoryMapper extends AbstractMapper {
 		dto.setCategoryCode(bean.getCategoryCode().getValue());
 
 		if (categoryDao.existsById(dto.getCategoryCode())) {
-			dto = categoryDao.getById(dto.getCategoryCode());
+			dto = categoryDao.getReferenceById(dto.getCategoryCode());
 		}
 		setDtoValue(dto::setDescription, bean.getDescription());
 

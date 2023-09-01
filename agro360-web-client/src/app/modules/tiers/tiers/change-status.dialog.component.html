@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Confirmation changement de status</h2>
+<mat-dialog-content>
+    <div *ngIf="bean">
+        <div class="row">
+            <div class="col-6">
+                <input-text-field [field]="bean.tiersCode"></input-text-field>
+            </div>
+            <div class="col-6">
+                <select-one-field [field]="bean.status"></select-one-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input-text-field [field]="bean.tiersCode"></input-text-field>
+            </div>
+            <div class="col-6">
+                <input-text-field [field]="bean.status"></input-text-field>
+            </div>
+        </div>
+    </div>    
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button cdkFocusInitial (click)="changeStatusAction()">Changer</button>
+</mat-dialog-actions>

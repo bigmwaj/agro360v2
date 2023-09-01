@@ -18,13 +18,13 @@ public class LigneBean extends AbstractLigneBean<LigneDto> {
 
 	private MagasinBean magasin = new MagasinBean();
 
-	private FieldMetadata<String> casierCode = new FieldMetadata<>();
+	private FieldMetadata<String> casierCode = new FieldMetadata<>("Casier");
 
-	private FieldMetadata<Boolean> nonFacturable = new FieldMetadata<>();
+	private FieldMetadata<Boolean> nonFacturable = new FieldMetadata<>("Non Facturable?");
 
-	private FieldMetadata<Boolean> nonEmballee = new FieldMetadata<>();
+	private FieldMetadata<Boolean> nonEmballee = new FieldMetadata<>("Non Emballée?");
 
-	private FieldMetadata<Boolean> nonCartonnee = new FieldMetadata<>();
+	private FieldMetadata<Boolean> nonCartonnee = new FieldMetadata<>("Non Cartonnée?");
 	
 	public void setMagasin(MagasinBean magasin) {
 		Objects.requireNonNull(magasin);

@@ -3,17 +3,17 @@ package com.agro360.service.bean.production.avicole;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.agro360.service.bean.common.AbstractFormBean;
+import com.agro360.service.bean.common.AbstractStatusTrackingFormBean;
 import com.agro360.service.bean.stock.MagasinBean;
 import com.agro360.service.metadata.FieldMetadata;
-import com.agro360.vd.production.avicole.StatutCycleEnumVd;
+import com.agro360.vd.production.avicole.StatusCycleEnumVd;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class CycleBean extends AbstractFormBean {
+public class CycleBean extends AbstractStatusTrackingFormBean<StatusCycleEnumVd> {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 
@@ -21,7 +21,7 @@ public class CycleBean extends AbstractFormBean {
 
 	private FieldMetadata<String> cycleCode = new FieldMetadata<>();
 
-	private FieldMetadata<StatutCycleEnumVd> statut = new FieldMetadata<>();
+	private FieldMetadata<StatusCycleEnumVd> status = new FieldMetadata<>();
 
 	private MagasinBean magasin = new MagasinBean();
 

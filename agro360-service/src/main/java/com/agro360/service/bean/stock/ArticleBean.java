@@ -3,7 +3,7 @@ package com.agro360.service.bean.stock;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.agro360.service.bean.common.AbstractFormBean;
+import com.agro360.service.bean.common.AbstractBean;
 import com.agro360.service.metadata.FieldMetadata;
 import com.agro360.vd.stock.TypeArticleEnumVd;
 
@@ -12,15 +12,15 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class ArticleBean extends AbstractFormBean {
+public class ArticleBean extends AbstractBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 
-	private FieldMetadata<String> articleCode = new FieldMetadata<>();
+	private FieldMetadata<String> articleCode = new FieldMetadata<>("Article");
 
-	private FieldMetadata<String> description = new FieldMetadata<>();
+	private FieldMetadata<String> description = new FieldMetadata<>("Libellé");
 
-	private FieldMetadata<TypeArticleEnumVd> typeArticle = new FieldMetadata<>();
+	private FieldMetadata<TypeArticleEnumVd> typeArticle = new FieldMetadata<>("Type");
 
 	private UniteBean unite = new UniteBean();
 	

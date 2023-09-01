@@ -15,8 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity(name = "VENTE_TBL_COMMANDE_LIGNE")
-public class LigneDto extends AbstractLigneDto
-{
+public class LigneDto extends AbstractLigneDto {
 
 	@ManyToOne()
 	@JoinColumn(name = "COMMANDE_CODE", nullable = false, updatable = false)

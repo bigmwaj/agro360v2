@@ -6,7 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
-import com.agro360.dto.common.AbstractDto;
+import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.vd.tiers.TiersStatusEnumVd;
 import com.agro360.vd.tiers.TiersTypeEnumVd;
 
@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "TIERS_TBL_TIERS")
-public class TiersDto extends AbstractDto {
+public class TiersDto extends AbstractStatusTrackingDto<TiersStatusEnumVd> {
 	
 	public static final int TIERS_CODE_LENGTH = 16;
 

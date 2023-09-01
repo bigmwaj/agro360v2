@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 html,
 body {
@@ -15,6 +16,132 @@ table {
     width: 100%;
 }
 
+.menu-spacer {
+    flex: 1 1 auto;
+}
+
 form-field+form-field {
     margin-left: 8px;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+/*
+.mat-table td .mat-form-field-underline {
+    display: none;
+}
+
+.mat-table td .mat-form-field-label-wrapper {
+    display: none;
+}
+
+.mat-table td .mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 0.5em 0;
+}
+
+.mat-table td mat-form-field {
+    width: auto;
+}
+*/
+
+.input-field {
+    width: 100%;
+}
+
+.edit-bean-form .input-field {
+    width: 100%;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.beans-table.editable th {
+    text-align: center;
+}
+
+.beans-table.editable th,
+.beans-table.editable td {
+    padding: 2px 2px 0 2px;
+}
+
+.beans-table.editable .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+.beans-table.editable .mat-mdc-text-field-wrapper {
+    padding: 0 5px;
+}
+
+.beans-table.editable .mat-mdc-form-field-infix {
+    padding: 10px 0px;
+    min-height: auto;
+}
+
+table.caisse-operation td.mat-column-numero .mat-mdc-form-field-infix {
+    width: 50px;
+}
+
+table.caisse-operation td.mat-column-numero .mat-mdc-form-field-infix input {
+    text-align: center;
+}
+
+table.caisse-operation td.mat-column-quantite .mat-mdc-form-field-infix {
+    width: 50px;
+}
+
+table.caisse-operation td.mat-column-quantite .mat-mdc-form-field-infix input {
+    text-align: center;
+}
+
+table.caisse-operation td.mat-column-prixUnitaire .mat-mdc-form-field-infix {
+    width: 75px;
+}
+
+table.caisse-operation td.mat-column-prixUnitaire .mat-mdc-form-field-infix input {
+    text-align: center;
+}
+
+table.caisse-operation td.mat-column-prixTotal .mat-mdc-form-field-infix {
+    width: 80px;
+}
+
+table.caisse-operation td.mat-column-prixTotal .mat-mdc-form-field-infix input {
+    text-align: center;
+}
+
+.example-tree-invisible {
+    display: none;
+}
+
+.example-tree ul,
+.example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+/*
+   * This padding sets alignment of the nested nodes.
+   */
+.example-tree .mat-nested-tree-node div[role=group] {
+    padding-left: 40px;
+}
+
+/*
+   * Padding for leaf nodes.
+   * Leaf nodes need to have padding so as to align with other non-leaf nodes
+   * under the same parent.
+   */
+.example-tree div[role=group]>.mat-tree-node {
+    padding-left: 40px;
 }

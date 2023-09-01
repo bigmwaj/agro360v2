@@ -10,10 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.agro360.dto.common.AbstractDto;
+import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.stock.MagasinDto;
 import com.agro360.dto.tiers.TiersDto;
-import com.agro360.vd.vente.StatutCommandeEnumVd;
+import com.agro360.vd.vente.StatusCommandeEnumVd;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,8 +21,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "VENTE_TBL_COMMANDE")
-public class CommandeDto extends AbstractDto
-{
+public class CommandeDto extends AbstractStatusTrackingDto<StatusCommandeEnumVd> {
 	@Id
 	@Column(name = "COMMANDE_CODE", length = 16, nullable = false, updatable = false)
 	@EqualsAndHashCode.Include()
@@ -46,8 +45,8 @@ public class CommandeDto extends AbstractDto
 	private Boolean livree;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = StatutCommandeEnumVd.COLUMN_LENGTH)
-	private StatutCommandeEnumVd statut;
+	@Column(name = "STATUT", nullable = false, length = StatusCommandeEnumVd.COLUMN_LENGTH)
+	private StatusCommandeEnumVd status;
 
 	@Column(name = "DESCRIPTION", length = 255)
 	private String description;

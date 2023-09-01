@@ -14,6 +14,7 @@ import com.agro360.service.bean.common.AbstractLigneBean;
 import com.agro360.service.mapper.stock.ArticleMapper;
 import com.agro360.service.mapper.stock.StockSharedMapperHelper;
 import com.agro360.service.mapper.stock.UniteMapper;
+import com.agro360.vd.stock.TypeLigneEnumVd;
 
 public abstract class AstractLigneMapper<E extends AbstractLigneDto> extends AbstractMapper {
 
@@ -38,11 +39,13 @@ public abstract class AstractLigneMapper<E extends AbstractLigneDto> extends Abs
 	public AbstractLigneBean<E> mapToBean(E dto, AbstractLigneBean<E> bean, Map<String, Object> options) {
 		bean.getLigneId().setValue(dto.getLigneId());
 		bean.getNumero().setValue(dto.getNumero());
-		bean.getTypeLigne().setValue(dto.getTypeLigne());
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getQuantite().setValue(dto.getQuantite());
 		bean.getPrixUnitaire().setValue(dto.getPrixUnitaire());
 		bean.getVariantCode().setValue(dto.getVariantCode());
+		
+		setMap(bean.getTypeLigne()::setValueOptions, TypeLigneEnumVd.values(),TypeLigneEnumVd::getLibelle);
+		bean.getTypeLigne().setValue(dto.getTypeLigne());
 
 		if (dto.getUnite() != null) {
 			bean.setUnite(uniteMapper.mapToBean(dto.getUnite()));
@@ -59,7 +62,7 @@ public abstract class AstractLigneMapper<E extends AbstractLigneDto> extends Abs
 		var id = bean.getLigneId().getValue();
 		E dto = null;
 		if ( null != id && getDao().existsById(id)) {
-			dto = getDao().getById(id);
+			dto = getDao().getReferenceById(id);
 		} else {
 			dto = newDtoSpl.get();
 			dto.setLigneId(bean.getLigneId().getValue());

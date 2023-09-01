@@ -9,15 +9,17 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.service.bean.achat.BonCommandeBean;
 import com.agro360.service.bean.achat.BonCommandeSearchBean;
+import com.agro360.service.bean.achat.LigneBean;
 import com.agro360.service.logic.achat.BonCommandeService;
+import com.agro360.service.logic.achat.LigneService;
 import com.agro360.service.message.Message;
 import com.agro360.ws.controller.common.AbstractController;
 
@@ -28,20 +30,51 @@ public class BonCommandeController extends AbstractController {
 	@Autowired
 	private BonCommandeService bonCommandeService;
 
+	@Autowired
+	private LigneService ligneService;
+
 	@GetMapping()
-	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<BonCommandeSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap("records", bonCommandeService.search(searchBean.orElse(new BonCommandeSearchBean()))));
+	public ResponseEntity<ModelMap> searchAction(
+			@RequestBody(required = false) @Validated Optional<BonCommandeSearchBean> searchBean) {
+		var q = searchBean.orElse(new BonCommandeSearchBean());
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, bonCommandeService.search(q)));
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<BonCommandeBean> loadAction(@PathVariable String id) {
-		return ResponseEntity.ok(bonCommandeService.findById(id));
-	}
-
-	@PutMapping
+	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated BonCommandeBean bean, BindingResult br) {
 		List<Message> messages = bonCommandeService.save(bean);
-		ModelMap model = new ModelMap("messages", messages);
+		ModelMap model = new ModelMap(MESSAGES_MODEL_KEY, messages);
 		return ResponseEntity.ok(model);
+	}
+	@GetMapping("/search-form")
+	public ResponseEntity<BonCommandeSearchBean> getSearchFormAction() {
+		return ResponseEntity.ok(bonCommandeService.initSearchFormBean());
+	}
+	
+	@GetMapping("/update-form")
+	public ResponseEntity<BonCommandeBean> getEditFormAction(@RequestParam String bonCommandeCode) {
+		return ResponseEntity.ok(bonCommandeService.initEditFormBean(bonCommandeCode));
+	}
+
+	@GetMapping("/create-form")
+	public ResponseEntity<BonCommandeBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
+		return ResponseEntity.ok(bonCommandeService.initCreateFormBean(copyFrom));
+	}
+
+	@GetMapping("/delete-form")
+	public ResponseEntity<BonCommandeBean> getDeleteFormAction(@RequestParam String bonCommandeCode) {
+		return ResponseEntity.ok(bonCommandeService.initDeleteFormBean(bonCommandeCode));
+	}
+
+	@GetMapping("/change-status-form")
+	public ResponseEntity<BonCommandeBean> getChangeStatusFormAction(@RequestParam String bonCommandeCode) {
+		return ResponseEntity.ok(bonCommandeService.initChangeStatusFormBean(bonCommandeCode));
+	}
+	
+	@GetMapping("/ligne/create-form")
+	public ResponseEntity<LigneBean> getLigneCreateFormAction(
+			@RequestParam(required = false) String bonCommandeCode, 
+			@RequestParam Optional<Long> copyFrom) {
+		return ResponseEntity.ok(ligneService.initFormBean(bonCommandeCode, copyFrom));
 	}
 }

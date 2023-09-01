@@ -13,8 +13,8 @@ public class ArticleSearchBean extends AbstractBean{
 
 	private static final long serialVersionUID = 355487810396906725L;
 
-	private FieldMetadata<String> articleCode = new FieldMetadata<>();
+	private FieldMetadata<String> articleCode = new FieldMetadata<>("Code");
 
-	private FieldMetadata<TypeArticleEnumVd> typeArticle = new FieldMetadata<>();
+	private FieldMetadata<TypeArticleEnumVd> typeArticle = new FieldMetadata<>("Type");
 	
 }

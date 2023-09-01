@@ -1,3 +1,3 @@
 
-export type StatutBonCommandeEnumVd = "RECT" | "BRLN" | "ATAP" | "RECP" | "APPR" | "REJT" | "ANNL";
-export type StatutReceptionEnumVd = "ATAP" | "APPR" | "ANNL";
+export enum StatusReceptionEnumVd { APPR = 'APPR', ANNL = 'ANNL', ATAP = 'ATAP' };
+export enum StatusBonCommandeEnumVd { APPR = 'APPR', ANNL = 'ANNL', RECP = 'RECP', RECT = 'RECT', REJT = 'REJT', ATAP = 'ATAP', BRLN = 'BRLN' };

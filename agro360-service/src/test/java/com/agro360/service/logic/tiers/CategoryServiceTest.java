@@ -118,7 +118,7 @@ public class CategoryServiceTest {
 		var root = findById(categoryCode).orElse(null);
 		
 		// When
-		when(categoryDao.getById(any())).thenReturn(root);	
+		when(categoryDao.getReferenceById(any())).thenReturn(root);	
 		CategoryBean bean = service.findRootCategory(Optional.empty());
 		
 		// Then

@@ -12,10 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.agro360.dto.common.AbstractDto;
+import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.stock.CasierDto;
 import com.agro360.dto.stock.MagasinDto;
-import com.agro360.vd.achat.StatutReceptionEnumVd;
+import com.agro360.vd.achat.StatusReceptionEnumVd;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,8 +23,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "ACHAT_TBL_BC_LIGNE_RECEP")
-public class ReceptionDto extends AbstractDto
-{
+public class ReceptionDto extends AbstractStatusTrackingDto<StatusReceptionEnumVd> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "RECEPTION_ID", nullable = false, updatable = false)
@@ -39,8 +38,8 @@ public class ReceptionDto extends AbstractDto
 	private String description;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = StatutReceptionEnumVd.COLUMN_LENGTH)
-	private StatutReceptionEnumVd statut;
+	@Column(name = "STATUS", nullable = false, length = StatusReceptionEnumVd.COLUMN_LENGTH)
+	private StatusReceptionEnumVd status;
 
 	@Column(name = "PRIX_UNITAIRE", nullable = false, precision = 16, scale = 4)
 	private Double prixUnitaire;

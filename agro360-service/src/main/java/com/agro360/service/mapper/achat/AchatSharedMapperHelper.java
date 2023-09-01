@@ -13,7 +13,7 @@ public class AchatSharedMapperHelper {
 		var bonCommandeCode = bean.getBonCommandeCode().getValue();
 		BonCommandeDto bonCommande;
 		if (null != bonCommandeCode && bonCommandeDao.existsById(bonCommandeCode)) {
-			bonCommande = bonCommandeDao.getById(bonCommandeCode);
+			bonCommande = bonCommandeDao.getReferenceById(bonCommandeCode);
 		} else {
 			bonCommande = new BonCommandeDto();
 			bonCommande.setBonCommandeCode(bonCommandeCode);
@@ -26,7 +26,7 @@ public class AchatSharedMapperHelper {
 		var ligneId = bean.getLigneId().getValue();
 		LigneDto ligne;
 		if (null != ligneId && ligneDao.existsById(ligneId)) {
-			ligne = ligneDao.getById(ligneId);
+			ligne = ligneDao.getReferenceById(ligneId);
 		} else {
 			ligne = new LigneDto();
 			ligne.setLigneId(ligneId);

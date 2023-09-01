@@ -1,10 +1,8 @@
 <div *ngIf="bean">
-    <div>
-        <input-checkbox-field [field]="bean.selected" [label]="bean.categoryCode.value"></input-checkbox-field>
-        <span>
-            {{ bean.description.value }}
-        </span>
-    </div>    
+    <input-checkbox-field 
+        [field]="bean.selected" 
+        [label]="bean.categoryCode.value + ' ' + bean.description.value">
+    </input-checkbox-field>
     <div *ngIf="bean.children" style="margin-left:32px;">
         <div *ngFor="let child of bean.children">
             <tiers-tiers-category-block [bean] = "child"></tiers-tiers-category-block>

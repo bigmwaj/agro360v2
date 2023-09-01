@@ -81,21 +81,5 @@ public class TiersServiceTest {
 			() -> assertEquals(2, results.size())
 		);
 	}
-	
-	@Test
-	void testLoad() {
-		// Given
-		String code = "PERSON";
-		
-		// When
-		//when(tiersMapper.g(code)).thenReturn(findById(code));	
-		when(tiersDao.findById(code)).thenReturn(findById(code));	
-		TiersBean bean = service.findById(code);
-		
-		// Then
-		assertAll(
-			() -> assertNotNull(bean)
-		);
-	}
 
 }

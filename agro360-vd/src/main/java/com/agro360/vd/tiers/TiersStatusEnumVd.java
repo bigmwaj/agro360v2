@@ -2,7 +2,9 @@ package com.agro360.vd.tiers;
 
 public enum TiersStatusEnumVd {
 
-	ACTIVE("Active");
+	ACTIVE("Active"),
+	
+	INACTIVE("Inactive");
 	
 	public static final int COLUMN_LENGTH = 8;
 	

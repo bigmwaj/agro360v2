@@ -12,10 +12,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity(name = "ACHAT_TBL_BC_LIGNE")
-public class LigneDto extends AbstractLigneDto
-{
+public class LigneDto extends AbstractLigneDto {
+	
 	@ManyToOne()
 	@JoinColumn(name = "BON_COMMANDE_CODE", nullable = false, updatable = false)
 	private BonCommandeDto bonCommande;
-	
+
 }

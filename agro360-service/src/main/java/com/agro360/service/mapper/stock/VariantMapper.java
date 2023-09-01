@@ -37,7 +37,7 @@ public class VariantMapper extends AbstractMapper {
 		VariantPk pk;
 
 		if (Objects.nonNull(articleCode) && Objects.nonNull(variantCode) && dao.existsById(pk = new VariantPk(articleCode, variantCode))) {
-			dto = dao.getById(pk);
+			dto = dao.getReferenceById(pk);
 		}else {
 			dto = new VariantDto();
 			dto.setVariantCode(variantCode);

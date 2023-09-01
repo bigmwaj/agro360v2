@@ -8,8 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PaiementTiersDto extends AbstractDto
-{
+public class PaiementTiersDto extends AbstractDto {
 	@EqualsAndHashCode.Include()
 	private String paiementId;
 
@@ -27,5 +26,4 @@ public class PaiementTiersDto extends AbstractDto
 
 	private String description;
 
-	
 }

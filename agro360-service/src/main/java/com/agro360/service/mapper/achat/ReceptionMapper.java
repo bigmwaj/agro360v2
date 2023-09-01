@@ -63,7 +63,7 @@ public class ReceptionMapper extends AbstractMapper {
 		bean.getDateReception().setValue(dto.getDateReception());
 		bean.getCasierCode().setValue(dto.getCasierCode());
 		bean.getReceptionId().setValue(dto.getReceptionId());
-		bean.getStatut().setValue(dto.getStatut());
+		bean.getStatus().setValue(dto.getStatus());
 
 		bean.setLigne(ligneMapper.mapToBean(dto.getLigne()));
 		bean.setMagasin(magasinMapper.mapToBean(dto.getMagasin()));
@@ -74,12 +74,12 @@ public class ReceptionMapper extends AbstractMapper {
 		ReceptionDto dto;
 		var receptionId = bean.getReceptionId().getValue();
 		if (null != receptionId && dao.existsById(receptionId)) {
-			dto = dao.getById(receptionId);
+			dto = dao.getReferenceById(receptionId);
 		} else {
 			dto = new ReceptionDto();
 			dto.setReceptionId(receptionId);
 		}
-		setDtoValue(dto::setStatut, bean.getStatut());
+		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setDescription, bean.getDescription());
 		setDtoValue(dto::setPrixUnitaire, bean.getPrixUnitaire());
 		setDtoValue(dto::setQuantite, bean.getQuantite());

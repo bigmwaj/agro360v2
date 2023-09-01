@@ -11,9 +11,9 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.agro360.dto.common.AbstractDto;
+import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.tiers.TiersDto;
-import com.agro360.vd.stock.StatutCaisseEnumVd;
+import com.agro360.vd.stock.StatusCaisseEnumVd;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "STOCK_TBL_CAISSE")
 @IdClass(CaissePk.class)
-public class CaisseDto extends AbstractDto {
+public class CaisseDto extends AbstractStatusTrackingDto<StatusCaisseEnumVd> {
 
 	@Id
 	@ManyToOne()
@@ -42,8 +42,8 @@ public class CaisseDto extends AbstractDto {
 	private LocalDate journee;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = StatutCaisseEnumVd.COLUMN_LENGTH)
-	private StatutCaisseEnumVd statut;
+	@Column(name = "STATUS", nullable = false, length = StatusCaisseEnumVd.COLUMN_LENGTH)
+	private StatusCaisseEnumVd status;
 
 	@Column(name = "NOTE", length = 128)
 	private String note;

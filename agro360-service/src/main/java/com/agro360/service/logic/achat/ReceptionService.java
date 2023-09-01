@@ -20,7 +20,7 @@ import com.agro360.service.bean.achat.ReceptionBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.achat.ReceptionMapper;
 import com.agro360.service.message.Message;
-import com.agro360.vd.achat.StatutReceptionEnumVd;
+import com.agro360.vd.achat.StatusReceptionEnumVd;
 
 @Service
 public class ReceptionService extends AbstractService<ReceptionDto, Long> {
@@ -111,7 +111,7 @@ public class ReceptionService extends AbstractService<ReceptionDto, Long> {
 		ex.getProbe().getLigne().setLigneId(ligne.getLigneId());
 		ex.getProbe().getLigne().setBonCommande(new BonCommandeDto());
 		ex.getProbe().getLigne().getBonCommande().setBonCommandeCode(ligne.getBonCommande().getBonCommandeCode());
-		return dao.findAll(ex).stream().filter(e -> !StatutReceptionEnumVd.ANNL.equals(e.getStatut()));
+		return dao.findAll(ex).stream().filter(e -> !StatusReceptionEnumVd.ANNL.equals(e.getStatus()));
 
 	}
 

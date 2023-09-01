@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,13 @@ import org.springframework.stereotype.Service;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dto.stock.ArticleDto;
+import com.agro360.service.bean.common.AbstractBean;
 import com.agro360.service.bean.stock.ArticleBean;
 import com.agro360.service.bean.stock.ArticleSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.ArticleMapper;
 import com.agro360.service.message.Message;
+import com.agro360.vd.common.EditActionEnumVd;
 
 @Service
 public class ArticleService extends AbstractService<ArticleDto, String> {
@@ -31,21 +35,51 @@ public class ArticleService extends AbstractService<ArticleDto, String> {
 
 	private static final String DELETE_SUCCESS = "Enregistrement supprimé avec succès!";
 
-	@Autowired
-	IArticleDao dao;
+	private static final String DTO_NOT_FOUND = "Aucun n'article de code %s n'a été trouvé";
 
 	@Autowired
-	VariantService variantService;
+	private IArticleDao dao;
 
 	@Autowired
-	ConversionService conversionService;
+	private VariantService variantService;
 
 	@Autowired
-	ArticleMapper mapper;
+	private ConversionService conversionService;
+
+	@Autowired
+	private ArticleMapper mapper;
 
 	@Override
 	protected IDao<ArticleDto, String> getDao() {
 		return dao;
+	}
+	
+	public ArticleSearchBean initSearchFormBean() {
+		return mapper.mapToSearchBean();
+	}
+	
+	public ArticleBean initEditFormBean(String articleCode) {
+		var dto = dao.findById(articleCode).orElseThrow(dtoNotFoundEx(articleCode));
+		var bean = mapper.mapToBean(dto,  Map.of(OPTION_MAP_CONVERSION_KEY, true, OPTION_MAP_VARIANT_KEY, true));
+		return bean;
+	}
+	
+	public ArticleBean initDeleteFormBean(String articleCode) {
+		var bean = dao.findById(articleCode).map(mapper::mapToBean).orElseThrow(dtoNotFoundEx(articleCode));
+		bean.setAction(EditActionEnumVd.DELETE);
+		return bean;
+	}
+
+	public ArticleBean initCreateFormBean(Optional<String> copyFrom) {
+		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(ArticleDto::new);
+		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_CONVERSION_KEY, true, OPTION_MAP_VARIANT_KEY, true));
+		bean.getArticleCode().setValue(null);
+		
+		AbstractBean.setActionToCreate.accept(bean);
+		bean.getVariants().stream().forEach(AbstractBean.setActionToCreate);
+		bean.getConversions().stream().forEach(AbstractBean.setActionToCreate);
+		
+		return bean;
 	}
 
 	public List<ArticleBean> search(ArticleSearchBean searchBean) {
@@ -64,7 +98,7 @@ public class ArticleService extends AbstractService<ArticleDto, String> {
 			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
 		}
 		
-		ArticleDto dto = mapper.mapToDto(bean);
+		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
 		switch (bean.getAction()) {
@@ -88,16 +122,14 @@ public class ArticleService extends AbstractService<ArticleDto, String> {
 			delete(dto);
 			messages.add(Message.success(DELETE_SUCCESS));
 			break;
+			
 		default:
 			return Collections.singletonList(Message.warn("Aucune action à effectuer"));
 		}
 		return messages;
 	}
-
-	public ArticleBean findById(String id) {
-		return dao.findById(id)
-				.map(e -> mapper.mapToBean(e, Map.of(OPTION_MAP_CONVERSION_KEY, true, OPTION_MAP_VARIANT_KEY, true)))
-				.orElseThrow();
+	
+	private Supplier<RuntimeException> dtoNotFoundEx(String articleCode){
+		return () -> new RuntimeException(String.format(DTO_NOT_FOUND, articleCode));	
 	}
-
 }

@@ -1,0 +1,167 @@
+<div class="row">
+    <div class="col-3" *ngIf="plusVendus">
+        <select-one-field 
+            [field]="plusVendus"
+            (onChange)="plusVenduSelectEvent()">
+        </select-one-field>
+    </div>
+    <div class="col-3" *ngIf="plusAchetes">
+        <select-one-field 
+            [field]="plusAchetes"
+            (onChange)="plusAcheteSelectEvent()">
+        </select-one-field>
+    </div>
+</div>
+
+<div class="table-wrapper">
+    <table mat-table [dataSource]="this" class="beans-table editable caisse-operation">
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef class="select">
+                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" 
+                    [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)" 
+                    [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="typeOperation">
+            <th mat-header-cell *matHeaderCellDef>Type Ope.</th>
+            <td mat-cell *matCellDef="let element">
+                <select-one-field 
+                    [field]="element.typeOperation"               
+                    (onChange)="updatePrixTotalEvent(element)" 
+                    [displayLabel]="false">
+                </select-one-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateOperation">
+            <th mat-header-cell *matHeaderCellDef>Date Ope.</th>
+            <td mat-cell *matCellDef="let element">
+                <input-datetime-field 
+                    [field]="element.dateOperation" 
+                    [displayLabel]="false">
+                </input-datetime-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="numero" class="numero">
+            <th mat-header-cell *matHeaderCellDef>#</th>
+            <td mat-cell *matCellDef="let element">
+                <input-number-field 
+                    [field]="element.numero" 
+                    [displayLabel]="false">
+                </input-number-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="variantCode">
+            <th mat-header-cell *matHeaderCellDef>Variant</th>
+            <td mat-cell *matCellDef="let element">
+                <select-one-field 
+                    [field]="element.variantCode" 
+                    [displayLabel]="false">
+                </select-one-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="article">
+            <th mat-header-cell *matHeaderCellDef>Article</th>
+            <td mat-cell *matCellDef="let element">
+                <select-one-field  [displayLabel]="false"
+                    (onChange)="onSelectArticleEvent(element)" 
+                    *ngIf="selectArticleFromList(element)" 
+                    [field]="element.article.articleCode">
+                </select-one-field>
+                <input-text-field 
+                    *ngIf="!selectArticleFromList(element)" 
+                    [field]="element.article.articleCode">
+                </input-text-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="prixUnitaire">
+            <th mat-header-cell *matHeaderCellDef>PU</th>
+            <td mat-cell *matCellDef="let element">
+                <input-number-field [displayLabel]="false"
+                    (onChange)="updatePrixTotalEvent(element)" 
+                    [field]="element.prixUnitaire">
+                </input-number-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="quantite">
+            <th mat-header-cell *matHeaderCellDef>Qté</th>
+            <td mat-cell *matCellDef="let element">
+                <input-number-field [displayLabel]="false"                    
+                    (onChange)="updatePrixTotalEvent(element)"     
+                    [field]="element.quantite">
+                </input-number-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="prixTotal">
+            <th mat-header-cell *matHeaderCellDef>PT</th>
+            <td mat-cell *matCellDef="let element">
+                <input-number-field 
+                    [field]="element.prixTotal" 
+                    [displayLabel]="false">
+                </input-number-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="typeLigne">
+            <th mat-header-cell *matHeaderCellDef>Type Ligne</th>
+            <td mat-cell *matCellDef="let element">
+                <select-one-field 
+                    [displayLabel]="false"
+                    (onChange)="onSelectTypeLigneEvent(element)" 
+                    [field]="element.typeLigne">
+                </select-one-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="unite">
+            <th mat-header-cell *matHeaderCellDef>Unité</th>
+            <td mat-cell *matCellDef="let element">
+                <select-one-field
+                    [displayLabel]="false"
+                    *ngIf="selectUniteFromList(element)" 
+                    [field]="element.unite.uniteCode">
+                </select-one-field>
+                <input-text-field 
+                    *ngIf="!selectUniteFromList(element)" 
+                    [field]="element.unite.uniteCode">
+                </input-text-field>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef>
+                <button mat-mini-fab color="primary" title="Ajouter" (click)="addAction()">
+                    <mat-icon>add</mat-icon>
+                </button>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <div class="text-nowrap">
+                    <button mat-mini-fab color="primary" title="Copier" (click)="copyAction(element)">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                    <button mat-mini-fab color="primary" class="ms-1" title="Supprimer" (click)="deleteAction(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.text-bg-danger]="row.action == 'DELETE'"></tr>
+    </table>
+</div>

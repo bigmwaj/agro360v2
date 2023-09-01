@@ -3,6 +3,8 @@ package com.agro360.service.logic.vente;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -17,6 +19,7 @@ import com.agro360.service.bean.vente.LigneBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.vente.LigneMapper;
 import com.agro360.service.message.Message;
+import com.agro360.vd.common.EditActionEnumVd;
 
 @Service(value = "vente/LigneService")
 public class LigneService extends AbstractService<LigneDto, Long> {
@@ -106,5 +109,29 @@ public class LigneService extends AbstractService<LigneDto, Long> {
 		ex.getProbe().getCommande().setCommandeCode(commandeBean.getCommandeCode().getValue());
 
 		return dao.findAll(ex);
+	}
+
+	
+	public LigneBean initCreateFormBean(String commandeCode, Optional<Long> copyFrom) {
+		
+		Function<Long, Example<LigneDto>> exBldr = ligneId -> {			
+			var ex = Example.of(new LigneDto());
+			ex.getProbe().setCommande(new CommandeDto());
+			ex.getProbe().getCommande().setCommandeCode(commandeCode);
+			ex.getProbe().setLigneId(ligneId);
+			
+			return ex;
+		};
+		
+		var dto = copyFrom
+				.map(exBldr)
+				.map(dao::findOne)
+				.flatMap(e -> e)
+				.orElseGet(LigneDto::new);
+		
+		var bean = mapper.mapToBean(dto);
+		bean.setAction(EditActionEnumVd.CREATE);
+		bean.getLigneId().setValue(null);
+		return bean;
 	}
 }

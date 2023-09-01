@@ -10,9 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.agro360.dto.common.AbstractDto;
+import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.stock.MagasinDto;
-import com.agro360.vd.production.avicole.StatutCycleEnumVd;
+import com.agro360.vd.production.avicole.StatusCycleEnumVd;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "STOCK_TBL_P_AVI_CYCLE")
-public class CycleDto extends AbstractDto {
+public class CycleDto extends AbstractStatusTrackingDto<StatusCycleEnumVd> {
 
 	@Id
 	@Column(name = "CYCLE_CODE", updatable = false, length = 16)
@@ -28,8 +28,8 @@ public class CycleDto extends AbstractDto {
 	private String cycleCode;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = StatutCycleEnumVd.COLUMN_LENGTH)
-	private StatutCycleEnumVd statut;
+	@Column(name = "STATUS", nullable = false, length = StatusCycleEnumVd.COLUMN_LENGTH)
+	private StatusCycleEnumVd status;
 
 	@ManyToOne()
 	@JoinColumn(name = "MAGASIN_CODE", nullable = false)

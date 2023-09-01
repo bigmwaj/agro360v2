@@ -8,10 +8,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.service.bean.tiers.TiersBean;
@@ -27,22 +27,42 @@ public class TiersController extends AbstractController {
 	private TiersService tiersService;
 
 	@GetMapping()
-	public ResponseEntity<ModelMap> searchAction(@RequestBody @Validated Optional<TiersSearchBean> searchForm, BindingResult br) {		
+	public ResponseEntity<ModelMap> searchTiersAction(@RequestBody @Validated Optional<TiersSearchBean> searchForm, BindingResult br) {		
 		var records = tiersService.search(searchForm.orElse(new TiersSearchBean()));
 		var model = new ModelMap(RECORDS_MODEL_KEY, records);	
 		return ResponseEntity.ok(model);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<TiersBean> loadTiersByIdAction(@PathVariable String id) {
-		return ResponseEntity.ok(tiersService.findById(id));
-	}
-
-	@PutMapping
+	@PostMapping()
 	public ResponseEntity<ModelMap> saveTiersAction(@RequestBody @Validated TiersBean bean, BindingResult br) {
 		var messages = tiersService.save(bean);
 		var model = new ModelMap(MESSAGES_MODEL_KEY, messages);		
 		return ResponseEntity.ok(model);
+	}
+	
+	@GetMapping("/search-form")
+	public ResponseEntity<TiersSearchBean> getSearchFormAction() {
+		return ResponseEntity.ok(tiersService.initSearchFormBean());
+	}
+	
+	@GetMapping("/update-form")
+	public ResponseEntity<TiersBean> getUpdateFormAction(@RequestParam String tiersCode) {
+		return ResponseEntity.ok(tiersService.initEditFormBean(tiersCode));
+	}
+
+	@GetMapping("/create-form")
+	public ResponseEntity<TiersBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
+		return ResponseEntity.ok(tiersService.initCreateFormBean(copyFrom));
+	}
+
+	@GetMapping("/delete-form")
+	public ResponseEntity<TiersBean> getDeleteFormAction(@RequestParam String tiersCode) {
+		return ResponseEntity.ok(tiersService.initDeleteFormBean(tiersCode));
+	}
+
+	@GetMapping("/change-status-form")
+	public ResponseEntity<TiersBean> getChangeStatusFormAction(@RequestParam String tiersCode) {
+		return ResponseEntity.ok(tiersService.initChangeStatusFormBean(tiersCode));
 	}
 
 }

@@ -1,35 +1,47 @@
-<table>
-    <thead>
-        <tr>
-            <th>Menu</th>
-            <th>Contenu</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <ul>
-                    <li>
-                        <a href="/tiers/tiers">Gestion des tiers</a>
-                    </li>
-                    <li>                        
-                        <a href="/stock/article">Gestion des article</a>
-                    </li>
-                    <li>                        
-                        <a href="/vente/commande">Gestion des commande</a>
-                    </li>
-                    <li>                        
-                        <a href="/achat/bon-commande">Gestion des bons de commande</a>
-                    </li>
-                    <li>                        
-                        <a href="/production/avicole/cycle">Gestion des cycles de production</a>
-                    </li>
-                </ul>
-            </td>
-            <td>
-                <router-outlet></router-outlet>
-            </td>
-        </tr>
-    </tbody>
-</table>
-
+<mat-drawer-container>
+    <mat-drawer #drawer>
+        <div class="container-fluid">
+            <mat-list role="list">
+                <mat-list-item role="listitem">
+                    <a href="/tiers/tiers">Gestion des tiers</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/stock/article">Gestion des articles</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/stock/magasin">Gestion des magasins</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/stock/caisse">Gestion des caisses</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/vente/commande">Gestion des commandes</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/achat/bon-commande">Gestion des bons de commande</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/production/avicole/cycle">Gestion des cycles de production</a>
+                </mat-list-item>
+            </mat-list>
+        </div>
+    </mat-drawer>
+    <mat-drawer-content>
+        <mat-toolbar color="primary" class="mb-1">            
+            <button mat-icon-button (click)="drawer.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span class="ms-3">{{title}}</span>
+            <span class="menu-spacer"></span>
+            <button mat-icon-button class="favorite-icon">
+                <mat-icon>favorite</mat-icon>
+            </button>
+            <button mat-icon-button>
+                <mat-icon>share</mat-icon>
+            </button>
+        </mat-toolbar>
+        <div class="container-fluid container-main pt-1 pb-3">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

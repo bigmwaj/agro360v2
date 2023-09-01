@@ -48,7 +48,7 @@ public class ConversionMapper extends AbstractMapper {
 		}
 		ConversionPk pk;
 		if ( null == articleCode && null == uniteCode && dao.existsById(pk = new ConversionPk(articleCode, uniteCode)) ) {
-			dto = dao.getById(pk);
+			dto = dao.getReferenceById(pk);
 		}else {
 			dto = new ConversionDto();
 		}

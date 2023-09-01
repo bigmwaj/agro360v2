@@ -3,6 +3,7 @@ package com.agro360.service.logic.stock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -18,6 +19,7 @@ import com.agro360.service.bean.stock.MagasinBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.CasierMapper;
 import com.agro360.service.message.Message;
+import com.agro360.vd.common.EditActionEnumVd;
 
 @Service
 public class CasierService extends AbstractService<CasierDto, CasierPk> {
@@ -106,5 +108,14 @@ public class CasierService extends AbstractService<CasierDto, CasierPk> {
 		ex.getProbe().getMagasin().setMagasinCode(magasinBean.getMagasinCode().getValue());
 
 		return dao.findAll(ex);
+	}
+
+	public CasierBean initCreateFormBean(String magasinCode, Optional<String> copyFrom) {
+		var dto = copyFrom.map(e -> new CasierPk(magasinCode, e))
+				.map(dao::findById)
+				.flatMap(e -> e).orElseGet(CasierDto::new);
+		var bean = mapper.mapToBean(dto);
+		bean.setAction(EditActionEnumVd.CREATE);
+		return bean;
 	}
 }

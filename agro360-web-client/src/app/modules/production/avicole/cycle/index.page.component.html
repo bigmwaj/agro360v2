@@ -1,4 +1,6 @@
-<h1>Gestion des Article</h1>
+<section class="mat-elevation-z8 p-1 mb-3">
+
+</section>
 <fieldset>
     <legend>
         Recherche
@@ -11,30 +13,28 @@
     </section>
 </fieldset>
 
-<fieldset>
-    <legend>
-        Liste des Tiers
-    </legend>
-    <section>
-        <table>
-            <thead>
-                <tr>
-                    <th><input type="checkbox"/></th>
-                    <th>Code</th> 
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody *ngIf="beans">
-                <tr *ngFor="let bean of beans">
-                    <td><input type="checkbox"/></td>
-                    <td><a (click)="editAction(bean)">{{ bean.cycleCode.value }}</a> </td> 
-                    <td>
-                        <button (click)="editAction(bean)">Editer</button>
-                        <button (click)="copyAction(bean)">Copier</button>
-                        <button (click)="deleteAction(bean)">Supprimer</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-</fieldset>
+<section class="mat-elevation-z8 p-3">
+    <h4>
+        Liste des cycles
+    </h4>
+    <table>
+        <thead>
+            <tr>
+                <th><input type="checkbox"/></th>
+                <th>Code</th> 
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="beans">
+            <tr *ngFor="let bean of beans">
+                <td><input type="checkbox"/></td>
+                <td><a (click)="editAction(bean)">{{ bean.cycleCode.value }}</a> </td> 
+                <td>
+                    <button (click)="editAction(bean)">Editer</button>
+                    <button (click)="copyAction(bean)">Copier</button>
+                    <button (click)="deleteAction(bean)">Supprimer</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>

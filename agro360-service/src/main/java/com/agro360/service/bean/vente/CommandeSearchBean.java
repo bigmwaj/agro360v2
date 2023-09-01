@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.agro360.service.bean.common.AbstractBean;
 import com.agro360.service.metadata.FieldMetadata;
-import com.agro360.vd.vente.StatutCommandeEnumVd;
+import com.agro360.vd.vente.StatusCommandeEnumVd;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,16 +16,16 @@ public class CommandeSearchBean extends AbstractBean{
 
 	private static final long serialVersionUID = 355487810396906725L;
 
-	private FieldMetadata<String> commandeCode = new FieldMetadata<>();
+	private FieldMetadata<String> commandeCode = new FieldMetadata<>("Code");
 
-	private FieldMetadata<String> client = new FieldMetadata<>();
+	private FieldMetadata<String> client = new FieldMetadata<>("Client");
 
-	private FieldMetadata<List<StatutCommandeEnumVd>> statutDans = new FieldMetadata<>();
+	private FieldMetadata<List<StatusCommandeEnumVd>> statusIn = new FieldMetadata<>("Statut");
 
-	private FieldMetadata<LocalDate> dateCommandeDebut = new FieldMetadata<>();
+	private FieldMetadata<LocalDate> dateCommandeDebut = new FieldMetadata<>("Date Commande(Début)");
 	
-	private FieldMetadata<LocalDate> dateCommandeFin = new FieldMetadata<>();
+	private FieldMetadata<LocalDate> dateCommandeFin = new FieldMetadata<>("Date Commande(Fin)");
 
-	private FieldMetadata<String> ville = new FieldMetadata<>();
+	private FieldMetadata<String> ville = new FieldMetadata<>("Ville");
 
 }

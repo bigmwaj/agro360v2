@@ -1,66 +1,89 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatTreeFlatDataSource } from '@angular/material/tree';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TiersBean } from 'src/app/backed/bean.tiers';
+import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
+import { MatIconModule } from '@angular/material/icon';
+import { CategoryBlockComponent } from './category.block.component';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'src/app/common/shared.module';
 
-const BASE_URL = "http://localhost:8080/tiers/tiers";
-
-interface TiersModel extends TiersBean{
-    selected:boolean
-}
+const BASE_URL = "http://localhost:8080";
 
 @Component({
+    standalone: true,
+    imports:[
+        CommonModule,
+        CategoryBlockComponent,
+        MatButtonModule,
+        MatIconModule,
+        
+        SharedModule
+    ],
     selector: 'tiers-tiers-edit-page',
     templateUrl: './edit.page.component.html'
 })
 export class EditPageComponent implements OnInit {
 
-    tiersCode: string|null;
-    
-    bean : TiersModel;
+    bean: TiersBean;
 
+    pageTitle: string = "Edition";
 
     constructor(private router: Router,
-        private route:ActivatedRoute, 
-        private http:HttpClient) { }
+        private route: ActivatedRoute,
+        private http: HttpClient,
+        public dialog: MatDialog) { }
+
+    isCreation(): boolean {
+        let path = this.route.routeConfig?.path;
+        return !!path && path.endsWith("create");
+    }
 
     ngOnInit(): void {
-        this.route.paramMap.subscribe(params => {
-            this.tiersCode = params.get('tiersCode');
-
-            if( this.tiersCode != null ){
+        let queryParams = new HttpParams();
+        if (this.isCreation()) {
+            this.route.queryParamMap.subscribe(params => {
+                const copyFrom = params.get('copyFrom');
+                if (copyFrom) {
+                    queryParams = queryParams.append("copyFrom", copyFrom);
+                }
                 this.http
-                    .get<any>(BASE_URL + `/${this.tiersCode}`)
+                    .get(BASE_URL + "/tiers/tiers/create-form", { params: queryParams })
+                    .subscribe(data => this.bean = <TiersBean>data);
+                
+                this.pageTitle = "Création d'un Tiers"
+            });
+        } else {
+            // On doit traiter les potentielles erreurs
+            this.route.paramMap.subscribe(params => {
+                const tiersCode = params.get('tiersCode');
+                if( !! tiersCode ){
+                    queryParams = queryParams.append("tiersCode", tiersCode);
+                }
+                this.http
+                    .get<any>(BASE_URL + `/tiers/tiers/update-form`, {params: queryParams})
                     .subscribe(data => this.bean = data);
-            }else{
-                this.bean = <TiersModel>{};
-            }   
-        });
+                
+                this.pageTitle = "Édition du Tiers " + tiersCode
+            });
+        }
     }
 
-    addAction(){
-        console.log('On crée');
-        //this.router.navigate(['create'], { relativeTo: this.route })
+    addAction() {
+        this.router.navigate(['edit'], { relativeTo: this.route })
     }
 
-    editAction(bean:TiersModel){
-        this.router.navigate(['edit', bean.tiersCode.value], { relativeTo: this.route })
+    copyAction() {
+        this.router.navigate(['edit', this.bean.tiersCode.value], { relativeTo: this.route.parent })
     }
 
-    copyAction(bean:TiersModel){
-        this.router.navigate(['edit', bean.tiersCode.value], { relativeTo: this.route })
+    saveAction() {
+        this.http.post(BASE_URL + `/tiers/tiers`, this.bean).subscribe(data => console.log(data))
     }
 
-    changeStatusAction(bean:TiersModel){
-        // Open Dialog
-    }
-
-    deleteAction(bean:TiersModel){
-        // Open Dialog
-    }
-
-    editCategoryAction(){
-        // Open Dialog
+    categoryAction() {
+        this.dialog.open(CategoryIndexModalComponent);
     }
 }

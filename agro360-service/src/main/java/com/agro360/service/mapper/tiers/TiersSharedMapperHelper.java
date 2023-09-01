@@ -10,7 +10,7 @@ public class TiersSharedMapperHelper {
 		var tiersCode = bean.getTiersCode().getValue();
 		TiersDto tiers;
 		if (null != tiersCode && tiersDao.existsById(tiersCode)) {
-			tiers = tiersDao.getById(tiersCode);
+			tiers = tiersDao.getReferenceById(tiersCode);
 		} else {
 			tiers = new TiersDto();
 			tiers.setTiersCode(tiersCode);

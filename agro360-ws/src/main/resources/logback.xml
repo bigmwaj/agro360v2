@@ -11,7 +11,7 @@
         <appender-ref ref="STDOUT" />
     </logger>
     
-    <logger name="com.agro260" level="DEBUG" additivity="false">
+    <logger name="com.agro360" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT" />
     </logger>
  

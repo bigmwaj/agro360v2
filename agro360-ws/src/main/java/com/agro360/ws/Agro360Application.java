@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @ComponentScan(basePackages = {
 	"com.agro360.ws.controller",
+	"com.agro360.ws.filter",
 	"com.agro360.ws.mapper",
 	"com.agro360.service.mapper",
 	"com.agro360.service.rule",

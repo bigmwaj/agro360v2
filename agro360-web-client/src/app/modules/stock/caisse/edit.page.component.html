@@ -1,0 +1,61 @@
+<section class="mb-3">
+    <a mat-raised-button color="primary" class="me-2 mat-elevation-z8" href="/stock/caisse">
+        <mat-icon>arrow_back</mat-icon>Retour
+    </a>
+    <button mat-raised-button color="primary" class="me-2" (click)="saveAction()">
+        <mat-icon>save</mat-icon>Enregistrer
+    </button>
+    <button mat-raised-button color="primary" class="me-2" (click)="addAction()">
+        <mat-icon>add</mat-icon>Ajouter
+    </button>
+    <button mat-raised-button color="primary" class="me-2" (click)="changeAction()">
+        <mat-icon>transform</mat-icon>Changer Statut
+    </button>
+</section>
+
+<section *ngIf="bean" class="mat-elevation-z8 p-3 mb-3">
+    <h4>
+        Détails de la caisse
+    </h4>
+    <div class="row">
+        <div class="col-3">
+            <select-one-field [field]="bean.magasin.magasinCode" [label]="'Magasin'"></select-one-field>
+            <select-one-field [field]="bean.agent.tiersCode" [label]="'Agent'"></select-one-field>
+        </div>
+        
+        <div class="col-3">
+            <input-date-field [field]="bean.journee"></input-date-field>
+            <select-one-field [field]="bean.status"></select-one-field>
+        </div>
+
+        <div class="col-3">
+            <div class="row">
+                <div class="col-6">
+                    <input-text-field [field]="bean.recette"></input-text-field>
+                </div>
+                <div class="col-6">
+                    <input-text-field [field]="bean.depense"></input-text-field>
+                </div>
+            </div>
+            <input-text-field [field]="bean.solde"></input-text-field>
+        </div>
+        
+        <div class="col-3">
+            <input-textarea-field [field]="bean.note"></input-textarea-field>
+        </div>
+    </div>
+</section>
+
+<section class="mat-elevation-z8 p-3" *ngIf="!isCreation() && bean">
+    <h4>
+        Liste des opérations de caisse
+    </h4>
+    <stock-edit-operation-list
+        *ngIf="bean && bean.operations" 
+        [plusVendus]="bean.plusVendus"
+        [plusAchetes]="bean.plusAchetes"
+        [lignes]="bean.operations"
+        (updateOwnerPrixTotal)="updatePrixTotalEvent()"
+        [ownerId]="getEncodedOwnerId(bean)">
+    </stock-edit-operation-list>
+</section>

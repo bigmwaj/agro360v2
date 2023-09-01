@@ -1,5 +1,8 @@
 package com.agro360.service.mapper.stock;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dao.stock.ICaisseDao;
 import com.agro360.dao.stock.IMagasinDao;
@@ -27,7 +30,7 @@ public class StockSharedMapperHelper {
 		
 		if ( null != magasinCode && null != tiersCode  && null != journee 
 				&& caisseDao.existsById(pk = new CaissePk(magasinCode, tiersCode, journee))) {
-			caisse = caisseDao.getById(pk);
+			caisse = caisseDao.getReferenceById(pk);
 		} else {
 			caisse = new CaisseDto();
 			
@@ -47,7 +50,7 @@ public class StockSharedMapperHelper {
 		var uniteCode = bean.getUniteCode().getValue();
 		UniteDto unite;
 		if (null != uniteCode && uniteDao.existsById(uniteCode)) {
-			unite = uniteDao.getById(uniteCode);
+			unite = uniteDao.getReferenceById(uniteCode);
 		} else {
 			unite = new UniteDto();
 			unite.setUniteCode(uniteCode);
@@ -55,12 +58,22 @@ public class StockSharedMapperHelper {
 
 		return unite;
 	}
+	
+	public static Map<Object, String> getAllAsValueOptions(IUniteDao uniteDao) {
+		return uniteDao.findAll().stream()
+				.collect(Collectors.toMap(UniteDto::getUniteCode, StockSharedMapperHelper::getLibelle));
+	}
+	
+	public static Map<Object, String> getAllAsValueOptions(IArticleDao articleDao) {
+		return articleDao.findAll().stream()
+				.collect(Collectors.toMap(ArticleDto::getArticleCode, StockSharedMapperHelper::getLibelle));
+	}
 
 	public static ArticleDto mapToDto(IArticleDao articleDao, ArticleBean bean) {
 		var articleCode = bean.getArticleCode().getValue();
 		ArticleDto article;
 		if (null != articleCode && articleDao.existsById(articleCode)) {
-			article = articleDao.getById(articleCode);
+			article = articleDao.getReferenceById(articleCode);
 		} else {
 			article = new ArticleDto();
 			article.setArticleCode(articleCode);
@@ -81,12 +94,21 @@ public class StockSharedMapperHelper {
 
 		MagasinDto magasin;
 		if (null != magasinCode && magasinDao.existsById(magasinCode)) {
-			magasin = magasinDao.getById(magasinCode);
+			magasin = magasinDao.getReferenceById(magasinCode);
 		} else {
 			magasin = new MagasinDto();
 			magasin.setMagasinCode(magasinCode);
 		}
 
 		return magasin;
+	}
+
+	
+	private static String getLibelle(UniteDto dto) {
+		return String.format("%s - %s", dto.getUniteCode(), dto.getDescription());
+	}
+	
+	private static String getLibelle(ArticleDto dto) {
+		return String.format("%s - %s", dto.getArticleCode(), dto.getDescription());
 	}
 }

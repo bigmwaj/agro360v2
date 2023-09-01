@@ -16,7 +16,12 @@ public class OperationCaisseBean extends AbstractLigneBean<OperationCaisseDto> {
 
 	private static final long serialVersionUID = 3706447795412478903L;
 
-	private FieldMetadata<LocalDateTime> dateOperation = new FieldMetadata<>();
+	private FieldMetadata<LocalDateTime> dateOperation = new FieldMetadata<>("Date Opération");
 
-	private FieldMetadata<TypeOperationEnumVd> typeOperation = new FieldMetadata<>();
+	private FieldMetadata<TypeOperationEnumVd> typeOperation = new FieldMetadata<>("Type Op", getOptionsMap(TypeOperationEnumVd.values(), TypeOperationEnumVd::getLibelle));
+
+	public void initForCreateForm() {
+		super.initForCreateForm();
+		getDateOperation().setValue(LocalDateTime.now().withNano(0));
+	}
 }

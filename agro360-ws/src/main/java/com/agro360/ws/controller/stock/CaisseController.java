@@ -1,7 +1,6 @@
 package com.agro360.ws.controller.stock;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,14 +8,19 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.service.bean.stock.CaisseBean;
+import com.agro360.service.bean.stock.CaisseIdBean;
+import com.agro360.service.bean.stock.CaisseSearchBean;
+import com.agro360.service.bean.stock.OperationCaisseBean;
 import com.agro360.service.logic.stock.CaisseService;
+import com.agro360.service.logic.stock.OperationCaisseService;
+import com.agro360.vd.stock.TypeOperationEnumVd;
 import com.agro360.ws.controller.common.AbstractController;
 
 @RestController()
@@ -26,20 +30,51 @@ public class CaisseController extends AbstractController {
 	@Autowired
 	private CaisseService caisseService;
 
-	@GetMapping()
-	public ResponseEntity<List<CaisseBean>> searchAction() {
-		return ResponseEntity.ok(caisseService.search());
+	@Autowired
+	private OperationCaisseService operationCaisseService;
+
+	@GetMapping
+	public ResponseEntity<ModelMap> searchAction(@RequestBody @Validated Optional<CaisseSearchBean> searchBean) {
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, caisseService.search(searchBean.orElse(new CaisseSearchBean()))));
 	}
 
-	@GetMapping("/{magasin}/{agent}/{journee}")
-	public ResponseEntity<CaisseBean> loadAction(@PathVariable String magasin, @PathVariable String agent, @PathVariable LocalDate journee) {
-		return ResponseEntity.ok(caisseService.findById(magasin, agent, journee));
-	}
-
-	@PutMapping
+	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CaisseBean bean, BindingResult br) {
-		var messages = caisseService.save(bean);
-		var model = new ModelMap("messages", messages);
-		return ResponseEntity.ok(model);
+		return ResponseEntity.ok(new ModelMap().addAllAttributes(caisseService.save(bean)));
+	}
+
+	@GetMapping("/search-form")
+	public ResponseEntity<CaisseSearchBean> getSearchFormAction() {
+		return ResponseEntity.ok(caisseService.initSearchFormBean());
+	}
+	
+	@GetMapping("/edit-form")
+	public ResponseEntity<CaisseBean> getEditFormAction(@RequestBody @Validated CaisseIdBean idBean) {
+		return ResponseEntity.ok(caisseService.initEditFormBean(idBean));
+	}
+
+	@GetMapping("/create-form")
+	public ResponseEntity<CaisseBean> getCreateFormAction(
+			@RequestBody(required = false) Optional<CaisseIdBean> copyFrom) {
+		return ResponseEntity.ok(caisseService.initCreateFormBean(copyFrom));
+	}
+
+	@GetMapping("/delete-form")
+	public ResponseEntity<CaisseBean> getDeleteFormAction(@RequestBody CaisseIdBean idBean) {
+		return ResponseEntity.ok(caisseService.initDeleteFormBean(idBean));
+	}
+
+	@GetMapping("/change-status-form")
+	public ResponseEntity<CaisseBean> getChangeStatusFormAction(@RequestBody CaisseIdBean idBean) {
+		return ResponseEntity.ok(caisseService.initChangeStatusFormBean(idBean));
+	}
+	
+	@GetMapping("/operation/create-form")
+	public ResponseEntity<OperationCaisseBean> getVariantCreateFormAction(
+			@RequestParam() Optional<String> articleCode,
+			@RequestParam() Optional<TypeOperationEnumVd> typeOperation,
+			@RequestBody CaisseIdBean idBean, 
+			@RequestParam Optional<Long> copyFrom) {
+		return ResponseEntity.ok(operationCaisseService.initCreateFormBean(idBean, copyFrom, articleCode, typeOperation));
 	}
 }

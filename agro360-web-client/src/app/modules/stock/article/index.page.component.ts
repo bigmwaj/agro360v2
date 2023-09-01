@@ -1,56 +1,111 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatTable, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { ArticleBean, ArticleSearchBean } from 'src/app/backed/bean.stock';
+import { IndexModalComponent } from '../unite/index.modal.component';
+import { BeanList } from 'src/app/common/bean.list';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SharedModule } from 'src/app/common/shared.module';
 
-interface ArticleModel extends ArticleBean {
-    selected: boolean
-}
+const BASE_URL = "http://localhost:8080";
 
 @Component({
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatCheckboxModule,
+        MatTableModule,
+        IndexModalComponent,
+        SharedModule
+    ],
     selector: 'stock-article-index-page',
     templateUrl: './index.page.component.html'
 })
-export class IndexPageComponent implements OnInit {
+export class IndexPageComponent extends BeanList<ArticleBean> implements OnInit {
 
-    searchForm?: ArticleSearchBean;
+    searchForm: ArticleSearchBean;
 
-    beans: Array<ArticleModel>;
+    displayedColumns: string[] = [
+        'select',
+        'articleCode',
+        'unite',
+        'typeArticle',
+        'description',
+        'actions'
+    ];
+
+    @ViewChild(MatTable)
+    table: MatTable<ArticleBean>;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private http: HttpClient) { }
+        private http: HttpClient,
+        public dialog: MatDialog) {
+        super()
+    }
+
+    override getViewChild(): MatTable<ArticleBean> {
+        return this.table;
+    }
+
+    getKeyLabel(bean: ArticleBean): string {
+        return bean.articleCode.value;
+    }
 
     ngOnInit(): void {
+        this.resetSearchFormAction()
+    }
+
+    resetSearchFormAction() {
         this.http
-            .get("http://localhost:8080/stock/article")
+            .get(BASE_URL + "/stock/article/search-form")
+            .subscribe(data => {
+                this.searchForm = <ArticleSearchBean>data;
+                this.searchAction();
+            });
+    }
+
+    searchAction() {
+        let objJsonStr = JSON.stringify(this.searchForm);
+        let objJsonB64 = btoa(objJsonStr);
+
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append('q', objJsonB64);
+        this.http
+            .get(BASE_URL + "/stock/article", { params: queryParams })
             .pipe(map((data: any) => data))
-            .subscribe(data => this.beans = <Array<ArticleModel>>data.records);
+            .subscribe(data => {
+                this.setData(data.records);
+            });
     }
 
     addAction() {
-        console.log('On crée');
-        //this.router.navigate(['create'], { relativeTo: this.route })
+        this.router.navigate(['create'], { relativeTo: this.route })
     }
 
-    editAction(bean: ArticleModel) {
+    editAction(bean: ArticleBean) {
         this.router.navigate(['edit', bean.articleCode.value], { relativeTo: this.route })
     }
 
-    copyAction(bean: ArticleModel) {
-        this.router.navigate(['edit', bean.articleCode.value], { relativeTo: this.route })
+    copyAction(bean: ArticleBean) {
+        this.router.navigate(['create'], { relativeTo: this.route, queryParams: { 'copyFrom': bean.articleCode.value } })
     }
 
-    changeStatusAction(bean: ArticleModel) {
-        // Open Dialog
+    deleteAction(bean: ArticleBean) {
+
     }
 
-    deleteAction(bean: ArticleModel) {
-        // Open Dialog
-    }
-
-    editCategoryAction() {
-        // Open Dialog
+    uniteAction() {
+        this.dialog.open(IndexModalComponent);
     }
 }

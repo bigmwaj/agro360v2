@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,14 @@ import org.springframework.stereotype.Service;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IMagasinDao;
 import com.agro360.dto.stock.MagasinDto;
+import com.agro360.service.bean.common.AbstractBean;
 import com.agro360.service.bean.stock.MagasinBean;
+import com.agro360.service.bean.stock.MagasinSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.MagasinMapper;
 import com.agro360.service.message.Message;
+import com.agro360.vd.common.EditActionEnumVd;
+
 
 @Service
 public class MagasinService extends AbstractService<MagasinDto, String> {
@@ -42,7 +47,7 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 		return dao;
 	}
 	
-	public List<MagasinBean> search() {
+	public List<MagasinBean> search(MagasinSearchBean searchBean) {
 		return dao.findAll().stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 
@@ -51,7 +56,7 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
 		}
 		
-		MagasinDto dto = mapper.mapToDto(bean);
+		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
 		switch (bean.getAction()) {
@@ -78,7 +83,31 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 		return messages;
 	}
 
-	public MagasinBean findById(String id) {
-		return dao.findById(id).map(e -> mapper.mapToBean(e, Map.of(OPTION_MAP_CASIER_KEY, true))).orElseThrow();
+	public MagasinSearchBean initSearchFormBean() {
+		return mapper.mapToSearchBean();
+	}
+	
+	public MagasinBean initEditFormBean(String MagasinCode) {
+		var dto = dao.findById(MagasinCode).orElseThrow();
+		var bean = mapper.mapToBean(dto,  Map.of(OPTION_MAP_CASIER_KEY, true));
+		bean.setAction(EditActionEnumVd.UPDATE);
+		return bean;
+	}
+	
+	public MagasinBean initDeleteFormBean(String MagasinCode) {
+		var bean = dao.findById(MagasinCode).map(mapper::mapToBean).orElseThrow();
+		bean.setAction(EditActionEnumVd.DELETE);
+		return bean;
+	}
+
+	public MagasinBean initCreateFormBean(Optional<String> copyFrom) {
+		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(MagasinDto::new);
+		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_CASIER_KEY, true));
+		bean.getMagasinCode().setValue(null);
+		
+		AbstractBean.setActionToCreate.accept(bean);
+		bean.getCasiers().stream().forEach(AbstractBean.setActionToCreate);
+		
+		return bean;
 	}
 }

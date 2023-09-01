@@ -14,11 +14,13 @@ import com.agro360.dao.tiers.ITiersDao;
 import com.agro360.dto.achat.BonCommandeDto;
 import com.agro360.dto.achat.LigneDto;
 import com.agro360.service.bean.achat.BonCommandeBean;
+import com.agro360.service.bean.achat.BonCommandeSearchBean;
 import com.agro360.service.mapper.common.AbstractMapper;
 import com.agro360.service.mapper.stock.MagasinMapper;
 import com.agro360.service.mapper.stock.StockSharedMapperHelper;
 import com.agro360.service.mapper.tiers.TiersMapper;
 import com.agro360.service.mapper.tiers.TiersSharedMapperHelper;
+import com.agro360.service.message.Message;
 
 @Component
 public class BonCommandeMapper extends AbstractMapper {
@@ -45,6 +47,11 @@ public class BonCommandeMapper extends AbstractMapper {
 
 	@Autowired
 	private IMagasinDao magasinDao;
+	
+	public BonCommandeSearchBean mapToSearchBean() {
+		var bean = new BonCommandeSearchBean();
+		return bean;
+	}
 
 	public BonCommandeBean mapToBean(BonCommandeDto dto) {
 		return mapToBean(dto, Collections.emptyMap());
@@ -54,9 +61,15 @@ public class BonCommandeMapper extends AbstractMapper {
 		var bean = new BonCommandeBean();
 
 		bean.getBonCommandeCode().setValue(dto.getBonCommandeCode());
+		
+		bean.getBonCommandeCode().addMessage(Message.error("Message d'erreur"));
+		bean.getBonCommandeCode().addMessage(Message.success("Message d'erreur"));
+		bean.getBonCommandeCode().addMessage(Message.warn("Message d'erreur"));
+		bean.getBonCommandeCode().addMessage(Message.info("Message d'erreur"));
+		
 		bean.getLivraison().setValue(dto.getLivraison());
 		bean.getDateBonCommande().setValue(dto.getDateBonCommande());
-		bean.getStatut().setValue(dto.getStatut());
+		bean.getStatus().setValue(dto.getStatus());
 		bean.getDescription().setValue(dto.getDescription());
 		if (null != dto.getFournisseur()) {
 			bean.setFournisseur(tiersMapper.mapToBean(dto.getFournisseur()));
@@ -87,7 +100,7 @@ public class BonCommandeMapper extends AbstractMapper {
 		setDtoValue(dto::setBonCommandeCode, bean.getBonCommandeCode());
 		setDtoValue(dto::setLivraison, bean.getLivraison());
 		setDtoValue(dto::setDateBonCommande, bean.getDateBonCommande());
-		setDtoValue(dto::setStatut, bean.getStatut());
+		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setDescription, bean.getDescription());
 
 		dto.setFournisseur(TiersSharedMapperHelper.mapToDto(tiersDao, bean.getFournisseur()));

@@ -3,6 +3,7 @@ package com.agro360.service.logic.stock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -10,14 +11,17 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IConversionDao;
+import com.agro360.dao.stock.IUniteDao;
+import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.ConversionDto;
 import com.agro360.dto.stock.ConversionPk;
-import com.agro360.dto.stock.ArticleDto;
-import com.agro360.service.bean.stock.ConversionBean;
 import com.agro360.service.bean.stock.ArticleBean;
+import com.agro360.service.bean.stock.ConversionBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.ConversionMapper;
+import com.agro360.service.mapper.stock.StockSharedMapperHelper;
 import com.agro360.service.message.Message;
+import com.agro360.vd.common.EditActionEnumVd;
 
 @Service
 public class ConversionService extends AbstractService<ConversionDto, ConversionPk> {
@@ -30,6 +34,9 @@ public class ConversionService extends AbstractService<ConversionDto, Conversion
 
 	@Autowired
 	IConversionDao dao;
+
+	@Autowired
+	IUniteDao uniteDao;
 
 	@Autowired
 	ConversionMapper mapper;
@@ -106,5 +113,15 @@ public class ConversionService extends AbstractService<ConversionDto, Conversion
 		ex.getProbe().getArticle().setArticleCode(articleBean.getArticleCode().getValue());
 
 		return dao.findAll(ex);
+	}
+
+	public ConversionBean initCreateFormBean(String articleCode, Optional<String> copyFrom) {
+		var dto = copyFrom.map(e -> new ConversionPk(articleCode, e))
+				.map(dao::findById)
+				.flatMap(e -> e).orElseGet(ConversionDto::new);
+		var bean = mapper.mapToBean(dto);
+		bean.setAction(EditActionEnumVd.CREATE);
+		bean.getUnite().getUniteCode().setValueOptions(StockSharedMapperHelper.getAllAsValueOptions(uniteDao));
+		return bean;
 	}
 }

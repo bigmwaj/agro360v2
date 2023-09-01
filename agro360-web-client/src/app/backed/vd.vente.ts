@@ -1,2 +1,2 @@
 
-export type StatutCommandeEnumVd = "BRLN" | "ATAP" | "APPR" | "REJT" | "ANNL";
+export enum StatusCommandeEnumVd { APPR = 'APPR', ANNL = 'ANNL', REJT = 'REJT', ATAP = 'ATAP', BRLN = 'BRLN' };

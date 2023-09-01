@@ -91,7 +91,7 @@ public class CategoryService extends AbstractService<CategoryDto, String> {
 	}
 
 	public CategoryBean findRootCategory(Optional<Integer> deep) {
-		var root = dao.getById("ROOT");
+		var root = dao.getReferenceById("ROOT");
 		var options = deep.map(this::mapDeep).orElse(Collections.emptyMap());
 		return mapper.mapToBean(root, options);
 	}
