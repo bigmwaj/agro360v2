@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.agro360.service.message.Message;
+import com.agro360.service.utils.TypeScriptInfos;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -17,6 +18,7 @@ public class FieldMetadata<T> {
 	private final String __TYPE__ = "FIELD_METADATA";
 
 	public FieldMetadata() {
+		
 	}
 
 	public FieldMetadata(String label) {
@@ -28,6 +30,7 @@ public class FieldMetadata<T> {
 		this.valueOptions = valueOptions;
 	}
 
+	@TypeScriptInfos(type = "T")
 	private T value;
 
 	private String valueI18n;

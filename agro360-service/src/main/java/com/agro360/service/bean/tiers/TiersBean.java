@@ -2,7 +2,7 @@ package com.agro360.service.bean.tiers;
 
 import java.time.LocalDateTime;
 
-import com.agro360.service.bean.common.AbstractStatusTrackingFormBean;
+import com.agro360.service.bean.common.AbstractStatusTrackingBean;
 import com.agro360.service.metadata.FieldMetadata;
 import com.agro360.vd.common.EditActionEnumVd;
 import com.agro360.vd.tiers.TiersStatusEnumVd;
@@ -13,7 +13,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class TiersBean extends AbstractStatusTrackingFormBean<TiersStatusEnumVd>{
+public class TiersBean extends AbstractStatusTrackingBean<TiersStatusEnumVd>{
 
 	private static final long serialVersionUID = 4953208601044344467L;
 	

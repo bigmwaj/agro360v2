@@ -16,12 +16,12 @@ export interface AbstractLigneBean extends AbstractBean {
 	numero: FieldMetadata<number>;
 };
 
-export interface AbstractStatusTrackingFormBean<T> extends AbstractBean {
-	statusDate: FieldMetadata<any>;
-};
-
 export interface AbstractBean {
 	action: EditActionEnumVd;
+	__TYPE__: string;
 	valueChanged: boolean;
-	readonly __TYPE__: string;
+};
+
+export interface AbstractStatusTrackingBean<T> extends AbstractBean {
+	statusDate: FieldMetadata<any>;
 };

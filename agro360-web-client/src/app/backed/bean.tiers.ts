@@ -1,5 +1,5 @@
 import { FieldMetadata } from './metadata';
-import { AbstractBean, AbstractStatusTrackingFormBean } from './bean.common';
+import { AbstractBean, AbstractStatusTrackingBean } from './bean.common';
 import { TiersStatusEnumVd, TiersTypeEnumVd } from './vd.tiers';
 
 export interface TiersSearchBean extends AbstractBean {
@@ -11,13 +11,7 @@ export interface TiersSearchBean extends AbstractBean {
 	status: FieldMetadata<TiersStatusEnumVd>;
 };
 
-export interface CategoryBean extends AbstractBean {
-	description: FieldMetadata<string>;
-	children: Array<CategoryBean>;
-	categoryCode: FieldMetadata<string>;
-};
-
-export interface TiersBean extends AbstractStatusTrackingFormBean<TiersStatusEnumVd> {
+export interface TiersBean extends AbstractStatusTrackingBean<TiersStatusEnumVd> {
 	tiersName: FieldMetadata<string>;
 	phone: FieldMetadata<string>;
 	tiersCode: FieldMetadata<string>;
@@ -32,6 +26,12 @@ export interface TiersBean extends AbstractStatusTrackingFormBean<TiersStatusEnu
 	address: FieldMetadata<string>;
 	tiersType: FieldMetadata<TiersTypeEnumVd>;
 	lastName: FieldMetadata<string>;
+};
+
+export interface CategoryBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	children: Array<CategoryBean>;
+	categoryCode: FieldMetadata<string>;
 };
 
 export interface TiersCategoryBean extends AbstractBean {

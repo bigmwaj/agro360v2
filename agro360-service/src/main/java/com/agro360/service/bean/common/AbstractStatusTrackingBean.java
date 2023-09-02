@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public abstract class AbstractStatusTrackingFormBean<T> extends AbstractBean{
+public abstract class AbstractStatusTrackingBean<T> extends AbstractBean{
 	
 	private static final long serialVersionUID = 6878276582025081700L;
 

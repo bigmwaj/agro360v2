@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.agro360.service.bean.common.AbstractStatusTrackingFormBean;
+import com.agro360.service.bean.common.AbstractStatusTrackingBean;
 import com.agro360.service.bean.stock.MagasinBean;
 import com.agro360.service.bean.tiers.TiersBean;
 import com.agro360.service.metadata.FieldMetadata;
@@ -18,7 +18,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class CommandeBean extends AbstractStatusTrackingFormBean<StatusCommandeEnumVd> {
+public class CommandeBean extends AbstractStatusTrackingBean<StatusCommandeEnumVd> {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 

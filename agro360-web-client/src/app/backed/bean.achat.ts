@@ -1,14 +1,10 @@
 import { FieldMetadata } from './metadata';
 import { StatusBonCommandeEnumVd, StatusReceptionEnumVd } from './vd.achat';
-import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingFormBean } from './bean.common';
+import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './bean.common';
 import { TiersBean } from './bean.tiers';
 import { MagasinBean } from './bean.stock';
 
-export interface LigneBean extends AbstractLigneBean {
-
-};
-
-export interface ReceptionBean extends AbstractStatusTrackingFormBean<StatusReceptionEnumVd> {
+export interface ReceptionBean extends AbstractStatusTrackingBean<StatusReceptionEnumVd> {
 	status: FieldMetadata<StatusReceptionEnumVd>;
 	description: FieldMetadata<string>;
 	casierCode: FieldMetadata<string>;
@@ -20,17 +16,11 @@ export interface ReceptionBean extends AbstractStatusTrackingFormBean<StatusRece
 	ligne: LigneBean;
 };
 
-export interface ReceptionInputBean extends AbstractBean {
-	description: FieldMetadata<string>;
-	casierCode: FieldMetadata<string>;
-	quantite: FieldMetadata<number>;
-	dateReception: FieldMetadata<any>;
-	magasin: MagasinBean;
-	prixUnitaire: FieldMetadata<number>;
-	ligne: LigneBean;
+export interface LigneBean extends AbstractLigneBean {
+
 };
 
-export interface BonCommandeBean extends AbstractStatusTrackingFormBean<StatusBonCommandeEnumVd> {
+export interface BonCommandeBean extends AbstractStatusTrackingBean<StatusBonCommandeEnumVd> {
 	bonCommandeCode: FieldMetadata<string>;
 	dateBonCommande: FieldMetadata<any>;
 	description: FieldMetadata<string>;
@@ -40,6 +30,16 @@ export interface BonCommandeBean extends AbstractStatusTrackingFormBean<StatusBo
 	status: FieldMetadata<StatusBonCommandeEnumVd>;
 	fournisseur: TiersBean;
 	livraison: FieldMetadata<boolean>;
+};
+
+export interface ReceptionInputBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	casierCode: FieldMetadata<string>;
+	quantite: FieldMetadata<number>;
+	dateReception: FieldMetadata<any>;
+	magasin: MagasinBean;
+	prixUnitaire: FieldMetadata<number>;
+	ligne: LigneBean;
 };
 
 export interface BonCommandeSearchBean extends AbstractBean {

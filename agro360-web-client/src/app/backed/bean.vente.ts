@@ -1,10 +1,10 @@
 import { FieldMetadata } from './metadata';
 import { StatusCommandeEnumVd } from './vd.vente';
-import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingFormBean } from './bean.common';
+import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './bean.common';
 import { TiersBean } from './bean.tiers';
 import { MagasinBean } from './bean.stock';
 
-export interface CommandeBean extends AbstractStatusTrackingFormBean<StatusCommandeEnumVd> {
+export interface CommandeBean extends AbstractStatusTrackingBean<StatusCommandeEnumVd> {
 	status: FieldMetadata<StatusCommandeEnumVd>;
 	description: FieldMetadata<string>;
 	prixTotal: FieldMetadata<number>;
@@ -19,14 +19,6 @@ export interface CommandeBean extends AbstractStatusTrackingFormBean<StatusComma
 	ville: FieldMetadata<string>;
 };
 
-export interface LigneBean extends AbstractLigneBean {
-	nonFacturable: FieldMetadata<boolean>;
-	casierCode: FieldMetadata<string>;
-	nonEmballee: FieldMetadata<boolean>;
-	magasin: MagasinBean;
-	nonCartonnee: FieldMetadata<boolean>;
-};
-
 export interface CommandeSearchBean extends AbstractBean {
 	commandeCode: FieldMetadata<string>;
 	client: FieldMetadata<string>;
@@ -34,4 +26,12 @@ export interface CommandeSearchBean extends AbstractBean {
 	dateCommandeFin: FieldMetadata<any>;
 	dateCommandeDebut: FieldMetadata<any>;
 	ville: FieldMetadata<string>;
+};
+
+export interface LigneBean extends AbstractLigneBean {
+	nonFacturable: FieldMetadata<boolean>;
+	casierCode: FieldMetadata<string>;
+	nonEmballee: FieldMetadata<boolean>;
+	magasin: MagasinBean;
+	nonCartonnee: FieldMetadata<boolean>;
 };

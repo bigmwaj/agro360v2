@@ -3,7 +3,7 @@ package com.agro360.service.bean.production.avicole;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.agro360.service.bean.common.AbstractStatusTrackingFormBean;
+import com.agro360.service.bean.common.AbstractStatusTrackingBean;
 import com.agro360.service.bean.stock.MagasinBean;
 import com.agro360.service.metadata.FieldMetadata;
 import com.agro360.vd.production.avicole.StatusCycleEnumVd;
@@ -13,7 +13,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class CycleBean extends AbstractStatusTrackingFormBean<StatusCycleEnumVd> {
+public class CycleBean extends AbstractStatusTrackingBean<StatusCycleEnumVd> {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 

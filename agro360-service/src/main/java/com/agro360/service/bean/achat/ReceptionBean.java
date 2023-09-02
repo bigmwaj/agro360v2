@@ -3,7 +3,7 @@ package com.agro360.service.bean.achat;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.agro360.service.bean.common.AbstractStatusTrackingFormBean;
+import com.agro360.service.bean.common.AbstractStatusTrackingBean;
 import com.agro360.service.bean.stock.MagasinBean;
 import com.agro360.service.metadata.FieldMetadata;
 import com.agro360.vd.achat.StatusReceptionEnumVd;
@@ -13,7 +13,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class ReceptionBean extends AbstractStatusTrackingFormBean<StatusReceptionEnumVd> {
+public class ReceptionBean extends AbstractStatusTrackingBean<StatusReceptionEnumVd> {
 
 	private static final long serialVersionUID = -16328407145183398L;
 

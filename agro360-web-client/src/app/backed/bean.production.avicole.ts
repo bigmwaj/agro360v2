@@ -1,9 +1,20 @@
 import { FieldMetadata } from './metadata';
 import { PhaseEnumVd, RubriqueEnumVd, StatusCycleEnumVd } from './vd.production.avicole';
-import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingFormBean } from './bean.common';
+import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './bean.common';
 import { MagasinBean } from './bean.stock';
 
-export interface CycleBean extends AbstractStatusTrackingFormBean<StatusCycleEnumVd> {
+export interface OperationBean extends AbstractLigneBean {
+	rubrique: FieldMetadata<RubriqueEnumVd>;
+	phase: FieldMetadata<PhaseEnumVd>;
+};
+
+export interface MetadataBean extends AbstractBean {
+	cycle: CycleBean;
+	value: FieldMetadata<string>;
+	metadataCode: FieldMetadata<string>;
+};
+
+export interface CycleBean extends AbstractStatusTrackingBean<StatusCycleEnumVd> {
 	description: FieldMetadata<string>;
 	dateEffective: FieldMetadata<any>;
 	quantitePlanifiee: FieldMetadata<number>;
@@ -15,18 +26,7 @@ export interface CycleBean extends AbstractStatusTrackingFormBean<StatusCycleEnu
 	quantiteEffective: FieldMetadata<number>;
 };
 
-export interface OperationBean extends AbstractLigneBean {
-	rubrique: FieldMetadata<RubriqueEnumVd>;
-	phase: FieldMetadata<PhaseEnumVd>;
-};
-
 export interface JourneeBean extends AbstractBean {
 	cycle: CycleBean;
 	numeroJournee: FieldMetadata<number>;
-};
-
-export interface MetadataBean extends AbstractBean {
-	cycle: CycleBean;
-	value: FieldMetadata<string>;
-	metadataCode: FieldMetadata<string>;
 };
