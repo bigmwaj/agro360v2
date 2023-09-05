@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "STOCK_TBL_P_AVI_OPERATION")
+@Entity(name = "P_AVI_TBL_OPERATION")
 public class OperationDto extends AbstractLigneDto {
 
 	@ManyToOne()

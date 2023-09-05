@@ -38,7 +38,8 @@ export class EditPageComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private http: HttpClient) { }
+        private http: HttpClient)
+    { }
 
     ngOnInit(): void {
         let queryParams = new HttpParams();

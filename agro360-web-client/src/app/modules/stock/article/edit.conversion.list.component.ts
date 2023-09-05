@@ -86,7 +86,17 @@ export class EditConversionListComponent extends BeanList<ConversionBean> implem
         this.__add(queryParams);
     }
 
-    deleteAction(conversion: ConversionBean) {
-        conversion.action = EditActionEnumVd.DELETE;
+    deleteAction(bean: ConversionBean) {
+        if( bean.action == EditActionEnumVd.CREATE ){
+            this.removeItem(bean);
+        }else {
+            if( bean.action != EditActionEnumVd.DELETE){
+                bean.action = EditActionEnumVd.DELETE;
+                bean.valueChanged = true;
+            }else{                
+                bean.action = EditActionEnumVd.SYNC;
+                bean.valueChanged = false;
+            }
+        }
     }
 }

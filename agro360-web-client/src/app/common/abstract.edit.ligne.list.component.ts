@@ -112,6 +112,7 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
             });
     }
     
+    
     updatePrixTotalEvent(bean: B) {
         this._updatePrixTotal(bean)
         this.updateOwnerPrixTotal.emit();
@@ -147,7 +148,7 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
     }
 
     private getNextNumero():number{
-        const curr = this.beans.map(e => e.numero.value).reduce((acc, current) => Math.max(acc, current), 0);
+        const curr = this.getData().map(e => e.numero.value).reduce((acc, current) => Math.max(acc, current), 0);
         return Math.floor(curr / 10) * 10 + 10;
     }
 

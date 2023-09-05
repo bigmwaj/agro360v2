@@ -39,8 +39,8 @@ export class ChangeStatusDialogComponent implements OnInit {
         const queryParams = this.commonService.encodeQuery(this.data);
 
         this.http
-        .get(`${this.commonService.getBackendUrl('stock/caisse/change-status-form')}`, { params: queryParams })
-        .subscribe(data => this.bean = <CaisseBean>data);
+            .get(`${this.commonService.getBackendUrl('stock/caisse/change-status-form')}`, { params: queryParams })
+            .subscribe(data => this.bean = <CaisseBean>data);
     }
 
     changeStatusAction() {

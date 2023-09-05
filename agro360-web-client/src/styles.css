@@ -118,7 +118,17 @@ table.caisse-operation td.mat-column-prixTotal .mat-mdc-form-field-infix {
 table.caisse-operation td.mat-column-prixTotal .mat-mdc-form-field-infix input {
     text-align: center;
 }
-
+table.cycle-metadatas td.mat-column-value {
+    width: 100px;
+    text-align: center;
+}
+table.cycle-metadatas td.mat-column-value .mat-mdc-form-field-infix {
+    width: 50px;
+    text-align: center;
+}
+table.cycle-metadatas td.mat-column-value .mat-mdc-form-field-infix  input{
+    text-align: center;
+}
 .example-tree-invisible {
     display: none;
 }

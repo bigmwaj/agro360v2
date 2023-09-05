@@ -20,7 +20,8 @@ public class ArticleBean extends AbstractBean {
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Libellé");
 
-	private FieldMetadata<TypeArticleEnumVd> typeArticle = new FieldMetadata<>("Type");
+	private FieldMetadata<TypeArticleEnumVd> typeArticle = new FieldMetadata<>("Type", 
+			getOptionsMap(TypeArticleEnumVd.values(), TypeArticleEnumVd::getLibelle));
 
 	private UniteBean unite = new UniteBean();
 	

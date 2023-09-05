@@ -1,19 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { CommandeBean, LigneBean } from 'src/app/backed/bean.vente';
 import { BeanTools } from 'src/app/common/bean.tools';
+import { SharedModule } from 'src/app/common/shared.module';
+import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { StockUtils } from '../../stock/stock.utils';
 import { TiersUtils } from '../../tiers/tiers.utils';
-import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { EditLigneListComponent } from './edit.ligne.list.component';
-import { SharedModule } from 'src/app/common/shared.module';
-import { MatTableModule } from '@angular/material/table';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
 
 @Component({
     standalone: true,

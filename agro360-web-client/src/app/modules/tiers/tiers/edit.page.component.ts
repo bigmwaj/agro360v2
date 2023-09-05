@@ -9,6 +9,7 @@ import { CategoryBlockComponent } from './category.block.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from 'src/app/common/shared.module';
+import { BeanTools } from 'src/app/common/bean.tools';
 
 const BASE_URL = "http://localhost:8080";
 
@@ -18,8 +19,7 @@ const BASE_URL = "http://localhost:8080";
         CommonModule,
         CategoryBlockComponent,
         MatButtonModule,
-        MatIconModule,
-        
+        MatIconModule,        
         SharedModule
     ],
     selector: 'tiers-tiers-edit-page',
@@ -80,7 +80,7 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(BASE_URL + `/tiers/tiers`, this.bean).subscribe(data => console.log(data))
+        this.http.post(BASE_URL + `/tiers/tiers`, BeanTools.reviewBeanAction(this.bean)).subscribe(data => console.log(data))
     }
 
     categoryAction() {

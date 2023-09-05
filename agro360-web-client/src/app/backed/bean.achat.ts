@@ -4,6 +4,10 @@ import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './b
 import { TiersBean } from './bean.tiers';
 import { MagasinBean } from './bean.stock';
 
+export interface LigneBean extends AbstractLigneBean {
+
+};
+
 export interface ReceptionBean extends AbstractStatusTrackingBean<StatusReceptionEnumVd> {
 	status: FieldMetadata<StatusReceptionEnumVd>;
 	description: FieldMetadata<string>;
@@ -14,10 +18,6 @@ export interface ReceptionBean extends AbstractStatusTrackingBean<StatusReceptio
 	magasin: MagasinBean;
 	prixUnitaire: FieldMetadata<number>;
 	ligne: LigneBean;
-};
-
-export interface LigneBean extends AbstractLigneBean {
-
 };
 
 export interface BonCommandeBean extends AbstractStatusTrackingBean<StatusBonCommandeEnumVd> {
@@ -32,6 +32,15 @@ export interface BonCommandeBean extends AbstractStatusTrackingBean<StatusBonCom
 	livraison: FieldMetadata<boolean>;
 };
 
+export interface BonCommandeSearchBean extends AbstractBean {
+	bonCommandeCode: FieldMetadata<string>;
+	dateBonCommandeDebut: FieldMetadata<any>;
+	dateBonCommandeFin: FieldMetadata<any>;
+	fournisseur: FieldMetadata<string>;
+	statusIn: FieldMetadata<any>;
+	ville: FieldMetadata<string>;
+};
+
 export interface ReceptionInputBean extends AbstractBean {
 	description: FieldMetadata<string>;
 	casierCode: FieldMetadata<string>;
@@ -40,13 +49,4 @@ export interface ReceptionInputBean extends AbstractBean {
 	magasin: MagasinBean;
 	prixUnitaire: FieldMetadata<number>;
 	ligne: LigneBean;
-};
-
-export interface BonCommandeSearchBean extends AbstractBean {
-	bonCommandeCode: FieldMetadata<string>;
-	dateBonCommandeDebut: FieldMetadata<any>;
-	dateBonCommandeFin: FieldMetadata<any>;
-	fournisseur: FieldMetadata<string>;
-	statusIn: FieldMetadata<any>;
-	ville: FieldMetadata<string>;
 };

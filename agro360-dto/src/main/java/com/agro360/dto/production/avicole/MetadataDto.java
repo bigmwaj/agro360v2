@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Entity(name = "STOCK_TBL_P_AVI_METADATA")
+@Entity(name = "P_AVI_TBL_METADATA")
 @IdClass(MetadataPk.class)
 public class MetadataDto extends AbstractDto {
 

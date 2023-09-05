@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Entity(name = "STOCK_TBL_P_AVI_JOURNEE")
+@Entity(name = "P_AVI_TBL_JOURNEE")
 @IdClass(JourneePk.class)
 public class JourneeDto extends AbstractDto {
 

@@ -31,13 +31,13 @@ export class EditOperationListComponent extends AbstractEditLigneListComponent<O
     displayedColumns: string[] = [
         'select',
         'numero',
+        'dateOperation',
         'typeLigne',
         'article',
-        'unite',
         'variantCode',
-        'dateOperation',
         'typeOperation',
         'quantite',
+        'unite',
         'prixUnitaire',
         'prixTotal',
         'actions'

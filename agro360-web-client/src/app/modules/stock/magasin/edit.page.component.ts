@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { SharedModule } from 'src/app/common/shared.module';
 import { EditCasierListComponent } from './edit.casier.list.component';
+import { BeanTools } from 'src/app/common/bean.tools';
 
 const BASE_URL = "http://localhost:8080";
 
@@ -84,7 +85,7 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(BASE_URL + `/stock/magasin`, this.bean).subscribe(data => console.log(data))
+        this.http.post(BASE_URL + `/stock/magasin`, BeanTools.reviewBeanAction(this.bean)).subscribe(data => console.log(data))
     }
 
 

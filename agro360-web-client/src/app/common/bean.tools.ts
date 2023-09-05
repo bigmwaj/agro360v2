@@ -50,4 +50,8 @@ export class BeanTools{
         return bean;
     }
 
+    public static reviewBeansAction<T extends AbstractBean>(beans: Array<T>): Array<T> {
+        return beans.map(e => this.reviewBeanAction(e));
+    }
+
 }

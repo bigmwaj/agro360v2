@@ -11,14 +11,12 @@
         <mat-icon>add</mat-icon>Ajouter
     </button>
     <button mat-raised-button color="primary" class="me-2" (click)="copyAction()">
-        <mat-icon>copy</mat-icon>Copier
+        <mat-icon>content_copy</mat-icon>Copier
     </button>
     <button mat-raised-button color="primary" (click)="uniteAction()">
         <mat-icon>dialog</mat-icon>Unités
     </button>
 </section>
-
-<h1>{{ pageTitle }}</h1>
 
 <section *ngIf="bean">
     <div class="row">
@@ -29,16 +27,16 @@
                 </h4>
                 <div class="row">
                     <div class="col-6">
-                        <input-text-field [field]="bean.articleCode" [label]="'Code'"></input-text-field>
+                        <input-text-field [field]="bean.articleCode"></input-text-field>
                     </div>
                     <div class="col-6">
-                        <select-one-field [field]="bean.typeArticle" [label]="'Type'"></select-one-field>
+                        <select-one-field [field]="bean.typeArticle"></select-one-field>
                     </div>
                     <div class="col-6">
-                        <input-text-field [field]="bean.description" [label]="'Description'"></input-text-field>
+                        <input-text-field [field]="bean.description"></input-text-field>
                     </div>
                     <div class="col-6">
-                        <select-one-field [field]="bean.unite.uniteCode" [label]="'Unite'"></select-one-field>
+                        <select-one-field [field]="bean.unite.uniteCode"></select-one-field>
                     </div>
                 </div>
             </section>
@@ -60,6 +58,9 @@
                     [articleCode]="bean.articleCode.value">
                 </stock-article-edit-conversion-list>
             </section>
+        </div>
+        <div class="col-6">
+            On affiche le stock de l'article ici
         </div>
     </div>
 </section>

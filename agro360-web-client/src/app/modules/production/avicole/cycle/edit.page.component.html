@@ -1,0 +1,51 @@
+<section class="mb-3">    
+    <a mat-raised-button color="primary" 
+        class="me-2" 
+        href="/production/avicole/cycle">
+        <mat-icon>arrow_back</mat-icon>Retour
+    </a>
+    <button mat-raised-button color="primary" class="me-2" (click)="saveAction()">
+        <mat-icon>save</mat-icon>Enregistrer
+    </button>
+    <button mat-raised-button color="primary" class="me-2" (click)="addAction()">
+        <mat-icon>add</mat-icon>Ajouter
+    </button>
+    <button mat-raised-button color="primary" class="me-2" (click)="copyAction()">
+        <mat-icon>content_copy</mat-icon>Copier
+    </button>
+</section>
+
+<section class="mat-elevation-z8 p-3 mb-3" *ngIf="bean">
+    <h4>
+        Détails du cycle
+    </h4>
+    <div class="row">
+        <div class="col-3">
+            <input-text-field [field]="bean.cycleCode"></input-text-field>
+            <select-one-field [field]="bean.status"></select-one-field>
+            <select-one-field [field]="bean.magasin.magasinCode"></select-one-field>
+        </div>
+        <div class="col-3">            
+            <input-number-field [field]="bean.quantitePlanifiee"></input-number-field>
+            <input-date-field [field]="bean.datePlanifiee"></input-date-field>
+            <input-text-field [field]="bean.racePlanifiee"></input-text-field>
+        </div>
+        <div class="col-3">
+            <input-number-field [field]="bean.quantiteEffective"></input-number-field>
+            <input-date-field [field]="bean.dateEffective"></input-date-field>
+            <input-text-field [field]="bean.raceEffective"></input-text-field>
+        </div>
+        <div class="col-3">
+            <input-textarea-field [field]="bean.description"></input-textarea-field>
+        </div>
+    </div>
+</section>
+
+<section class="mat-elevation-z8 p-3" *ngIf="!isCreation()">
+    
+    <production-avicole-edit-metadata-list 
+        *ngIf="bean.metadatas" 
+        [metadatas]="bean.metadatas"
+        [cycleCode]="bean.cycleCode.value">
+    </production-avicole-edit-metadata-list>
+</section>

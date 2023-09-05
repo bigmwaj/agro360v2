@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 import { SharedModule } from 'src/app/common/shared.module';
 import { EditConversionListComponent } from './edit.conversion.list.component';
 import { EditVariantListComponent } from './edit.variant.list.component';
+import { BeanTools } from 'src/app/common/bean.tools';
 
 const BASE_URL = "http://localhost:8080";
 
@@ -86,7 +87,7 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(BASE_URL + `/stock/article`, this.bean).subscribe(data => console.log(data))
+        this.http.post(BASE_URL + `/stock/article`, BeanTools.reviewBeanAction(this.bean)).subscribe(data => console.log(data))
     }
     
     uniteAction() {

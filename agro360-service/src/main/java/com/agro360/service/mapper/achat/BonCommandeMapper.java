@@ -59,9 +59,11 @@ public class BonCommandeMapper extends AbstractMapper {
 
 	public BonCommandeBean mapToBean(BonCommandeDto dto, Map<String, Object> options) {
 		var bean = new BonCommandeBean();
+		var bonCommandeCode = dto.getBonCommandeCode();
 
-		bean.getBonCommandeCode().setValue(dto.getBonCommandeCode());
+		bean.getBonCommandeCode().setValue(bonCommandeCode);
 		
+		// TODO Remove this
 		bean.getBonCommandeCode().addMessage(Message.error("Message d'erreur"));
 		bean.getBonCommandeCode().addMessage(Message.success("Message d'erreur"));
 		bean.getBonCommandeCode().addMessage(Message.warn("Message d'erreur"));
@@ -71,6 +73,7 @@ public class BonCommandeMapper extends AbstractMapper {
 		bean.getDateBonCommande().setValue(dto.getDateBonCommande());
 		bean.getStatus().setValue(dto.getStatus());
 		bean.getDescription().setValue(dto.getDescription());
+		
 		if (null != dto.getFournisseur()) {
 			bean.setFournisseur(tiersMapper.mapToBean(dto.getFournisseur()));
 		}
@@ -80,7 +83,6 @@ public class BonCommandeMapper extends AbstractMapper {
 		}
 
 		var mapLigne = options.getOrDefault(OPTION_MAP_LIGNE_KEY, null);
-		var bonCommandeCode = dto.getBonCommandeCode();
 		if (null != bonCommandeCode && mapLigne instanceof Boolean && (Boolean) mapLigne) {
 			var ex = Example.of(new LigneDto());
 			ex.getProbe().setBonCommande(new BonCommandeDto());
@@ -95,7 +97,7 @@ public class BonCommandeMapper extends AbstractMapper {
 
 	public BonCommandeDto mapToDto(BonCommandeBean bean) {
 		
-		BonCommandeDto dto = AchatSharedMapperHelper.mapToDto(dao, bean);
+		var dto = AchatSharedMapperHelper.mapToDto(dao, bean);
 
 		setDtoValue(dto::setBonCommandeCode, bean.getBonCommandeCode());
 		setDtoValue(dto::setLivraison, bean.getLivraison());

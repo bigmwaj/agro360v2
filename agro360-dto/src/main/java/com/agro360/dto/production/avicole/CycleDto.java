@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Entity(name = "STOCK_TBL_P_AVI_CYCLE")
+@Entity(name = "P_AVI_TBL_CYCLE")
 public class CycleDto extends AbstractStatusTrackingDto<StatusCycleEnumVd> {
 
 	@Id

@@ -15,6 +15,9 @@ public class ArticleSearchBean extends AbstractBean{
 
 	private FieldMetadata<String> articleCode = new FieldMetadata<>("Code");
 
-	private FieldMetadata<TypeArticleEnumVd> typeArticle = new FieldMetadata<>("Type");
+	private FieldMetadata<TypeArticleEnumVd> typeArticle = new FieldMetadata<>("Type", 
+			getOptionsMap(TypeArticleEnumVd.values(), 
+			TypeArticleEnumVd::getLibelle)
+		);
 	
 }

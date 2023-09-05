@@ -86,7 +86,17 @@ export class EditCasierListComponent extends BeanList<CasierBean> implements OnI
         this.__add(queryParams);
     }
 
-    deleteAction(casier: CasierBean) {
-        casier.action = EditActionEnumVd.DELETE;
+    deleteAction(bean: CasierBean) {
+        if( bean.action == EditActionEnumVd.CREATE ){
+            this.removeItem(bean);
+        }else {
+            if( bean.action != EditActionEnumVd.DELETE){
+                bean.action = EditActionEnumVd.DELETE;
+                bean.valueChanged = true;
+            }else{                
+                bean.action = EditActionEnumVd.SYNC;
+                bean.valueChanged = false;
+            }
+        }
     }
 }

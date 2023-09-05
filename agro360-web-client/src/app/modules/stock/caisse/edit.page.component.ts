@@ -47,7 +47,6 @@ export class EditPageComponent implements OnInit {
         private stockService: StockService) { }
 
     ngOnInit(): void {
-
         if (this.isCreation()) {
             this.http
                 .get(`${this.stockService.BASE_URL}/stock/caisse/create-form`)

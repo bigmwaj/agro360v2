@@ -1,40 +1,93 @@
-<section class="mat-elevation-z8 p-1 mb-3">
-
+<section class="mb-3">
+    <a mat-raised-button color="primary" 
+        class="me-2" 
+        href="/">
+        <mat-icon>home</mat-icon>Accueil
+    </a>
+    <button mat-raised-button color="primary" class="me-2" (click)="addAction()">
+        <mat-icon>add</mat-icon>Ajouter
+    </button>
 </section>
-<fieldset>
-    <legend>
+
+<section class="mat-elevation-z8 p-3 mb-3" *ngIf="searchForm">
+    <h4>
         Recherche
-    </legend>
-    <section>
-        <button>Rechercher</button>
-        <button>Initialiser</button>
-        |
-        <button (click)="addAction()">Ajouter</button>
-    </section>
-</fieldset>
+    </h4>
+    <div class="row">
+        <div class="col-3">
+            <input-text-field [field]="searchForm.cycleCode"></input-text-field>
+        </div>
+        <div class="col-3">
+            <select-one-field [field]="searchForm.status"></select-one-field>
+        </div>
+        <div class="col-3">
+            <select-one-field [field]="searchForm.magasin"></select-one-field>
+        </div>
+    </div>
+    <div>
+        <button mat-raised-button color="primary" class="me-2" (click)="searchAction()">
+            <mat-icon>search</mat-icon>Rechercher
+        </button>
+        <button mat-raised-button color="primary" (click)="resetSearchFormAction()">
+            <mat-icon>reset</mat-icon>Réinitialiser
+        </button>
+    </div>
+</section>
 
 <section class="mat-elevation-z8 p-3">
     <h4>
         Liste des cycles
     </h4>
-    <table>
-        <thead>
-            <tr>
-                <th><input type="checkbox"/></th>
-                <th>Code</th> 
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody *ngIf="beans">
-            <tr *ngFor="let bean of beans">
-                <td><input type="checkbox"/></td>
-                <td><a (click)="editAction(bean)">{{ bean.cycleCode.value }}</a> </td> 
-                <td>
-                    <button (click)="editAction(bean)">Editer</button>
-                    <button (click)="copyAction(bean)">Copier</button>
-                    <button (click)="deleteAction(bean)">Supprimer</button>
-                </td>
-            </tr>
-        </tbody>
+    <table mat-table #cycles [dataSource]="this">
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="cycleCode">
+            <th mat-header-cell *matHeaderCellDef>Code</th>
+            <td mat-cell *matCellDef="let element">{{element.cycleCode.value}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let element">{{element.status.value}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="magasin">
+            <th mat-header-cell *matHeaderCellDef>Magasin</th>
+            <td mat-cell *matCellDef="let element">{{element.magasin.magasinCode.value}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let element">{{element.description.value}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab color="primary" title="Afficher" (click)="editAction(element)">
+                    <mat-icon>preview</mat-icon>
+                </button>
+                <button mat-mini-fab color="primary" title="Copier" (click)="copyAction(element)">
+                    <mat-icon>content_copy</mat-icon>
+                </button>
+                <button mat-mini-fab color="primary" title="Supprimer" (click)="deleteAction(element)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.text-bg-danger]="row.action == 'DELETE'"></tr>
     </table>
 </section>

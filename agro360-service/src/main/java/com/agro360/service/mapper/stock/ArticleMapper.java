@@ -18,7 +18,6 @@ import com.agro360.dto.stock.VariantDto;
 import com.agro360.service.bean.stock.ArticleBean;
 import com.agro360.service.bean.stock.ArticleSearchBean;
 import com.agro360.service.mapper.common.AbstractMapper;
-import com.agro360.vd.stock.TypeArticleEnumVd;
 
 @Component
 public class ArticleMapper extends AbstractMapper {
@@ -50,7 +49,6 @@ public class ArticleMapper extends AbstractMapper {
 	
 	public ArticleSearchBean mapToSearchBean() {
 		var bean = new ArticleSearchBean();
-		setMap(bean.getTypeArticle()::setValueOptions, TypeArticleEnumVd.values(), TypeArticleEnumVd::getLibelle);
 		return bean;
 	}
 
@@ -63,7 +61,6 @@ public class ArticleMapper extends AbstractMapper {
 		bean.getDescription().setValue(dto.getDescription());
 		
 		bean.getTypeArticle().setValue(dto.getTypeArticle());
-		setMap(bean.getTypeArticle()::setValueOptions, TypeArticleEnumVd.values(), TypeArticleEnumVd::getLibelle);
 
 		if (dto.getUnite() != null) {
 			bean.setUnite(uniteMapper.mapToBean(dto.getUnite()));

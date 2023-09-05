@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-5">
+        <h4>
+            Données de planification
+        </h4>
+        <table mat-table [dataSource]="this" class="beans-table editable cycle-metadatas">
+            <ng-container matColumnDef="libelle">
+                <th mat-header-cell *matHeaderCellDef>Libelle</th>
+                <td mat-cell *matCellDef="let element">
+                    {{element.libelle.value}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>Value</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field *ngIf="element.type.value == 'input'" [field]="element.value" [displayLabel]="false">
+                    </input-number-field>
+                    <button mat-mini-fab color="primary" *ngIf="element.type.value != 'input'" title="Détails" (click)="showDetailsAction(element)">
+                        <mat-icon>menu</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>                    
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <button mat-mini-fab color="primary" title="Détails" (click)="showDetailsAction(element)">
+                        <mat-icon>preview</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                [class.text-bg-danger]="row.action == 'DELETE'"></tr>
+        </table>        
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons>
+        </mat-paginator>
+    </div>
+    <div class="col-7">
+        <div class="container-fluide" *ngIf="bean">
+            <h4>{{bean.libelle.value}} </h4>
+            <div innerHTML="{{bean.description.value}}">
+            </div>
+        </div>
+    </div>
+</div>

@@ -85,7 +85,17 @@ export class EditVariantListComponent extends BeanList<VariantBean> implements O
         this.__add(queryParams);
     }
 
-    deleteAction(variant: VariantBean) {
-        variant.action = EditActionEnumVd.DELETE;
+    deleteAction(bean: VariantBean) {
+        if( bean.action == EditActionEnumVd.CREATE ){
+            this.removeItem(bean);
+        }else {
+            if( bean.action != EditActionEnumVd.DELETE){
+                bean.action = EditActionEnumVd.DELETE;
+                bean.valueChanged = true;
+            }else{                
+                bean.action = EditActionEnumVd.SYNC;
+                bean.valueChanged = false;
+            }
+        }
     }
 }
