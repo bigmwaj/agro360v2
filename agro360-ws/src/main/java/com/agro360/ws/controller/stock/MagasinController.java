@@ -39,9 +39,7 @@ public class MagasinController extends AbstractController {
 
 	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated MagasinBean bean, BindingResult br) {
-		var messages = magasinService.save(bean);
-		var model = new ModelMap(MESSAGES_MODEL_KEY, messages);
-		return ResponseEntity.ok(model);
+		return ResponseEntity.ok(new ModelMap().addAllAttributes(magasinService.save(bean)));
 	}
 	
 	@GetMapping("/search-form")

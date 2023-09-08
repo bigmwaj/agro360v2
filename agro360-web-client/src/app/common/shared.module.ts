@@ -10,6 +10,17 @@ import { InputTextFieldComponent } from './field/input.text';
 import { InputTextareaFieldComponent } from './field/input.textarea';
 import { SelectMultipleFieldComponent } from './field/select.multiple';
 import { SelectOneFieldComponent } from './field/select.one';
+import { PageTitleComponent } from './page-title.component';
+import { TiersService } from '../modules/tiers/tiers.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
     imports: [ 
@@ -24,6 +35,24 @@ import { SelectOneFieldComponent } from './field/select.one';
         InputTextFieldComponent,
         SelectMultipleFieldComponent,
         SelectOneFieldComponent,
+        PageTitleComponent,
+        MatSnackBarModule,        
+        MatButtonModule,
+        MatIconModule,         
+        CommonModule,    
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatCheckboxModule,
+        MatTableModule,              
+        MatSidenavModule,        
+        CommonModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatCheckboxModule,
+        MatTableModule,
+        MatPaginatorModule
     ],
     exports: [
         InputCheckboxFieldComponent,
@@ -36,7 +65,16 @@ import { SelectOneFieldComponent } from './field/select.one';
         InputTextareaFieldComponent,
         InputTextFieldComponent,
         SelectMultipleFieldComponent,
-        SelectOneFieldComponent,
+        SelectOneFieldComponent, 
+        MatButtonModule, 
+        CommonModule,     
+        MatIconModule,
+        MatDialogModule,
+        MatCheckboxModule,
+        MatTableModule,              
+        MatSidenavModule,
+        MatPaginatorModule
+        
     ]
 })
 export class SharedModule { }

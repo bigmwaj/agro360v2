@@ -1,12 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommandeBean, LigneBean } from 'src/app/backed/bean.vente';
 import { BeanTools } from 'src/app/common/bean.tools';
 import { SharedModule } from 'src/app/common/shared.module';
@@ -14,16 +8,13 @@ import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { StockUtils } from '../../stock/stock.utils';
 import { TiersUtils } from '../../tiers/tiers.utils';
 import { EditLigneListComponent } from './edit.ligne.list.component';
+import { VenteService } from '../vente.service';
+import { map } from 'rxjs';
+import { Message } from 'src/app/backed/message';
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         SharedModule,
         EditLigneListComponent
     ],
@@ -38,7 +29,9 @@ export class EditPageComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private http: HttpClient) { }
+        private http: HttpClient,
+        private router: Router,
+        private service: VenteService) { }
 
     ngOnInit(): void {
         let queryParams = new HttpParams();
@@ -131,7 +124,11 @@ export class EditPageComponent implements OnInit {
      */
     saveAction() {
         this.http.post(`${CommonUtlis.BASE_URL}/vente/commande`, BeanTools.reviewBeanAction(this.bean))
-        .subscribe(data => console.log(data))
+            .pipe(map((e: any) => <any>e))
+            .subscribe(data => {
+                this.redirectToEditPage(data.id)
+                this.service.displayFlashMessage(<Array<Message>>data.messages);
+            });
     }
 
     /* *****************
@@ -164,5 +161,15 @@ export class EditPageComponent implements OnInit {
     private initPrixTotal() {
         this.bean.prixTotal.value = this.bean.lignes.map(e => this.calculerPrixTotalLigne(e))
             .reduce((a, b) => a + b, 0)
+    }
+
+    private redirectToEditPage(id:string):void{
+        this.router.navigate(
+            [
+                '/vente/commande',
+                'edit', 
+                id
+            ]
+        )
     }
 }

@@ -12,6 +12,7 @@ import { BonCommandeBean, BonCommandeSearchBean } from 'src/app/backed/bean.acha
 import { BeanList } from 'src/app/common/bean.list';
 import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { SharedModule } from 'src/app/common/shared.module';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
     standalone: true,
@@ -22,7 +23,8 @@ import { SharedModule } from 'src/app/common/shared.module';
         MatDialogModule,
         MatCheckboxModule,
         MatTableModule,
-        SharedModule
+        SharedModule,
+        MatSidenavModule
     ],
     selector: 'achat-bonCommande-index-page',
     templateUrl: './index.page.component.html'

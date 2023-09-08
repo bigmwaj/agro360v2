@@ -44,6 +44,8 @@ public class CommandeBean extends AbstractStatusTrackingBean<StatusCommandeEnumV
 	
 	private FieldMetadata<Double> prixTotal = new FieldMetadata<>("Prix Total");
 
+	private FieldMetadata<String> plusVendus = new FieldMetadata<>("Les plus vendus");
+
 	private List<LigneBean> lignes = new ArrayList<>();
 
 	public void setClient(TiersBean client) {

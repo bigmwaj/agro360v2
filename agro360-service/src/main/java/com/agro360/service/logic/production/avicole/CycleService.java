@@ -81,11 +81,9 @@ public class CycleService extends AbstractService<CycleDto, String> {
 		return dao.findAll(example).stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 
-	public List<Message> save(CycleBean bean) {
-		if( bean.getAction() == null ) {
-			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
-		}
-		
+	public Map<String, Object> save(CycleBean bean) {
+
+		var id = bean.getCycleCode().getValue();
 		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
@@ -106,9 +104,9 @@ public class CycleService extends AbstractService<CycleDto, String> {
 			break;
 			
 		default:
-			return Collections.singletonList(Message.warn("Aucune action à effectuer"));
+			messages = Collections.singletonList(Message.warn("Aucune action à effectuer"));
 		}
-		return messages;
+		return Map.of(ID_MODEL_KEY , id, MESSAGES_MODEL_KEY, messages);
 	}
 	
 	private Supplier<RuntimeException> dtoNotFoundEx(String articleCode){

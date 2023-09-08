@@ -1,24 +1,15 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { TiersBean } from 'src/app/backed/bean.tiers';
-import { InputCheckboxFieldComponent } from 'src/app/common/field/input.checkbox';
-import { InputTextFieldComponent } from 'src/app/common/field/input.text';
-import { SelectOneFieldComponent } from 'src/app/common/field/select.one';
+import { SharedModule } from 'src/app/common/shared.module';
 
 const BASE_URL = "http://localhost:8080";
 
 @Component({
     standalone: true,
     imports:[
-        CommonModule,
-        MatIconModule,  
-        MatDialogModule,
-        InputTextFieldComponent,
-        SelectOneFieldComponent,
-        InputCheckboxFieldComponent,
+        SharedModule
     ],
     selector: 'tiers-tiers-changeStatus-dialog',
     templateUrl: './change-status.dialog.component.html'

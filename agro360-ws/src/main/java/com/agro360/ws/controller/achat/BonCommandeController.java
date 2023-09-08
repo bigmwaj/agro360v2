@@ -1,6 +1,5 @@
 package com.agro360.ws.controller.achat;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import com.agro360.service.bean.achat.BonCommandeSearchBean;
 import com.agro360.service.bean.achat.LigneBean;
 import com.agro360.service.logic.achat.BonCommandeService;
 import com.agro360.service.logic.achat.LigneService;
-import com.agro360.service.message.Message;
 import com.agro360.ws.controller.common.AbstractController;
 
 @RestController()
@@ -42,9 +40,7 @@ public class BonCommandeController extends AbstractController {
 
 	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated BonCommandeBean bean, BindingResult br) {
-		List<Message> messages = bonCommandeService.save(bean);
-		ModelMap model = new ModelMap(MESSAGES_MODEL_KEY, messages);
-		return ResponseEntity.ok(model);
+		return ResponseEntity.ok(new ModelMap().addAllAttributes(bonCommandeService.save(bean)));
 	}
 	@GetMapping("/search-form")
 	public ResponseEntity<BonCommandeSearchBean> getSearchFormAction() {
@@ -74,7 +70,8 @@ public class BonCommandeController extends AbstractController {
 	@GetMapping("/ligne/create-form")
 	public ResponseEntity<LigneBean> getLigneCreateFormAction(
 			@RequestParam(required = false) String bonCommandeCode, 
+			@RequestParam() Optional<String> articleCode,
 			@RequestParam Optional<Long> copyFrom) {
-		return ResponseEntity.ok(ligneService.initFormBean(bonCommandeCode, copyFrom));
+		return ResponseEntity.ok(ligneService.initFormBean(bonCommandeCode, copyFrom,articleCode));
 	}
 }

@@ -1,17 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { TiersBean } from 'src/app/backed/bean.tiers';
 import { CommonService } from 'src/app/common/service/common.service';
+import { SharedModule } from 'src/app/common/shared.module';
 
 @Component({
     standalone: true,
-    imports:[
-        CommonModule,
-        MatIconModule,  
-        MatDialogModule 
+    imports:[   
+        SharedModule
     ],
     selector: 'tiers-tiers-delete-dialog',
     templateUrl: './delete.dialog.component.html'

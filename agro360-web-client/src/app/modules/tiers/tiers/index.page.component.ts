@@ -1,10 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { TiersBean, TiersSearchBean } from 'src/app/backed/bean.tiers';
@@ -12,7 +9,6 @@ import { BeanList } from 'src/app/common/bean.list';
 import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
-import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from 'src/app/common/shared.module';
 
 const BASE_URL = "http://localhost:8080";
@@ -20,13 +16,8 @@ const BASE_URL = "http://localhost:8080";
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         SharedModule
+        
     ],
     selector: 'tiers-tiers-index-page',
     templateUrl: './index.page.component.html'

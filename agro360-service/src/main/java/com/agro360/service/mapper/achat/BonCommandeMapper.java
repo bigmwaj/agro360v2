@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.agro360.dao.achat.IBonCommandeDao;
 import com.agro360.dao.achat.ILigneDao;
+import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dao.stock.IMagasinDao;
 import com.agro360.dao.tiers.ITiersDao;
 import com.agro360.dto.achat.BonCommandeDto;
@@ -27,6 +28,8 @@ public class BonCommandeMapper extends AbstractMapper {
 
 	public final static String OPTION_MAP_LIGNE_KEY = "MAP_LIGNE";
 
+	public final static String OPTION_MAP_PLUS_KEY = "MAP_PLUS";
+
 	@Autowired
 	private IBonCommandeDao dao;
 
@@ -35,6 +38,9 @@ public class BonCommandeMapper extends AbstractMapper {
 
 	@Autowired
 	private ITiersDao tiersDao;
+	
+	@Autowired
+	private IArticleDao articleDao;
 
 	@Autowired
 	private ILigneDao ligneDao;
@@ -90,6 +96,13 @@ public class BonCommandeMapper extends AbstractMapper {
 
 			var ligneBeans = ligneDao.findAll(ex).stream().map(ligneMapper::mapToBean).toList();
 			bean.getLignes().addAll(ligneBeans);
+		}
+		
+		var mapPlus = options.getOrDefault(OPTION_MAP_PLUS_KEY, null);
+		var isMapPlus = mapPlus instanceof Boolean && (Boolean) mapPlus;
+		
+		if( isMapPlus ) {
+			bean.getPlusAchetes().setValueOptions(StockSharedMapperHelper.getAllAsValueOptions(articleDao));
 		}
 
 		return bean;

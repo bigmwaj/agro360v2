@@ -10,24 +10,12 @@ import { TypeOperationEnumVd } from 'src/app/backed/vd.stock';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
 import { Message } from 'src/app/backed/message';
 import { map } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableModule } from '@angular/material/table';
 import { SharedModule } from 'src/app/common/shared.module';
 import { EditOperationListComponent } from './edit.operation.list.component';
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         EditOperationListComponent,
         SharedModule
     ],
@@ -44,12 +32,12 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private http: HttpClient,
-        private stockService: StockService) { }
+        private service: StockService) { }
 
     ngOnInit(): void {
         if (this.isCreation()) {
             this.http
-                .get(`${this.stockService.BASE_URL}/stock/caisse/create-form`)
+                .get(`${this.service.BASE_URL}/stock/caisse/create-form`)
                 .subscribe(data => {
                     this.bean = <CaisseBean>data;
                     this.initSelectMagasinOptions();
@@ -66,7 +54,7 @@ export class EditPageComponent implements OnInit {
                 prms.agent = params.get('agent');
                 prms.journee = params.get('journee');
                 this.http
-                    .get<any>(`${this.stockService.BASE_URL}/stock/caisse/edit-form`, { params: this.stockService.encodeQuery(prms) })
+                    .get<any>(`${this.service.BASE_URL}/stock/caisse/edit-form`, { params: this.service.encodeQuery(prms) })
                     .subscribe(data => {
                         this.bean = data;
                         this.initSelectMagasinOptions();
@@ -80,7 +68,7 @@ export class EditPageComponent implements OnInit {
     }
 
     getEncodedOwnerId(bean: CaisseBean): any {
-        const query = this.stockService.encodeQuery({
+        const query = this.service.encodeQuery({
             magasin: bean.magasin.magasinCode.value,
             agent: bean.agent.tiersCode.value,
             journee: bean.journee.value
@@ -132,7 +120,7 @@ export class EditPageComponent implements OnInit {
      * Action ménant à l'enregistrement de la commande en cours de création/modification
      */
     saveAction() {
-        this.http.post(`${this.stockService.BASE_URL}/stock/caisse`, BeanTools.reviewBeanAction(this.bean))
+        this.http.post(`${this.service.BASE_URL}/stock/caisse`, BeanTools.reviewBeanAction(this.bean))
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.displayMessage(data.messages);

@@ -1,26 +1,14 @@
-import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTable, MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatTable } from '@angular/material/table';
 import { MetadataBean } from 'src/app/backed/bean.production.avicole';
 import { BeanList } from 'src/app/common/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
-        MatPaginatorModule,
         SharedModule
     ],
     selector: 'production-avicole-edit-metadata-list',

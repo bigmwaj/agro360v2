@@ -1,11 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CaisseBean, CaisseIdBean } from 'src/app/backed/bean.stock';
 import { CommonService } from 'src/app/common/service/common.service';
 import { SharedModule } from 'src/app/common/shared.module';
@@ -13,12 +8,6 @@ import { SharedModule } from 'src/app/common/shared.module';
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         SharedModule
     ],
     selector: 'stock-caisse-delete-dialog',

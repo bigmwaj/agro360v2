@@ -11,7 +11,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.dao.common.IDao;
-import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dao.stock.IOperationCaisseDao;
 import com.agro360.dto.stock.CaisseDto;
 import com.agro360.dto.stock.OperationCaisseDto;
@@ -19,15 +18,14 @@ import com.agro360.dto.tiers.TiersDto;
 import com.agro360.service.bean.stock.CaisseBean;
 import com.agro360.service.bean.stock.CaisseIdBean;
 import com.agro360.service.bean.stock.OperationCaisseBean;
-import com.agro360.service.logic.common.AbstractService;
+import com.agro360.service.logic.common.AbstractLigneService;
 import com.agro360.service.mapper.stock.CaisseMapper;
 import com.agro360.service.mapper.stock.OperationCaisseMapper;
 import com.agro360.service.message.Message;
-import com.agro360.vd.stock.TypeLigneEnumVd;
 import com.agro360.vd.stock.TypeOperationEnumVd;
 
 @Service()
-public class OperationCaisseService extends AbstractService<OperationCaisseDto, Long> {
+public class OperationCaisseService extends AbstractLigneService<OperationCaisseDto> {
 
 	private static final String CREATE_SUCCESS = "Enregistrement créé avec succès!";
 
@@ -37,9 +35,6 @@ public class OperationCaisseService extends AbstractService<OperationCaisseDto, 
 
 	@Autowired
 	private IOperationCaisseDao dao;
-	
-	@Autowired
-	private IArticleDao articleDao;
 
 	@Autowired
 	private OperationCaisseMapper mapper;
@@ -94,7 +89,6 @@ public class OperationCaisseService extends AbstractService<OperationCaisseDto, 
 		
 		List<Message> messages = new ArrayList<>();
 		var existingOperationCaisses = findOperationCaisses(caisseBean);
-
 		
 		switch (caisseBean.getAction()) {
 		case CREATE:
@@ -130,8 +124,7 @@ public class OperationCaisseService extends AbstractService<OperationCaisseDto, 
 			Optional<String> articleCode,
 			Optional<TypeOperationEnumVd> typeOperation) {
 		
-		Function<Long, Example<OperationCaisseDto>> query = id -> {
-			
+		Function<Long, Example<OperationCaisseDto>> query = id -> {			
 			var ex = Example.of(new OperationCaisseDto());
 			ex.getProbe().setCaisse(caisseMapper.mapToDto(idBean));			
 			ex.getProbe().setLigneId(id);
@@ -149,12 +142,7 @@ public class OperationCaisseService extends AbstractService<OperationCaisseDto, 
 			bean.getTypeOperation().setValue(typeOperation.get());
 		}
 		
-		var articleDto = articleCode.map(articleDao::findById).flatMap(e -> e).orElse(null);
-		if( articleDto != null ) {
-			bean.getArticle().getArticleCode().setValue(articleDto.getArticleCode());
-			bean.getUnite().getUniteCode().setValue(articleDto.getUnite().getUniteCode());
-			bean.getTypeLigne().setValue(TypeLigneEnumVd.valueOf(articleDto.getTypeArticle().toString()));
-		}
+		initArticle(bean, articleCode);
 		
 		return bean;
 	}

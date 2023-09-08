@@ -7,6 +7,10 @@ import com.agro360.dto.common.AbstractDto;
 
 public abstract class AbstractService<E extends AbstractDto, K> {
 
+	protected final static String MESSAGES_MODEL_KEY = "messages";
+
+	protected final static String ID_MODEL_KEY = "id";
+
 	protected IDao<E, K> dao;
 
 	protected abstract IDao<E, K> getDao();

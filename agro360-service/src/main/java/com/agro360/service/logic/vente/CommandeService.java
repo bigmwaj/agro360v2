@@ -1,6 +1,6 @@
 package com.agro360.service.logic.vente;
 
-import static com.agro360.service.mapper.vente.CommandeMapper.OPTION_MAP_LIGNE_KEY;
+import static com.agro360.service.mapper.vente.CommandeMapper.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,11 +63,8 @@ public class CommandeService extends AbstractService<CommandeDto, String> {
 		return dao.findAll(example).stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 
-	public List<Message> save(CommandeBean bean) {
-		if( bean.getAction() == null ) {
-			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
-		}
-		
+	public Map<String, Object> save(CommandeBean bean) {
+		var id = bean.getCommandeCode().getValue();
 		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
@@ -90,14 +87,14 @@ public class CommandeService extends AbstractService<CommandeDto, String> {
 			messages.add(Message.success(DELETE_SUCCESS));
 			break;
 		default:
-			return Collections.singletonList(Message.warn("Aucune action à effectuer"));
+			messages = Collections.singletonList(Message.warn("Aucune action à effectuer"));
 		}
-		return messages;
+		return Map.of(ID_MODEL_KEY , id, MESSAGES_MODEL_KEY, messages);
 	}
 
 	public CommandeBean initUpdateFormBean(String commandeCode) {
 		var dto = dao.findById(commandeCode).orElseThrow(dtoNotFoundEx(commandeCode));
-		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true));
+		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true));
 		return bean;
 	}
 	
@@ -117,7 +114,7 @@ public class CommandeService extends AbstractService<CommandeDto, String> {
 
 	public CommandeBean initCreateFormBean(Optional<String> copyFrom) {
 		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(CommandeDto::new);
-		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true));
+		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true));
 		bean.initForCreateForm();
 		return bean;
 	}

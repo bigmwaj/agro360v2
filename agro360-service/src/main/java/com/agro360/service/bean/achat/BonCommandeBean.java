@@ -37,6 +37,8 @@ public class BonCommandeBean extends AbstractStatusTrackingBean<StatusBonCommand
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 	
 	private FieldMetadata<Double> prixTotal = new FieldMetadata<>("Prix Total");
+	
+	private FieldMetadata<String> plusAchetes = new FieldMetadata<>("Les plus achetés");
 
 	private List<LigneBean> lignes = new ArrayList<>();
 

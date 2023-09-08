@@ -1,25 +1,20 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TiersBean } from 'src/app/backed/bean.tiers';
 import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
-import { MatIconModule } from '@angular/material/icon';
 import { CategoryBlockComponent } from './category.block.component';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from 'src/app/common/shared.module';
 import { BeanTools } from 'src/app/common/bean.tools';
-
-const BASE_URL = "http://localhost:8080";
+import { TiersService } from '../tiers.service';
+import { map } from 'rxjs';
+import { Message } from 'src/app/backed/message';
 
 @Component({
     standalone: true,
     imports:[
-        CommonModule,
-        CategoryBlockComponent,
-        MatButtonModule,
-        MatIconModule,        
+        CategoryBlockComponent,    
         SharedModule
     ],
     selector: 'tiers-tiers-edit-page',
@@ -34,7 +29,8 @@ export class EditPageComponent implements OnInit {
     constructor(private router: Router,
         private route: ActivatedRoute,
         private http: HttpClient,
-        public dialog: MatDialog) { }
+        public dialog: MatDialog,
+        private service:TiersService) { }
 
     isCreation(): boolean {
         let path = this.route.routeConfig?.path;
@@ -50,7 +46,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("copyFrom", copyFrom);
                 }
                 this.http
-                    .get(BASE_URL + "/tiers/tiers/create-form", { params: queryParams })
+                    .get(`${this.service.getBackendUrl('tiers/tiers/create-form')}`, { params: queryParams })
                     .subscribe(data => this.bean = <TiersBean>data);
                 
                 this.pageTitle = "Création d'un Tiers"
@@ -63,7 +59,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("tiersCode", tiersCode);
                 }
                 this.http
-                    .get<any>(BASE_URL + `/tiers/tiers/update-form`, {params: queryParams})
+                    .get<any>(`${this.service.getBackendUrl('tiers/tiers/update-form')}`, {params: queryParams})
                     .subscribe(data => this.bean = data);
                 
                 this.pageTitle = "Édition du Tiers " + tiersCode
@@ -80,10 +76,25 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(BASE_URL + `/tiers/tiers`, BeanTools.reviewBeanAction(this.bean)).subscribe(data => console.log(data))
+        this.http.post(`${this.service.getBackendUrl('tiers/tiers')}`, BeanTools.reviewBeanAction(this.bean))            
+            .pipe(map((e: any) => <any>e))
+            .subscribe(data => {
+                this.redirectToEditPage(data.id)
+                this.service.displayFlashMessage(<Array<Message>>data.messages);
+            });
     }
 
     categoryAction() {
         this.dialog.open(CategoryIndexModalComponent);
+    }
+    
+    private redirectToEditPage(id:string):void{
+        this.router.navigate(
+            [
+                '/tiers/tiers',
+                'edit', 
+                id
+            ]
+        )
     }
 }

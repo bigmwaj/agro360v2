@@ -45,9 +45,7 @@ public class ArticleController extends AbstractController {
 
 	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated ArticleBean bean, BindingResult br) {
-		var messages = articleService.save(bean);
-		var model = new ModelMap(MESSAGES_MODEL_KEY, messages);
-		return ResponseEntity.ok(model);
+		return ResponseEntity.ok(new ModelMap().addAllAttributes(articleService.save(bean)));
 	}
 	
 	@GetMapping("/search-form")

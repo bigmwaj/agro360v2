@@ -4,9 +4,7 @@ import { Component, Input } from '@angular/core';
     selector: 'app-root',
     templateUrl: './app.component.html'
 })
-export class AppComponent {
-
-    constructor() { }
+export class AppComponent{
 
     @Input()
     title = 'Agro 360';

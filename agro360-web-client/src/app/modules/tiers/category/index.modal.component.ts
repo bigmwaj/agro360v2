@@ -1,31 +1,17 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { map } from 'rxjs';
 import { CategoryBean } from 'src/app/backed/bean.tiers';
-import { InputEmailFieldComponent } from 'src/app/common/field/input.email';
-import { InputTelFieldComponent } from 'src/app/common/field/input.tel';
-import { InputTextFieldComponent } from 'src/app/common/field/input.text';
-import { InputTextareaFieldComponent } from 'src/app/common/field/input.textarea';
-import { SelectOneFieldComponent } from 'src/app/common/field/select.one';
+import { SharedModule } from 'src/app/common/shared.module';
 
 const BASE_URL = "http://localhost:8080/tiers/category";
 
 @Component({
     standalone: true,
     imports:[
-        CommonModule,
-        MatIconModule,             
-        InputTextFieldComponent,
-        InputTextareaFieldComponent,
-        InputEmailFieldComponent,
-        InputTelFieldComponent,
-        SelectOneFieldComponent,
-        MatDialogModule,
+        SharedModule,
         MatTreeModule
     ],
     selector: 'tiers-category-index-modal',

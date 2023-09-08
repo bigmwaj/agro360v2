@@ -15,7 +15,6 @@ import { AppComponent } from './app.component';
 
 import { PageTitleComponent } from './common/page-title.component';
 import { TiersModule } from './modules/tiers/tiers.module';
-import { CommonModule } from '@angular/common';
 import { StockModule } from './modules/stock/stock.module';
 import { AchatModule } from './modules/achat/achat.module';
 import { VenteModule } from './modules/vente/vente.module';
@@ -23,8 +22,7 @@ import { ProductionAvicoleModule } from './modules/production/avicole/production
 
 @NgModule({
     declarations: [
-        AppComponent,
-        PageTitleComponent
+        AppComponent
     ],
     imports: [    
         MatIconModule,    
@@ -43,7 +41,9 @@ import { ProductionAvicoleModule } from './modules/production/avicole/production
         StockModule,
         AchatModule,
         VenteModule,
-        ProductionAvicoleModule
+        ProductionAvicoleModule,
+        
+        PageTitleComponent
     ],
     providers: [
     ],

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Component;
 
+import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dao.stock.IMagasinDao;
 import com.agro360.dao.tiers.ITiersDao;
 import com.agro360.dao.vente.ICommandeDao;
@@ -27,11 +28,16 @@ public class CommandeMapper extends AbstractMapper {
 
 	public final static String OPTION_MAP_LIGNE_KEY = "MAP_LIGNE";
 
+	public final static String OPTION_MAP_PLUS_KEY = "MAP_PLUS";
+
 	@Autowired
 	private ICommandeDao dao;
 
 	@Autowired
 	private ITiersDao tiersDao;
+	
+	@Autowired
+	private IArticleDao articleDao;
 
 	@Autowired
 	private TiersMapper tiersMapper;
@@ -90,6 +96,12 @@ public class CommandeMapper extends AbstractMapper {
 			bean.getLignes().addAll(ligneBeans);
 		}
 		
+		var mapPlus = options.getOrDefault(OPTION_MAP_PLUS_KEY, null);
+		var isMapPlus = mapPlus instanceof Boolean && (Boolean) mapPlus;
+		
+		if( isMapPlus ) {
+			bean.getPlusVendus().setValueOptions(StockSharedMapperHelper.getAllAsValueOptions(articleDao));
+		}		
 
 		return bean;
 	}

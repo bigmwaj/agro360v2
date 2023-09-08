@@ -17,12 +17,12 @@ import com.agro360.dto.achat.LigneDto;
 import com.agro360.service.bean.achat.BonCommandeBean;
 import com.agro360.service.bean.achat.LigneBean;
 import com.agro360.service.exception.ServiceLogicException;
-import com.agro360.service.logic.common.AbstractService;
+import com.agro360.service.logic.common.AbstractLigneService;
 import com.agro360.service.mapper.achat.LigneMapper;
 import com.agro360.service.message.Message;
 
 @Service(value = "achat/LigneService")
-public class LigneService extends AbstractService<LigneDto, Long> {
+public class LigneService extends AbstractLigneService<LigneDto> {
 	
 	private static final String ACTION_REQUIRED = "L'action sur le bon de commande est requise";
 	
@@ -127,7 +127,8 @@ public class LigneService extends AbstractService<LigneDto, Long> {
 		return dao.findAll(ex);
 	}
 
-	public LigneBean initFormBean(String bonCommandeCode, Optional<Long> copyFrom) {
+	public LigneBean initFormBean(String bonCommandeCode, Optional<Long> copyFrom, 
+			Optional<String> articleCode) {
 		
 		Function<Long, Example<LigneDto>> exBldr = id -> {			
 			var ex = Example.of(new LigneDto());
@@ -150,6 +151,8 @@ public class LigneService extends AbstractService<LigneDto, Long> {
 		
 		var bean = mapper.mapToBean(dto);
 		bean.initForCreateForm();
+
+		initArticle(bean, articleCode);
 		return bean;
 	}
 }

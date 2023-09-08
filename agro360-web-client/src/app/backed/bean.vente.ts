@@ -5,18 +5,19 @@ import { TiersBean } from './bean.tiers';
 import { MagasinBean } from './bean.stock';
 
 export interface CommandeBean extends AbstractStatusTrackingBean<StatusCommandeEnumVd> {
-	status: FieldMetadata<StatusCommandeEnumVd>;
 	description: FieldMetadata<string>;
-	prixTotal: FieldMetadata<number>;
-	commandeCode: FieldMetadata<string>;
-	dateCommande: FieldMetadata<any>;
+	plusVendus: FieldMetadata<string>;
 	livree: FieldMetadata<boolean>;
 	magasin: MagasinBean;
 	client: TiersBean;
 	adresse: FieldMetadata<string>;
-	lignes: Array<LigneBean>;
 	transportRequis: FieldMetadata<boolean>;
 	ville: FieldMetadata<string>;
+	status: FieldMetadata<StatusCommandeEnumVd>;
+	prixTotal: FieldMetadata<number>;
+	commandeCode: FieldMetadata<string>;
+	dateCommande: FieldMetadata<any>;
+	lignes: Array<LigneBean>;
 };
 
 export interface CommandeSearchBean extends AbstractBean {

@@ -70,7 +70,7 @@ public class CaisseController extends AbstractController {
 	}
 	
 	@GetMapping("/operation/create-form")
-	public ResponseEntity<OperationCaisseBean> getVariantCreateFormAction(
+	public ResponseEntity<OperationCaisseBean> getOperationCreateFormAction(
 			@RequestParam() Optional<String> articleCode,
 			@RequestParam() Optional<TypeOperationEnumVd> typeOperation,
 			@RequestBody CaisseIdBean idBean, 

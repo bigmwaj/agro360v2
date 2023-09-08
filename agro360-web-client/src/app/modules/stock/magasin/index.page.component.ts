@@ -1,11 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { MagasinBean, MagasinSearchBean } from 'src/app/backed/bean.stock';
@@ -18,14 +14,7 @@ const BASE_URL = "http://localhost:8080";
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         IndexModalComponent,
-        MatDialogModule,
         SharedModule
     ],
     selector: 'stock-magasin-index-page',

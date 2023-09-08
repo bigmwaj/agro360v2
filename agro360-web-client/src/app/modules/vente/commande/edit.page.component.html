@@ -56,7 +56,9 @@
     <h4>
         Lignes du bon de commande
     </h4>
-    <vente-edit-ligne-list *ngIf="bean && bean.lignes" [lignes]="bean.lignes"
+    <vente-edit-ligne-list *ngIf="bean && bean.lignes" 
+        [lignes]="bean.lignes"    
+        [plusVendus]="bean.plusVendus"
         (updateOwnerPrixTotal)="updatePrixTotalEvent()" [ownerId]="{'commandeCode': bean.commandeCode.value}">
     </vente-edit-ligne-list>
 </section>

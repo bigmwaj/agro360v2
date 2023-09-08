@@ -1,11 +1,5 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
 import { OperationCaisseBean } from 'src/app/backed/bean.stock';
 import { FieldMetadata } from 'src/app/backed/metadata';
 import { TypeOperationEnumVd } from 'src/app/backed/vd.stock';
@@ -15,12 +9,6 @@ import { SharedModule } from 'src/app/common/shared.module';
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         SharedModule
     ],
     selector: 'stock-edit-operation-list',

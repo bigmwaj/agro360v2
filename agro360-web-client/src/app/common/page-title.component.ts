@@ -1,8 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
+    standalone: true,
     selector: 'page-title',
-    template: ``
+    template: `{{title}}`
 })
-export class PageTitleComponent {
+export class PageTitleComponent{
+
+    @Input()
+    title:string;
 }

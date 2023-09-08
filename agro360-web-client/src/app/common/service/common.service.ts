@@ -2,11 +2,18 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AbstractBean } from '../../backed/bean.common';
 import { Observable, map } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FlashMessageComponent } from '../flash-message.component';
+import { Message } from 'src/app/backed/message';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CommonService {
+
+    constructor(public _snackBar: MatSnackBar){
+        
+    }
 
     readonly BASE_URL = "http://localhost:8080";
 
@@ -26,5 +33,12 @@ export class CommonService {
             .pipe(map((e: any) => e.records.map(keyValMapper)))
             .pipe(map((e: any) => e.join(",")))
             .pipe(map((e: any) => JSON.parse(`{${e}}`)));
+    }
+
+    displayFlashMessage(messages: Array<Message>){
+        this._snackBar.openFromComponent(FlashMessageComponent, {
+            duration: 5 * 1000,
+            data: messages
+        });
     }
 }

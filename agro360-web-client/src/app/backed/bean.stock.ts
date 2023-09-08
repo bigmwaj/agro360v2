@@ -3,11 +3,6 @@ import { StatusCaisseEnumVd, TypeArticleEnumVd, TypeOperationEnumVd } from './vd
 import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './bean.common';
 import { TiersBean } from './bean.tiers';
 
-export interface MagasinSearchBean extends AbstractBean {
-	description: FieldMetadata<string>;
-	magasinCode: FieldMetadata<string>;
-};
-
 export interface ArticleBean extends AbstractBean {
 	unite: UniteBean;
 	description: FieldMetadata<string>;
@@ -15,11 +10,6 @@ export interface ArticleBean extends AbstractBean {
 	typeArticle: FieldMetadata<TypeArticleEnumVd>;
 	variants: Array<VariantBean>;
 	conversions: Array<ConversionBean>;
-};
-
-export interface ConversionBean extends AbstractBean {
-	unite: UniteBean;
-	facteur: FieldMetadata<number>;
 };
 
 export interface ArticleSearchBean extends AbstractBean {
@@ -32,9 +22,49 @@ export interface VariantBean extends AbstractBean {
 	variantCode: FieldMetadata<string>;
 };
 
-export interface OperationCaisseBean extends AbstractLigneBean {
-	typeOperation: FieldMetadata<TypeOperationEnumVd>;
-	dateOperation: FieldMetadata<any>;
+export interface ConversionBean extends AbstractBean {
+	unite: UniteBean;
+	facteur: FieldMetadata<number>;
+};
+
+export interface UniteSearchBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	uniteCode: FieldMetadata<string>;
+};
+
+export interface CasierBean extends AbstractBean {
+	casierCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+};
+
+export interface CaisseSearchBean extends AbstractBean {
+	journeeFin: FieldMetadata<any>;
+	journeeDebut: FieldMetadata<any>;
+	magasin: FieldMetadata<string>;
+	agent: FieldMetadata<string>;
+	status: FieldMetadata<StatusCaisseEnumVd>;
+};
+
+export interface MagasinSearchBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	magasinCode: FieldMetadata<string>;
+};
+
+export interface UniteBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	uniteCode: FieldMetadata<string>;
+};
+
+export interface MagasinBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	magasinCode: FieldMetadata<string>;
+	casiers: Array<CasierBean>;
+};
+
+export interface CaisseIdBean {
+	journee: any;
+	agent: string;
+	magasin: string;
 };
 
 export interface CaisseBean extends AbstractStatusTrackingBean<StatusCaisseEnumVd> {
@@ -51,37 +81,7 @@ export interface CaisseBean extends AbstractStatusTrackingBean<StatusCaisseEnumV
 	status: FieldMetadata<StatusCaisseEnumVd>;
 };
 
-export interface CaisseIdBean {
-	journee: any;
-	agent: string;
-	magasin: string;
-};
-
-export interface MagasinBean extends AbstractBean {
-	description: FieldMetadata<string>;
-	magasinCode: FieldMetadata<string>;
-	casiers: Array<CasierBean>;
-};
-
-export interface UniteBean extends AbstractBean {
-	description: FieldMetadata<string>;
-	uniteCode: FieldMetadata<string>;
-};
-
-export interface UniteSearchBean extends AbstractBean {
-	description: FieldMetadata<string>;
-	uniteCode: FieldMetadata<string>;
-};
-
-export interface CaisseSearchBean extends AbstractBean {
-	journeeFin: FieldMetadata<any>;
-	journeeDebut: FieldMetadata<any>;
-	magasin: FieldMetadata<string>;
-	agent: FieldMetadata<string>;
-	status: FieldMetadata<StatusCaisseEnumVd>;
-};
-
-export interface CasierBean extends AbstractBean {
-	casierCode: FieldMetadata<string>;
-	description: FieldMetadata<string>;
+export interface OperationCaisseBean extends AbstractLigneBean {
+	typeOperation: FieldMetadata<TypeOperationEnumVd>;
+	dateOperation: FieldMetadata<any>;
 };

@@ -124,7 +124,8 @@ public class TiersService extends AbstractService<TiersDto, String> {
 		return dao.findAll(example).stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 
-	public List<Message> save(TiersBean bean) {
+	public Map<String, Object> save(TiersBean bean) {
+		var id = bean.getTiersCode().getValue();
 		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
@@ -155,10 +156,10 @@ public class TiersService extends AbstractService<TiersDto, String> {
 					String.format(DELETE_SUCCESS, bean.getTiersName().getValue(), bean.getTiersType().getValue())));
 			break;
 		default:
-			return Collections.singletonList(Message.warn("Aucune action à effectuer"));
+			messages = Collections.singletonList(Message.warn("Aucune action à effectuer"));
 		}
 
-		return messages;
+		return Map.of(ID_MODEL_KEY , id, MESSAGES_MODEL_KEY, messages);
 	}
 	
 	private Supplier<RuntimeException> dtoNotFoundEx(String tiersCode){

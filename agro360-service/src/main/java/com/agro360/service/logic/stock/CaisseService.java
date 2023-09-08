@@ -1,9 +1,11 @@
 package com.agro360.service.logic.stock;
 
+import static com.agro360.service.mapper.stock.CaisseMapper.OPTION_MAP_OPERATION_KEY;
+import static com.agro360.service.mapper.stock.CaisseMapper.OPTION_MAP_PLUS_KEY;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,7 +25,6 @@ import com.agro360.service.bean.stock.CaisseIdBean;
 import com.agro360.service.bean.stock.CaisseSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.CaisseMapper;
-import static com.agro360.service.mapper.stock.CaisseMapper.*;
 import com.agro360.service.message.Message;
 import com.agro360.vd.common.EditActionEnumVd;
 
@@ -59,10 +60,6 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 	}
 
 	public Map<String, Object> save(CaisseBean bean) {
-		if( bean.getAction() == null ) {
-			return Map.of("messages",  Collections.singletonList(Message.error("Aucune action sélectionnée")));
-		}
-		
 		CaisseDto dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
@@ -98,7 +95,7 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 		var journee = bean.getJournee().getValue();
 		var id = new CaisseIdBean(magasin, agent, journee);
 		
-		return Map.of("id" , id, "messages", messages);
+		return Map.of(ID_MODEL_KEY , id, MESSAGES_MODEL_KEY, messages);
 	}
 	
 	public CaisseSearchBean initSearchFormBean() {

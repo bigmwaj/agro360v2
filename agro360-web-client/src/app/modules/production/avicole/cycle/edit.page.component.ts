@@ -1,28 +1,19 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
 import { SharedModule } from 'src/app/common/shared.module';
 import { BeanTools } from 'src/app/common/bean.tools';
 import { ProductionAvicoleService } from '../production.avicole.service';
 import { CycleBean } from 'src/app/backed/bean.production.avicole';
 import { StockUtils } from 'src/app/modules/stock/stock.utils';
 import { EditMetadataListComponent } from './edit.metadata.list.component';
+import { map } from 'rxjs';
+import { Message } from 'src/app/backed/message';
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         EditMetadataListComponent,
         SharedModule
     ],
@@ -92,12 +83,27 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(`${this.service.getBackendUrl('production/avicole/cycle')}`, BeanTools.reviewBeanAction(this.bean)).subscribe(data => console.log(data))
+        this.http.post(`${this.service.getBackendUrl('production/avicole/cycle')}`, BeanTools.reviewBeanAction(this.bean))
+            .pipe(map((e: any) => <any>e))
+            .subscribe(data => {
+                this.redirectToEditPage(data.id)
+                this.service.displayFlashMessage(<Array<Message>>data.messages);
+            });
     }
 
     private initSelectMagasinOptions() {
         StockUtils.getMagasinsAsValueOptions(this.http, {})
             .subscribe(e => this.bean.magasin.magasinCode.valueOptions = e)
+    }
+
+    private redirectToEditPage(id:string):void{
+        this.router.navigate(
+            [
+                '/production/avicole/cycle',
+                'edit', 
+                id
+            ]
+        )
     }
 
 }

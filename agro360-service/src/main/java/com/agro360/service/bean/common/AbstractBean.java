@@ -7,6 +7,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.lang.NonNull;
+
 import com.agro360.service.metadata.FieldMetadata;
 import com.agro360.vd.common.EditActionEnumVd;
 
@@ -23,6 +25,7 @@ public class AbstractBean implements Serializable {
 
 	private boolean valueChanged;
 
+	@NonNull
 	private EditActionEnumVd action = EditActionEnumVd.SYNC;
 
 	public static final Consumer<AbstractBean> setActionToCreate = b -> b.setAction(EditActionEnumVd.CREATE);

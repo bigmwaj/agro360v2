@@ -35,6 +35,6 @@ public class Message {
 	}
 	
 	public static final Message warn(String message) {
-		return new Message(MessageTypeEnumVd.WARN, message);
+		return new Message(MessageTypeEnumVd.WARNING, message);
 	}
 }

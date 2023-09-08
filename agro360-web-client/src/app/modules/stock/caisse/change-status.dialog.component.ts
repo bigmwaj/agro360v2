@@ -3,23 +3,11 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CaisseBean, CaisseIdBean } from 'src/app/backed/bean.stock';
 import { CommonService } from 'src/app/common/service/common.service';
-import { MatDialogModule } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableModule } from '@angular/material/table';
 import { SharedModule } from 'src/app/common/shared.module';
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         SharedModule
     ],
     selector: 'stock-caisse-changeStatus-dialog',

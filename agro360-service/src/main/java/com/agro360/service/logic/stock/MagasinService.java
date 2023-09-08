@@ -51,11 +51,8 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 		return dao.findAll().stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 
-	public List<Message> save(MagasinBean bean) {
-		if( bean.getAction() == null ) {
-			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
-		}
-		
+	public Map<String, Object> save(MagasinBean bean) {
+		var id = bean.getMagasinCode().getValue();
 		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
@@ -78,9 +75,9 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 			messages.add(Message.success(String.format(DELETE_SUCCESS, dto.getMagasinCode())));
 			break;
 		default:
-			return Collections.singletonList(Message.warn("Aucune action à effectuer"));
+			messages = Collections.singletonList(Message.warn("Aucune action à effectuer"));
 		}
-		return messages;
+		return Map.of(ID_MODEL_KEY , id, MESSAGES_MODEL_KEY, messages);
 	}
 
 	public MagasinSearchBean initSearchFormBean() {

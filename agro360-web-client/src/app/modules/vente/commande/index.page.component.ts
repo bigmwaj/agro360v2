@@ -6,24 +6,12 @@ import { map } from 'rxjs';
 import { BeanList } from 'src/app/common/bean.list';
 import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { SharedModule } from 'src/app/common/shared.module';
-import { MatTableModule } from '@angular/material/table';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
 import { CommandeBean, CommandeSearchBean } from 'src/app/backed/bean.vente';
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
-        SharedModule
+        SharedModule,     
     ],
     selector: 'achat-commande-index-page',
     templateUrl: './index.page.component.html'

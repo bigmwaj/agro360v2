@@ -1,11 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { VariantBean } from 'src/app/backed/bean.stock';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
@@ -17,12 +12,6 @@ const BASE_URL = "http://localhost:8080";
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         SharedModule
     ],
     selector: 'stock-article-edit-variant-list',

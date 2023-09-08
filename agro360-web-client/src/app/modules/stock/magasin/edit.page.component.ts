@@ -1,28 +1,19 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MagasinBean } from 'src/app/backed/bean.stock';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableModule } from '@angular/material/table';
 import { SharedModule } from 'src/app/common/shared.module';
 import { EditCasierListComponent } from './edit.casier.list.component';
 import { BeanTools } from 'src/app/common/bean.tools';
+import { StockService } from '../stock.service';
+import { map } from 'rxjs';
+import { Message } from 'src/app/backed/message';
 
 const BASE_URL = "http://localhost:8080";
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         SharedModule,
         EditCasierListComponent
     ],
@@ -38,7 +29,8 @@ export class EditPageComponent implements OnInit {
     constructor(
         private router: Router,
         private route: ActivatedRoute,
-        private http: HttpClient) { }
+        private http: HttpClient,
+        private service: StockService) { }
 
     isCreation(): boolean {
         let path = this.route.routeConfig?.path;
@@ -85,8 +77,22 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(BASE_URL + `/stock/magasin`, BeanTools.reviewBeanAction(this.bean)).subscribe(data => console.log(data))
+        this.http.post(BASE_URL + `/stock/magasin`, BeanTools.reviewBeanAction(this.bean))
+            .pipe(map((e: any) => <any>e))
+            .subscribe(data => {
+                this.redirectToEditPage(data.id);
+                this.service.displayFlashMessage(<Array<Message>>data.messages);
+            });
     }
 
+    private redirectToEditPage(id:string):void{
+        this.router.navigate(
+            [
+                '/stock/magasin',
+                'edit', 
+                id
+            ]
+        )
+    }
 
 }

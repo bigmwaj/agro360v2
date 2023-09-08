@@ -16,13 +16,13 @@ import com.agro360.dto.vente.CommandeDto;
 import com.agro360.dto.vente.LigneDto;
 import com.agro360.service.bean.vente.CommandeBean;
 import com.agro360.service.bean.vente.LigneBean;
-import com.agro360.service.logic.common.AbstractService;
+import com.agro360.service.logic.common.AbstractLigneService;
 import com.agro360.service.mapper.vente.LigneMapper;
 import com.agro360.service.message.Message;
 import com.agro360.vd.common.EditActionEnumVd;
 
 @Service(value = "vente/LigneService")
-public class LigneService extends AbstractService<LigneDto, Long> {
+public class LigneService extends AbstractLigneService<LigneDto> {
 
 	private static final String CREATE_SUCCESS = "Enregistrement créé avec succès!";
 
@@ -112,7 +112,8 @@ public class LigneService extends AbstractService<LigneDto, Long> {
 	}
 
 	
-	public LigneBean initCreateFormBean(String commandeCode, Optional<Long> copyFrom) {
+	public LigneBean initCreateFormBean(String commandeCode, Optional<Long> copyFrom, 
+			Optional<String> articleCode) {
 		
 		Function<Long, Example<LigneDto>> exBldr = ligneId -> {			
 			var ex = Example.of(new LigneDto());
@@ -132,6 +133,10 @@ public class LigneService extends AbstractService<LigneDto, Long> {
 		var bean = mapper.mapToBean(dto);
 		bean.setAction(EditActionEnumVd.CREATE);
 		bean.getLigneId().setValue(null);
+		
+
+		initArticle(bean, articleCode);
+		
 		return bean;
 	}
 }

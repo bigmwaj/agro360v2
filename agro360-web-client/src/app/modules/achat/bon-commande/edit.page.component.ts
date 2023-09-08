@@ -1,29 +1,20 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BonCommandeBean, LigneBean } from 'src/app/backed/bean.achat';
 import { TiersUtils } from '../../tiers/tiers.utils';
 import { StockUtils } from '../../stock/stock.utils';
 import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { BeanTools } from 'src/app/common/bean.tools';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
 import { EditLigneListComponent } from './edit.ligne.list.component';
 import { SharedModule } from 'src/app/common/shared.module';
+import { AchatService } from '../achat.service';
+import { map } from 'rxjs';
+import { Message } from 'src/app/backed/message';
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         EditLigneListComponent,
         SharedModule
     ],
@@ -38,7 +29,9 @@ export class EditPageComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private http: HttpClient)
+        private http: HttpClient,
+        private router: Router,
+        private service:AchatService)
     { }
 
     ngOnInit(): void {
@@ -125,7 +118,11 @@ export class EditPageComponent implements OnInit {
 
     saveAction() {
         this.http.post(`${CommonUtlis.BASE_URL}/achat/bon-commande`, BeanTools.reviewBeanAction(this.bean))
-        .subscribe(data => console.log(data))
+            .pipe(map((e: any) => <any>e))
+            .subscribe(data => {
+                this.redirectToEditPage(data.id)
+                this.service.displayFlashMessage(<Array<Message>>data.messages);
+            });
     }
 
     /* *****************
@@ -158,6 +155,16 @@ export class EditPageComponent implements OnInit {
     private initPrixTotal() {
         this.bean.prixTotal.value = this.bean.lignes.map(e => this.calculerPrixTotalLigne(e))
             .reduce((a, b) => a + b, 0)
+    }
+    
+    private redirectToEditPage(id:string):void{
+        this.router.navigate(
+            [
+                '/achat/bon-commande',
+                'edit', 
+                id
+            ]
+        )
     }
 
 }

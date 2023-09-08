@@ -38,9 +38,7 @@ public class CommandeController extends AbstractController {
 
 	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CommandeBean bean, BindingResult br) {
-		var messages = commandeService.save(bean);
-		var model = new ModelMap(MESSAGES_MODEL_KEY, messages);
-		return ResponseEntity.ok(model);
+		return ResponseEntity.ok(new ModelMap().addAllAttributes(commandeService.save(bean)));
 	}
 	
 	@GetMapping("/search-form")
@@ -69,7 +67,10 @@ public class CommandeController extends AbstractController {
 	}
 	
 	@GetMapping("/ligne/create-form")
-	public ResponseEntity<LigneBean> getLigneCreateFormAction(@RequestParam(required = false) String commandeCode, @RequestParam Optional<Long> copyFrom) {
-		return ResponseEntity.ok(ligneService.initCreateFormBean(commandeCode, copyFrom));
+	public ResponseEntity<LigneBean> getLigneCreateFormAction(
+			@RequestParam() Optional<String> articleCode,
+			@RequestParam(required = false) String commandeCode, 
+			@RequestParam Optional<Long> copyFrom) {
+		return ResponseEntity.ok(ligneService.initCreateFormBean(commandeCode, copyFrom, articleCode));
 	}
 }

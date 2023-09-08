@@ -19,7 +19,10 @@ table {
 .menu-spacer {
     flex: 1 1 auto;
 }
-
+.main-menu a{
+    color: #000;
+    text-decoration: none;
+}
 form-field+form-field {
     margin-left: 8px;
 }
@@ -34,6 +37,13 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.search-form{
+    width: 320px;
+}
+
+.search-result{
+    min-height: 650px;
+}
 
 /*
 .mat-table td .mat-form-field-underline {

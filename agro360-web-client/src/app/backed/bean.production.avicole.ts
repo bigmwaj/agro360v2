@@ -3,6 +3,11 @@ import { PhaseEnumVd, RubriqueEnumVd, StatusCycleEnumVd } from './vd.production.
 import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './bean.common';
 import { MagasinBean } from './bean.stock';
 
+export interface JourneeBean extends AbstractBean {
+	cycle: CycleBean;
+	numeroJournee: FieldMetadata<number>;
+};
+
 export interface MetadataBean extends AbstractBean {
 	description: FieldMetadata<string>;
 	ordre: FieldMetadata<number>;
@@ -35,9 +40,4 @@ export interface CycleBean extends AbstractStatusTrackingBean<StatusCycleEnumVd>
 export interface OperationBean extends AbstractLigneBean {
 	rubrique: FieldMetadata<RubriqueEnumVd>;
 	phase: FieldMetadata<PhaseEnumVd>;
-};
-
-export interface JourneeBean extends AbstractBean {
-	cycle: CycleBean;
-	numeroJournee: FieldMetadata<number>;
 };

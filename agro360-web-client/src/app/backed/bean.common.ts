@@ -3,10 +3,6 @@ import { EditActionEnumVd } from './vd.common';
 import { TypeLigneEnumVd } from './vd.stock';
 import { ArticleBean, UniteBean } from './bean.stock';
 
-export interface AbstractStatusTrackingBean<T> extends AbstractBean {
-	statusDate: FieldMetadata<any>;
-};
-
 export interface AbstractBean {
 	action: EditActionEnumVd;
 	__TYPE__: string;
@@ -24,4 +20,8 @@ export interface AbstractLigneBean extends AbstractBean {
 	article: ArticleBean;
 	variantCode: FieldMetadata<string>;
 	numero: FieldMetadata<number>;
+};
+
+export interface AbstractStatusTrackingBean<T> extends AbstractBean {
+	statusDate: FieldMetadata<any>;
 };

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { CaisseBean, CaisseIdBean, CaisseSearchBean } from 'src/app/backed/bean.stock';
@@ -8,22 +8,12 @@ import { BeanList } from 'src/app/common/bean.list';
 import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { SharedModule } from 'src/app/common/shared.module';
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         ChangeStatusDialogComponent,
         DeleteDialogComponent,
         SharedModule

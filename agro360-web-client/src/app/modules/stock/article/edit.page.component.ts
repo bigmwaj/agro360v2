@@ -1,30 +1,22 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ArticleBean  } from 'src/app/backed/bean.stock';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { IndexModalComponent as UniteIndexModalComponent} from '../unite/index.modal.component';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableModule } from '@angular/material/table';
+import { ArticleBean } from 'src/app/backed/bean.stock';
+import { MatDialog } from '@angular/material/dialog';
+import { IndexModalComponent as UniteIndexModalComponent } from '../unite/index.modal.component';
 import { SharedModule } from 'src/app/common/shared.module';
 import { EditConversionListComponent } from './edit.conversion.list.component';
 import { EditVariantListComponent } from './edit.variant.list.component';
 import { BeanTools } from 'src/app/common/bean.tools';
+import { StockService } from '../stock.service';
+import { map } from 'rxjs';
+import { Message } from 'src/app/backed/message';
 
 const BASE_URL = "http://localhost:8080";
 
 @Component({
     standalone: true,
     imports: [
-        CommonModule,
-        MatButtonModule,
-        MatIconModule,
-        MatDialogModule,
-        MatCheckboxModule,
-        MatTableModule,
         EditConversionListComponent,
         EditVariantListComponent,
         SharedModule
@@ -41,7 +33,8 @@ export class EditPageComponent implements OnInit {
     constructor(private router: Router,
         private route: ActivatedRoute,
         private http: HttpClient,
-        public dialog: MatDialog) { }
+        public dialog: MatDialog,
+        private service: StockService) { }
 
     isCreation(): boolean {
         let path = this.route.routeConfig?.path;
@@ -87,11 +80,26 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(BASE_URL + `/stock/article`, BeanTools.reviewBeanAction(this.bean)).subscribe(data => console.log(data))
+        this.http.post(BASE_URL + `/stock/article`, BeanTools.reviewBeanAction(this.bean))
+            .pipe(map((e: any) => <any>e))
+            .subscribe(data => {
+                this.redirectToEditPage(data.id);
+                this.service.displayFlashMessage(<Array<Message>>data.messages);
+            });
     }
     
     uniteAction() {
         this.dialog.open(UniteIndexModalComponent);
+    }
+
+    private redirectToEditPage(id:string):void{
+        this.router.navigate(
+            [
+                '/stock/article',
+                'edit', 
+                id
+            ]
+        )
     }
 
 }

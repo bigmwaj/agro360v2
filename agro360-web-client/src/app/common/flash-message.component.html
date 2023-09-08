@@ -1,0 +1,12 @@
+<div class="example-pizza-party container-fluid" matSnackBarLabel>
+    <div *ngIf="messages">
+        <div *ngFor="let msg of messages">
+            <div class="alert alert-{{msg.type | lowercase}}">
+                {{msg.message}}
+            </div>
+        </div>
+    </div>
+    <span matSnackBarActions>
+        <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">🍕</button>
+    </span>
+</div>
