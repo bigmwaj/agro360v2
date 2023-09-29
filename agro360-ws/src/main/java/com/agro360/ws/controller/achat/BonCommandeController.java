@@ -31,7 +31,7 @@ public class BonCommandeController extends AbstractController {
 	@Autowired
 	private LigneService ligneService;
 
-	@GetMapping()
+	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
 			@RequestBody(required = false) @Validated Optional<BonCommandeSearchBean> searchBean) {
 		var q = searchBean.orElse(new BonCommandeSearchBean());
@@ -42,36 +42,37 @@ public class BonCommandeController extends AbstractController {
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated BonCommandeBean bean, BindingResult br) {
 		return ResponseEntity.ok(new ModelMap().addAllAttributes(bonCommandeService.save(bean)));
 	}
-	@GetMapping("/search-form")
+	
+	@GetMapping(SEARCH_FORM_RN)
 	public ResponseEntity<BonCommandeSearchBean> getSearchFormAction() {
 		return ResponseEntity.ok(bonCommandeService.initSearchFormBean());
 	}
 	
-	@GetMapping("/update-form")
+	@GetMapping(EDIT_FORM_RN)
 	public ResponseEntity<BonCommandeBean> getEditFormAction(@RequestParam String bonCommandeCode) {
 		return ResponseEntity.ok(bonCommandeService.initEditFormBean(bonCommandeCode));
 	}
 
-	@GetMapping("/create-form")
+	@GetMapping(CREATE_FORM_RN)
 	public ResponseEntity<BonCommandeBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
 		return ResponseEntity.ok(bonCommandeService.initCreateFormBean(copyFrom));
 	}
 
-	@GetMapping("/delete-form")
+	@GetMapping(DELETE_FORM_RN)
 	public ResponseEntity<BonCommandeBean> getDeleteFormAction(@RequestParam String bonCommandeCode) {
 		return ResponseEntity.ok(bonCommandeService.initDeleteFormBean(bonCommandeCode));
 	}
 
-	@GetMapping("/change-status-form")
+	@GetMapping(CHANGE_STATUS_FORM_RN)
 	public ResponseEntity<BonCommandeBean> getChangeStatusFormAction(@RequestParam String bonCommandeCode) {
 		return ResponseEntity.ok(bonCommandeService.initChangeStatusFormBean(bonCommandeCode));
 	}
 	
-	@GetMapping("/ligne/create-form")
+	@GetMapping("/ligne/" + CREATE_FORM_RN)
 	public ResponseEntity<LigneBean> getLigneCreateFormAction(
 			@RequestParam(required = false) String bonCommandeCode, 
 			@RequestParam() Optional<String> articleCode,
 			@RequestParam Optional<Long> copyFrom) {
-		return ResponseEntity.ok(ligneService.initFormBean(bonCommandeCode, copyFrom,articleCode));
+		return ResponseEntity.ok(ligneService.initFormBean(bonCommandeCode, copyFrom, articleCode));
 	}
 }

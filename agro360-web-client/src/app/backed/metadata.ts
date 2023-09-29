@@ -10,6 +10,7 @@ export interface FieldMetadata<T> {
 	valueOptions: any;
 	label: string;
 	required: boolean;
+	visible: boolean;
 	min: number;
 	valueI18n: string;
 	maxLength: number;

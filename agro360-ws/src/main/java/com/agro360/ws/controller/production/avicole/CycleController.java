@@ -40,22 +40,22 @@ public class CycleController extends AbstractController {
 		return ResponseEntity.ok(model);
 	}
 	
-	@GetMapping("/search-form")
+	@GetMapping(SEARCH_FORM_RN)
 	public ResponseEntity<CycleSearchBean> getSearchFormAction() {
 		return ResponseEntity.ok(cycleService.initSearchFormBean());
 	}
 	
-	@GetMapping("/update-form")
+	@GetMapping(EDIT_FORM_RN)
 	public ResponseEntity<CycleBean> getEditFormAction(@RequestParam String cycleCode) {
 		return ResponseEntity.ok(cycleService.initEditFormBean(cycleCode));
 	}
 
-	@GetMapping("/create-form")
+	@GetMapping(CREATE_FORM_RN)
 	public ResponseEntity<CycleBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
 		return ResponseEntity.ok(cycleService.initCreateFormBean(copyFrom));
 	}
 
-	@GetMapping("/delete-form")
+	@GetMapping(DELETE_FORM_RN)
 	public ResponseEntity<CycleBean> getDeleteFormAction(@RequestParam String cycleCode) {
 		return ResponseEntity.ok(cycleService.initDeleteFormBean(cycleCode));
 	}

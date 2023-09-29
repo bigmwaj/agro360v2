@@ -22,7 +22,7 @@
             <select-one-field [field]="bean.magasin.magasinCode" [label]="'Magasin'"></select-one-field>
             <select-one-field [field]="bean.agent.tiersCode" [label]="'Agent'"></select-one-field>
         </div>
-        
+
         <div class="col-3">
             <input-date-field [field]="bean.journee"></input-date-field>
             <select-one-field [field]="bean.status"></select-one-field>
@@ -39,7 +39,7 @@
             </div>
             <input-text-field [field]="bean.solde"></input-text-field>
         </div>
-        
+
         <div class="col-3">
             <input-textarea-field [field]="bean.note"></input-textarea-field>
         </div>
@@ -50,12 +50,8 @@
     <h4>
         Liste des opérations de caisse
     </h4>
-    <stock-edit-operation-list
-        *ngIf="bean && bean.operations" 
-        [plusVendus]="bean.plusVendus"
-        [plusAchetes]="bean.plusAchetes"
-        [lignes]="bean.operations"
-        (updateOwnerPrixTotal)="updatePrixTotalEvent()"
+    <stock-edit-operation-list *ngIf="bean && bean.operations" [plusVendus]="bean.plusVendus"
+        [plusAchetes]="bean.plusAchetes" [lignes]="bean.operations" (updateOwnerPrixTotal)="updatePrixTotalEvent()"
         [ownerId]="getEncodedOwnerId(bean)">
     </stock-edit-operation-list>
 </section>

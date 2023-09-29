@@ -18,6 +18,10 @@ import lombok.Getter;
 public class CaisseBean extends AbstractStatusTrackingBean<StatusCaisseEnumVd> {
 
 	private static final long serialVersionUID = 1647090333349627006L;
+	
+	private MagasinBean magasin = new MagasinBean();
+	
+	private TiersBean agent = new TiersBean();
 
 	private FieldMetadata<LocalDate> journee = new FieldMetadata<>("Journée");
 
@@ -34,10 +38,6 @@ public class CaisseBean extends AbstractStatusTrackingBean<StatusCaisseEnumVd> {
 	private FieldMetadata<String> plusVendus = new FieldMetadata<>("Les plus vendus");
 	
 	private FieldMetadata<String> plusAchetes = new FieldMetadata<>("Les plus achetés");
-	
-	private TiersBean agent = new TiersBean();
-
-	private MagasinBean magasin = new MagasinBean();
 
 	private List<OperationCaisseBean> operations = new ArrayList<>();
 	

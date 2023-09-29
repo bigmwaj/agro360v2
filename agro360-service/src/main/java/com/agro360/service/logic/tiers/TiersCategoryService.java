@@ -42,6 +42,11 @@ class TiersCategoryService extends AbstractService<TiersCategoryDto, TiersCatego
 		return dao;
 	}
 	
+	@Override
+	protected String getRulePath() {
+		return "tiers/tiers/category";
+	}
+	
 	public List<TiersCategoryDto> findAll() {
 		return dao.findAll();
 	}

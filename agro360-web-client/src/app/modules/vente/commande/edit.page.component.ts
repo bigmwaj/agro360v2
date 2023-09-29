@@ -11,6 +11,7 @@ import { EditLigneListComponent } from './edit.ligne.list.component';
 import { VenteService } from '../vente.service';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
+import { UIService } from 'src/app/common/service/ui.service';
 
 @Component({
     standalone: true,
@@ -31,7 +32,8 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private http: HttpClient,
         private router: Router,
-        private service: VenteService) { }
+        private service: VenteService,
+        private ui: UIService) { }
 
     ngOnInit(): void {
         let queryParams = new HttpParams();
@@ -60,7 +62,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("commandeCode", commandeCode);
                 }
                 this.http
-                    .get<any>(`${CommonUtlis.BASE_URL}/vente/commande/update-form`, { params: queryParams })
+                    .get<any>(`${CommonUtlis.BASE_URL}/vente/commande/edit-form`, { params: queryParams })
                     .subscribe(data => {
                         this.bean = data;
                         this.initSelectMagasinOptions();
@@ -127,7 +129,7 @@ export class EditPageComponent implements OnInit {
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id)
-                this.service.displayFlashMessage(<Array<Message>>data.messages);
+                this.ui.displayFlashMessage(<Array<Message>>data.messages);
             });
     }
 

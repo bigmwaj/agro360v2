@@ -20,8 +20,4 @@ public class MagasinBean extends AbstractBean {
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 
 	private List<CasierBean> casiers = new ArrayList<>();
-
-	public void setCasiers(List<CasierBean> casiers) {
-		this.casiers = casiers;
-	}
 }

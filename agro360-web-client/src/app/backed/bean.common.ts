@@ -7,6 +7,8 @@ export interface AbstractBean {
 	action: EditActionEnumVd;
 	__TYPE__: string;
 	valueChanged: boolean;
+	visible: boolean;
+	label: string;
 };
 
 export interface AbstractLigneBean extends AbstractBean {

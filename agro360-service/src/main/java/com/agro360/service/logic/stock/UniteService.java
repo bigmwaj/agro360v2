@@ -41,6 +41,11 @@ public class UniteService extends AbstractService<UniteDto, String> {
 		return dao;
 	}
 	
+	@Override
+	protected String getRulePath() {
+		return "stock/unite";
+	}
+	
 	public List<UniteBean> search(UniteSearchBean searchBean) {
 		var example = Example.of(new UniteDto());
 		if( searchBean.getUniteCode().getValue() != null ) {
@@ -89,7 +94,8 @@ public class UniteService extends AbstractService<UniteDto, String> {
 	}
 	
 	public UniteSearchBean initSearchFormBean() {
-		return mapper.mapToSearchBean();
+		var bean = mapper.mapToSearchBean();
+		return applyRules(bean, "init-search-form");
 	}
 
 	public UniteBean initCreateFormBean(Optional<String> copyFrom) {
@@ -99,6 +105,6 @@ public class UniteService extends AbstractService<UniteDto, String> {
 		
 		AbstractBean.setActionToCreate.accept(bean);
 		
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 }

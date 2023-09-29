@@ -47,20 +47,26 @@ public class CycleService extends AbstractService<CycleDto, String> {
 		return dao;
 	}
 	
+	@Override
+	protected String getRulePath() {
+		return "production/avicole/cycle";
+	}
+	
 	public CycleSearchBean initSearchFormBean() {
-		return mapper.mapToSearchBean();
+		var bean = mapper.mapToSearchBean();
+		return applyRules(bean, "init-search-form");
 	}
 	
 	public CycleBean initEditFormBean(String articleCode) {
 		var dto = dao.findById(articleCode).orElseThrow(dtoNotFoundEx(articleCode));
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_METADATA_KEY, true));
-		return bean;
+		return applyRules(bean, "init-edit-form");
 	}
 	
 	public CycleBean initDeleteFormBean(String articleCode) {
 		var bean = dao.findById(articleCode).map(mapper::mapToBean).orElseThrow(dtoNotFoundEx(articleCode));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return bean;
+		return applyRules(bean, "init-delete-form");
 	}
 
 	public CycleBean initCreateFormBean(Optional<String> copyFrom) {
@@ -70,7 +76,7 @@ public class CycleService extends AbstractService<CycleDto, String> {
 		
 		AbstractBean.setActionToCreate.accept(bean);
 		
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 
 	public List<CycleBean> search(CycleSearchBean searchBean) {

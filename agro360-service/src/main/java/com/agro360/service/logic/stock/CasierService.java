@@ -40,6 +40,11 @@ public class CasierService extends AbstractService<CasierDto, CasierPk> {
 	protected IDao<CasierDto, CasierPk> getDao() {
 		return dao;
 	}
+	
+	@Override
+	protected String getRulePath() {
+		return "stock/magasin/casier";
+	}
 
 	private List<Message> deleteCasier(MagasinBean magasinBean, List<CasierDto> existingCasiers) {
 		List<Message> messages = new ArrayList<>();
@@ -116,6 +121,6 @@ public class CasierService extends AbstractService<CasierDto, CasierPk> {
 				.flatMap(e -> e).orElseGet(CasierDto::new);
 		var bean = mapper.mapToBean(dto);
 		bean.setAction(EditActionEnumVd.CREATE);
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 }

@@ -5,7 +5,7 @@ import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { CycleBean, CycleSearchBean } from 'src/app/backed/bean.production.avicole';
-import { BeanList } from 'src/app/common/bean.list';
+import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 import { ProductionAvicoleService } from '../production.avicole.service';
 

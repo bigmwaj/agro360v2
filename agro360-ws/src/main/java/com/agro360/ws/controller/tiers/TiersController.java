@@ -43,8 +43,8 @@ public class TiersController extends AbstractController {
 		return ResponseEntity.ok(tiersService.initSearchFormBean());
 	}
 	
-	@GetMapping("/update-form")
-	public ResponseEntity<TiersBean> getUpdateFormAction(@RequestParam String tiersCode) {
+	@GetMapping("/edit-form")
+	public ResponseEntity<TiersBean> getEditFormAction(@RequestParam String tiersCode) {
 		return ResponseEntity.ok(tiersService.initEditFormBean(tiersCode));
 	}
 

@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { OperationCaisseBean } from 'src/app/backed/bean.stock';
 import { FieldMetadata } from 'src/app/backed/metadata';
 import { TypeOperationEnumVd } from 'src/app/backed/vd.stock';
-import { AbstractEditLigneListComponent } from 'src/app/common/abstract.edit.ligne.list.component';
+import { AbstractEditLigneListComponent } from 'src/app/common/component/abstract.edit.ligne.list.component';
 import { SharedModule } from 'src/app/common/shared.module';
 
 @Component({

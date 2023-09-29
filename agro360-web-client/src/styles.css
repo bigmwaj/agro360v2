@@ -39,6 +39,7 @@ body {
 
 .search-form{
     width: 320px;
+    min-height: 650px;
 }
 
 .search-result{

@@ -25,6 +25,12 @@ public class AbstractBean implements Serializable {
 
 	private boolean valueChanged;
 
+	private boolean visible = true;
+
+	private boolean editable = true;
+
+	private String label;
+
 	@NonNull
 	private EditActionEnumVd action = EditActionEnumVd.SYNC;
 
@@ -47,5 +53,4 @@ public class AbstractBean implements Serializable {
 		}
 		return null;
 	}
-
 }

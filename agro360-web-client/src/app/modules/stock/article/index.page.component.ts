@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { ArticleBean, ArticleSearchBean } from 'src/app/backed/bean.stock';
 import { IndexModalComponent } from '../unite/index.modal.component';
-import { BeanList } from 'src/app/common/bean.list';
+import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 
 const BASE_URL = "http://localhost:8080";

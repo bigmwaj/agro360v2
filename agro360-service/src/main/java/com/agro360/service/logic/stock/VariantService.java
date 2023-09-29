@@ -45,7 +45,12 @@ public class VariantService extends AbstractService<VariantDto, VariantPk> {
 	protected IDao<VariantDto, VariantPk> getDao() {
 		return dao;
 	}
-
+	
+	@Override
+	protected String getRulePath() {
+		return "stock/article/variant";
+	}
+	
 	private List<Message> deleteVariant(ArticleBean articleBean, List<VariantDto> existingVariants) {
 		List<Message> messages = new ArrayList<>();
 		dao.deleteAll(existingVariants);
@@ -124,6 +129,6 @@ public class VariantService extends AbstractService<VariantDto, VariantPk> {
 				.flatMap(e -> e).orElseGet(VariantDto::new);
 		var bean = mapper.mapToBean(dto);
 		bean.setAction(EditActionEnumVd.CREATE);
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 }

@@ -19,5 +19,10 @@ public class MetadataService extends AbstractService<MetadataDto, MetadataPk> {
 	protected IDao<MetadataDto, MetadataPk> getDao() {
 		return dao;
 	}
+	
+	@Override
+	protected String getRulePath() {
+		return "production/avicole/cycle/metadata";
+	}
 
 }

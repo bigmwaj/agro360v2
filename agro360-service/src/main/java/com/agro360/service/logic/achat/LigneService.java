@@ -46,6 +46,11 @@ public class LigneService extends AbstractLigneService<LigneDto> {
 	protected IDao<LigneDto, Long> getDao() {
 		return dao;
 	}
+	
+	@Override
+	protected String getRulePath() {
+		return "achat/bon-commande/ligne";
+	}
 
 	private List<Message> deleteLigne(BonCommandeBean bonCommandeBean, List<LigneDto> existingLignes) {
 		List<Message> messages = new ArrayList<>();
@@ -153,6 +158,6 @@ public class LigneService extends AbstractLigneService<LigneDto> {
 		bean.initForCreateForm();
 
 		initArticle(bean, articleCode);
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 }

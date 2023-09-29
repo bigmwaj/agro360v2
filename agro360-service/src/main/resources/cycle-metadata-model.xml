@@ -530,4 +530,17 @@
 			]]>
 		</description>
 	</metadata>
+	<metadata 
+		code="portion-investissement"
+		ordre="320"
+		inputType="input"
+		value="0"
+		libelle="Portion des investissements à amortir pendant le cycle de production">
+		<description>
+			<![CDATA[
+				Pendant un cycle de production on mobilise des investissements. Il peut s'agir d'un local loué 
+				dans ce cas il faut indiquer le montant total pendant le cycle
+			]]>
+		</description>
+	</metadata>
 </models>

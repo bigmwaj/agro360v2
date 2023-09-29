@@ -49,6 +49,11 @@ public class CommandeService extends AbstractService<CommandeDto, String> {
 	protected IDao<CommandeDto, String> getDao() {
 		return dao;
 	}
+	
+	@Override
+	protected String getRulePath() {
+		return "vente/commande";
+	}
 
 	public List<CommandeBean> search(CommandeSearchBean searchBean) {
 		var probe = new CommandeDto();
@@ -92,35 +97,36 @@ public class CommandeService extends AbstractService<CommandeDto, String> {
 		return Map.of(ID_MODEL_KEY , id, MESSAGES_MODEL_KEY, messages);
 	}
 
-	public CommandeBean initUpdateFormBean(String commandeCode) {
+	public CommandeBean initEditFormBean(String commandeCode) {
 		var dto = dao.findById(commandeCode).orElseThrow(dtoNotFoundEx(commandeCode));
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true));
-		return bean;
+		return applyRules(bean, "init-edit-form");
 	}
 	
 	public CommandeBean initDeleteFormBean(String commandeCode) {
 		var bean = dao.findById(commandeCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(commandeCode));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return bean;
+		return applyRules(bean, "init-delete-form");
 	}
 	
 	public CommandeBean initChangeStatusFormBean(String commandeCode) {
 		var bean = dao.findById(commandeCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(commandeCode));
 		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
-		return bean;
+		return applyRules(bean, "init-change-status-form");
 	}
 
 	public CommandeBean initCreateFormBean(Optional<String> copyFrom) {
 		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(CommandeDto::new);
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true));
 		bean.initForCreateForm();
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 
 	public CommandeSearchBean initSearchFormBean() {
-		return mapper.mapToSearchBean();
+		var bean = mapper.mapToSearchBean();
+		return applyRules(bean, "init-search-form");
 	}
 	
 	private Supplier<RuntimeException> dtoNotFoundEx(String commandeCode){

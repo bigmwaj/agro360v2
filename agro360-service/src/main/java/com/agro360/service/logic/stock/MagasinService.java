@@ -47,6 +47,11 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 		return dao;
 	}
 	
+	@Override
+	protected String getRulePath() {
+		return "stock/magasin";
+	}
+	
 	public List<MagasinBean> search(MagasinSearchBean searchBean) {
 		return dao.findAll().stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
@@ -81,20 +86,21 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 	}
 
 	public MagasinSearchBean initSearchFormBean() {
-		return mapper.mapToSearchBean();
+		var bean = mapper.mapToSearchBean();
+		return applyRules(bean, "init-search-form");
 	}
 	
 	public MagasinBean initEditFormBean(String MagasinCode) {
 		var dto = dao.findById(MagasinCode).orElseThrow();
 		var bean = mapper.mapToBean(dto,  Map.of(OPTION_MAP_CASIER_KEY, true));
 		bean.setAction(EditActionEnumVd.UPDATE);
-		return bean;
+		return applyRules(bean, "init-edit-form");
 	}
 	
 	public MagasinBean initDeleteFormBean(String MagasinCode) {
 		var bean = dao.findById(MagasinCode).map(mapper::mapToBean).orElseThrow();
 		bean.setAction(EditActionEnumVd.DELETE);
-		return bean;
+		return applyRules(bean, "init-delete-form");
 	}
 
 	public MagasinBean initCreateFormBean(Optional<String> copyFrom) {
@@ -105,6 +111,6 @@ public class MagasinService extends AbstractService<MagasinDto, String> {
 		AbstractBean.setActionToCreate.accept(bean);
 		bean.getCasiers().stream().forEach(AbstractBean.setActionToCreate);
 		
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 }

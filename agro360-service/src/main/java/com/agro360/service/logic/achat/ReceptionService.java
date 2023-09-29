@@ -49,6 +49,11 @@ public class ReceptionService extends AbstractService<ReceptionDto, Long> {
 	protected IDao<ReceptionDto, Long> getDao() {
 		return dao;
 	}
+	
+	@Override
+	protected String getRulePath() {
+		return "achat/bon-commande/reception";
+	}
 
 	public List<ReceptionBean> search(String bonCommandeCode) {
 		var ex = Example.of(new ReceptionDto());

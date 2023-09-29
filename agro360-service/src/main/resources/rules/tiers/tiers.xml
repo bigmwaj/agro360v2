@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bean-rules xmlns="http://mouafo.com/xml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://mouafo.com/xml ./../bean-rules.xsd"
+	namespace="default">
+		<bean name="magasin">
+		<field name="magasinCode" required="true">
+			
+		</field>
+	</bean>
+	<field name="tiersCode">
+	</field>
+	<field name="name">
+	</field>
+</bean-rules>

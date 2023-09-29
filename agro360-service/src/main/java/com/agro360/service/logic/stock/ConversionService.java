@@ -40,6 +40,11 @@ public class ConversionService extends AbstractService<ConversionDto, Conversion
 
 	@Autowired
 	ConversionMapper mapper;
+	
+	@Override
+	protected String getRulePath() {
+		return "stock/article/conversion";
+	}
 
 	@Override
 	protected IDao<ConversionDto, ConversionPk> getDao() {
@@ -122,6 +127,6 @@ public class ConversionService extends AbstractService<ConversionDto, Conversion
 		var bean = mapper.mapToBean(dto);
 		bean.setAction(EditActionEnumVd.CREATE);
 		bean.getUnite().getUniteCode().setValueOptions(StockSharedMapperHelper.getAllAsValueOptions(uniteDao));
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 }

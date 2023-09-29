@@ -16,32 +16,28 @@
 										<xs:element ref="estimationSalaire" minOccurs="1" maxOccurs="unbounded"/>
 									</xs:sequence>
 								</xs:complexType>
-							</xs:element>
-														
+							</xs:element>														
 							<xs:element name="estimationConsommationAliments" minOccurs="0" maxOccurs="1">
 								<xs:complexType>
 									<xs:sequence>
 										<xs:element ref="estimationConsommationAliment" minOccurs="1" maxOccurs="unbounded"/>
 									</xs:sequence>
 								</xs:complexType>
-							</xs:element>
-														
+							</xs:element>														
 							<xs:element name="estimationVarieteAliments" minOccurs="0" maxOccurs="1">
 								<xs:complexType>
 									<xs:sequence>
 										<xs:element ref="estimationVarieteAliment" minOccurs="1" maxOccurs="unbounded"/>
 									</xs:sequence>
 								</xs:complexType>
-							</xs:element>
-														
+							</xs:element>														
 							<xs:element name="estimationProphylactiques" minOccurs="0" maxOccurs="1">
 								<xs:complexType>
 									<xs:sequence>
 										<xs:element ref="estimationProphylactique" minOccurs="0" maxOccurs="unbounded"/>
 									</xs:sequence>
 								</xs:complexType>
-							</xs:element>
-							
+							</xs:element>							
 							<xs:element name="description" type="xs:string" />
 						</xs:sequence>
 						<xs:attribute name="code" type="xs:string" use="required"/>
@@ -54,23 +50,20 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-
 	<xs:element name="estimationSalaire">
 		<xs:complexType>
 			<xs:attribute name="role" type="xs:string"></xs:attribute>
 			<xs:attribute name="salaire" type="xs:decimal"></xs:attribute>
 			<xs:attribute name="taux" type="xs:double"></xs:attribute>
 		</xs:complexType>
-	</xs:element>
-	
+	</xs:element>	
 	<xs:element name="estimationConsommationAliment">
 		<xs:complexType>
 			<xs:attribute name="debut" type="xs:string"></xs:attribute>
 			<xs:attribute name="fin" type="xs:string"></xs:attribute>
 			<xs:attribute name="quantite" type="xs:double"></xs:attribute>
 		</xs:complexType>
-	</xs:element>
-	
+	</xs:element>	
 	
 	<xs:element name="estimationVarieteAliment">
 		<xs:complexType>
@@ -80,8 +73,7 @@
 			<xs:attribute name="quantite" type="xs:double"></xs:attribute>
 			<xs:attribute name="pu" type="xs:double"></xs:attribute>
 		</xs:complexType>
-	</xs:element>
-	
+	</xs:element>	
 	<xs:element name="estimationProphylactique">
 		<xs:complexType>
 			<xs:attribute name="type" type="xs:string"></xs:attribute>

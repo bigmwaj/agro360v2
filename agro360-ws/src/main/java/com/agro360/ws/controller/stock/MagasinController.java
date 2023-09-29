@@ -47,8 +47,8 @@ public class MagasinController extends AbstractController {
 		return ResponseEntity.ok(magasinService.initSearchFormBean());
 	}
 	
-	@GetMapping("/update-form")
-	public ResponseEntity<MagasinBean> getEditeFormAction(@RequestParam String magasinCode) {
+	@GetMapping("/edit-form")
+	public ResponseEntity<MagasinBean> getEditFormAction(@RequestParam String magasinCode) {
 		return ResponseEntity.ok(magasinService.initEditFormBean(magasinCode));
 	}
 

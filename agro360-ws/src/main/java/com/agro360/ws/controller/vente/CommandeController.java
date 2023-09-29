@@ -41,27 +41,27 @@ public class CommandeController extends AbstractController {
 		return ResponseEntity.ok(new ModelMap().addAllAttributes(commandeService.save(bean)));
 	}
 	
-	@GetMapping("/search-form")
+	@GetMapping(SEARCH_FORM_RN)
 	public ResponseEntity<CommandeSearchBean> getSearchFormAction() {
 		return ResponseEntity.ok(commandeService.initSearchFormBean());
 	}
 	
-	@GetMapping("/update-form")
-	public ResponseEntity<CommandeBean> getUpdateFormAction(@RequestParam String commandeCode) {
-		return ResponseEntity.ok(commandeService.initUpdateFormBean(commandeCode));
+	@GetMapping(EDIT_FORM_RN)
+	public ResponseEntity<CommandeBean> getEditFormAction(@RequestParam String commandeCode) {
+		return ResponseEntity.ok(commandeService.initEditFormBean(commandeCode));
 	}
 
-	@GetMapping("/create-form")
+	@GetMapping(CREATE_FORM_RN)
 	public ResponseEntity<CommandeBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
 		return ResponseEntity.ok(commandeService.initCreateFormBean(copyFrom));
 	}
 
-	@GetMapping("/delete-form")
+	@GetMapping(DELETE_FORM_RN)
 	public ResponseEntity<CommandeBean> getDeleteFormAction(@RequestParam String commandeCode) {
 		return ResponseEntity.ok(commandeService.initDeleteFormBean(commandeCode));
 	}
 
-	@GetMapping("/change-status-form")
+	@GetMapping(CHANGE_STATUS_FORM_RN)
 	public ResponseEntity<CommandeBean> getChangeStatusFormAction(@RequestParam String commandeCode) {
 		return ResponseEntity.ok(commandeService.initChangeStatusFormBean(commandeCode));
 	}

@@ -5,9 +5,10 @@ import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { UniteBean, UniteSearchBean } from 'src/app/backed/bean.stock';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/common/bean.list';
+import { BeanList } from 'src/app/common/component/bean.list';
 import { BeanTools } from 'src/app/common/bean.tools';
 import { SharedModule } from 'src/app/common/shared.module';
+import { UIService } from 'src/app/common/service/ui.service';
 
 const BASE_URL = "http://localhost:8080";
 
@@ -33,7 +34,9 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
         'actions'
     ];
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private http: HttpClient,
+        private ui: UIService) {
         super()
     }
 

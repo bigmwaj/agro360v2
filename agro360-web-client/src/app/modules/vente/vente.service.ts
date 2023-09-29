@@ -6,9 +6,5 @@ import { CommonService } from 'src/app/common/service/common.service';
     providedIn:'root'
 })
 export class VenteService extends CommonService {
-
-    constructor(public override _snackBar: MatSnackBar){
-        super(_snackBar);
-    }
     
 }

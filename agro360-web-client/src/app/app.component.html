@@ -27,11 +27,13 @@
         </div>
     </mat-drawer>
     <mat-drawer-content>
-        <mat-toolbar color="primary" class="mb-1">            
+        <mat-toolbar color="primary">            
             <button mat-icon-button (click)="drawerLeft.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
-            <span class="ms-3">{{title}}</span>
+            <span class="ms-3">
+                <page-title [title]="'Todo'"></page-title>
+            </span>
             <span class="menu-spacer"></span>
             <button mat-icon-button class="favorite-icon">
                 <mat-icon>favorite</mat-icon>
@@ -40,7 +42,7 @@
                 <mat-icon>share</mat-icon>
             </button>
         </mat-toolbar>
-        <div class="container-fluid container-main pt-1 pb-3">            
+        <div class="container-fluid container-main pb-3 pt-3">                     
             <router-outlet></router-outlet>
         </div>
     </mat-drawer-content>

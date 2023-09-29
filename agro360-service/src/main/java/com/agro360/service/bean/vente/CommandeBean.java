@@ -67,7 +67,6 @@ public class CommandeBean extends AbstractStatusTrackingBean<StatusCommandeEnumV
 
 		getLignes().stream().forEach(e -> e.initForCreateForm());
 		
-		
 	}
 
 }

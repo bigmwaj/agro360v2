@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MetadataBean } from 'src/app/backed/bean.production.avicole';
-import { BeanList } from 'src/app/common/bean.list';
+import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 
 import { MatPaginator } from '@angular/material/paginator';

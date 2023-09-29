@@ -4,7 +4,7 @@ import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { ConversionBean } from 'src/app/backed/bean.stock';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/common/bean.list';
+import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 
 const BASE_URL = "http://localhost:8080";

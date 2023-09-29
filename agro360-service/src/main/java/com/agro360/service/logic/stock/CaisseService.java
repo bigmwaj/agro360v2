@@ -54,6 +54,11 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 	protected IDao<CaisseDto, CaissePk> getDao() {
 		return dao;
 	}
+	
+	@Override
+	protected String getRulePath() {
+		return "stock/caisse";
+	}
 
 	public List<CaisseBean> search(CaisseSearchBean searchBean) {
 		return dao.findAll().stream().map(mapper::mapToBean).collect(Collectors.toList());
@@ -99,20 +104,20 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 	}
 	
 	public CaisseSearchBean initSearchFormBean() {
-		return mapper.mapToSearchBean();
+		return applyRules(mapper.mapToSearchBean(), "init-search-form");
 	}
 	
 	public CaisseBean initEditFormBean(CaisseIdBean idBean) {
 		var dto = dao.findById(mapper.mapToId(idBean)).orElseThrow(dtoNotFoundEx(idBean));
 		var bean = mapper.mapToBean(dto,  Map.of(OPTION_MAP_OPERATION_KEY, true, OPTION_MAP_PLUS_KEY, true));
-		return bean;
+		return applyRules(bean, "init-edit-form");
 	}
 	
 	public CaisseBean initDeleteFormBean(CaisseIdBean idBean) {
 		var bean = dao.findById(mapper.mapToId(idBean)).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(idBean));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return bean;
+		return applyRules(bean, "init-delete-form");
 	}
 	
 	public CaisseBean initChangeStatusFormBean(CaisseIdBean idBean) {
@@ -121,7 +126,7 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 				.orElseThrow(dtoNotFoundEx(idBean));
 		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
 		bean.getStatusDate().setValue(LocalDateTime.now().withNano(0));
-		return bean;
+		return applyRules(bean, "init-change-status-form");
 	}
 
 	public CaisseBean initCreateFormBean(Optional<CaisseIdBean> idBean) {
@@ -130,7 +135,7 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 		var bean = mapper.mapToBean(dto);		
 		bean.getJournee().setValue(LocalDate.now());
 		AbstractBean.setActionToCreate.accept(bean);		
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 	
 	private Supplier<RuntimeException> dtoNotFoundEx(CaisseIdBean idBean){

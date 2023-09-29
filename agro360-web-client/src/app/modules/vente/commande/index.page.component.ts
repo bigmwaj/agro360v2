@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
-import { BeanList } from 'src/app/common/bean.list';
+import { BeanList } from 'src/app/common/component/bean.list';
 import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { SharedModule } from 'src/app/common/shared.module';
 import { CommandeBean, CommandeSearchBean } from 'src/app/backed/bean.vente';

@@ -10,6 +10,7 @@ import { StockUtils } from 'src/app/modules/stock/stock.utils';
 import { EditMetadataListComponent } from './edit.metadata.list.component';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
+import { UIService } from 'src/app/common/service/ui.service';
 
 @Component({
     standalone: true,
@@ -30,6 +31,7 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private http: HttpClient,
         public dialog: MatDialog,
+        private ui: UIService,
         private service: ProductionAvicoleService
     ) { }
 
@@ -63,7 +65,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("cycleCode", cycleCode);
                 }
                 this.http
-                    .get<any>(`${this.service.getBackendUrl('production/avicole/cycle/update-form')}`, { params: queryParams })
+                    .get<any>(`${this.service.getBackendUrl('production/avicole/cycle/edit-form')}`, { params: queryParams })
                     .subscribe(data => { 
                         this.bean = data;                         
                         this.initSelectMagasinOptions();
@@ -87,7 +89,7 @@ export class EditPageComponent implements OnInit {
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id)
-                this.service.displayFlashMessage(<Array<Message>>data.messages);
+                this.ui.displayFlashMessage(<Array<Message>>data.messages);
             });
     }
 

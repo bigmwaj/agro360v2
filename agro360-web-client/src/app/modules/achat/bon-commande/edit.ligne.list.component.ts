@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { LigneBean } from 'src/app/backed/bean.achat';
-import { AbstractEditLigneListComponent } from 'src/app/common/abstract.edit.ligne.list.component';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -11,6 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { SharedModule } from 'src/app/common/shared.module';
 import { TypeOperationEnumVd } from 'src/app/backed/vd.stock';
 import { FieldMetadata } from 'src/app/backed/metadata';
+import { AbstractEditLigneListComponent } from 'src/app/common/component/abstract.edit.ligne.list.component';
 
 @Component({
     standalone: true,

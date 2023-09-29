@@ -46,6 +46,11 @@ public class OperationCaisseService extends AbstractLigneService<OperationCaisse
 	protected IDao<OperationCaisseDto, Long> getDao() {
 		return dao;
 	}
+	
+	@Override
+	protected String getRulePath() {
+		return "stock/caisse/operation";
+	}
 
 	private List<Message> deleteOperationCaisse(CaisseBean caisseBean, List<OperationCaisseDto> existingOperationCaisses) {
 		List<Message> messages = new ArrayList<>();
@@ -144,6 +149,6 @@ public class OperationCaisseService extends AbstractLigneService<OperationCaisse
 		
 		initArticle(bean, articleCode);
 		
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 }

@@ -10,6 +10,7 @@ import { BeanTools } from 'src/app/common/bean.tools';
 import { TiersService } from '../tiers.service';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
+import { UIService } from 'src/app/common/service/ui.service';
 
 @Component({
     standalone: true,
@@ -30,7 +31,8 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private http: HttpClient,
         public dialog: MatDialog,
-        private service:TiersService) { }
+        private service:TiersService,
+        private ui: UIService) { }
 
     isCreation(): boolean {
         let path = this.route.routeConfig?.path;
@@ -49,7 +51,7 @@ export class EditPageComponent implements OnInit {
                     .get(`${this.service.getBackendUrl('tiers/tiers/create-form')}`, { params: queryParams })
                     .subscribe(data => this.bean = <TiersBean>data);
                 
-                this.pageTitle = "Création d'un Tiers"
+                    this.ui.setTitle("Création d'un Tiers")
             });
         } else {
             // On doit traiter les potentielles erreurs
@@ -59,10 +61,10 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("tiersCode", tiersCode);
                 }
                 this.http
-                    .get<any>(`${this.service.getBackendUrl('tiers/tiers/update-form')}`, {params: queryParams})
+                    .get<any>(`${this.service.getBackendUrl('tiers/tiers/edit-form')}`, {params: queryParams})
                     .subscribe(data => this.bean = data);
                 
-                this.pageTitle = "Édition du Tiers " + tiersCode
+                this.ui.setTitle("Édition du Tiers " + tiersCode)
             });
         }
     }
@@ -80,7 +82,7 @@ export class EditPageComponent implements OnInit {
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id)
-                this.service.displayFlashMessage(<Array<Message>>data.messages);
+                this.ui.displayFlashMessage(<Array<Message>>data.messages);
             });
     }
 

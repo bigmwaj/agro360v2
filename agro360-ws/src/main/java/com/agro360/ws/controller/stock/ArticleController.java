@@ -48,22 +48,22 @@ public class ArticleController extends AbstractController {
 		return ResponseEntity.ok(new ModelMap().addAllAttributes(articleService.save(bean)));
 	}
 	
-	@GetMapping("/search-form")
+	@GetMapping(SEARCH_FORM_RN)
 	public ResponseEntity<ArticleSearchBean> getSearchFormAction() {
 		return ResponseEntity.ok(articleService.initSearchFormBean());
 	}
 	
-	@GetMapping("/update-form")
+	@GetMapping(EDIT_FORM_RN)
 	public ResponseEntity<ArticleBean> getEditFormAction(@RequestParam String articleCode) {
 		return ResponseEntity.ok(articleService.initEditFormBean(articleCode));
 	}
 
-	@GetMapping("/create-form")
+	@GetMapping(CREATE_FORM_RN)
 	public ResponseEntity<ArticleBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
 		return ResponseEntity.ok(articleService.initCreateFormBean(copyFrom));
 	}
 
-	@GetMapping("/delete-form")
+	@GetMapping(DELETE_FORM_RN)
 	public ResponseEntity<ArticleBean> getDeleteFormAction(@RequestParam String articleCode) {
 		return ResponseEntity.ok(articleService.initDeleteFormBean(articleCode));
 	}

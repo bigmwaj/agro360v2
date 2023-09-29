@@ -12,6 +12,7 @@ import { Message } from 'src/app/backed/message';
 import { map } from 'rxjs';
 import { SharedModule } from 'src/app/common/shared.module';
 import { EditOperationListComponent } from './edit.operation.list.component';
+import { UIService } from 'src/app/common/service/ui.service';
 
 @Component({
     standalone: true,
@@ -32,7 +33,8 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private http: HttpClient,
-        private service: StockService) { }
+        private service: StockService,
+        private ui: UIService) { }
 
     ngOnInit(): void {
         if (this.isCreation()) {

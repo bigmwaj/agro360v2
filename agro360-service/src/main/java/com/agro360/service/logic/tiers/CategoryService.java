@@ -39,6 +39,11 @@ public class CategoryService extends AbstractService<CategoryDto, String> {
 	protected IDao<CategoryDto, String> getDao() {
 		return dao;
 	}
+	
+	@Override
+	protected String getRulePath() {
+		return "tiers/category";
+	}
 
 	private void save(CategoryDto parent, CategoryBean bean, List<Message> messages) {
 		var dto = mapper.mapToDto(bean);

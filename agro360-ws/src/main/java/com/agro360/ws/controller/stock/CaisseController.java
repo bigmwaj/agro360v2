@@ -43,28 +43,28 @@ public class CaisseController extends AbstractController {
 		return ResponseEntity.ok(new ModelMap().addAllAttributes(caisseService.save(bean)));
 	}
 
-	@GetMapping("/search-form")
+	@GetMapping(SEARCH_FORM_RN)
 	public ResponseEntity<CaisseSearchBean> getSearchFormAction() {
 		return ResponseEntity.ok(caisseService.initSearchFormBean());
 	}
 	
-	@GetMapping("/edit-form")
+	@GetMapping(EDIT_FORM_RN)
 	public ResponseEntity<CaisseBean> getEditFormAction(@RequestBody @Validated CaisseIdBean idBean) {
 		return ResponseEntity.ok(caisseService.initEditFormBean(idBean));
 	}
 
-	@GetMapping("/create-form")
+	@GetMapping(CREATE_FORM_RN)
 	public ResponseEntity<CaisseBean> getCreateFormAction(
 			@RequestBody(required = false) Optional<CaisseIdBean> copyFrom) {
 		return ResponseEntity.ok(caisseService.initCreateFormBean(copyFrom));
 	}
 
-	@GetMapping("/delete-form")
+	@GetMapping(DELETE_FORM_RN)
 	public ResponseEntity<CaisseBean> getDeleteFormAction(@RequestBody CaisseIdBean idBean) {
 		return ResponseEntity.ok(caisseService.initDeleteFormBean(idBean));
 	}
 
-	@GetMapping("/change-status-form")
+	@GetMapping(CHANGE_STATUS_FORM_RN)
 	public ResponseEntity<CaisseBean> getChangeStatusFormAction(@RequestBody CaisseIdBean idBean) {
 		return ResponseEntity.ok(caisseService.initChangeStatusFormBean(idBean));
 	}

@@ -23,6 +23,8 @@ import com.agro360.service.bean.tiers.TiersSearchBean;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.tiers.TiersMapper;
 import com.agro360.service.message.Message;
+import com.agro360.service.utils.InitBeanResult;
+import com.agro360.service.utils.ValidateInputBean;
 import com.agro360.vd.common.EditActionEnumVd;
 import com.agro360.vd.tiers.TiersStatusEnumVd;
 
@@ -53,37 +55,49 @@ public class TiersService extends AbstractService<TiersDto, String> {
 		return dao;
 	}
 	
+	@Override
+	protected String getRulePath() {
+		return "tiers/tiers";
+	}
+
+	@InitBeanResult(namespace = "tiers.init.edit")
 	public TiersBean initEditFormBean(String tiersCode) {
 		var dto = dao.findById(tiersCode).orElseThrow(dtoNotFoundEx(tiersCode));
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_TIERS_CATEGORY_KEY, true));
-		return bean;
+		return applyRules(bean, "init-edit-form");
 	}
-	
+
+	@InitBeanResult(namespace = "tiers.init.delete")
 	public TiersBean initDeleteFormBean(String tiersCode) {
 		var bean = dao.findById(tiersCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(tiersCode));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return bean;
+		return applyRules(bean, "init-delete-form");
 	}
-	
+
+	@InitBeanResult(namespace = "tiers.init.status-change")
 	public TiersBean initChangeStatusFormBean(String tiersCode) {
 		var bean = dao.findById(tiersCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(tiersCode));
 		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
-		return bean;
+		return applyRules(bean, "init-change-status-form");
 	}
 
+	@InitBeanResult(namespace = "tiers.init.edit")
 	public TiersBean initCreateFormBean(Optional<String> copyFrom) {
 		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(TiersDto::new);
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_TIERS_CATEGORY_KEY, true));
 		bean.initForCreateForm();
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 
+	@InitBeanResult(namespace = "tiers.init.search-form")
 	public TiersSearchBean initSearchFormBean() {
-		return mapper.mapToSearchBean();
+		var bean = mapper.mapToSearchBean();
+		return  applyRules(bean, "init-search-form");
 	}
 
+	@InitBeanResult(namespace = "tiers.init.search-result")
 	public List<TiersBean> search(TiersSearchBean searchBean) {
 		var probe = new TiersDto();
 		var matcher = ExampleMatcher.matchingAll();
@@ -124,6 +138,7 @@ public class TiersService extends AbstractService<TiersDto, String> {
 		return dao.findAll(example).stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 
+	@ValidateInputBean(namespace = "tiers.validate", initNamespace = "tiers.init.edit")
 	public Map<String, Object> save(TiersBean bean) {
 		var id = bean.getTiersCode().getValue();
 		var dto = mapper.mapToDto(bean);

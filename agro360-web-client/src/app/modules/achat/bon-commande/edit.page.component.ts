@@ -11,6 +11,7 @@ import { SharedModule } from 'src/app/common/shared.module';
 import { AchatService } from '../achat.service';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
+import { UIService } from 'src/app/common/service/ui.service';
 
 @Component({
     standalone: true,
@@ -31,6 +32,7 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private http: HttpClient,
         private router: Router,
+        private ui: UIService,
         private service:AchatService)
     { }
 
@@ -62,7 +64,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("bonCommandeCode", bonCommandeCode);
                 }
                 this.http
-                    .get<any>(`${CommonUtlis.BASE_URL}/achat/bon-commande/update-form`, { params: queryParams })
+                    .get<any>(`${CommonUtlis.BASE_URL}/achat/bon-commande/edit-form`, { params: queryParams })
                     .subscribe(data => {
                         this.bean = data;
                         
@@ -121,7 +123,7 @@ export class EditPageComponent implements OnInit {
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id)
-                this.service.displayFlashMessage(<Array<Message>>data.messages);
+                this.ui.displayFlashMessage(<Array<Message>>data.messages);
             });
     }
 

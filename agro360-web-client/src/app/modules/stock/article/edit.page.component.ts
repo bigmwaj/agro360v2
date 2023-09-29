@@ -11,6 +11,7 @@ import { BeanTools } from 'src/app/common/bean.tools';
 import { StockService } from '../stock.service';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
+import { UIService } from 'src/app/common/service/ui.service';
 
 const BASE_URL = "http://localhost:8080";
 
@@ -34,7 +35,8 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private http: HttpClient,
         public dialog: MatDialog,
-        private service: StockService) { }
+        private service: StockService,
+        private ui: UIService) { }
 
     isCreation(): boolean {
         let path = this.route.routeConfig?.path;
@@ -63,7 +65,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("articleCode", articleCode);
                 }
                 this.http
-                    .get<any>(BASE_URL + `/stock/article/update-form`, { params: queryParams })
+                    .get<any>(BASE_URL + `/stock/article/edit-form`, { params: queryParams })
                     .subscribe(data => { this.bean = data; });
 
                 this.pageTitle = "Édition du Article " + articleCode
@@ -84,7 +86,7 @@ export class EditPageComponent implements OnInit {
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id);
-                this.service.displayFlashMessage(<Array<Message>>data.messages);
+                this.ui.displayFlashMessage(<Array<Message>>data.messages);
             });
     }
     

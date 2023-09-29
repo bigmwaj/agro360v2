@@ -56,6 +56,11 @@ public class BonCommandeService extends AbstractService<BonCommandeDto, String> 
 	protected IDao<BonCommandeDto, String> getDao() {
 		return dao;
 	}
+	
+	@Override
+	protected String getRulePath() {
+		return "achat/bon-commande";
+	}
 
 	public List<BonCommandeBean> search(BonCommandeSearchBean searchBean) {
 		var criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -144,14 +149,14 @@ public class BonCommandeService extends AbstractService<BonCommandeDto, String> 
 	public BonCommandeBean initEditFormBean(String bonCommandeCode) {
 		var dto = dao.findById(bonCommandeCode).orElseThrow(dtoNotFoundEx(bonCommandeCode));
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true ));
-		return bean;
+		return applyRules(bean, "init-edit-form");
 	}
 	
 	public BonCommandeBean initDeleteFormBean(String bonCommandeCode) {
 		var bean = dao.findById(bonCommandeCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(bonCommandeCode));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return bean;
+		return applyRules(bean, "init-delete-form");
 	}
 	
 	public BonCommandeBean initChangeStatusFormBean(String bonCommandeCode) {
@@ -159,18 +164,18 @@ public class BonCommandeService extends AbstractService<BonCommandeDto, String> 
 				.orElseThrow(dtoNotFoundEx(bonCommandeCode));
 		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
 		bean.getStatusDate().setValue(LocalDateTime.now());
-		return bean;
+		return applyRules(bean, "init-delete-form");
 	}
 
 	public BonCommandeBean initCreateFormBean(Optional<String> copyFrom) {
 		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(BonCommandeDto::new);
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true));
 		bean.initForCreateForm();
-		return bean;
+		return applyRules(bean, "init-create-form");
 	}
 
 	public BonCommandeSearchBean initSearchFormBean() {
-		return mapper.mapToSearchBean();
+		return applyRules(mapper.mapToSearchBean(), "init-search-form");
 	}
 	
 	private Supplier<RuntimeException> dtoNotFoundEx(String bonCommandeCode){
