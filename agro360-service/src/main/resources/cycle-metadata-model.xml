@@ -234,7 +234,7 @@
 		code="duree-ponte"
 		ordre="90"
 		inputType="input"
-		value="20"
+		value="90"
 		libelle="Durée(en semaine) de la ponte">
 		<description>
 			<![CDATA[

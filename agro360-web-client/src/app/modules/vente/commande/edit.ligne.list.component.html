@@ -1,8 +1,6 @@
 <div class="row">
     <div class="col-3" *ngIf="plusVendus">
-        <select-one-field 
-            [field]="plusVendus"
-            (onChange)="plusVenduSelectEvent()">
+        <select-one-field [field]="plusVendus" (onChange)="plusVenduSelectEvent()">
         </select-one-field>
     </div>
 </div>
@@ -50,8 +48,7 @@
                 <select-one-field (onChange)="onSelectArticleEvent(element)" *ngIf="selectArticleFromList(element)"
                     [field]="element.article.articleCode" [displayLabel]="false">
                 </select-one-field>
-                <input-text-field *ngIf="!selectArticleFromList(element)" 
-                    [field]="element.article.articleCode"
+                <input-text-field *ngIf="!selectArticleFromList(element)" [field]="element.article.articleCode"
                     [displayLabel]="false">
                 </input-text-field>
             </td>
@@ -60,8 +57,7 @@
         <ng-container matColumnDef="prixUnitaire">
             <th mat-header-cell *matHeaderCellDef>PU</th>
             <td mat-cell *matCellDef="let element">
-                <input-number-field (onChange)="updatePrixTotalEvent(element)" 
-                    [field]="element.prixUnitaire"
+                <input-number-field (onChange)="updatePrixTotalEvent(element)" [field]="element.prixUnitaire"
                     [displayLabel]="false">
                 </input-number-field>
             </td>
@@ -70,8 +66,7 @@
         <ng-container matColumnDef="quantite">
             <th mat-header-cell *matHeaderCellDef style="width: 100px;">Qté</th>
             <td mat-cell *matCellDef="let element">
-                <input-number-field (onChange)="updatePrixTotalEvent(element)" 
-                    [field]="element.quantite"
+                <input-number-field (onChange)="updatePrixTotalEvent(element)" [field]="element.quantite"
                     [displayLabel]="false">
                 </input-number-field>
             </td>
@@ -113,16 +108,17 @@
             </th>
             <td mat-cell *matCellDef="let element">
                 <div class="text-nowrap">
-                    <button mat-mini-fab color="primary" title="Copier" (click)="copyAction(element)">
+                    <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)">
                         <mat-icon>content_copy</mat-icon>
                     </button>
-                    <button mat-mini-fab color="primary" title="Supprimer" (click)="deleteAction(element)">
+                    <button mat-icon-button color="primary" title="Supprimer" (click)="deleteAction(element)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.text-bg-danger]="row.action == 'DELETE'"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.text-bg-danger]="row.action == 'DELETE'">
+        </tr>
     </table>
 </div>

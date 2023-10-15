@@ -8,12 +8,9 @@ import { SharedModule } from 'src/app/common/shared.module';
 import { EditConversionListComponent } from './edit.conversion.list.component';
 import { EditVariantListComponent } from './edit.variant.list.component';
 import { BeanTools } from 'src/app/common/bean.tools';
-import { StockService } from '../stock.service';
-import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
 import { UIService } from 'src/app/common/service/ui.service';
-
-const BASE_URL = "http://localhost:8080";
+import { map } from 'rxjs';
 
 @Component({
     standalone: true,
@@ -34,8 +31,7 @@ export class EditPageComponent implements OnInit {
     constructor(private router: Router,
         private route: ActivatedRoute,
         private http: HttpClient,
-        public dialog: MatDialog,
-        private service: StockService,
+        private dialog: MatDialog,
         private ui: UIService) { }
 
     isCreation(): boolean {
@@ -52,7 +48,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("copyFrom", copyFrom);
                 }
                 this.http
-                    .get(BASE_URL + "/stock/article/create-form", { params: queryParams })
+                    .get(`stock/article/create-form`, { params: queryParams })  
                     .subscribe(data => { this.bean = <ArticleBean>data; });
 
                 this.pageTitle = "Création d'un Article"
@@ -65,7 +61,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("articleCode", articleCode);
                 }
                 this.http
-                    .get<any>(BASE_URL + `/stock/article/edit-form`, { params: queryParams })
+                    .get<any>(`stock/article/edit-form`, { params: queryParams })         
                     .subscribe(data => { this.bean = data; });
 
                 this.pageTitle = "Édition du Article " + articleCode
@@ -82,7 +78,8 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(BASE_URL + `/stock/article`, BeanTools.reviewBeanAction(this.bean))
+        console.log(this.bean)
+        this.http.post(`stock/article`, BeanTools.reviewBeanAction(this.bean))   
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id);

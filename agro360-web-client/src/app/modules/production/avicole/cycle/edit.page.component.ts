@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SharedModule } from 'src/app/common/shared.module';
 import { BeanTools } from 'src/app/common/bean.tools';
-import { ProductionAvicoleService } from '../production.avicole.service';
 import { CycleBean } from 'src/app/backed/bean.production.avicole';
 import { StockUtils } from 'src/app/modules/stock/stock.utils';
 import { EditMetadataListComponent } from './edit.metadata.list.component';
@@ -31,8 +30,7 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private http: HttpClient,
         public dialog: MatDialog,
-        private ui: UIService,
-        private service: ProductionAvicoleService
+        private ui: UIService
     ) { }
 
     isCreation(): boolean {
@@ -49,7 +47,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("copyFrom", copyFrom);
                 }
                 this.http
-                    .get(`${this.service.getBackendUrl('production/avicole/cycle/create-form')}`, { params: queryParams })
+                    .get(`production/avicole/cycle/create-form`, { params: queryParams })
                     .subscribe(data => { 
                         this.bean = <CycleBean>data;                        
                         this.initSelectMagasinOptions();
@@ -65,7 +63,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("cycleCode", cycleCode);
                 }
                 this.http
-                    .get<any>(`${this.service.getBackendUrl('production/avicole/cycle/edit-form')}`, { params: queryParams })
+                    .get<any>(`production/avicole/cycle/edit-form`, { params: queryParams })
                     .subscribe(data => { 
                         this.bean = data;                         
                         this.initSelectMagasinOptions();
@@ -85,7 +83,7 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(`${this.service.getBackendUrl('production/avicole/cycle')}`, BeanTools.reviewBeanAction(this.bean))
+        this.http.post(`production/avicole/cycle`, BeanTools.reviewBeanAction(this.bean))
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id)

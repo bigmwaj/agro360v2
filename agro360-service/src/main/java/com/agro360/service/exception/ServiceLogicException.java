@@ -9,6 +9,7 @@ public class ServiceLogicException extends RuntimeException{
 	private Message message;
 	
 	public ServiceLogicException(Message message) {
+		super(message.getMessage());
 		this.message = message;
 	}
 	

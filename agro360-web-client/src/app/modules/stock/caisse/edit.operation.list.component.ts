@@ -42,7 +42,7 @@ export class EditOperationListComponent extends AbstractEditLigneListComponent<O
     }
     
     getCreateFormUrl():string{
-        return '/stock/caisse/operation/create-form';
+        return 'stock/caisse/operation/create-form';
     }
 
     plusVenduSelectEvent() {

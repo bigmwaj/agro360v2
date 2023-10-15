@@ -49,7 +49,7 @@ export class EditLigneListComponent extends AbstractEditLigneListComponent<Ligne
     plusAchetes:FieldMetadata<string>;
 
     override getCreateFormUrl(): string {
-        return '/achat/bon-commande/ligne/create-form';
+        return 'achat/bon-commande/ligne/create-form';
     };
 
     plusAcheteSelectEvent() {      

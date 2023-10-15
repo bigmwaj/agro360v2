@@ -18,23 +18,34 @@ public class BeanMetadataHelper {
 	private String namespace;
 	
 	private boolean visible;
-
-	private boolean required;
 	
+	@JacksonXmlElementWrapper(useWrapping = true)
 	private List<ConstraintHelper> visibleContraints;
 	
 	private boolean editable;
 	
-//	@JacksonXmlElementWrapper(useWrapping = true, localName = "editableContraint")
-//	private List<ConstraintHelper> constraint;
+	@JacksonXmlElementWrapper(useWrapping = true)
+	private List<ConstraintHelper> editableContraints;
 	
-	//@JacksonXmlProperty(namespace = "editableContraint", localName = "constraint")
-	@JacksonXmlElementWrapper(useWrapping = true, localName = "editableContraint")
-	private List<ConstraintHelper> constraint;
-	
-	@JacksonXmlElementWrapper(useWrapping = false, localName = "field", namespace = "field")
+	@JacksonXmlElementWrapper(useWrapping = false, localName = "field")
 	private List<FieldMetadataHelper> field;
 
-	@JacksonXmlElementWrapper(useWrapping = false, localName = "bean", namespace = "bean")
+	@JacksonXmlElementWrapper(useWrapping = false, localName = "bean")
 	private List<BeanMetadataHelper> bean;
+	
+	@JacksonXmlElementWrapper(useWrapping = false, namespace = "bean-list")
+	private List<BeanMetadataHelper> beanList;
+	
+	@JacksonXmlElementWrapper(useWrapping = false, namespace = "validation")
+	private List<ValidationHelper> validation;
+
+	@Override
+	public String toString() {
+		return "BeanMetadataHelper [\n\tname=" + name + ", \n\tnamespace=" + namespace + ", \n\tvisible=" + visible +
+	 ", \n\tvisibleContraints=" + visibleContraints + ", "
+						+ "\n\teditable=" + editable
+				+ ", \n\teditableContraints=" + editableContraints + ", \n\tfield=" + field + ", \n\tbean=" + bean + "]";
+	}
+	
+	
 }

@@ -25,8 +25,13 @@ import { MatInputModule } from '@angular/material/input';
             [rangePicker]="datePicker"   
             [comparisonStart]="startField.value"
             [comparisonEnd]="endField.value">
-            <input matStartDate placeholder="Start date"  [(ngModel)]="startField.value">
-            <input matEndDate placeholder="End date" [(ngModel)]="endField.value">
+            <input matStartDate placeholder="Start date"  [(ngModel)]="startField.value"
+                [disabled]="!startField.editable"
+                [required]="startField.required"/>
+                
+            <input matEndDate placeholder="End date" [(ngModel)]="endField.value"
+                [disabled]="!endField.editable"
+                [required]="endField.required"/>
         </mat-date-range-input>
         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>

@@ -15,7 +15,18 @@
 		</xs:annotation>
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="editable" minOccurs="0" maxOccurs="1">
+				
+				<xs:element ref="validation" minOccurs="0" maxOccurs="unbounded" />
+				
+				<xs:element name="visibleContraints" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				
+				<xs:element name="editableContraints" minOccurs="0" maxOccurs="1">
 					<xs:annotation>
 						<xs:documentation> 
 							<![CDATA[
@@ -30,11 +41,13 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
+				
 				<xs:element ref="bean" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="bean-list" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="beanList" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="field" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
-			<xs:attribute name="editable" type="xs:boolean"/>
+			<xs:attribute name="editable" type="xs:boolean" default="true"/>
+			<xs:attribute name="visible" type="xs:boolean" default="true" />
 			<xs:attribute name="namespace" type="xs:string" use="required" />
 		</xs:complexType>
 	</xs:element>
@@ -42,7 +55,42 @@
 	<xs:element name="bean">
 		<xs:complexType>
 			<xs:sequence>				
-				<xs:element name="visible" minOccurs="0" maxOccurs="1">
+				<xs:element ref="validation" minOccurs="0" maxOccurs="unbounded" />
+				
+				<xs:element name="visibleContraints" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				
+				<xs:element name="editableContraints" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				
+				
+				<xs:element ref="bean" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="beanList" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="field" minOccurs="0" maxOccurs="unbounded" />
+			</xs:sequence>
+			<xs:attribute name="name" type="xs:string" use="required" />
+			<xs:attribute name="label" type="xs:string" />
+			<xs:attribute name="editable" type="xs:boolean" default="true" />
+			<xs:attribute name="visible" type="xs:boolean" default="true"/>
+			<xs:attribute name="extends" type="xs:string" />
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="beanList">
+		<xs:complexType>
+			<xs:sequence>				
+				<xs:element ref="validation" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="visibleContraints" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded" />
@@ -50,51 +98,36 @@
 					</xs:complexType>
 				</xs:element>
 				<xs:element ref="bean" minOccurs="0" maxOccurs="unbounded" />
-				<xs:element ref="bean-list" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element ref="field" minOccurs="0" maxOccurs="unbounded" />
-			</xs:sequence>
-			<xs:attribute name="name" type="xs:string" use="required" />
-			<xs:attribute name="label" type="xs:string" />
-			<xs:attribute name="visible" type="xs:boolean" />
-			<xs:attribute name="extends" type="xs:string" />
-		</xs:complexType>
-	</xs:element>
-	
-	<xs:element name="bean-list">
-		<xs:complexType>
-			<xs:sequence>				
-				<xs:element name="visible" minOccurs="0" maxOccurs="1">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded" />
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
 				<xs:element ref="field" minOccurs="0" maxOccurs="unbounded" />
 			</xs:sequence>
 			<xs:attribute name="name" type="xs:string" use="required" />
 			<xs:attribute name="extends" type="xs:string" />
+			<xs:attribute name="editable" type="xs:boolean" default="true" />
+			<xs:attribute name="visible" type="xs:boolean" default="true"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="field">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="visible" minOccurs="0" maxOccurs="1">
+				<xs:element ref="validation" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element name="visibleContraints" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded" />
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="required" minOccurs="0" maxOccurs="1">
+				
+				<xs:element name="requiredContraints" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded" />
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="editable" minOccurs="0" maxOccurs="1">
+				
+				<xs:element name="editableContraints" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded" />
@@ -118,8 +151,11 @@
 			<xs:sequence>
 				<xs:element name="rule" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType>
-						<xs:attribute name="name" type="xs:string" use="required" />						
-						<xs:attribute name="beanLookup" type="xs:string">
+						<xs:attribute name="class" type="xs:string" use="required" />						
+						<xs:attribute 
+							name="lookupClass" 
+							type="xs:string" 
+							default="com.agro360.service.rule.lookup.common.RootBeanLookup">
 							<xs:annotation>
 								<xs:documentation> 
 									<![CDATA[
@@ -131,6 +167,25 @@
 							</xs:annotation>
 						</xs:attribute>					
 					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="validation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="validator" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:attribute name="class" type="xs:string" use="required" />						
+						<xs:attribute 
+							name="lookupClass" 
+							type="xs:string" 
+							default="com.agro360.service.rule.lookup.common.RootBeanLookup">
+						</xs:attribute>					
+					</xs:complexType>
+					
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>

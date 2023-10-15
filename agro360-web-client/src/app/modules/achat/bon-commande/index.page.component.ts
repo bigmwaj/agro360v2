@@ -10,7 +10,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { BonCommandeBean, BonCommandeSearchBean } from 'src/app/backed/bean.achat';
 import { BeanList } from 'src/app/common/component/bean.list';
-import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { SharedModule } from 'src/app/common/shared.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 
@@ -68,7 +67,7 @@ export class IndexPageComponent extends BeanList<BonCommandeBean> implements OnI
 
     resetSearchFormAction() {
         this.http
-            .get(`${CommonUtlis.BASE_URL}/achat/bon-commande/search-form`)
+            .get(`achat/bon-commande/search-form`)
             .subscribe(data => {
                 this.searchForm = <BonCommandeSearchBean>data;
                 this.searchAction();
@@ -82,7 +81,7 @@ export class IndexPageComponent extends BeanList<BonCommandeBean> implements OnI
         let queryParams = new HttpParams();
         queryParams = queryParams.append('q', objJsonB64);
         this.http
-            .get(`${CommonUtlis.BASE_URL}/achat/bon-commande`, { params: queryParams })
+            .get(`achat/bon-commande`, { params: queryParams })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.setData(data.records);

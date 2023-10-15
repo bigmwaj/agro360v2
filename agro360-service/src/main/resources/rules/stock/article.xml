@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bean-rules xmlns="http://mouafo.com/xml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://mouafo.com/xml ./../bean-rules.xsd"
+	namespace="default" 
+	editable="true" 
+	visible="true">
+	
+	<editableContraints>
+		<constraint>
+			<rule class="com.agro360.service.rule.constraint.common.IsEditableBean"/>
+		</constraint>
+	</editableContraints> 
+	
+	<bean name="unite" editable="true" visible="true">
+		<field name="uniteCode" required="true">
+			<editableContraints>
+				<constraint>
+					<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+				</constraint>
+			</editableContraints>
+		</field>
+		<field name="description" editable="false"/>
+	</bean>
+		
+	<beanList name="variants" editable="true" visible="true">			
+		<field name="variantCode" required="true">
+			<editableContraints>
+				<constraint>
+					<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+				</constraint>
+			</editableContraints>		
+		</field>
+		
+		<field name="description">
+			<editableContraints>
+				<constraint>
+					<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				</constraint>
+			</editableContraints>		
+		</field>		
+	</beanList>
+		
+	<beanList name="conversions" editable="true" visible="true">		
+		<bean name="unite" editable="true" visible="true">
+			<field name="uniteCode" required="true">
+				<validation>
+					<constraint>
+						<!-- L'action sur l'article est CREATE ou UPDATE -->
+						<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction" />
+						<!-- L'action sur la conversion est CREATE -->
+						<rule 
+							class="com.agro360.service.rule.constraint.common.IsCreateAction" 
+							lookupClass="com.agro360.service.rule.lookup.common.SelfBeanLookup"/>
+						
+					</constraint>
+					<!-- La conversion doit être unique -->
+					<validator 
+						class="com.agro360.service.rule.validation.stock.article.conversion.UniqueValidator" 
+						lookupClass="com.agro360.service.rule.lookup.common.SelfBeanLookup"/>
+				</validation>
+				
+				<editableContraints>
+					<constraint>
+						<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+					</constraint>
+				</editableContraints>
+				
+			</field>
+			<field name="description" editable="false"/>
+		</bean>
+		<field name="facteur" required="true" min="0">
+			<editableContraints>
+				<constraint>
+					<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+				</constraint>
+			</editableContraints>		
+		</field>
+	</beanList>
+	
+	<field name="articleCode" required="true">
+		<editableContraints>
+			<constraint>
+				<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+			</constraint>
+		</editableContraints>
+	</field>
+	
+	<field name="description">
+		<editableContraints>
+			<constraint>
+				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+			</constraint>
+		</editableContraints>
+	</field>
+	
+	<field name="typeArticle" required="true">
+		<editableContraints>
+			<constraint>
+				<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+			</constraint>
+		</editableContraints>
+	</field>
+</bean-rules>

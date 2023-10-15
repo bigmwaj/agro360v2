@@ -149,6 +149,6 @@ public class OperationCaisseService extends AbstractLigneService<OperationCaisse
 		
 		initArticle(bean, articleCode);
 		
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 }

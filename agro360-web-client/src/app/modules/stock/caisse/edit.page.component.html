@@ -25,7 +25,14 @@
 
         <div class="col-3">
             <input-date-field [field]="bean.journee"></input-date-field>
-            <select-one-field [field]="bean.status"></select-one-field>
+            <div class="row">
+                <div class="col-6">                    
+                    <select-one-field [field]="bean.status"></select-one-field>
+                </div>
+                <div class="col-6">
+                    <input-date-field [field]="bean.statusDate"></input-date-field>
+                </div>
+            </div>
         </div>
 
         <div class="col-3">

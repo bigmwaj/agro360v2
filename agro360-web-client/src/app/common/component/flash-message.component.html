@@ -1,12 +1,14 @@
 <div class="example-pizza-party container-fluid" matSnackBarLabel>
-    <div *ngIf="messages">
-        <div *ngFor="let msg of messages">
-            <div class="alert alert-{{msg.type | lowercase}}">
-                {{msg.message}}
-            </div>
-        </div>
-    </div>
+    <ul *ngIf="messages">
+        <li *ngFor="let msg of messages">
+            <span class="text-{{msg.type | lowercase}} p-1 mb-1">
+                <span class="p-0 m-0" innerHTML={{msg.message}}>{{msg.message}}</span>
+            </span>
+        </li>
+    </ul>
     <span matSnackBarActions>
-        <button mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">🍕</button>
+        <button type="button" align="end" class="btn-close text-light" mat-button matSnackBarAction (click)="snackBarRef.dismissWithAction()">
+            &nbsp;
+        </button>
     </span>
 </div>

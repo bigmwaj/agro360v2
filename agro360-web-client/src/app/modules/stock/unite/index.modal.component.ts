@@ -10,8 +10,6 @@ import { BeanTools } from 'src/app/common/bean.tools';
 import { SharedModule } from 'src/app/common/shared.module';
 import { UIService } from 'src/app/common/service/ui.service';
 
-const BASE_URL = "http://localhost:8080";
-
 @Component({
     standalone: true,
     imports: [
@@ -54,7 +52,7 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
 
     resetSearchFormAction() {
         this.http
-            .get(BASE_URL + "/stock/unite/search-form")
+            .get("stock/unite/search-form")
             .subscribe(data => {
                 this.searchForm = <UniteSearchBean>data;
                 this.searchAction();
@@ -68,7 +66,7 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
         let queryParams = new HttpParams();
         queryParams = queryParams.append('q', objJsonB64);
         this.http
-            .get(BASE_URL + "/stock/unite", { params: queryParams })
+            .get("stock/unite", { params: queryParams })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.setData(data.records);
@@ -77,7 +75,7 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
 
     __add(queryParams: HttpParams) {
         this.http
-            .get(BASE_URL + "/stock/unite/create-form", { params: queryParams })
+            .get("stock/unite/create-form", { params: queryParams })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.addItem(<UniteBean>data);
@@ -111,6 +109,6 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
     }
 
     saveAction() {
-        this.http.post(BASE_URL + `/stock/unite`, BeanTools.reviewBeansAction(this.getData())).subscribe(data => console.log(data))
+        this.http.post(`stock/unite`, BeanTools.reviewBeansAction(this.getData())).subscribe(data => console.log(data))
     }
 }

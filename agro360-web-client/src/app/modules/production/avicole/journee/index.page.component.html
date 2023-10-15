@@ -1,0 +1,56 @@
+<section class="mb-3">
+    <a mat-raised-button color="primary" class="me-2" href="/">
+        <mat-icon>home</mat-icon>Accueil
+    </a>
+</section>
+
+<section *ngIf="searchForm">
+    <div class="row">
+        <div class="col-8">
+            <div class="row">
+                <div class="col-3">            
+                    <h2>Journée de Production</h2>
+                </div>
+                <div class="col-3">            
+                    <input-text-field [field]="searchForm.cycleCode"></input-text-field>
+                </div>
+                <div class="col-3">            
+                    <input-date-field [field]="searchForm.journee"></input-date-field>
+                </div>
+                <div class="col-3">        
+                    <button mat-raised-button color="primary" class="me-2" (click)="searchAction()">
+                        <mat-icon>search</mat-icon>Charger
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            
+        </div>
+    </div>    
+</section>
+
+<section class="mat-elevation-z8 p-3 productions-wrapper" >
+    <ul class="list-group list-group-horizontal mb-2" *ngIf="bean">
+        <li class="list-group-item">
+            Cycle: {{bean.cycle.cycleCode.value}}
+        </li>
+        <li class="list-group-item">
+            Début: {{bean.cycle.dateEffective.value}}
+        </li>
+        <li class="list-group-item">
+            Fin:
+        </li>
+        <li class="list-group-item">
+            Sujets en cours:
+        </li>
+    </ul>   
+    <production-avicole-journee-production-list
+        *ngIf="bean && bean.productions"
+        [productions]="bean.productions">
+    </production-avicole-journee-production-list>
+</section>
+
+<section class="mt-3">
+    <button mat-raised-button color="primary" cdkFocusInitial (click)="saveAction()">Enregistrer</button>
+</section>

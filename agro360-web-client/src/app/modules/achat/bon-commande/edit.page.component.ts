@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BonCommandeBean, LigneBean } from 'src/app/backed/bean.achat';
 import { TiersUtils } from '../../tiers/tiers.utils';
 import { StockUtils } from '../../stock/stock.utils';
-import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { BeanTools } from 'src/app/common/bean.tools';
 import { EditLigneListComponent } from './edit.ligne.list.component';
 import { SharedModule } from 'src/app/common/shared.module';
@@ -45,7 +44,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("copyFrom", copyFrom);
                 }
                 this.http
-                    .get(`${CommonUtlis.BASE_URL}/achat/bon-commande/create-form`, { params: queryParams })
+                    .get(`achat/bon-commande/create-form`, { params: queryParams })
                     .subscribe(data => {
                         this.bean = <BonCommandeBean>data;
                         
@@ -64,7 +63,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("bonCommandeCode", bonCommandeCode);
                 }
                 this.http
-                    .get<any>(`${CommonUtlis.BASE_URL}/achat/bon-commande/edit-form`, { params: queryParams })
+                    .get<any>(`achat/bon-commande/edit-form`, { params: queryParams })
                     .subscribe(data => {
                         this.bean = data;
                         
@@ -119,7 +118,7 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(`${CommonUtlis.BASE_URL}/achat/bon-commande`, BeanTools.reviewBeanAction(this.bean))
+        this.http.post(`achat/bon-commande`, BeanTools.reviewBeanAction(this.bean))
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id)

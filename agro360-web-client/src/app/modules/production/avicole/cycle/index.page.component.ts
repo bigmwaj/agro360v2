@@ -26,6 +26,12 @@ export class IndexPageComponent extends BeanList<CycleBean> implements OnInit {
         'cycleCode',
         'magasin',
         'status',
+        'racePlanifiee',
+        'quantitePlanifiee',
+        'datePlanifiee',
+        'raceEffective',
+        'quantiteEffective',
+        'dateEffective',
         'description',
         'actions'
     ];
@@ -55,7 +61,7 @@ export class IndexPageComponent extends BeanList<CycleBean> implements OnInit {
 
     resetSearchFormAction() {
         this.http
-            .get(`${this.service.getBackendUrl('production/avicole/cycle/search-form')}`)
+            .get(`production/avicole/cycle/search-form`)
             .subscribe(data => {
                 this.searchForm = <CycleSearchBean>data;
                 this.searchAction();
@@ -69,7 +75,7 @@ export class IndexPageComponent extends BeanList<CycleBean> implements OnInit {
         let queryParams = new HttpParams();
         queryParams = queryParams.append('q', objJsonB64);
         this.http
-            .get(`${this.service.getBackendUrl('production/avicole/cycle')}`, { params: queryParams })
+            .get(`production/avicole/cycle`, { params: queryParams })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.setData(data.records);
@@ -90,5 +96,23 @@ export class IndexPageComponent extends BeanList<CycleBean> implements OnInit {
 
     deleteAction(bean: CycleBean) {
 
+    }
+
+    redirectJourneePage(bean: CycleBean):void{
+        this.router.navigate(
+            [
+                '/production/avicole/journee',
+                bean.cycleCode.value
+            ]
+        )
+    }
+
+    redirectPrevisionPage(bean: CycleBean):void{
+        this.router.navigate(
+            [
+                '/production/avicole/prevision',
+                bean.cycleCode.value
+            ]
+        )
     }
 }

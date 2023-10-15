@@ -44,7 +44,9 @@
             <h4>
                 Liste des variants
             </h4>
-            <stock-article-edit-variant-list *ngIf="bean.variants" [variants]="bean.variants"
+            <stock-article-edit-variant-list 
+                *ngIf="bean.variants" 
+                [variants]="bean.variants"
                 [articleCode]="bean.articleCode.value">
             </stock-article-edit-variant-list>
         </section>
@@ -53,7 +55,9 @@
             <h4>
                 Liste des unités
             </h4>
-            <stock-article-edit-conversion-list *ngIf="bean.conversions" [conversions]="bean.conversions"
+            <stock-article-edit-conversion-list 
+                *ngIf="bean.conversions" 
+                [conversions]="bean.conversions"
                 [articleCode]="bean.articleCode.value">
             </stock-article-edit-conversion-list>
         </section>

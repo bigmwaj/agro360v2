@@ -16,7 +16,7 @@ public class RuleXmlHelperTest {
 		try {
 			// Given
 			var helper = new RuleXmlHelper();
-			var xmlName = "stock/caisse";
+			var xmlName = "stock/article";
 
 			// When
 			var result = helper.loadMetadataFromXml(xmlName);

@@ -11,8 +11,6 @@ import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
 import { SharedModule } from 'src/app/common/shared.module';
 
-const BASE_URL = "http://localhost:8080";
-
 @Component({
     standalone: true,
     imports: [
@@ -66,7 +64,7 @@ export class IndexPageComponent extends BeanList<TiersBean> implements OnInit {
 
     resetSearchFormAction() {
         this.http
-            .get(BASE_URL + "/tiers/tiers/search-form")
+            .get("tiers/tiers/search-form")
             .subscribe(data => {
                 this.searchForm = <TiersSearchBean>data;
                 this.searchAction();
@@ -80,7 +78,7 @@ export class IndexPageComponent extends BeanList<TiersBean> implements OnInit {
         let queryParams = new HttpParams();
         queryParams = queryParams.append('q', objJsonB64);
         this.http
-            .get(BASE_URL + "/tiers/tiers", { params: queryParams })
+            .get("tiers/tiers", { params: queryParams })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.setData(data.records);

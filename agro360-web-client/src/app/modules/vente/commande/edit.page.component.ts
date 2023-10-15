@@ -44,7 +44,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("copyFrom", copyFrom);
                 }
                 this.http
-                    .get(`${CommonUtlis.BASE_URL}/vente/commande/create-form`, { params: queryParams })
+                    .get(`vente/commande/create-form`, { params: queryParams })
                     .subscribe(data => {
                         this.bean = <CommandeBean>data;
                         this.initSelectMagasinOptions();
@@ -62,7 +62,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("commandeCode", commandeCode);
                 }
                 this.http
-                    .get<any>(`${CommonUtlis.BASE_URL}/vente/commande/edit-form`, { params: queryParams })
+                    .get<any>(`vente/commande/edit-form`, { params: queryParams })
                     .subscribe(data => {
                         this.bean = data;
                         this.initSelectMagasinOptions();
@@ -125,7 +125,7 @@ export class EditPageComponent implements OnInit {
      * Action ménant à l'enregistrement de la commande en cours de création/modification
      */
     saveAction() {
-        this.http.post(`${CommonUtlis.BASE_URL}/vente/commande`, BeanTools.reviewBeanAction(this.bean))
+        this.http.post(`vente/commande`, BeanTools.reviewBeanAction(this.bean))
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id)

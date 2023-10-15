@@ -1,11 +1,28 @@
 import { FieldMetadata } from './metadata';
-import { PhaseEnumVd, RubriqueEnumVd, StatusCycleEnumVd } from './vd.production.avicole';
+import { PhaseEnumVd, ProductionCategoryEnumVd, RubriqueEnumVd, StatusCycleEnumVd } from './vd.production.avicole';
 import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './bean.common';
-import { MagasinBean } from './bean.stock';
+import { ArticleBean, MagasinBean, UniteBean, VariantBean } from './bean.stock';
+
+export interface JourneeSearchBean extends AbstractBean {
+	journee: FieldMetadata<any>;
+	cycleCode: FieldMetadata<string>;
+};
 
 export interface JourneeBean extends AbstractBean {
 	cycle: CycleBean;
 	numeroJournee: FieldMetadata<number>;
+	journee: FieldMetadata<any>;
+	productions: Array<ProductionBean>;
+};
+
+export interface OperationSearchBean extends AbstractBean {
+	rubrique: FieldMetadata<RubriqueEnumVd>;
+	phase: FieldMetadata<PhaseEnumVd>;
+	cycleCode: FieldMetadata<string>;
+};
+
+export interface ProductionSearchBean extends AbstractBean {
+	cycleCode: FieldMetadata<string>;
 };
 
 export interface MetadataBean extends AbstractBean {
@@ -39,5 +56,19 @@ export interface CycleBean extends AbstractStatusTrackingBean<StatusCycleEnumVd>
 
 export interface OperationBean extends AbstractLigneBean {
 	rubrique: FieldMetadata<RubriqueEnumVd>;
+	numeroJournee: FieldMetadata<number>;
 	phase: FieldMetadata<PhaseEnumVd>;
+};
+
+export interface ProductionBean extends AbstractBean {
+	unite: UniteBean;
+	uniteLibelle: FieldMetadata<string>;
+	quantite: FieldMetadata<number>;
+	productionId: FieldMetadata<number>;
+	numeroJournee: FieldMetadata<number>;
+	article: ArticleBean;
+	variant: VariantBean;
+	commentaire: FieldMetadata<string>;
+	alveole: FieldMetadata<number>;
+	category: FieldMetadata<ProductionCategoryEnumVd>;
 };

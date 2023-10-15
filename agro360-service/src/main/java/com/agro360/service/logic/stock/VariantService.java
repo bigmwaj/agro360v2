@@ -26,11 +26,11 @@ import com.agro360.vd.common.EditActionEnumVd;
 @Service
 public class VariantService extends AbstractService<VariantDto, VariantPk> {
 
-	private static final String CREATE_SUCCESS = "Enregistrement créé avec succès!";
+	private static final String CREATE_SUCCESS = "Variant <b>%s</b> de l'article <b>%s</b> créée avec succès!";
 
-	private static final String UPDATE_SUCCESS = "Enregistrement modifié avec succès!";
+	private static final String UPDATE_SUCCESS = "Variant <b>%s</b> de l'article <b>%s</b> modifée avec succès!";
 
-	private static final String DELETE_SUCCESS = "Enregistrement supprimé avec succès!";
+	private static final String DELETE_SUCCESS = "Variant <b>%s</b> de l'article <b>%s</b> supprimée avec succès!";
 
 	@Autowired
 	IVariantDao dao;
@@ -51,61 +51,88 @@ public class VariantService extends AbstractService<VariantDto, VariantPk> {
 		return "stock/article/variant";
 	}
 	
-	private List<Message> deleteVariant(ArticleBean articleBean, List<VariantDto> existingVariants) {
+	private List<Message> deleteVariants(ArticleBean articleBean, List<VariantDto> existingVariants) {
 		List<Message> messages = new ArrayList<>();
 		dao.deleteAll(existingVariants);
 		return messages;
 	}
 
 	private List<Message> synchVariants(ArticleBean articleBean, VariantBean bean, List<VariantDto> existingVariants) {
-		VariantDto dto = mapper.mapToDto(articleBean, bean);
+		var dto = mapper.mapToDto(articleBean, bean);
 		List<Message> messages = new ArrayList<>();
+		var variant = bean.getVariantCode().getValue();
+		var article = articleBean.getArticleCode().getValue();
 
 		switch (bean.getAction()) {
 		case CREATE:
 			save(dto);
-			messages.add(Message.success(CREATE_SUCCESS));
+			var msg = String.format(CREATE_SUCCESS, variant, article);
+			messages.add(Message.success(msg));
 			break;
 			
 		case UPDATE:
 			save(dto);
-			messages.add(Message.success(UPDATE_SUCCESS));
+			msg = String.format(UPDATE_SUCCESS, variant, article);
+			messages.add(Message.success(msg));
 			break;
 
 		case DELETE:
-			if (existingVariants.contains(dto)) {
-				delete(dto);
-				messages.add(Message.success(DELETE_SUCCESS));
-			}else {
-				messages.add(Message.warn(String.format("Le casier %s n'existe pas!", bean.getVariantCode().getValue())));
-			}
+			delete(dto);
+			msg = String.format(DELETE_SUCCESS, variant, article);
+			messages.add(Message.success(msg));
 			break;
 		default:
 		}
 
 		return messages;
 	}
+	
+	private List<Message> addVariants(ArticleBean articleBean, VariantBean bean, List<VariantDto> existingVariants) {
+		var dto = mapper.mapToDto(articleBean, bean);
+		var variant = bean.getVariantCode().getValue();
+		var article = articleBean.getArticleCode().getValue();
+		List<Message> messages = new ArrayList<>();
+		
+		switch (bean.getAction()) {
+		case CREATE:
+			save(dto);
+			var msg = String.format(CREATE_SUCCESS, variant, article);
+			messages.add(Message.success(msg));
+			break;
+			
+		default:
+			
+		}
+		
+		return messages;
+	}
 
 	public List<Message> synchVariants(ArticleBean articleBean) {
+		
 		if( articleBean.getAction() == null ) {
 			return Collections.emptyList();
 		}
 		
 		List<Message> messages = new ArrayList<>();
-		List<VariantDto> existingVariants = findVariants(articleBean);
-
+		var existingVariants = findVariants(articleBean);
 		
 		switch (articleBean.getAction()) {
 		case CREATE:
+			var casiers = articleBean.getVariants();
+			for (var bean : casiers) {
+				messages.addAll(addVariants(articleBean, bean, existingVariants));
+			}
+			break;
+			
 		case UPDATE:
-			List<VariantBean> casiers = articleBean.getVariants();
-			for (VariantBean bean : casiers) {
+			casiers = articleBean.getVariants();
+			for (var bean : casiers) {
 				messages.addAll(synchVariants(articleBean, bean, existingVariants));
 			}
 			break;
 
 		case DELETE:
-			messages.addAll(deleteVariant(articleBean, existingVariants));
+			messages.addAll(deleteVariants(articleBean, existingVariants));
 			break;
 		default:
 		}
@@ -114,7 +141,7 @@ public class VariantService extends AbstractService<VariantDto, VariantPk> {
 	}
 
 	private List<VariantDto> findVariants(ArticleBean articleBean) {
-		Example<VariantDto> ex = Example.of(new VariantDto());
+		var ex = Example.of(new VariantDto());
 		ex.getProbe().setArticle(new ArticleDto());
 		ex.getProbe().getArticle().setArticleCode(articleBean.getArticleCode().getValue());
 
@@ -129,6 +156,6 @@ public class VariantService extends AbstractService<VariantDto, VariantPk> {
 				.flatMap(e -> e).orElseGet(VariantDto::new);
 		var bean = mapper.mapToBean(dto);
 		bean.setAction(EditActionEnumVd.CREATE);
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 }

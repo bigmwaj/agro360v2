@@ -166,3 +166,18 @@ table.cycle-metadatas td.mat-column-value .mat-mdc-form-field-infix  input{
 .example-tree div[role=group]>.mat-tree-node {
     padding-left: 40px;
 }
+
+.productions-wrapper{
+    width: 1024px;
+}
+
+.productions .quantite-input{
+    width: 60px;
+}
+
+.productions .quantite-input input{
+    text-align: center;
+}
+.productions .mat-mdc-form-field-infix{
+    padding:3px 0 !important;
+}

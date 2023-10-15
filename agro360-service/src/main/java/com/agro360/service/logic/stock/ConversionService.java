@@ -17,6 +17,7 @@ import com.agro360.dto.stock.ConversionDto;
 import com.agro360.dto.stock.ConversionPk;
 import com.agro360.service.bean.stock.ArticleBean;
 import com.agro360.service.bean.stock.ConversionBean;
+import com.agro360.service.exception.ServiceLogicException;
 import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.ConversionMapper;
 import com.agro360.service.mapper.stock.StockSharedMapperHelper;
@@ -26,11 +27,17 @@ import com.agro360.vd.common.EditActionEnumVd;
 @Service
 public class ConversionService extends AbstractService<ConversionDto, ConversionPk> {
 
-	private static final String CREATE_SUCCESS = "Enregistrement créé avec succès!";
+	private static final String CREATE_SUCCESS = "La conversion de l'unité <b>%s</b> pour l'article <b>%s</b> créée avec succès!";
 
-	private static final String UPDATE_SUCCESS = "Enregistrement modifié avec succès!";
+	private static final String UPDATE_SUCCESS = "La conversion de l'unité <b>%s</b> pour l'article <b>%s</b> modifée avec succès!";
 
-	private static final String DELETE_SUCCESS = "Enregistrement supprimé avec succès!";
+	private static final String DELETE_SUCCESS = "La conversion de l'unité <b>%s</b> pour l'article <b>%s</b> supprimée avec succès!";
+
+	private static final String ERROR_MSG1 = "Aucune conversion disponible pour l'article <b>%s</b>!";
+	
+	private static final String ERROR_MSG3 = "Toutes les conversions de l'article <b>%s</b> ont été supprimées!";
+	
+	private static final String ERROR_MSG2 = "Concernant une conversion de l'unité <b>%s</b>, l'opération <b>%s</b> n'est pas autorisée pour l'article <b>%s</b>!";
 
 	@Autowired
 	IConversionDao dao;
@@ -51,34 +58,76 @@ public class ConversionService extends AbstractService<ConversionDto, Conversion
 		return dao;
 	}
 
-	private List<Message> deleteConversion(ArticleBean articleBean, List<ConversionDto> existingConversions) {
+	private List<Message> deleteConversions(ArticleBean articleBean) {
+		var article = articleBean.getArticleCode().getValue();
+		
+		if( article == null ) {
+			throw new ServiceLogicException(Message.error("Article inconnu!"));
+		}
+		
+		var ex = Example.of(new ConversionDto());
+		ex.getProbe().setArticle(new ArticleDto());
+		ex.getProbe().getArticle().setArticleCode(article);
+		
+		var conversions = dao.findAll(ex);
+		dao.deleteAll(conversions);
+		
+		if( conversions.isEmpty() ) {
+			var msg = String.format(ERROR_MSG1, article);
+			return Collections.singletonList(Message.warn(msg));
+		}
+		
+		var msg = String.format(ERROR_MSG3, article);
+		return Collections.singletonList(Message.success(msg));
+	}
+
+	private List<Message> addConversions(ArticleBean articleBean, 
+			ConversionBean bean, List<ConversionDto> existingConversions) {
 		List<Message> messages = new ArrayList<>();
-		dao.deleteAll(existingConversions);
+		var dto = mapper.mapToDto(articleBean, bean);
+		var unite = bean.getUnite().getUniteCode().getValue();
+		var article = articleBean.getArticleCode().getValue();
+
+		switch (bean.getAction()) {
+		case CREATE:
+			save(dto);
+			var msg = String.format(CREATE_SUCCESS, unite, article);
+			messages.add(Message.success(msg));
+			break;
+			
+		default:
+			msg = String.format(ERROR_MSG2, bean.getAction(), unite, article);
+			throw new ServiceLogicException(Message.error(msg));
+		}
+
 		return messages;
 	}
 
-	private List<Message> synchConversions(ArticleBean articleBean, ConversionBean bean, List<ConversionDto> existingConversions) {
-		ConversionDto dto = mapper.mapToDto(articleBean, bean);
+	private List<Message> synchConversions(ArticleBean articleBean, 
+			ConversionBean bean, List<ConversionDto> existingConversions) {
+		
+		var dto = mapper.mapToDto(articleBean, bean);
+		var unite = bean.getUnite().getUniteCode().getValue();
+		var article = articleBean.getArticleCode().getValue();
 		List<Message> messages = new ArrayList<>();
 
 		switch (bean.getAction()) {
 		case CREATE:
 			save(dto);
-			messages.add(Message.success(CREATE_SUCCESS));
+			var msg = String.format(CREATE_SUCCESS, unite, article);
+			messages.add(Message.success(msg));
 			break;
 			
 		case UPDATE:
 			save(dto);
-			messages.add(Message.success(UPDATE_SUCCESS));
+			msg = String.format(UPDATE_SUCCESS, unite, article);
+			messages.add(Message.success(msg));
 			break;
 
 		case DELETE:
-			if (existingConversions.contains(dto)) {
-				delete(dto);
-				messages.add(Message.success(DELETE_SUCCESS));
-			}else {
-				messages.add(Message.warn(String.format("La conversion de l'unité %s n'existe pas!", bean.getUnite().getUniteCode().getValue())));
-			}
+			delete(dto);
+			msg = String.format(DELETE_SUCCESS, unite, article);
+			messages.add(Message.success(msg));
 			break;
 		default:
 		}
@@ -91,20 +140,26 @@ public class ConversionService extends AbstractService<ConversionDto, Conversion
 			return Collections.emptyList();
 		}
 		
+		var existingConversions = findConversions(articleBean);
 		List<Message> messages = new ArrayList<>();
-		List<ConversionDto> existingConversions = findConversions(articleBean);
 
 		switch (articleBean.getAction()) {
 		case CREATE:
+			var conversions = articleBean.getConversions();
+			for (var bean : conversions) {
+				messages.addAll(addConversions(articleBean, bean, existingConversions));
+			}
+			break;
+			
 		case UPDATE:
-			List<ConversionBean> conversions = articleBean.getConversions();
-			for (ConversionBean bean : conversions) {
+			conversions = articleBean.getConversions();
+			for (var bean : conversions) {
 				messages.addAll(synchConversions(articleBean, bean, existingConversions));
 			}
 			break;
 
 		case DELETE:
-			messages.addAll(deleteConversion(articleBean, existingConversions));
+			messages.addAll(deleteConversions(articleBean));
 			break;
 		default:
 		}
@@ -113,9 +168,11 @@ public class ConversionService extends AbstractService<ConversionDto, Conversion
 	}
 
 	private List<ConversionDto> findConversions(ArticleBean articleBean) {
-		Example<ConversionDto> ex = Example.of(new ConversionDto());
+		var ex = Example.of(new ConversionDto());
+		var article = articleBean.getArticleCode().getValue();
+		
 		ex.getProbe().setArticle(new ArticleDto());
-		ex.getProbe().getArticle().setArticleCode(articleBean.getArticleCode().getValue());
+		ex.getProbe().getArticle().setArticleCode(article);
 
 		return dao.findAll(ex);
 	}
@@ -127,6 +184,6 @@ public class ConversionService extends AbstractService<ConversionDto, Conversion
 		var bean = mapper.mapToBean(dto);
 		bean.setAction(EditActionEnumVd.CREATE);
 		bean.getUnite().getUniteCode().setValueOptions(StockSharedMapperHelper.getAllAsValueOptions(uniteDao));
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 }

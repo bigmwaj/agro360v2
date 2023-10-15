@@ -48,8 +48,7 @@
                         </th>
                         <td mat-cell *matCellDef="let row">
                             <mat-checkbox (click)="$event.stopPropagation()"
-                                (change)="$event ? selection.toggle(row) : null" 
-                                [checked]="selection.isSelected(row)"
+                                (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)"
                                 [aria-label]="checkboxLabel(row)">
                             </mat-checkbox>
                         </td>
@@ -61,8 +60,38 @@
                     </ng-container>
 
                     <ng-container matColumnDef="status">
-                        <th mat-header-cell *matHeaderCellDef>Type</th>
+                        <th mat-header-cell *matHeaderCellDef>Statut</th>
                         <td mat-cell *matCellDef="let element">{{element.status.value}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="racePlanifiee">
+                        <th mat-header-cell *matHeaderCellDef>Race Plan.</th>
+                        <td mat-cell *matCellDef="let element">{{element.racePlanifiee.value}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="quantitePlanifiee">
+                        <th mat-header-cell *matHeaderCellDef>Qté Plan</th>
+                        <td mat-cell *matCellDef="let element">{{element.quantitePlanifiee.value}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="datePlanifiee">
+                        <th mat-header-cell *matHeaderCellDef>Date Plan</th>
+                        <td mat-cell *matCellDef="let element">{{element.datePlanifiee.value}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="raceEffective">
+                        <th mat-header-cell *matHeaderCellDef>Race Eff.</th>
+                        <td mat-cell *matCellDef="let element">{{element.raceEffective.value}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="quantiteEffective">
+                        <th mat-header-cell *matHeaderCellDef>Qte Eff.</th>
+                        <td mat-cell *matCellDef="let element">{{element.quantiteEffective.value}}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dateEffective">
+                        <th mat-header-cell *matHeaderCellDef>Date Eff.</th>
+                        <td mat-cell *matCellDef="let element">{{element.dateEffective.value}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="magasin">
@@ -78,7 +107,7 @@
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef></th>
                         <td mat-cell *matCellDef="let element">
-                                                        
+
                             <button mat-icon-button color="primary" title="Afficher" (click)="editAction(element)">
                                 <mat-icon>preview</mat-icon>
                             </button>
@@ -88,6 +117,20 @@
                             <button mat-icon-button color="primary" title="Supprimer" (click)="deleteAction(element)">
                                 <mat-icon>delete</mat-icon>
                             </button>
+                            <button mat-icon-button [matMenuTriggerFor]="menu"
+                                aria-label="Example icon-button with a menu">
+                                <mat-icon>more_vert</mat-icon>
+                            </button>
+                            <mat-menu #menu="matMenu">
+                                <button mat-menu-item (click)="redirectPrevisionPage(element)">
+                                    <mat-icon>menu</mat-icon>
+                                    <span>Prévisions</span>
+                                </button>
+                                <button mat-menu-item (click)="redirectJourneePage(element)">
+                                    <mat-icon>menu</mat-icon>
+                                    <span>Exécutions</span>
+                                </button>
+                            </mat-menu>
                         </td>
                     </ng-container>
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

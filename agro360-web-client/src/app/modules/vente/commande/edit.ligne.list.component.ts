@@ -51,6 +51,6 @@ export class EditLigneListComponent extends AbstractEditLigneListComponent<Ligne
     }
     
     getCreateFormUrl():string{
-        return '/vente/commande/ligne/create-form';
+        return 'vente/commande/ligne/create-form';
     };
 }

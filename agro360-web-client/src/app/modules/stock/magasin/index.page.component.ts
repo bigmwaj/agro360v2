@@ -9,7 +9,6 @@ import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 import { IndexModalComponent } from '../unite/index.modal.component';
 
-const BASE_URL = "http://localhost:8080";
 
 @Component({
     standalone: true,
@@ -55,7 +54,7 @@ export class IndexPageComponent extends BeanList<MagasinBean> implements OnInit 
 
     resetSearchFormAction() {
         this.http
-            .get(BASE_URL + "/stock/magasin/search-form")
+            .get("stock/magasin/search-form")
             .subscribe(data => {
                 this.searchForm = <MagasinSearchBean>data;
                 this.searchAction();
@@ -69,7 +68,7 @@ export class IndexPageComponent extends BeanList<MagasinBean> implements OnInit 
         let queryParams = new HttpParams();
         queryParams = queryParams.append('q', objJsonB64);
         this.http
-            .get(BASE_URL + "/stock/magasin", { params: queryParams })
+            .get("stock/magasin", { params: queryParams })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.setData(data.records);

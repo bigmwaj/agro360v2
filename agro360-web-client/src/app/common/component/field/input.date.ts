@@ -23,7 +23,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     template: `
         <mat-form-field appearance="outline" [class]="getCssClass()">
             <mat-label *ngIf="displayLabel">{{label}}</mat-label>
-            <input matInput [matDatepicker]="picker" [(ngModel)]="field.value" (change)="_onChange()">
+            <input matInput 
+                [matDatepicker]="picker" 
+                [(ngModel)]="field.value" 
+                (change)="_onChange()" 
+                [disabled]="!field.editable"
+                [required]="field.required"/>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>

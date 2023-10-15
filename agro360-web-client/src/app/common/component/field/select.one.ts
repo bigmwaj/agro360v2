@@ -19,7 +19,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     template: `    
     <mat-form-field appearance="outline" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
-        <mat-select [(ngModel)]="field.value" (selectionChange)="_onChange()">
+        <mat-select [(ngModel)]="field.value" (selectionChange)="_onChange()"
+            [disabled]="!field.editable"
+            [required]="field.required">
             <mat-option>--</mat-option>    
             <ng-container *ngFor="let o of keys(field.valueOptions)">
                 <mat-option [value]="o">{{ field.valueOptions[o] }}</mat-option>

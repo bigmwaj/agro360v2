@@ -10,8 +10,6 @@ import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
 import { UIService } from 'src/app/common/service/ui.service';
 
-const BASE_URL = "http://localhost:8080";
-
 @Component({
     standalone: true,
     imports: [
@@ -49,7 +47,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("copyFrom", copyFrom);
                 }
                 this.http
-                    .get(BASE_URL + "/stock/magasin/create-form", { params: queryParams })
+                    .get("stock/magasin/create-form", { params: queryParams })
                     .subscribe(data => { this.bean = <MagasinBean>data; });
 
                 this.pageTitle = "Création d'un Magasin"
@@ -62,7 +60,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("magasinCode", magasinCode);
                 }
                 this.http
-                    .get<any>(BASE_URL + `/stock/magasin/edit-form`, { params: queryParams })
+                    .get<any>(`stock/magasin/edit-form`, { params: queryParams })
                     .subscribe(data => { this.bean = data; });
 
                 this.pageTitle = "Édition du Magasin " + magasinCode
@@ -79,7 +77,7 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(BASE_URL + `/stock/magasin`, BeanTools.reviewBeanAction(this.bean))
+        this.http.post(`stock/magasin`, BeanTools.reviewBeanAction(this.bean))
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id);

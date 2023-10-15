@@ -26,8 +26,12 @@ public class ConversionPk implements Serializable {
 
 	public ConversionPk(ConversionDto dto) {
 		super();
-		this.article = dto.getArticle().getArticleCode();
-		this.unite = dto.getUnite().getUniteCode();
+		if (dto.getArticle() != null) {
+			this.article = dto.getArticle().getArticleCode();
+		}
+		if (dto.getUnite() != null) {
+			this.unite = dto.getUnite().getUniteCode();
+		}
 	}
 
 	@Override
@@ -35,7 +39,7 @@ public class ConversionPk implements Serializable {
 		if (!(obj instanceof ConversionPk)) {
 			return false;
 		}
-		ConversionPk pk = (ConversionPk) obj;
+		var pk = (ConversionPk) obj;
 		return Objects.equals(article, pk.article) && Objects.equals(unite, pk.unite);
 	}
 

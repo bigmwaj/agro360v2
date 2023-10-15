@@ -20,7 +20,11 @@ import { MatDatetimepickerModule , MatNativeDatetimeModule } from '@mat-datetime
     template: `
     <mat-form-field appearance="outline" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
-        <input matInput type="email" [(ngModel)]="field.value" (change)="_onChange()"/>
+        <input matInput type="email" 
+            [(ngModel)]="field.value" 
+            (change)="_onChange()"        
+            [disabled]="!field.editable"
+            [required]="field.required"/>
     </mat-form-field>
 `
 })

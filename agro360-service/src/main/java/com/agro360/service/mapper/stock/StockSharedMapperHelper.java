@@ -28,7 +28,9 @@ public class StockSharedMapperHelper {
 		CaissePk pk;
 		CaisseDto caisse;
 		
-		if ( null != magasinCode && null != tiersCode  && null != journee 
+		if ( null != magasinCode 
+				&& null != tiersCode  
+				&& null != journee 
 				&& caisseDao.existsById(pk = new CaissePk(magasinCode, tiersCode, journee))) {
 			caisse = caisseDao.getReferenceById(pk);
 		} else {

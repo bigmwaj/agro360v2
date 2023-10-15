@@ -1,5 +1,7 @@
 package com.agro360.service.rule.helper;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -7,7 +9,9 @@ import lombok.EqualsAndHashCode;
 @Data
 public class RuleHelper{
 
-	private String name;
+	@JacksonXmlElementWrapper(localName = "class")
+	private String ruleClass;
 	
-	private String beanLookup;
+	@JacksonXmlElementWrapper(localName = "lookupClass")
+	private String lookupClass;
 }

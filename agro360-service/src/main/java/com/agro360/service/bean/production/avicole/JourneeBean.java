@@ -1,5 +1,8 @@
 package com.agro360.service.bean.production.avicole;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import com.agro360.service.bean.common.AbstractBean;
@@ -16,7 +19,11 @@ public class JourneeBean extends AbstractBean {
 
 	private FieldMetadata<Long> numeroJournee = new FieldMetadata<>();
 
-	private CycleBean cycle = new CycleBean();
+	private FieldMetadata<LocalDate> journee = new FieldMetadata<>();
+	
+	private List<ProductionBean> productions = new ArrayList<>();
+	
+	private CycleBean cycle = new CycleBean();	
 
 	public void setCycle(CycleBean cycle) {
 		Objects.requireNonNull(cycle);

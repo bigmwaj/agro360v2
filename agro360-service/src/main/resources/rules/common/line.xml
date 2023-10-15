@@ -2,108 +2,83 @@
 <bean-rules xmlns="http://mouafo.com/xml"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://mouafo.com/xml ./../bean-rules.xsd"
-	namespace="default">
+	namespace="default" editable="true" visible="true">
 	
-	<editable>
+	<editableContraints>
 		<constraint>
-			<rule name="com.agro360.service.rule.common.IsEditableBean"/>
+			<rule class="com.agro360.service.rule.constraint.common.IsEditableBean"/>
 		</constraint>
-	</editable>
+	</editableContraints>
 	
-	<bean name="article">
+	<bean name="article" editable="true" visible="true">
 		<field name="articleCode" required="true">
-			<editable>
+			<editableContraints>
 				<constraint>
-					<rule 
-						name="com.agro360.service.rule.common.IsCreateAction" 
-						beanLookup="com.agro360.service.rule.common.MainBeanLookup"/>
+					<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
 				</constraint>
-			</editable>
+			</editableContraints>
 		</field>
 	</bean>	
 	
-	<bean name="unite">
+	<bean name="unite" editable="true" visible="true">
 		<field name="uniteCode" required="true">
-			<editable>
+			<editableContraints>
 				<constraint>
-					<rule 
-						name="com.agro360.service.rule.common.IsCreateAction" 
-						beanLookup="com.agro360.service.rule.common.MainBeanLookup"/>
+					<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
 				</constraint>
-			</editable>
+			</editableContraints>
 		</field>	
 	</bean>
 	
-	<field name="ligneId" required="true">
-		<editable>
-			<constraint>
-				<rule 
-					name="com.agro360.service.rule.common.IsCreateAction" 
-					beanLookup="com.agro360.service.bean.common.MainBeanLookup"/>
-			</constraint>
-		</editable>
-	</field>
+	<field name="ligneId" required="true" editable="false"/>
 	
 	<field name="numero" required="true">
-		<editable>
+		<editableContraints>
 			<constraint>
-				<rule 
-					name="com.agro360.service.rule.common.IsStatusChangeAction" 
-					beanLookup="com.agro360.service.bean.common.MainBeanLookup"/>
+				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
 			</constraint>
-		</editable>
+		</editableContraints>
 	</field>
 	
-	<field name="typeLigne">
-		<editable>
+	<field name="typeLigne" required="true">
+		<editableContraints>
 			<constraint>
-				<rule 
-					name="com.agro360.service.rule.common.IsStatusChangeAction" 
-					beanLookup="com.agro360.service.bean.common.MainBeanLookup"/>
+				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
 			</constraint>
-		</editable>
+		</editableContraints>
 	</field>
 	
 	<field name="description">
-		<editable>
+		<editableContraints>
 			<constraint>
-				<rule 
-					name="com.agro360.service.rule.common.IsStatusChangeAction" 
-					beanLookup="com.agro360.service.bean.common.MainBeanLookup"/>
+				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
 			</constraint>
-		</editable>
+		</editableContraints>
 	</field>
 	
 	<field name="quantite">
-		<editable>
+		<editableContraints>
 			<constraint>
-				<rule 
-					name="com.agro360.service.rule.common.IsStatusChangeAction" 
-					beanLookup="com.agro360.service.bean.common.MainBeanLookup"/>
+				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
 			</constraint>
-		</editable>
+		</editableContraints>
 	</field>
 	
 	<field name="prixUnitaire">
-		<editable>
+		<editableContraints>
 			<constraint>
-				<rule 
-					name="com.agro360.service.rule.common.IsStatusChangeAction" 
-					beanLookup="com.agro360.service.bean.common.MainBeanLookup"/>
+				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
 			</constraint>
-		</editable>
+		</editableContraints>
 	</field>
 	
-	<field name="prixTotal" editable="false">
-	</field>
+	<field name="prixTotal" editable="false"/>
 	
 	<field name="variantCode">
-		<editable>
+		<editableContraints>
 			<constraint>
-				<rule 
-					name="com.agro360.service.rule.common.IsStatusChangeAction" 
-					beanLookup="com.agro360.service.bean.common.MainBeanLookup"/>
+				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
 			</constraint>
-		</editable>
+		</editableContraints>
 	</field>
 </bean-rules>

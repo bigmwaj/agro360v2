@@ -8,7 +8,7 @@ export class BeanTools{
         return Array.isArray(field)
     }
 
-    private static isFieldMetadata(field: any): boolean {
+    private static isFieldMetadata(field: any): boolean {        
         return Object.keys(field).includes('__TYPE__') && field['__TYPE__'] == 'FIELD_METADATA'
     }
 
@@ -21,12 +21,13 @@ export class BeanTools{
             type ObjectKey = keyof typeof bean;
             const key = k as ObjectKey;
             const field = bean[key];
-
-            if (this.isArray(field)) {
+            if( field == null ){
+                return false;
+            } else if (this.isArray(field)) {
                 const arr = <Array<any>><unknown>field;
                 return arr.map(e => this.setValueChagedStatus(e))
                     .reduce((a, b) => a || b, false);
-            } else if (this.isFieldMetadata(field)) {
+            } else if (this.isFieldMetadata(field)) {                
                 const fmd = <FieldMetadata<any>><unknown>field;
                 return fmd.valueChanged;
             } else if (this.isFormBean(field)) {
@@ -37,12 +38,12 @@ export class BeanTools{
             }
         }).reduce((a, b) => a || b, false);
 
-        bean.valueChanged = changed;
-        if (bean.valueChanged && bean.action != EditActionEnumVd.CREATE) {
+        bean.valueChanged = changed || bean.valueChanged;
+        if (bean.valueChanged && bean.action != EditActionEnumVd.CREATE && bean.action != EditActionEnumVd.DELETE) {
             bean.action = EditActionEnumVd.UPDATE;
         }
 
-        return changed;
+        return bean.valueChanged;
     }
 
     public static reviewBeanAction<T extends AbstractBean>(bean: T): T {

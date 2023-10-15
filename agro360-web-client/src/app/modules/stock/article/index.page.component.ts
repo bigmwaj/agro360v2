@@ -4,13 +4,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs';
 import { ArticleBean, ArticleSearchBean } from 'src/app/backed/bean.stock';
 import { IndexModalComponent } from '../unite/index.modal.component';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
-
-const BASE_URL = "http://localhost:8080";
+import { DeleteDialogComponent } from './delete.dialog.component';
+import { map } from 'rxjs';
+import { UIService } from 'src/app/common/service/ui.service';
 
 @Component({
     standalone: true,
@@ -37,10 +37,11 @@ export class IndexPageComponent extends BeanList<ArticleBean> implements OnInit 
     @ViewChild(MatTable)
     table: MatTable<ArticleBean>;
 
-    constructor(private router: Router,
+    constructor(
+        private router: Router,
         private route: ActivatedRoute,
-        private http: HttpClient,
-        public dialog: MatDialog) {
+        private http: HttpClient,       
+        private dialog: MatDialog) {
         super()
     }
 
@@ -57,8 +58,8 @@ export class IndexPageComponent extends BeanList<ArticleBean> implements OnInit 
     }
 
     resetSearchFormAction() {
-        this.http
-            .get(BASE_URL + "/stock/article/search-form")
+        this.http        
+            .get(`stock/article/search-form`)  
             .subscribe(data => {
                 this.searchForm = <ArticleSearchBean>data;
                 this.searchAction();
@@ -72,7 +73,7 @@ export class IndexPageComponent extends BeanList<ArticleBean> implements OnInit 
         let queryParams = new HttpParams();
         queryParams = queryParams.append('q', objJsonB64);
         this.http
-            .get(BASE_URL + "/stock/article", { params: queryParams })
+            .get(`stock/article`, { params: queryParams })  
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.setData(data.records);
@@ -92,7 +93,7 @@ export class IndexPageComponent extends BeanList<ArticleBean> implements OnInit 
     }
 
     deleteAction(bean: ArticleBean) {
-
+        this.dialog.open(DeleteDialogComponent, { data: { articleCode:bean.articleCode.value} });
     }
 
     uniteAction() {

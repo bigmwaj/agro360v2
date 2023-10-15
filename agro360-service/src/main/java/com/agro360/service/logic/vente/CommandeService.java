@@ -100,33 +100,33 @@ public class CommandeService extends AbstractService<CommandeDto, String> {
 	public CommandeBean initEditFormBean(String commandeCode) {
 		var dto = dao.findById(commandeCode).orElseThrow(dtoNotFoundEx(commandeCode));
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true));
-		return applyRules(bean, "init-edit-form");
+		return applyInitRules(bean, "init-edit-form");
 	}
 	
 	public CommandeBean initDeleteFormBean(String commandeCode) {
 		var bean = dao.findById(commandeCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(commandeCode));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return applyRules(bean, "init-delete-form");
+		return applyInitRules(bean, "init-delete-form");
 	}
 	
 	public CommandeBean initChangeStatusFormBean(String commandeCode) {
 		var bean = dao.findById(commandeCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(commandeCode));
 		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
-		return applyRules(bean, "init-change-status-form");
+		return applyInitRules(bean, "init-change-status-form");
 	}
 
 	public CommandeBean initCreateFormBean(Optional<String> copyFrom) {
 		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(CommandeDto::new);
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true));
 		bean.initForCreateForm();
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 
 	public CommandeSearchBean initSearchFormBean() {
 		var bean = mapper.mapToSearchBean();
-		return applyRules(bean, "init-search-form");
+		return applyInitRules(bean, "init-search-form");
 	}
 	
 	private Supplier<RuntimeException> dtoNotFoundEx(String commandeCode){

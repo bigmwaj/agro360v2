@@ -27,6 +27,7 @@ import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.stock.CaisseMapper;
 import com.agro360.service.message.Message;
 import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.stock.StatusCaisseEnumVd;
 
 @Service
 public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
@@ -65,7 +66,8 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 	}
 
 	public Map<String, Object> save(CaisseBean bean) {
-		CaisseDto dto = mapper.mapToDto(bean);
+		var validatedBean = applyInitRules(bean, "validate-form");
+		var dto = mapper.mapToDto(validatedBean);
 		List<Message> messages = new ArrayList<>();
 
 		switch (bean.getAction()) {
@@ -100,42 +102,50 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 		var journee = bean.getJournee().getValue();
 		var id = new CaisseIdBean(magasin, agent, journee);
 		
-		return Map.of(ID_MODEL_KEY , id, MESSAGES_MODEL_KEY, messages);
+		return Map.of(ID_MODEL_KEY, id, MESSAGES_MODEL_KEY, messages);
 	}
 	
 	public CaisseSearchBean initSearchFormBean() {
-		return applyRules(mapper.mapToSearchBean(), "init-search-form");
+		return applyInitRules(mapper.mapToSearchBean(), "init-search-form");
 	}
 	
 	public CaisseBean initEditFormBean(CaisseIdBean idBean) {
 		var dto = dao.findById(mapper.mapToId(idBean)).orElseThrow(dtoNotFoundEx(idBean));
-		var bean = mapper.mapToBean(dto,  Map.of(OPTION_MAP_OPERATION_KEY, true, OPTION_MAP_PLUS_KEY, true));
-		return applyRules(bean, "init-edit-form");
+		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_OPERATION_KEY, true, OPTION_MAP_PLUS_KEY, true));
+		return applyInitRules(bean, "init-edit-form");
 	}
 	
 	public CaisseBean initDeleteFormBean(CaisseIdBean idBean) {
-		var bean = dao.findById(mapper.mapToId(idBean)).map(mapper::mapToBean)
+		var bean = dao.findById(mapper.mapToId(idBean))
+				.map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(idBean));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return applyRules(bean, "init-delete-form");
+		return applyInitRules(bean, "init-delete-form");
 	}
 	
 	public CaisseBean initChangeStatusFormBean(CaisseIdBean idBean) {
 		var bean = dao.findById(mapper.mapToId(idBean))
 				.map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(idBean));
+		
 		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
 		bean.getStatusDate().setValue(LocalDateTime.now().withNano(0));
-		return applyRules(bean, "init-change-status-form");
+		return applyInitRules(bean, "init-change-status-form");
 	}
 
 	public CaisseBean initCreateFormBean(Optional<CaisseIdBean> idBean) {
 		var dto = idBean.map(mapper::mapToId)
-				.map(dao::findById).flatMap(e->e).orElseGet(CaisseDto::new);
+				.map(dao::findById)
+				.flatMap(e -> e)
+				.orElseGet(CaisseDto::new);
+		
 		var bean = mapper.mapToBean(dto);		
 		bean.getJournee().setValue(LocalDate.now());
+		bean.getStatus().setValue(StatusCaisseEnumVd.ENPREPAR);
+		bean.getStatusDate().setValue(LocalDateTime.now());
+		
 		AbstractBean.setActionToCreate.accept(bean);		
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 	
 	private Supplier<RuntimeException> dtoNotFoundEx(CaisseIdBean idBean){

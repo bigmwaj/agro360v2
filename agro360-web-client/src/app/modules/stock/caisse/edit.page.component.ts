@@ -8,7 +8,6 @@ import { CaisseBean, CaisseIdBean } from 'src/app/backed/bean.stock';
 import { StockService } from '../stock.service';
 import { TypeOperationEnumVd } from 'src/app/backed/vd.stock';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
-import { Message } from 'src/app/backed/message';
 import { map } from 'rxjs';
 import { SharedModule } from 'src/app/common/shared.module';
 import { EditOperationListComponent } from './edit.operation.list.component';
@@ -39,7 +38,7 @@ export class EditPageComponent implements OnInit {
     ngOnInit(): void {
         if (this.isCreation()) {
             this.http
-                .get(`${this.service.BASE_URL}/stock/caisse/create-form`)
+                .get(`stock/caisse/create-form`)
                 .subscribe(data => {
                     this.bean = <CaisseBean>data;
                     this.initSelectMagasinOptions();
@@ -56,7 +55,7 @@ export class EditPageComponent implements OnInit {
                 prms.agent = params.get('agent');
                 prms.journee = params.get('journee');
                 this.http
-                    .get<any>(`${this.service.BASE_URL}/stock/caisse/edit-form`, { params: this.service.encodeQuery(prms) })
+                    .get<any>(`stock/caisse/edit-form`, { params: this.service.encodeQuery(prms) })
                     .subscribe(data => {
                         this.bean = data;
                         this.initSelectMagasinOptions();
@@ -122,16 +121,12 @@ export class EditPageComponent implements OnInit {
      * Action ménant à l'enregistrement de la commande en cours de création/modification
      */
     saveAction() {
-        this.http.post(`${this.service.BASE_URL}/stock/caisse`, BeanTools.reviewBeanAction(this.bean))
+        this.http.post(`stock/caisse`, BeanTools.reviewBeanAction(this.bean))
             .pipe(map((data: any) => data))
             .subscribe(data => {
-                this.displayMessage(data.messages);
+                this.ui.displayFlashMessage(data.messages);
                 this.redirectToEditPage(data.id);
             });
-    }
-
-    private displayMessage(messages:Array<Message>):void{
-        console.log(messages)
     }
 
     private redirectToEditPage(id:CaisseIdBean):void{

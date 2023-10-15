@@ -7,8 +7,6 @@ import { EditActionEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 
-const BASE_URL = "http://localhost:8080";
-
 @Component({
     standalone: true,
     imports: [
@@ -53,7 +51,7 @@ export class EditCasierListComponent extends BeanList<CasierBean> implements OnI
 
     private __add(queryParams: HttpParams) {
         this.http
-            .get(BASE_URL + "/stock/magasin/casier/create-form", { params: queryParams })
+            .get("stock/magasin/casier/create-form", { params: queryParams })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.addItem(<CasierBean>data);

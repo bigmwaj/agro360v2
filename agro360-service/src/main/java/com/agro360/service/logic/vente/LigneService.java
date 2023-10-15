@@ -31,10 +31,10 @@ public class LigneService extends AbstractLigneService<LigneDto> {
 	private static final String DELETE_SUCCESS = "Enregistrement supprimé avec succès!";
 
 	@Autowired
-	ILigneDao dao;
+	private ILigneDao dao;
 
 	@Autowired
-	LigneMapper mapper;
+	private LigneMapper mapper;
 
 	@Override
 	protected IDao<LigneDto, Long> getDao() {
@@ -142,6 +142,6 @@ public class LigneService extends AbstractLigneService<LigneDto> {
 
 		initArticle(bean, articleCode);
 		
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 }

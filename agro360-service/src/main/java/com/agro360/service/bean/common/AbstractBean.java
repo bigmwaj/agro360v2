@@ -2,6 +2,7 @@ package com.agro360.service.bean.common;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -33,6 +34,8 @@ public class AbstractBean implements Serializable {
 
 	@NonNull
 	private EditActionEnumVd action = EditActionEnumVd.SYNC;
+	
+	private String operation;
 
 	public static final Consumer<AbstractBean> setActionToCreate = b -> b.setAction(EditActionEnumVd.CREATE);
 	
@@ -48,6 +51,25 @@ public class AbstractBean implements Serializable {
 	public <T> FieldMetadata<T> getField(String fieldName) {
 		try {
 			return (FieldMetadata<T>) getClass().getMethod(getGetterName(fieldName)).invoke(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public AbstractBean getBean(String fieldName) {
+		try {
+			return (AbstractBean) getClass().getMethod(getGetterName(fieldName)).invoke(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<AbstractBean> getBeans(String fieldName) {
+		try {
+			return (Collection<AbstractBean>) getClass().getMethod(getGetterName(fieldName)).invoke(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

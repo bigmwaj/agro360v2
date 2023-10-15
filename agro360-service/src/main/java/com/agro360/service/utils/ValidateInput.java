@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 @Target({ METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidateInputBean {
+public @interface ValidateInput {
 
 	public String namespace();
 

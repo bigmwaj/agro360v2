@@ -54,19 +54,19 @@ public class CycleService extends AbstractService<CycleDto, String> {
 	
 	public CycleSearchBean initSearchFormBean() {
 		var bean = mapper.mapToSearchBean();
-		return applyRules(bean, "init-search-form");
+		return applyInitRules(bean, "init-search-form");
 	}
 	
 	public CycleBean initEditFormBean(String articleCode) {
 		var dto = dao.findById(articleCode).orElseThrow(dtoNotFoundEx(articleCode));
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_METADATA_KEY, true));
-		return applyRules(bean, "init-edit-form");
+		return applyInitRules(bean, "init-edit-form");
 	}
 	
 	public CycleBean initDeleteFormBean(String articleCode) {
 		var bean = dao.findById(articleCode).map(mapper::mapToBean).orElseThrow(dtoNotFoundEx(articleCode));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return applyRules(bean, "init-delete-form");
+		return applyInitRules(bean, "init-delete-form");
 	}
 
 	public CycleBean initCreateFormBean(Optional<String> copyFrom) {
@@ -76,7 +76,7 @@ public class CycleService extends AbstractService<CycleDto, String> {
 		
 		AbstractBean.setActionToCreate.accept(bean);
 		
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 
 	public List<CycleBean> search(CycleSearchBean searchBean) {

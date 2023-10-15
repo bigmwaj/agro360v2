@@ -18,7 +18,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     selector: 'input-checkbox-field',
     template: `
         <div class="mb-3" style="line-height:4" [class]="getCssClass()">
-            <mat-checkbox type="checkbox" [(ngModel)]="field.value" (change)="_onChange()">
+            <mat-checkbox type="checkbox" 
+                [(ngModel)]="field.value" 
+                (change)="_onChange()"
+                [disabled]="!field.editable"
+                [required]="field.required">
                 <label *ngIf="displayLabel">{{label}}</label>
             </mat-checkbox>
         </div>`

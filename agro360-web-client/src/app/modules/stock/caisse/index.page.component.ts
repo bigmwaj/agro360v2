@@ -61,7 +61,7 @@ export class IndexPageComponent extends BeanList<CaisseBean> implements OnInit {
 
     resetSearchFormAction() {
         this.http
-            .get(`${CommonUtlis.BASE_URL}/stock/caisse/search-form`)
+            .get(`stock/caisse/search-form`)
             .subscribe(data => {
                 this.searchForm = <CaisseSearchBean>data;
                 this.searchAction();
@@ -70,7 +70,7 @@ export class IndexPageComponent extends BeanList<CaisseBean> implements OnInit {
 
     searchAction() {
         this.http
-            .get(`${CommonUtlis.BASE_URL}/stock/caisse`, { params: CommonUtlis.encodeQuery(this.searchForm) })
+            .get(`stock/caisse`, { params: CommonUtlis.encodeQuery(this.searchForm) })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.setData(data.records);

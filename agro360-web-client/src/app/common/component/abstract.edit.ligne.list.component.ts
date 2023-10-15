@@ -104,7 +104,7 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
         let queryParams = new HttpParams();
         queryParams = queryParams.append("articleCode", bean.article.articleCode.value);
         this.http
-            .get<any>(`${CommonUtlis.BASE_URL}/stock/article/edit-form`, { params: queryParams })
+            .get<any>(`stock/article/edit-form`, { params: queryParams })
             .pipe(map((data: any) =><ArticleBean> data))
             .subscribe(article => { 
                 this.initSelectUniteOptions(bean, article.unite, article.conversions);                

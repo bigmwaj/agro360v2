@@ -48,7 +48,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("copyFrom", copyFrom);
                 }
                 this.http
-                    .get(`${this.service.getBackendUrl('tiers/tiers/create-form')}`, { params: queryParams })
+                    .get(`tiers/tiers/create-form`, { params: queryParams })
                     .subscribe(data => this.bean = <TiersBean>data);
                 
                     this.ui.setTitle("Création d'un Tiers")
@@ -61,7 +61,7 @@ export class EditPageComponent implements OnInit {
                     queryParams = queryParams.append("tiersCode", tiersCode);
                 }
                 this.http
-                    .get<any>(`${this.service.getBackendUrl('tiers/tiers/edit-form')}`, {params: queryParams})
+                    .get<any>(`tiers/tiers/edit-form`, {params: queryParams})
                     .subscribe(data => this.bean = data);
                 
                 this.ui.setTitle("Édition du Tiers " + tiersCode)
@@ -78,7 +78,7 @@ export class EditPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(`${this.service.getBackendUrl('tiers/tiers')}`, BeanTools.reviewBeanAction(this.bean))            
+        this.http.post(`tiers/tiers`, BeanTools.reviewBeanAction(this.bean))            
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.redirectToEditPage(data.id)

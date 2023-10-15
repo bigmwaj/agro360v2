@@ -1,13 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
-import { map } from 'rxjs';
 import { ConversionBean } from 'src/app/backed/bean.stock';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
-
-const BASE_URL = "http://localhost:8080";
+import { map } from 'rxjs';
 
 @Component({
     standalone: true,
@@ -39,7 +37,8 @@ export class EditConversionListComponent extends BeanList<ConversionBean> implem
         'actions'
     ];
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private http: HttpClient) {
         super()
     }
 
@@ -52,8 +51,8 @@ export class EditConversionListComponent extends BeanList<ConversionBean> implem
     }
 
     private __add(queryParams: HttpParams) {
-        this.http
-            .get(BASE_URL + "/stock/article/conversion/create-form", { params: queryParams })
+        this.http        
+            .get(`stock/article/conversion/create-form`, { params: queryParams })  
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.addItem(<ConversionBean>data);
@@ -79,7 +78,7 @@ export class EditConversionListComponent extends BeanList<ConversionBean> implem
         if( bean.action == EditActionEnumVd.CREATE ){
             this.removeItem(bean);
         }else {
-            if( bean.action != EditActionEnumVd.DELETE){
+            if( bean.action != EditActionEnumVd.DELETE ){
                 bean.action = EditActionEnumVd.DELETE;
                 bean.valueChanged = true;
             }else{                

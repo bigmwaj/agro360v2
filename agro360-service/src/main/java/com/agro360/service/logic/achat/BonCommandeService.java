@@ -149,14 +149,14 @@ public class BonCommandeService extends AbstractService<BonCommandeDto, String> 
 	public BonCommandeBean initEditFormBean(String bonCommandeCode) {
 		var dto = dao.findById(bonCommandeCode).orElseThrow(dtoNotFoundEx(bonCommandeCode));
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true ));
-		return applyRules(bean, "init-edit-form");
+		return applyInitRules(bean, "init-edit-form");
 	}
 	
 	public BonCommandeBean initDeleteFormBean(String bonCommandeCode) {
 		var bean = dao.findById(bonCommandeCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(bonCommandeCode));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return applyRules(bean, "init-delete-form");
+		return applyInitRules(bean, "init-delete-form");
 	}
 	
 	public BonCommandeBean initChangeStatusFormBean(String bonCommandeCode) {
@@ -164,18 +164,18 @@ public class BonCommandeService extends AbstractService<BonCommandeDto, String> 
 				.orElseThrow(dtoNotFoundEx(bonCommandeCode));
 		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
 		bean.getStatusDate().setValue(LocalDateTime.now());
-		return applyRules(bean, "init-delete-form");
+		return applyInitRules(bean, "init-delete-form");
 	}
 
 	public BonCommandeBean initCreateFormBean(Optional<String> copyFrom) {
 		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(BonCommandeDto::new);
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_LIGNE_KEY, true, OPTION_MAP_PLUS_KEY, true));
 		bean.initForCreateForm();
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 
 	public BonCommandeSearchBean initSearchFormBean() {
-		return applyRules(mapper.mapToSearchBean(), "init-search-form");
+		return applyInitRules(mapper.mapToSearchBean(), "init-search-form");
 	}
 	
 	private Supplier<RuntimeException> dtoNotFoundEx(String bonCommandeCode){

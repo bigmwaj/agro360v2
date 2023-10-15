@@ -51,7 +51,10 @@ public class UniteService extends AbstractService<UniteDto, String> {
 		if( searchBean.getUniteCode().getValue() != null ) {
 			example.getProbe().setUniteCode(searchBean.getUniteCode().getValue());
 		}
-		return dao.findAll(example).stream().map(mapper::mapToBean).collect(Collectors.toList());
+		return dao.findAll(example).stream()
+				.map(mapper::mapToBean)
+				.map(this::applyInitEditRules)
+				.collect(Collectors.toList());
 	}
 
 	public List<Message> save(List<UniteBean> beans) {
@@ -67,7 +70,7 @@ public class UniteService extends AbstractService<UniteDto, String> {
 			return Collections.emptyList();
 		}
 		
-		UniteDto dto = mapper.mapToDto(bean);
+		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
 		switch (bean.getAction()) {
@@ -95,7 +98,7 @@ public class UniteService extends AbstractService<UniteDto, String> {
 	
 	public UniteSearchBean initSearchFormBean() {
 		var bean = mapper.mapToSearchBean();
-		return applyRules(bean, "init-search-form");
+		return applyInitRules(bean, "init-search-form");
 	}
 
 	public UniteBean initCreateFormBean(Optional<String> copyFrom) {
@@ -105,6 +108,6 @@ public class UniteService extends AbstractService<UniteDto, String> {
 		
 		AbstractBean.setActionToCreate.accept(bean);
 		
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 }

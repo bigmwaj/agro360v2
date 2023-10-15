@@ -121,6 +121,6 @@ public class CasierService extends AbstractService<CasierDto, CasierPk> {
 				.flatMap(e -> e).orElseGet(CasierDto::new);
 		var bean = mapper.mapToBean(dto);
 		bean.setAction(EditActionEnumVd.CREATE);
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 }

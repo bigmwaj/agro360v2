@@ -4,6 +4,15 @@ import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './b
 import { TiersBean } from './bean.tiers';
 import { MagasinBean } from './bean.stock';
 
+export interface CommandeSearchBean extends AbstractBean {
+	commandeCode: FieldMetadata<string>;
+	client: FieldMetadata<string>;
+	statusIn: FieldMetadata<any>;
+	dateCommandeFin: FieldMetadata<any>;
+	dateCommandeDebut: FieldMetadata<any>;
+	ville: FieldMetadata<string>;
+};
+
 export interface CommandeBean extends AbstractStatusTrackingBean<StatusCommandeEnumVd> {
 	description: FieldMetadata<string>;
 	plusVendus: FieldMetadata<string>;
@@ -18,15 +27,6 @@ export interface CommandeBean extends AbstractStatusTrackingBean<StatusCommandeE
 	commandeCode: FieldMetadata<string>;
 	dateCommande: FieldMetadata<any>;
 	lignes: Array<LigneBean>;
-};
-
-export interface CommandeSearchBean extends AbstractBean {
-	commandeCode: FieldMetadata<string>;
-	client: FieldMetadata<string>;
-	statusIn: FieldMetadata<any>;
-	dateCommandeFin: FieldMetadata<any>;
-	dateCommandeDebut: FieldMetadata<any>;
-	ville: FieldMetadata<string>;
 };
 
 export interface LigneBean extends AbstractLigneBean {

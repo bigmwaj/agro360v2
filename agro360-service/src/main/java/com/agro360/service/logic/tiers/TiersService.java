@@ -24,7 +24,7 @@ import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.tiers.TiersMapper;
 import com.agro360.service.message.Message;
 import com.agro360.service.utils.InitBeanResult;
-import com.agro360.service.utils.ValidateInputBean;
+import com.agro360.service.utils.ValidateInput;
 import com.agro360.vd.common.EditActionEnumVd;
 import com.agro360.vd.tiers.TiersStatusEnumVd;
 
@@ -64,7 +64,7 @@ public class TiersService extends AbstractService<TiersDto, String> {
 	public TiersBean initEditFormBean(String tiersCode) {
 		var dto = dao.findById(tiersCode).orElseThrow(dtoNotFoundEx(tiersCode));
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_TIERS_CATEGORY_KEY, true));
-		return applyRules(bean, "init-edit-form");
+		return applyInitRules(bean, "init-edit-form");
 	}
 
 	@InitBeanResult(namespace = "tiers.init.delete")
@@ -72,7 +72,7 @@ public class TiersService extends AbstractService<TiersDto, String> {
 		var bean = dao.findById(tiersCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(tiersCode));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return applyRules(bean, "init-delete-form");
+		return applyInitRules(bean, "init-delete-form");
 	}
 
 	@InitBeanResult(namespace = "tiers.init.status-change")
@@ -80,7 +80,7 @@ public class TiersService extends AbstractService<TiersDto, String> {
 		var bean = dao.findById(tiersCode).map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(tiersCode));
 		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
-		return applyRules(bean, "init-change-status-form");
+		return applyInitRules(bean, "init-change-status-form");
 	}
 
 	@InitBeanResult(namespace = "tiers.init.edit")
@@ -88,13 +88,13 @@ public class TiersService extends AbstractService<TiersDto, String> {
 		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(TiersDto::new);
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_TIERS_CATEGORY_KEY, true));
 		bean.initForCreateForm();
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 
 	@InitBeanResult(namespace = "tiers.init.search-form")
 	public TiersSearchBean initSearchFormBean() {
 		var bean = mapper.mapToSearchBean();
-		return  applyRules(bean, "init-search-form");
+		return  applyInitRules(bean, "init-search-form");
 	}
 
 	@InitBeanResult(namespace = "tiers.init.search-result")
@@ -138,7 +138,7 @@ public class TiersService extends AbstractService<TiersDto, String> {
 		return dao.findAll(example).stream().map(mapper::mapToBean).collect(Collectors.toList());
 	}
 
-	@ValidateInputBean(namespace = "tiers.validate", initNamespace = "tiers.init.edit")
+	@ValidateInput(namespace = "tiers.validate", initNamespace = "tiers.init.edit")
 	public Map<String, Object> save(TiersBean bean) {
 		var id = bean.getTiersCode().getValue();
 		var dto = mapper.mapToDto(bean);

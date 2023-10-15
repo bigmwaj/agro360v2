@@ -61,19 +61,19 @@ public class ArticleService extends AbstractService<ArticleDto, String> {
 	
 	public ArticleSearchBean initSearchFormBean() {
 		var bean = mapper.mapToSearchBean();
-		return applyRules(bean, "init-search-form");
+		return applyInitRules(bean, "init-search-form");
 	}
 	
 	public ArticleBean initEditFormBean(String articleCode) {
 		var dto = dao.findById(articleCode).orElseThrow(dtoNotFoundEx(articleCode));
 		var bean = mapper.mapToBean(dto,  Map.of(OPTION_MAP_CONVERSION_KEY, true, OPTION_MAP_VARIANT_KEY, true));
-		return applyRules(bean, "init-edit-form");
+		return applyInitRules(bean, "init-edit-form");
 	}
 	
 	public ArticleBean initDeleteFormBean(String articleCode) {
 		var bean = dao.findById(articleCode).map(mapper::mapToBean).orElseThrow(dtoNotFoundEx(articleCode));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return applyRules(bean, "init-delete-form");
+		return applyInitRules(bean, "init-delete-form");
 	}
 
 	public ArticleBean initCreateFormBean(Optional<String> copyFrom) {
@@ -85,7 +85,7 @@ public class ArticleService extends AbstractService<ArticleDto, String> {
 		bean.getVariants().stream().forEach(AbstractBean.setActionToCreate);
 		bean.getConversions().stream().forEach(AbstractBean.setActionToCreate);
 		
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 
 	public List<ArticleBean> search(ArticleSearchBean searchBean) {
@@ -100,6 +100,7 @@ public class ArticleService extends AbstractService<ArticleDto, String> {
 	}
 
 	public Map<String, Object> save(ArticleBean bean) {
+		applyValidationRules(bean);
 		var dto = mapper.mapToDto(bean);
 		var id = bean.getArticleCode().getValue();
 		List<Message> messages = new ArrayList<>();

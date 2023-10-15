@@ -1,13 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
-import { map } from 'rxjs';
 import { VariantBean } from 'src/app/backed/bean.stock';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
-
-const BASE_URL = "http://localhost:8080";
+import { StockService } from '../stock.service';
+import { map } from 'rxjs';
+import { UIService } from 'src/app/common/service/ui.service';
 
 @Component({
     standalone: true,
@@ -35,7 +35,10 @@ export class EditVariantListComponent extends BeanList<VariantBean> implements O
         'actions'
     ];
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private http: HttpClient,        
+        private service: StockService,
+        private ui: UIService) {
         super()
     }
 
@@ -53,7 +56,7 @@ export class EditVariantListComponent extends BeanList<VariantBean> implements O
 
     private __add(queryParams: HttpParams) {
         this.http
-            .get(BASE_URL + "/stock/article/variant/create-form", { params: queryParams })
+            .get(`stock/article/variant/create-form`, { params: queryParams })  
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.addItem(<VariantBean>data);

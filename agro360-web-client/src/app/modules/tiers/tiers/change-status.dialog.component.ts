@@ -4,8 +4,6 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { TiersBean } from 'src/app/backed/bean.tiers';
 import { SharedModule } from 'src/app/common/shared.module';
 
-const BASE_URL = "http://localhost:8080";
-
 @Component({
     standalone: true,
     imports:[
@@ -27,11 +25,11 @@ export class ChangeStatusDialogComponent implements OnInit {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("tiersCode", this.data.tiersCode);
         this.http
-            .get(BASE_URL + "/tiers/tiers/change-status-form", { params: queryParams })
+            .get("tiers/tiers/change-status-form", { params: queryParams })
             .subscribe(data => this.bean = <TiersBean>data);
     }
 
     changeStatusAction() {
-        this.http.post(BASE_URL + `/tiers/tiers`, this.bean).subscribe(data => console.log(data))
+        this.http.post(`tiers/tiers`, this.bean).subscribe(data => console.log(data))
     }
 }

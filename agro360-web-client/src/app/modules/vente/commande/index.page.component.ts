@@ -58,7 +58,7 @@ export class IndexPageComponent extends BeanList<CommandeBean> implements OnInit
 
     resetSearchFormAction() {
         this.http
-            .get(`${CommonUtlis.BASE_URL}/vente/commande/search-form`)
+            .get(`vente/commande/search-form`)
             .subscribe(data => {
                 this.searchForm = <CommandeSearchBean>data;
                 this.searchAction();
@@ -67,7 +67,7 @@ export class IndexPageComponent extends BeanList<CommandeBean> implements OnInit
 
     searchAction() {
         this.http
-            .get(`${CommonUtlis.BASE_URL}/vente/commande`, { params: CommonUtlis.encodeQuery(this.searchForm) })
+            .get(`vente/commande`, { params: CommonUtlis.encodeQuery(this.searchForm) })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.setData(data.records);

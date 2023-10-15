@@ -26,11 +26,11 @@ export class DeleteDialogComponent implements OnInit {
     ngOnInit(): void {
         let queryParams = this.commonService.encodeQuery(this.data);
         this.http
-            .get(`${this.commonService.getBackendUrl('tiers/tiers/delete-form')}`, { params: queryParams })
+            .get(`tiers/tiers/delete-form`, { params: queryParams })
             .subscribe(data => this.bean = <TiersBean>data);
     }
 
     deleteAction() {
-        this.http.post(`${this.commonService.getBackendUrl('tiers/tiers')}`, this.bean).subscribe(data => console.log(data))
+        this.http.post(`tiers/tiers`, this.bean).subscribe(data => console.log(data))
     }
 }

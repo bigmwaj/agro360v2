@@ -8,10 +8,8 @@ import { Observable, map } from 'rxjs';
 })
 export class CommonService {
 
-    readonly BASE_URL = "http://localhost:8080";
-
     getBackendUrl(url: string): string {
-        return `${this.BASE_URL}/${url}`;
+        return `${url}`;
     }
 
     encodeQuery(searchQuery: any): HttpParams {
@@ -22,7 +20,7 @@ export class CommonService {
     }
 
     getBeansAsValueOptions<B extends AbstractBean>(http: HttpClient, url: string, keyValMapper: (e: B) => string, searchQuery: any): Observable<any> {
-        return http.get(this.BASE_URL + url, { params: this.encodeQuery(searchQuery) })
+        return http.get( url, { params: this.encodeQuery(searchQuery) })
             .pipe(map((e: any) => e.records.map(keyValMapper)))
             .pipe(map((e: any) => e.join(",")))
             .pipe(map((e: any) => JSON.parse(`{${e}}`)));

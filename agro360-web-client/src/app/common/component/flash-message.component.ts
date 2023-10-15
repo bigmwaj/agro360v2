@@ -18,7 +18,7 @@ export class FlashMessageComponent implements OnInit {
     messages: Array<Message>;
     
     ngOnInit(): void {
-        this.messages =this.snackBarRef.containerInstance.snackBarConfig.data;
+        this.messages = this.snackBarRef.containerInstance.snackBarConfig.data;
     }
     
 }

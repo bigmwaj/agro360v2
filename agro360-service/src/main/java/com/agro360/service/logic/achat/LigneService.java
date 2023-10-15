@@ -158,6 +158,6 @@ public class LigneService extends AbstractLigneService<LigneDto> {
 		bean.initForCreateForm();
 
 		initArticle(bean, articleCode);
-		return applyRules(bean, "init-create-form");
+		return applyInitRules(bean, "init-create-form");
 	}
 }

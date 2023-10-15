@@ -19,7 +19,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatMenuModule} from '@angular/material/menu';
 import { UIService } from './service/ui.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { XhrInterceptor } from './interceptor/XhrInterceptor';
 
 @NgModule({
     imports: [ 
@@ -42,7 +45,8 @@ import { UIService } from './service/ui.service';
         MatSidenavModule,  
         MatButtonModule,
         MatIconModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatMenuModule
     ],
     exports: [
         InputCheckboxFieldComponent,
@@ -63,11 +67,17 @@ import { UIService } from './service/ui.service';
         MatCheckboxModule,
         MatTableModule,              
         MatSidenavModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatMenuModule
         
     ],
     providers:[
-        UIService
+        UIService,
+        {
+            multi: true,
+            provide: HTTP_INTERCEPTORS,
+            useClass: XhrInterceptor
+        }
     ]
 })
 export class SharedModule { }
