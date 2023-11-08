@@ -16,14 +16,14 @@ export class StockService extends CommonService {
     readonly articleKeyValMapper = (e: ArticleBean) => `"${e.articleCode.value}":"${e.articleCode.value} ${e.description.value}"`;
 
     getArticlesAsValueOptions(http: HttpClient, searchQuery: any): Observable<any> {
-        return this.getBeansAsValueOptions(http, '/stock/article', this.articleKeyValMapper, searchQuery);
+        return this.getBeansAsValueOptions(http, 'stock/article', this.articleKeyValMapper, searchQuery);
     }
 
     getMagasinsAsValueOptions(http: HttpClient, searchQuery: any): Observable<any> {
-        return this.getBeansAsValueOptions(http, '/stock/magasin', this.magasinKeyValMapper, searchQuery);
+        return this.getBeansAsValueOptions(http, 'stock/magasin', this.magasinKeyValMapper, searchQuery);
     }
 
     getUnitesAsValueOptions(http: HttpClient, searchQuery: any): Observable<any> {
-        return this.getBeansAsValueOptions(http, '/stock/unite', this.uniteKeyValMapper, searchQuery);
+        return this.getBeansAsValueOptions(http, 'stock/unite', this.uniteKeyValMapper, searchQuery);
     }
 }

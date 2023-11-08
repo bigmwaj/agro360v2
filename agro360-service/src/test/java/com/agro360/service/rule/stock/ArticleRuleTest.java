@@ -11,18 +11,23 @@ import com.agro360.service.bean.stock.ArticleBean;
 import com.agro360.service.bean.stock.ConversionBean;
 import com.agro360.service.bean.stock.VariantBean;
 import com.agro360.service.context.BeanContext;
+import com.agro360.service.rule.helper.BeanHelper;
 import com.agro360.service.rule.helper.RuleXmlHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class ArticleRuleTest {
 
-	RuleXmlHelper ruleXmlHelper = new RuleXmlHelper();
+	RuleXmlHelper ruleXmlHelper;
 
-	String ruleName = "stock/article";
+	String ruleName;
+	
+	BeanHelper rules;
 
 	@BeforeAll()
 	void setup() {
-		
+		ruleName = "stock/article";
+		ruleXmlHelper = new RuleXmlHelper();
+		rules = ruleXmlHelper.loadRulesFromXml(ruleName);
 	}
 	
 	ArticleBean createNewBean() {
@@ -50,10 +55,9 @@ public class ArticleRuleTest {
 		var beanCtx = new BeanContext();
 		
 		beanCtx.setOperation(operation);
-		beanCtx.setRuleName(ruleName);
 
 		// When
-		ruleXmlHelper.applyRules(beanCtx, bean);
+		ruleXmlHelper.applyInitRules(beanCtx, rules, bean);
 
 		// Then
 		assertTrue(bean.isEditable());
@@ -113,10 +117,9 @@ public class ArticleRuleTest {
 		var beanCtx = new BeanContext();
 		
 		beanCtx.setOperation(operation);
-		beanCtx.setRuleName(ruleName);
 
 		// When
-		ruleXmlHelper.applyRules(beanCtx, bean);
+		ruleXmlHelper.applyInitRules(beanCtx, rules, bean);
 
 		// Then
 		assertFalse(bean.getArticleCode().isEditable());
@@ -149,10 +152,9 @@ public class ArticleRuleTest {
 		var operation = "init-delete-form";
 		var beanCtx = new BeanContext();
 		beanCtx.setOperation(operation);
-		beanCtx.setRuleName(ruleName);
 
 		// When
-		ruleXmlHelper.applyRules(beanCtx, bean);
+		ruleXmlHelper.applyInitRules(beanCtx, rules, bean);
 
 		// Then
 		assertFalse(bean.getArticleCode().isEditable());

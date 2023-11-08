@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,14 +10,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { UIService } from './common/service/ui.service';
 import { AchatModule } from './modules/achat/achat.module';
 import { ProductionAvicoleModule } from './modules/production/avicole/production.avicole.module';
 import { StockModule } from './modules/stock/stock.module';
 import { TiersModule } from './modules/tiers/tiers.module';
 import { VenteModule } from './modules/vente/vente.module';
-import { UIService } from './common/service/ui.service';
-import { PageTitleComponent } from './common/component/page-title.component';
-import { CommonModule } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -37,8 +36,7 @@ import { CommonModule } from '@angular/common';
         StockModule,
         AchatModule,
         VenteModule,
-        ProductionAvicoleModule,
-        PageTitleComponent
+        ProductionAvicoleModule
     ],
     providers: [
         UIService

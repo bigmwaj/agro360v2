@@ -32,7 +32,7 @@
                 <mat-icon>menu</mat-icon>
             </button>
             <span class="ms-3">
-                <page-title [title]="'Todo'"></page-title>
+                {{ui.title}}
             </span>
             <span class="menu-spacer"></span>
             <button mat-icon-button class="favorite-icon">
@@ -42,7 +42,7 @@
                 <mat-icon>share</mat-icon>
             </button>
         </mat-toolbar>
-        <div class="container-fluid container-main pb-3 pt-3">                     
+        <div class="container-fluid container-main pb-3 pt-3">                           
             <router-outlet></router-outlet>
         </div>
     </mat-drawer-content>

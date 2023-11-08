@@ -26,8 +26,6 @@ export class EditPageComponent implements OnInit {
 
     bean: ArticleBean;
 
-    pageTitle: string = "Edition";
-
     constructor(private router: Router,
         private route: ActivatedRoute,
         private http: HttpClient,
@@ -40,6 +38,7 @@ export class EditPageComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.ui.setTitle(`Création d'un Article`)
         let queryParams = new HttpParams();
         if (this.isCreation()) {
             this.route.queryParamMap.subscribe(params => {
@@ -51,7 +50,7 @@ export class EditPageComponent implements OnInit {
                     .get(`stock/article/create-form`, { params: queryParams })  
                     .subscribe(data => { this.bean = <ArticleBean>data; });
 
-                this.pageTitle = "Création d'un Article"
+                    this.ui.setTitle(`Création d'un Article`)
             });
         } else {
             // On doit traiter les potentielles erreurs
@@ -64,7 +63,7 @@ export class EditPageComponent implements OnInit {
                     .get<any>(`stock/article/edit-form`, { params: queryParams })         
                     .subscribe(data => { this.bean = data; });
 
-                this.pageTitle = "Édition du Article " + articleCode
+                this.ui.setTitle(`Édition du Article ${articleCode}`)
             });
         }
     }

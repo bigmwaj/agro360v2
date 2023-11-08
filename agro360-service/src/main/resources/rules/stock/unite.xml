@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bean-rules xmlns="http://mouafo.com/xml"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://mouafo.com/xml ./../bean-rules.xsd"
+	xsi:schemaLocation="http://mouafo.com/xml ./../bean-init-rules.xsd"
 	namespace="default">
 	<field name="uniteCode" required="true">
 		<editableContraints>

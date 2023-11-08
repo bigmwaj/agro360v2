@@ -4,14 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommandeBean, LigneBean } from 'src/app/backed/bean.vente';
 import { BeanTools } from 'src/app/common/bean.tools';
 import { SharedModule } from 'src/app/common/shared.module';
-import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { StockUtils } from '../../stock/stock.utils';
 import { TiersUtils } from '../../tiers/tiers.utils';
 import { EditLigneListComponent } from './edit.ligne.list.component';
-import { VenteService } from '../vente.service';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
 import { UIService } from 'src/app/common/service/ui.service';
+import { StockService } from '../../stock/stock.service';
 
 @Component({
     standalone: true,
@@ -32,7 +31,7 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private http: HttpClient,
         private router: Router,
-        private service: VenteService,
+        public stockService: StockService,
         private ui: UIService) { }
 
     ngOnInit(): void {
@@ -151,7 +150,7 @@ export class EditPageComponent implements OnInit {
     }
 
     private initSelectMagasinOptions() {
-        StockUtils.getMagasinsAsValueOptions(this.http, {})
+        this.stockService.getMagasinsAsValueOptions(this.http, {})
             .subscribe(e => this.bean.magasin.magasinCode.valueOptions = e)
     }
 

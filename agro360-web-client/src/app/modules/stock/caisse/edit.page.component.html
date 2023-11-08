@@ -57,8 +57,12 @@
     <h4>
         Liste des opérations de caisse
     </h4>
-    <stock-edit-operation-list *ngIf="bean && bean.operations" [plusVendus]="bean.plusVendus"
-        [plusAchetes]="bean.plusAchetes" [lignes]="bean.operations" (updateOwnerPrixTotal)="updatePrixTotalEvent()"
+    <stock-edit-operation-list *ngIf="bean && bean.operations" 
+        [plusVendus]="bean.plusVendus"
+        [plusAchetes]="bean.plusAchetes" 
+        [lignes]="bean.operations" 
+        [ajouter]="bean.ajouterOperation" 
+        (updateOwnerPrixTotal)="updatePrixTotalEvent()"
         [ownerId]="getEncodedOwnerId(bean)">
     </stock-edit-operation-list>
 </section>

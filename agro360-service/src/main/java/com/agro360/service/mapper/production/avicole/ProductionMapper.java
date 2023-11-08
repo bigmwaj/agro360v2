@@ -71,10 +71,7 @@ public class ProductionMapper extends AbstractMapper  {
 	}
 	
 	public ProductionBean mapOeufToBean(VariantDto dto) {
-		var bean = mapToBean(dto);
-		bean.getCategory().setValue(ProductionCategoryEnumVd.PRODUIT);
-		bean.getUniteLibelle().setValue("Oeuf");
-		return bean;
+		return mapVariantBean(dto, ProductionCategoryEnumVd.PRODUIT, "Oeuf");
 	}
 	
 	public ProductionBean mapPouleToBean(ArticleDto dto) {
@@ -84,10 +81,14 @@ public class ProductionMapper extends AbstractMapper  {
 		return bean;
 	}
 	
-	public ProductionBean mapCopeauxToBean(ArticleDto dto) {
+	public ProductionBean mapCopeauxToBean(VariantDto dto) {
+		return mapVariantBean(dto, ProductionCategoryEnumVd.INTRANT, "Sac");
+	}
+
+	private ProductionBean mapVariantBean(VariantDto dto, ProductionCategoryEnumVd category, String libelleUnite) {
 		var bean = mapToBean(dto);
-		bean.getCategory().setValue(ProductionCategoryEnumVd.INTRANT);
-		bean.getUniteLibelle().setValue("Sac");
+		bean.getCategory().setValue(category);
+		bean.getUniteLibelle().setValue(libelleUnite);
 		return bean;
 	}
 	

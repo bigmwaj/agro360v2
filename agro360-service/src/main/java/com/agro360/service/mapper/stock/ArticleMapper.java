@@ -101,8 +101,8 @@ public class ArticleMapper extends AbstractMapper {
 		ArticleDto dto = StockSharedMapperHelper.mapToDto(dao, bean);
 		dto.setUnite(StockSharedMapperHelper.mapToDto(uniteDao, bean.getUnite()));
 		
-		setDtoValue(dto::setDescription,bean.getDescription());
-		setDtoValue(dto::setTypeArticle,bean.getTypeArticle());
+		setDtoValue(dto::setDescription, bean.getDescription());
+		setDtoValue(dto::setTypeArticle, bean.getTypeArticle());
 
 		return dto;
 	}

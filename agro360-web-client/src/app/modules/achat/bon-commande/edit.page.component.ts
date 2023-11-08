@@ -11,6 +11,7 @@ import { AchatService } from '../achat.service';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
 import { UIService } from 'src/app/common/service/ui.service';
+import { StockService } from '../../stock/stock.service';
 
 @Component({
     standalone: true,
@@ -32,7 +33,7 @@ export class EditPageComponent implements OnInit {
         private http: HttpClient,
         private router: Router,
         private ui: UIService,
-        private service:AchatService)
+        private stockService:StockService)
     { }
 
     ngOnInit(): void {
@@ -144,7 +145,7 @@ export class EditPageComponent implements OnInit {
     }
 
     private initSelectMagasinOptions() {
-        StockUtils.getMagasinsAsValueOptions(this.http, {})
+        this.stockService.getMagasinsAsValueOptions(this.http, {})
             .subscribe(e => this.bean.magasin.magasinCode.valueOptions = e)
     }
 

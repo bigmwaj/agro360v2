@@ -8,6 +8,6 @@ export class TiersUtils {
 
     static getTiersAsValueOptions(http: HttpClient, searchQuery: any): Observable<any> {
         const keyValMapper = (e: TiersBean) => `"${e.tiersCode.value}":"${e.tiersCode.value} ${e.tiersName.value}"`;
-        return CommonUtlis.getBeansAsValueOptions(http, '/tiers/tiers', keyValMapper, searchQuery);
+        return CommonUtlis.getBeansAsValueOptions(http, 'tiers/tiers', keyValMapper, searchQuery);
     }
 }

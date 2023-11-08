@@ -89,11 +89,14 @@
                             <button mat-icon-button color="primary" title="Afficher" (click)="editAction(element)">
                                 <mat-icon>preview</mat-icon>
                             </button>
-                            <button mat-icon-button color="primary" title="Supprimer" (click)="deleteAction(element)">
+                            <button mat-icon-button color="primary" title="Supprimer" 
+                                (click)="deleteAction(element)"
+                                *ngIf="element.delete.visible">
                                 <mat-icon>delete</mat-icon>
                             </button>
                             <button mat-icon-button color="primary" title="Changer Status"
-                                (click)="changeStatusAction(element)">
+                                (click)="changeStatusAction(element)"
+                                *ngIf="element.changeStatus.visible">
                                 <mat-icon>schema</mat-icon>
                             </button>
                         </td>

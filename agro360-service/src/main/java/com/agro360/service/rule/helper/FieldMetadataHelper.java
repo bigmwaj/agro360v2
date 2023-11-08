@@ -22,14 +22,8 @@ public class FieldMetadataHelper extends FieldMetadata<Object> {
 
 	@JacksonXmlElementWrapper(localName = "requiredContraints")
 	private List<ConstraintHelper> requiredContraints;
-	
-	@JacksonXmlElementWrapper(useWrapping = false, namespace = "validation")
-	private List<ValidationHelper> validation;
 
-	@Override
-	public String toString() {
-		return "\n\t\tFieldMetadataHelper [name=" + name + ", visibleContraints=" + visibleContraints
-				+ ", editableContraints=" + editableContraints + ", requiredContraints=" + requiredContraints + "]";
-	}
+	@JacksonXmlElementWrapper(useWrapping = false)
+	private List<ValidationHelper> validationContraints;
 
 }

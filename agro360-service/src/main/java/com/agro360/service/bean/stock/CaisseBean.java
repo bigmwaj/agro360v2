@@ -40,6 +40,12 @@ public class CaisseBean extends AbstractStatusTrackingBean<StatusCaisseEnumVd> {
 	private FieldMetadata<String> plusAchetes = new FieldMetadata<>("Les plus achetés");
 
 	private List<OperationCaisseBean> operations = new ArrayList<>();
+
+	private FieldMetadata<String> ajouterOperation = new FieldMetadata<>();
+	
+	private FieldMetadata<String> delete = new FieldMetadata<>();
+	
+	private FieldMetadata<String> changeStatus = new FieldMetadata<>();
 	
 	public void setMagasin(MagasinBean magasin) {
 		Objects.requireNonNull(magasin);

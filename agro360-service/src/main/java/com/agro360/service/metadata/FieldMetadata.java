@@ -16,9 +16,7 @@ public class FieldMetadata<T> {
 
 	private final String __TYPE__ = "FIELD_METADATA";
 
-	public FieldMetadata() {
-		
-	}
+	public FieldMetadata() {}
 
 	public FieldMetadata(String label) {
 		this.label = label;

@@ -1,5 +1,6 @@
 package com.agro360.service.mapper.stock;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -35,7 +36,10 @@ public class OperationCaisseMapper extends AstractLigneMapper<OperationCaisseDto
 	public OperationCaisseBean mapToBean(OperationCaisseDto dto, Map<String, Object> options) {
 		OperationCaisseBean bean = (OperationCaisseBean) super.mapToBean(dto, new OperationCaisseBean(), options);
 
-		bean.getDateOperation().setValue(dto.getDateOperation());
+		if( dto.getDateOperation() != null ) {
+			bean.getDateOperation().setValue(dto.getDateOperation().toLocalDate());
+			bean.getHeureOperation().setValue(dto.getDateOperation().toLocalTime());
+		}
 		bean.getTypeOperation().setValue(dto.getTypeOperation());
 		return bean;
 	}
@@ -48,8 +52,15 @@ public class OperationCaisseMapper extends AstractLigneMapper<OperationCaisseDto
 	public OperationCaisseDto mapToDto(CaisseBean caisseBean, OperationCaisseBean bean) {
 		var dto = mapToDto(bean);
 		dto.setCaisse(StockSharedMapperHelper.mapToDto(caisseDao, caisseBean));
-
-		setDtoValue(dto::setDateOperation, bean.getDateOperation());
+		var now = LocalDateTime.now().withNano(0);
+		if( bean.getDateOperation() != null ) {
+			now = LocalDateTime.from(bean.getDateOperation().getValue());
+		}
+		if( bean.getHeureOperation() != null ) {
+			now = now.with(bean.getHeureOperation().getValue());
+		}
+		
+		setDtoValue(dto::setDateOperation, bean.getDateOperation(), now);
 		setDtoValue(dto::setTypeOperation, bean.getTypeOperation());
 		return dto;
 	}

@@ -146,16 +146,17 @@
 
         <ng-container matColumnDef="actions" stickyEnd>
             <th mat-header-cell *matHeaderCellDef>
-                <button mat-mini-fab color="primary" title="Ajouter" (click)="addAction()">
+                <button mat-mini-fab color="primary" title="Ajouter" (click)="addAction()" *ngIf="ajouter.visible">
                     <mat-icon>add</mat-icon>
                 </button>
             </th>
             <td mat-cell *matCellDef="let element">
                 <div class="text-nowrap">
-                    <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)">
+                    <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)" *ngIf="ajouter.visible">
                         <mat-icon>content_copy</mat-icon>
                     </button>
-                    <button mat-icon-button color="primary" class="ms-1" title="Supprimer" (click)="deleteAction(element)">
+                    <button mat-icon-button color="primary" class="ms-1" title="Supprimer" (click)="deleteAction(element)" 
+                        *ngIf="element.supprimer.visible">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

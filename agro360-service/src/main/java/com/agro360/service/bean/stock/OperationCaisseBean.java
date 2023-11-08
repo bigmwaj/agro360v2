@@ -1,6 +1,7 @@
 package com.agro360.service.bean.stock;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import com.agro360.dto.stock.OperationCaisseDto;
 import com.agro360.service.bean.common.AbstractLigneBean;
@@ -18,12 +19,17 @@ public class OperationCaisseBean extends AbstractLigneBean<OperationCaisseDto> {
 
 	private static final long serialVersionUID = 3706447795412478903L;
 
-	private FieldMetadata<LocalDateTime> dateOperation = new FieldMetadata<>("Date Opération");
+	private FieldMetadata<String> supprimer = new FieldMetadata<>("Supprimer");
+	
+	private FieldMetadata<LocalDate> dateOperation = new FieldMetadata<>("Date Opération");
+	
+	private FieldMetadata<LocalTime> heureOperation = new FieldMetadata<>("Heure Opération");
 
 	private FieldMetadata<TypeOperationEnumVd> typeOperation = new FieldMetadata<>("Type Op", getOptionsMap(TypeOperationEnumVd.values(), TypeOperationEnumVd::getLibelle));
 
 	public void initForCreateForm() {
 		super.initForCreateForm();
-		getDateOperation().setValue(LocalDateTime.now().withNano(0));
+		dateOperation.setValue(LocalDate.now());
+		heureOperation.setValue(LocalTime.now().withNano(0));
 	}
 }

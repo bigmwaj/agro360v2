@@ -9,11 +9,11 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class ValidationHelper{
-
-	@JacksonXmlElementWrapper(useWrapping = false, localName = "validator")
-	private List<RuleHelper> validator;
+public class ValidationHelper {
 	
 	@JacksonXmlElementWrapper(useWrapping = false, localName = "contraint")
 	private List<ConstraintHelper> constraint;
+
+	@JacksonXmlElementWrapper(useWrapping = true)
+	private List<RuleHelper> validator;
 }

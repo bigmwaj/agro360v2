@@ -8,8 +8,9 @@ import { FieldMetadata } from 'src/app/backed/metadata';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
 import { TypeArticleEnumVd, TypeLigneEnumVd } from 'src/app/backed/vd.stock';
 import { BeanList } from 'src/app/common/component/bean.list';
-import { CommonUtlis } from 'src/app/common/utils/common.utils';
+import { StockService } from 'src/app/modules/stock/stock.service';
 import { StockUtils } from 'src/app/modules/stock/stock.utils';
+import { CommonUtlis } from '../utils/common.utils';
 
 @Component({
     selector: 'common-edit-ligne-list',
@@ -112,7 +113,6 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
             });
     }
     
-    
     updatePrixTotalEvent(bean: B) {
         this._updatePrixTotal(bean)
         this.updateOwnerPrixTotal.emit();
@@ -154,7 +154,7 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
 
     protected __add(queryParams: HttpParams) {
         this.http
-            .get(`${CommonUtlis.BASE_URL}${this.getCreateFormUrl()}`, { params: queryParams })
+            .get(`${this.getCreateFormUrl()}`, { params: queryParams })
             .pipe(map((data: any) => <B>data))
             .subscribe(ligne => {
                 ligne.numero.value = this.getNextNumero()

@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BeanTools } from 'src/app/common/bean.tools';
-import { StockUtils } from '../stock.utils';
 import { TiersUtils } from '../../tiers/tiers.utils';
 import { CaisseBean, CaisseIdBean } from 'src/app/backed/bean.stock';
 import { StockService } from '../stock.service';
@@ -152,7 +151,7 @@ export class EditPageComponent implements OnInit {
     }
 
     private initSelectMagasinOptions() {
-        StockUtils.getMagasinsAsValueOptions(this.http, {})
+        this.service.getMagasinsAsValueOptions(this.http, {})
             .subscribe(e => this.bean.magasin.magasinCode.valueOptions = e)
     }
 

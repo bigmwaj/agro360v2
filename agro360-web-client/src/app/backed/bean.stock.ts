@@ -6,6 +6,8 @@ import { TiersBean } from './bean.tiers';
 export interface OperationCaisseBean extends AbstractLigneBean {
 	typeOperation: FieldMetadata<TypeOperationEnumVd>;
 	dateOperation: FieldMetadata<any>;
+	heureOperation: FieldMetadata<any>;
+	supprimer: FieldMetadata<string>;
 };
 
 export interface CaisseIdBean {
@@ -84,4 +86,7 @@ export interface CaisseBean extends AbstractStatusTrackingBean<StatusCaisseEnumV
 	solde: FieldMetadata<number>;
 	plusAchetes: FieldMetadata<string>;
 	status: FieldMetadata<StatusCaisseEnumVd>;
+	ajouterOperation: FieldMetadata<string>;
+	delete: FieldMetadata<string>;
+	changeStatus: FieldMetadata<string>;
 };

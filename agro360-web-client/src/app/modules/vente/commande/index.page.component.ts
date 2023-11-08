@@ -7,6 +7,9 @@ import { BeanList } from 'src/app/common/component/bean.list';
 import { CommonUtlis } from 'src/app/common/utils/common.utils';
 import { SharedModule } from 'src/app/common/shared.module';
 import { CommandeBean, CommandeSearchBean } from 'src/app/backed/bean.vente';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDialogComponent } from './delete.dialog.component';
+import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 
 @Component({
     standalone: true,
@@ -40,7 +43,8 @@ export class IndexPageComponent extends BeanList<CommandeBean> implements OnInit
 
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private http: HttpClient) {
+        private http: HttpClient,
+        public dialog: MatDialog) {
         super()
     }
 
@@ -86,11 +90,15 @@ export class IndexPageComponent extends BeanList<CommandeBean> implements OnInit
         this.router.navigate(['create'], { relativeTo: this.route, queryParams: { 'copyFrom': bean.commandeCode.value } })
     }
 
-    deleteAction(bean: CommandeBean) {
-        // Open Dialog
-    }
-    
     changeStatusAction(bean: CommandeBean) {
-        // Open Dialog
+        this.dialog.open(ChangeStatusDialogComponent, { data: bean.commandeCode.value });
+    }
+
+    deleteAction(bean: CommandeBean) {
+        this.dialog.open(DeleteDialogComponent, { data: bean.commandeCode.value });
+    }
+
+    onDelete(bean: CommandeBean) {
+        this.removeItem(bean);
     }
 }

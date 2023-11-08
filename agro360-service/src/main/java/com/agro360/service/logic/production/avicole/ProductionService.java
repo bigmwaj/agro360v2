@@ -75,9 +75,10 @@ public class ProductionService extends AbstractService<ProductionDto, Long> {
 		var poules = articleDao.findAll(pouleFilter).stream()
 		.map(mapper::mapPouleToBean);
 
-		var copeauxFilter = Example.of(new ArticleDto());
-		copeauxFilter.getProbe().setArticleCode("COPEAUX");
-		var copeaux = articleDao.findAll(copeauxFilter).stream()
+		var copeauxFilter = Example.of(new VariantDto());
+		copeauxFilter.getProbe().setArticle(new ArticleDto());
+		copeauxFilter.getProbe().getArticle().setArticleCode("COPEAUX");
+		var copeaux = variantDao.findAll(copeauxFilter).stream()
 		.map(mapper::mapCopeauxToBean);
 		
 		var oeufFilter = Example.of(new VariantDto());

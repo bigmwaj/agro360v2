@@ -15,6 +15,12 @@ public class AbstractMapper {
 			setter.accept(field.getValue());
 		}
 	}
+	
+	protected <V> void setDtoValue(Consumer<V> setter, FieldMetadata<?> field, V value) {
+		if (field.isEditable()) {
+			setter.accept(value);
+		}
+	}
 
 	protected <T>void setMap(Consumer<Map<Object, String>> field, T[] values, Function<T, String> libelle) {
 		var options = Arrays.stream(values).collect(Collectors.toMap( e -> Object.class.cast(e), libelle));

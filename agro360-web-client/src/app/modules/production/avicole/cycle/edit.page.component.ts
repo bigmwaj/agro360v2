@@ -5,11 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { SharedModule } from 'src/app/common/shared.module';
 import { BeanTools } from 'src/app/common/bean.tools';
 import { CycleBean } from 'src/app/backed/bean.production.avicole';
-import { StockUtils } from 'src/app/modules/stock/stock.utils';
 import { EditMetadataListComponent } from './edit.metadata.list.component';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
 import { UIService } from 'src/app/common/service/ui.service';
+import { StockService } from 'src/app/modules/stock/stock.service';
 
 @Component({
     standalone: true,
@@ -30,7 +30,7 @@ export class EditPageComponent implements OnInit {
         private route: ActivatedRoute,
         private http: HttpClient,
         public dialog: MatDialog,
-        private ui: UIService
+        private ui: UIService, public stockService: StockService
     ) { }
 
     isCreation(): boolean {
@@ -92,7 +92,7 @@ export class EditPageComponent implements OnInit {
     }
 
     private initSelectMagasinOptions() {
-        StockUtils.getMagasinsAsValueOptions(this.http, {})
+        this.stockService.getMagasinsAsValueOptions(this.http, {})
             .subscribe(e => this.bean.magasin.magasinCode.valueOptions = e)
     }
 

@@ -62,12 +62,14 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 	}
 
 	public List<CaisseBean> search(CaisseSearchBean searchBean) {
-		return dao.findAll().stream().map(mapper::mapToBean).collect(Collectors.toList());
+		return dao.findAll().stream().map(mapper::mapToBean)
+				.map(this::applyInitEditRules)
+				.collect(Collectors.toList());
 	}
 
 	public Map<String, Object> save(CaisseBean bean) {
-		var validatedBean = applyInitRules(bean, "validate-form");
-		var dto = mapper.mapToDto(validatedBean);
+		applyValidationRules(bean);
+		var dto = mapper.mapToDto(bean);
 		List<Message> messages = new ArrayList<>();
 
 		switch (bean.getAction()) {
@@ -106,13 +108,16 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 	}
 	
 	public CaisseSearchBean initSearchFormBean() {
-		return applyInitRules(mapper.mapToSearchBean(), "init-search-form");
+		var bean = mapper.mapToSearchBean();
+		//applyInitRules(bean, "init-search-form");
+		return bean;
 	}
 	
 	public CaisseBean initEditFormBean(CaisseIdBean idBean) {
 		var dto = dao.findById(mapper.mapToId(idBean)).orElseThrow(dtoNotFoundEx(idBean));
 		var bean = mapper.mapToBean(dto, Map.of(OPTION_MAP_OPERATION_KEY, true, OPTION_MAP_PLUS_KEY, true));
-		return applyInitRules(bean, "init-edit-form");
+		applyInitRules(bean, "init-edit-form");
+		return bean;
 	}
 	
 	public CaisseBean initDeleteFormBean(CaisseIdBean idBean) {
@@ -120,7 +125,8 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 				.map(mapper::mapToBean)
 				.orElseThrow(dtoNotFoundEx(idBean));
 		bean.setAction(EditActionEnumVd.DELETE);
-		return applyInitRules(bean, "init-delete-form");
+		applyInitRules(bean, "init-delete-form");
+		return bean;
 	}
 	
 	public CaisseBean initChangeStatusFormBean(CaisseIdBean idBean) {
@@ -130,7 +136,8 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 		
 		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
 		bean.getStatusDate().setValue(LocalDateTime.now().withNano(0));
-		return applyInitRules(bean, "init-change-status-form");
+		applyInitRules(bean, "init-change-status-form");
+		return bean;
 	}
 
 	public CaisseBean initCreateFormBean(Optional<CaisseIdBean> idBean) {
@@ -145,7 +152,8 @@ public class CaisseService extends AbstractService<CaisseDto, CaissePk> {
 		bean.getStatusDate().setValue(LocalDateTime.now());
 		
 		AbstractBean.setActionToCreate.accept(bean);		
-		return applyInitRules(bean, "init-create-form");
+		applyInitRules(bean, "init-create-form");
+		return bean;
 	}
 	
 	private Supplier<RuntimeException> dtoNotFoundEx(CaisseIdBean idBean){

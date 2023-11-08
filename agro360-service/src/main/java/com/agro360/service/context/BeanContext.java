@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class BeanContext {
 
-	private String ruleName;
+//	private String ruleName;
 	
 	private String operation;
 }

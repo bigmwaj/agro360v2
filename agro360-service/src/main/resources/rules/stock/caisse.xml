@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bean-rules xmlns="http://mouafo.com/xml"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://mouafo.com/xml ./../bean-rules.xsd"
-	namespace="default" 
-	editable="true" 
-	visible="true">
+	xsi:schemaLocation="http://mouafo.com/xml ./../bean-init-rules.xsd"
+	namespace="default">
 	
-	<validation>
+	<validationContraints>
 		<constraint>
 			<rule class="com.agro360.service.rule.constraint.common.IsEditableBean"/>
 		</constraint>
-		<validator class="" lookupClass="com.agro360.service.rule.lookup.common.RootBeanLookup"/>
-	</validation>
+		<validator class=""/>
+	</validationContraints>
 	
-	<validation>
+	<validationContraints>
 		<constraint>
 			<rule class="com.agro360.service.rule.constraint.common.IsEditableBean"/>
 		</constraint>
-		<validator class="" lookupClass="com.agro360.service.rule.lookup.common.RootBeanLookup"/>
-	</validation>
+		<validator class=""/>
+	</validationContraints>
 	
 	<editableContraints>
 		<constraint>
@@ -26,18 +24,18 @@
 		</constraint>
 	</editableContraints>
 	
-	<bean name="magasin" editable="true" visible="true">
-		<field name="magasinCode" required="true" visible="true">
+	<bean name="magasin">
+		<field name="magasinCode" required="true">
 			<editableContraints>
 				<constraint>
 					<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
 				</constraint>
 			</editableContraints>
 		</field>
-		<field name="description" editable="false" visible="true"/>
+		<field name="description" editable="false"/>
 	</bean>	
 	
-	<bean name="agent" editable="true" visible="true">
+	<bean name="agent">
 		<field name="tiersCode" required="true">
 			<editableContraints>
 				<constraint>
@@ -45,12 +43,12 @@
 				</constraint>
 			</editableContraints>
 		</field>
-		<field name="tiersName" editable="false" visible="true"/>	
+		<field name="tiersName" editable="false"/>	
 	</bean>
 	
-	<beanList name="operations" editable="true" visible="true">
+	<beanList name="operations">
 			
-		<bean name="article" editable="true" visible="true">
+		<bean name="article">
 			<field name="articleCode" required="true">
 				<editableContraints>
 					<constraint>
@@ -60,7 +58,7 @@
 			</field>
 		</bean>	
 		
-		<bean name="unite" editable="true" visible="true">
+		<bean name="unite">
 			<field name="uniteCode" required="true">
 				<editableContraints>
 					<constraint>
@@ -137,6 +135,8 @@
 				</constraint>
 			</editableContraints>		
 		</field>
+	
+		<field name="supprimer" editable="false" visible="false"/>
 	</beanList>
 	
 	<field name="journee" required="true">
@@ -180,4 +180,10 @@
 	<field name="plusVendus"/>
 	
 	<field name="plusAchetes"/>
+	
+	<field name="ajouterOperation" editable="false" visible="false"/>
+	
+	<field name="delete" editable="false"/>
+	
+	<field name="changeStatus" editable="false"/>
 </bean-rules>

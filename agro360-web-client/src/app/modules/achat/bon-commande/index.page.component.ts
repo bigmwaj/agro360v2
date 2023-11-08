@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,6 +12,8 @@ import { BonCommandeBean, BonCommandeSearchBean } from 'src/app/backed/bean.acha
 import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { ChangeStatusDialogComponent } from './change-status.dialog.component';
+import { DeleteDialogComponent } from './delete.dialog.component';
 
 @Component({
     standalone: true,
@@ -49,7 +51,8 @@ export class IndexPageComponent extends BeanList<BonCommandeBean> implements OnI
     
     constructor(private router: Router,
         private route: ActivatedRoute,
-        private http: HttpClient) {
+        private http: HttpClient,
+        public dialog: MatDialog) {
         super()
     }
 
@@ -100,7 +103,15 @@ export class IndexPageComponent extends BeanList<BonCommandeBean> implements OnI
         this.router.navigate(['create'], { relativeTo: this.route, queryParams: { 'copyFrom': bean.bonCommandeCode.value } })
     }
 
+    changeStatusAction(bean: BonCommandeBean) {
+        this.dialog.open(ChangeStatusDialogComponent, { data: bean.bonCommandeCode.value });
+    }
+
     deleteAction(bean: BonCommandeBean) {
-        // Open Dialog
+        this.dialog.open(DeleteDialogComponent, { data: bean.bonCommandeCode.value });
+    }
+
+    onDelete(bean: BonCommandeBean) {
+        this.removeItem(bean);
     }
 }

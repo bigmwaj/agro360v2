@@ -11,18 +11,23 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import com.agro360.service.bean.stock.CaisseBean;
 import com.agro360.service.bean.stock.OperationCaisseBean;
 import com.agro360.service.context.BeanContext;
+import com.agro360.service.rule.helper.BeanHelper;
 import com.agro360.service.rule.helper.RuleXmlHelper;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class CaisseRuleTest {
 
-	RuleXmlHelper ruleXmlHelper = new RuleXmlHelper();
+	RuleXmlHelper ruleXmlHelper;
 
-	String ruleName = "stock/caisse";
+	String ruleName;
+	
+	BeanHelper rules;
 
 	@BeforeAll()
 	void setup() {
-		
+		ruleName = "stock/caisse";
+		ruleXmlHelper = new RuleXmlHelper();
+		rules = ruleXmlHelper.loadRulesFromXml(ruleName);
 	}
 	
 	CaisseBean createNewBean() {
@@ -48,10 +53,9 @@ public class CaisseRuleTest {
 		var beanCtx = new BeanContext();
 		
 		beanCtx.setOperation(operation);
-		beanCtx.setRuleName(ruleName);
 
 		// When
-		ruleXmlHelper.applyRules(beanCtx, bean);
+		ruleXmlHelper.applyInitRules(beanCtx, rules, bean);
 
 		// Then
 		assertTrue(bean.isEditable());
@@ -138,10 +142,9 @@ public class CaisseRuleTest {
 		var beanCtx = new BeanContext();
 		
 		beanCtx.setOperation(operation);
-		beanCtx.setRuleName(ruleName);
 
 		// When
-		ruleXmlHelper.applyRules(beanCtx, bean);
+		ruleXmlHelper.applyInitRules(beanCtx, rules, bean);
 
 		// Then
 //		assertFalse(bean.getArticleCode().isEditable());
@@ -174,10 +177,9 @@ public class CaisseRuleTest {
 		var operation = "init-delete-form";
 		var beanCtx = new BeanContext();
 		beanCtx.setOperation(operation);
-		beanCtx.setRuleName(ruleName);
 
 		// When
-		ruleXmlHelper.applyRules(beanCtx, bean);
+		ruleXmlHelper.applyInitRules(beanCtx, rules, bean);
 
 		// Then
 //		assertFalse(bean.getArticleCode().isEditable());

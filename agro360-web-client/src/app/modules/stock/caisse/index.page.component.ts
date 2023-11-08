@@ -104,14 +104,18 @@ export class IndexPageComponent extends BeanList<CaisseBean> implements OnInit {
     }
 
     changeStatusAction(bean: CaisseBean) {
-        this.dialog.open(ChangeStatusDialogComponent, { data: this.mapToBeanId(bean) });
+        const dialog = this.dialog.open(ChangeStatusDialogComponent, { data: this.mapToBeanId(bean) });
+        const inst = dialog.componentInstance;
+        dialog.afterClosed().subscribe(() => {
+            if(inst.success){this.searchAction();}
+        });
     }
 
     deleteAction(bean: CaisseBean) {
-        this.dialog.open(DeleteDialogComponent, { data: this.mapToBeanId(bean) });
-    }
-
-    onDelete(bean: CaisseBean) {
-        this.removeItem(bean);
+        const dialog = this.dialog.open(DeleteDialogComponent, { data: this.mapToBeanId(bean) });
+        const inst = dialog.componentInstance;
+        dialog.afterClosed().subscribe(() => {
+            if(inst.success){this.searchAction();}
+        });
     }
 }

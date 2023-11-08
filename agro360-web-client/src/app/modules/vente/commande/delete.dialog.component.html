@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Confirmation suppression</h2>
+<mat-dialog-content>
+    <div *ngIf="bean">
+        Êtes-vous sûr de vouloir supprimer la commande <strong>{{ bean.commandeCode.value }}</strong>?
+    </div>    
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button cdkFocusInitial (click)="deleteAction()">Supprimer</button>
+</mat-dialog-actions>

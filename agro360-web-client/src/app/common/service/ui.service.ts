@@ -1,15 +1,19 @@
+//https://angular.io/guide/component-interaction#parent-and-children-communicate-via-a-service 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Message } from 'src/app/backed/message';
 import { FlashMessageComponent } from '../component/flash-message.component';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError, map } from 'rxjs';
+import { Observable, throwError, Subject, BehaviorSubject, never } from 'rxjs';
 import { MessageTypeEnumVd } from 'src/app/backed/vd.common';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UIService {
-    title: string = 'To do';
+    title: string = 'Change from ui.service';
+
+    //private node: Subject<Node> = new BehaviorSubject<Node>([]);
+    
     constructor(public _snackBar: MatSnackBar) {
 
     }
@@ -23,10 +27,10 @@ export class UIService {
 
     setTitle(title: string) {
         this.title = title
+        console.log(`The title is set to ${title}`)
     }
 
     handleError(err:any, o:Observable<any>){
-        console.log(err)
         const status = err.status;
         switch (status) {
             case 500:

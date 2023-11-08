@@ -37,6 +37,9 @@ export class EditOperationListComponent extends AbstractEditLigneListComponent<O
     @Input()
     plusVendus: FieldMetadata<string>;
 
+    @Input()
+    ajouter: FieldMetadata<string>;
+
     constructor(public override http: HttpClient) {
         super(http);
     }

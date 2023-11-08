@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { map } from 'rxjs';
 import { CaisseBean, CaisseIdBean } from 'src/app/backed/bean.stock';
 import { CommonService } from 'src/app/common/service/common.service';
+import { UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
 
 @Component({
@@ -17,10 +19,13 @@ export class DeleteDialogComponent implements OnInit {
 
     bean: CaisseBean;
 
+    success = false;
+
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: CaisseIdBean,
         private commonService: CommonService,
         private http: HttpClient,
+        private ui: UIService,
         public dialog: MatDialog) { }
 
     ngOnInit(): void {
@@ -31,6 +36,12 @@ export class DeleteDialogComponent implements OnInit {
     }
 
     deleteAction() {
-        this.http.post(`stock/caisse`, this.bean).subscribe(data => console.log(data))
+        this.http.post(`stock/caisse`, this.bean)
+        .pipe(map((data: any) => data))
+        .subscribe(data => {
+            this.ui.displayFlashMessage(data.messages);
+            this.success = true;
+            this.dialog.closeAll()
+        });
     }
 }

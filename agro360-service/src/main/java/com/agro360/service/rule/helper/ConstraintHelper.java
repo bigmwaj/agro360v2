@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class ConstraintHelper{
+public class ConstraintHelper {
 
 	@JacksonXmlElementWrapper(useWrapping = false, localName = "rule")
 	private List<RuleHelper> rule;

@@ -4,7 +4,6 @@ import { Observable, map } from 'rxjs';
 
 
 export class CommonUtlis {
-    static BASE_URL = "http://localhost:8080";
 
     static encodeQuery(searchQuery: any): HttpParams {
         let objJsonStr = JSON.stringify(searchQuery);
@@ -14,7 +13,7 @@ export class CommonUtlis {
     }
 
     static getBeansAsValueOptions<B extends AbstractBean>(http: HttpClient, url: string, keyValMapper: (e: B) => string, searchQuery: any): Observable<any> {
-        return http.get(CommonUtlis.BASE_URL + url, { params: CommonUtlis.encodeQuery(searchQuery) })
+        return http.get(url, { params: CommonUtlis.encodeQuery(searchQuery) })
             .pipe(map((e: any) => e.records.map(keyValMapper)))
             .pipe(map((e: any) => e.join(",")))
             .pipe(map((e: any) => JSON.parse(`{${e}}`)));

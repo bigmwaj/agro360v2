@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bean-rules xmlns="http://mouafo.com/xml"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://mouafo.com/xml ./../bean-rules.xsd"
-	namespace="default" 
-	editable="true" 
-	visible="true">
+	xsi:schemaLocation="http://mouafo.com/xml ./../bean-init-rules.xsd"
+	namespace="default">
 	
 	<editableContraints>
 		<constraint>
@@ -12,7 +10,7 @@
 		</constraint>
 	</editableContraints> 
 	
-	<bean name="unite" editable="true" visible="true">
+	<bean name="unite">
 		<field name="uniteCode" required="true">
 			<editableContraints>
 				<constraint>
@@ -23,7 +21,7 @@
 		<field name="description" editable="false"/>
 	</bean>
 		
-	<beanList name="variants" editable="true" visible="true">			
+	<beanList name="variants">			
 		<field name="variantCode" required="true">
 			<editableContraints>
 				<constraint>
@@ -41,12 +39,12 @@
 		</field>		
 	</beanList>
 		
-	<beanList name="conversions" editable="true" visible="true">		
-		<bean name="unite" editable="true" visible="true">
+	<beanList name="conversions">		
+		<bean name="unite">
 			<field name="uniteCode" required="true">
-				<validation>
+				<validationContraints>
 					<constraint>
-						<!-- L'action sur l'article est CREATE ou UPDATE -->
+						<!-- sur l'article est CREATE ou UPDATE -->
 						<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction" />
 						<!-- L'action sur la conversion est CREATE -->
 						<rule 
@@ -58,9 +56,9 @@
 					<validator 
 						class="com.agro360.service.rule.validation.stock.article.conversion.UniqueValidator" 
 						lookupClass="com.agro360.service.rule.lookup.common.SelfBeanLookup"/>
-				</validation>
+				</validationContraints>
 				
-				<editableContraints>
+				<editableContraints>		
 					<constraint>
 						<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
 					</constraint>

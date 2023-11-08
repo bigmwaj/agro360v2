@@ -37,23 +37,15 @@ public abstract class AbstractService<E extends AbstractDto, K> {
 		getDao().delete(dto);
 	}
 
-	/**
-	 * 
-	 * @param <B>
-	 * @param bean
-	 * @param operation
-	 * @return
-	 */
 	protected <B extends AbstractBean> B applyInitRules(B bean, String operation) {
-		var search = "init-search-form".equals(operation);
-		if( search ) {
-			return bean;
-		}
+		var helper = new RuleXmlHelper();
+		
 		var beanCtx = new BeanContext();
 		beanCtx.setOperation(operation);
-		beanCtx.setRuleName(getRulePath());
+
+		var rules = helper.loadRulesFromXml(getRulePath());
 		
-		new RuleXmlHelper().applyRules(beanCtx, bean);
+		helper.applyInitRules(beanCtx, rules, bean);
 		
 		bean.setOperation(operation);
 		
@@ -76,25 +68,22 @@ public abstract class AbstractService<E extends AbstractDto, K> {
 		return applyInitRules(bean, "init-search-form");
 	}
 
-	/**
-	 * 
-	 * @param <B>
-	 * @param bean
-	 * @return
-	 */
 	protected <B extends AbstractBean> B applyValidationRules(B bean) {
 		var operation = bean.getOperation();
 		if( operation == null ) {
 			throw new RuntimeException("Opéraiton initiale inconnue!");
 		}
 		
-		applyInitRules(bean, operation);
-		
+		var helper = new RuleXmlHelper();
 		var beanCtx = new BeanContext();
-		beanCtx.setOperation("validation-form");
-		beanCtx.setRuleName(getRulePath());
+
+		var rules = helper.loadRulesFromXml(getRulePath());
 		
-		new RuleXmlHelper().applyRules(beanCtx, bean);
+		beanCtx.setOperation(operation);
+		helper.applyInitRules(beanCtx, rules, bean);
+		
+		beanCtx.setOperation("validation-form");
+		helper.applyValidationRules(beanCtx, rules, bean);
 		
 		return bean;
 	}

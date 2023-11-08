@@ -8,44 +8,35 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@JsonIgnoreProperties(value={"schemaLocation"}, ignoreUnknown = false)
+@JsonIgnoreProperties(value = { "schemaLocation" }, ignoreUnknown = false)
 @EqualsAndHashCode(callSuper = false)
 @Data
-public class BeanMetadataHelper {
-	
+public class BeanHelper {
+
 	private String name;
-	
+
 	private String namespace;
-	
-	private boolean visible;
-	
+
+	private boolean visible = true;
+
 	@JacksonXmlElementWrapper(useWrapping = true)
 	private List<ConstraintHelper> visibleContraints;
-	
-	private boolean editable;
-	
+
+	private boolean editable = true;
+
 	@JacksonXmlElementWrapper(useWrapping = true)
 	private List<ConstraintHelper> editableContraints;
-	
+
 	@JacksonXmlElementWrapper(useWrapping = false, localName = "field")
 	private List<FieldMetadataHelper> field;
 
 	@JacksonXmlElementWrapper(useWrapping = false, localName = "bean")
-	private List<BeanMetadataHelper> bean;
-	
-	@JacksonXmlElementWrapper(useWrapping = false, namespace = "bean-list")
-	private List<BeanMetadataHelper> beanList;
-	
-	@JacksonXmlElementWrapper(useWrapping = false, namespace = "validation")
-	private List<ValidationHelper> validation;
+	private List<BeanHelper> bean;
 
-	@Override
-	public String toString() {
-		return "BeanMetadataHelper [\n\tname=" + name + ", \n\tnamespace=" + namespace + ", \n\tvisible=" + visible +
-	 ", \n\tvisibleContraints=" + visibleContraints + ", "
-						+ "\n\teditable=" + editable
-				+ ", \n\teditableContraints=" + editableContraints + ", \n\tfield=" + field + ", \n\tbean=" + bean + "]";
-	}
-	
-	
+	@JacksonXmlElementWrapper(useWrapping = false, namespace = "bean-list")
+	private List<BeanHelper> beanList;
+
+	@JacksonXmlElementWrapper(useWrapping = false)
+	private List<ValidationHelper> validationContraints;
+
 }
