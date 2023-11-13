@@ -12,7 +12,7 @@ import com.agro360.vd.stock.StatusCaisseEnumVd;
  * Check if the root bean is editable
  */
 @Component("stock/caisse/IsEditableBean")
-public class IsEditableBean extends AbstractConstraint{
+public class IsEditable extends AbstractConstraint{
 
 	public boolean apply(BeanContext ctx, AbstractBean bean) {
 		var caisseBean = (CaisseBean)bean;

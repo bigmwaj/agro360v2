@@ -15,5 +15,5 @@ public class ValidationHelper {
 	private List<ConstraintHelper> constraint;
 
 	@JacksonXmlElementWrapper(useWrapping = true)
-	private List<RuleHelper> validator;
+	private List<RuleHelper> rule;
 }

@@ -27,16 +27,16 @@ public class BeanHelper {
 	@JacksonXmlElementWrapper(useWrapping = true)
 	private List<ConstraintHelper> editableContraints;
 
-	@JacksonXmlElementWrapper(useWrapping = false, localName = "field")
+	@JacksonXmlElementWrapper(useWrapping = false)
 	private List<FieldMetadataHelper> field;
 
-	@JacksonXmlElementWrapper(useWrapping = false, localName = "bean")
+	@JacksonXmlElementWrapper(useWrapping = false)
 	private List<BeanHelper> bean;
 
-	@JacksonXmlElementWrapper(useWrapping = false, namespace = "bean-list")
+	@JacksonXmlElementWrapper(useWrapping = false)
 	private List<BeanHelper> beanList;
 
 	@JacksonXmlElementWrapper(useWrapping = false)
-	private List<ValidationHelper> validationContraints;
+	private List<ValidationHelper> validation;
 
 }

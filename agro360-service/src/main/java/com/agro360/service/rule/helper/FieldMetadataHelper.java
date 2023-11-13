@@ -14,16 +14,16 @@ public class FieldMetadataHelper extends FieldMetadata<Object> {
 
 	private String name;
 
-	@JacksonXmlElementWrapper(localName = "visibleContraints")
+	@JacksonXmlElementWrapper()
 	private List<ConstraintHelper> visibleContraints;
 
-	@JacksonXmlElementWrapper(localName = "editableContraints")
+	@JacksonXmlElementWrapper()
 	private List<ConstraintHelper> editableContraints;
 
-	@JacksonXmlElementWrapper(localName = "requiredContraints")
+	@JacksonXmlElementWrapper()
 	private List<ConstraintHelper> requiredContraints;
 
 	@JacksonXmlElementWrapper(useWrapping = false)
-	private List<ValidationHelper> validationContraints;
+	private List<ValidationHelper> validation;
 
 }

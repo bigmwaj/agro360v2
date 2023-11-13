@@ -4,23 +4,23 @@
 	xsi:schemaLocation="http://mouafo.com/xml ./../bean-init-rules.xsd"
 	namespace="default">
 	
-	<validationContraints>
+	<validation>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.common.IsEditableBean"/>
+			<rule class="com.agro360.service.rule.constraint.common.IsEditable"/>
 		</constraint>
-		<validator class=""/>
-	</validationContraints>
+		<rule class=""/>
+	</validation>
 	
-	<validationContraints>
+	<validation>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.common.IsEditableBean"/>
+			<rule class="com.agro360.service.rule.constraint.common.IsEditable"/>
 		</constraint>
-		<validator class=""/>
-	</validationContraints>
+		<rule class="" lookupClass="com.agro360.service.rule.lookup.common.RootBeanLookup"/>
+	</validation>
 	
 	<editableContraints>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.stock.caisse.IsEditableBean"/>
+			<rule class="com.agro360.service.rule.constraint.stock.caisse.IsEditable"/>
 		</constraint>
 	</editableContraints>
 	
@@ -43,11 +43,10 @@
 				</constraint>
 			</editableContraints>
 		</field>
-		<field name="tiersName" editable="false"/>	
+		<field name="tiersName" editable="false"/>
 	</bean>
 	
 	<beanList name="operations">
-			
 		<bean name="article">
 			<field name="articleCode" required="true">
 				<editableContraints>
@@ -56,7 +55,7 @@
 					</constraint>
 				</editableContraints>
 			</field>
-		</bean>	
+		</bean>
 		
 		<bean name="unite">
 			<field name="uniteCode" required="true">

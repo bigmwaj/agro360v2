@@ -16,7 +16,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				
-				<xs:element ref="validationContraints" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="validation" minOccurs="0" maxOccurs="unbounded" />
 				
 				<xs:element name="visibleContraints" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
@@ -55,8 +55,7 @@
 	<xs:element name="bean">
 		<xs:complexType>
 			<xs:sequence>				
-				<xs:element ref="validationContraints" minOccurs="0" maxOccurs="unbounded" />
-				
+				<xs:element ref="validation" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element name="visibleContraints" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
@@ -89,7 +88,7 @@
 	<xs:element name="beanList">
 		<xs:complexType>
 			<xs:sequence>				
-				<xs:element ref="validationContraints" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="validation" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element name="visibleContraints" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
@@ -110,7 +109,7 @@
 	<xs:element name="field">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="validationContraints" minOccurs="0" maxOccurs="unbounded" />
+				<xs:element ref="validation" minOccurs="0" maxOccurs="unbounded" />
 				<xs:element name="visibleContraints" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
@@ -172,11 +171,11 @@
 		</xs:complexType>
 	</xs:element>
 	
-	<xs:element name="validationContraints">
+	<xs:element name="validation">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="constraint" minOccurs="0" maxOccurs="unbounded"/>
-				<xs:element name="validator" minOccurs="1" maxOccurs="1">
+				<xs:element name="rule" minOccurs="1" maxOccurs="1">
 					<xs:complexType>
 						<xs:attribute name="class" type="xs:string" use="required" />						
 						<xs:attribute 

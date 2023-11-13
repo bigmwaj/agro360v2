@@ -11,6 +11,6 @@ import lombok.EqualsAndHashCode;
 @Data
 public class ConstraintHelper {
 
-	@JacksonXmlElementWrapper(useWrapping = false, localName = "rule")
+	@JacksonXmlElementWrapper(useWrapping = false)
 	private List<RuleHelper> rule;
 }

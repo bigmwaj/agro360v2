@@ -55,7 +55,7 @@ public class CaisseRuleTest {
 		beanCtx.setOperation(operation);
 
 		// When
-		ruleXmlHelper.applyInitRules(beanCtx, rules, bean);
+		ruleXmlHelper.applyAllRules(beanCtx, bean, rules);
 
 		// Then
 		assertTrue(bean.isEditable());
@@ -144,7 +144,7 @@ public class CaisseRuleTest {
 		beanCtx.setOperation(operation);
 
 		// When
-		ruleXmlHelper.applyInitRules(beanCtx, rules, bean);
+		ruleXmlHelper.applyAllRules(beanCtx, bean, rules);
 
 		// Then
 //		assertFalse(bean.getArticleCode().isEditable());
@@ -179,7 +179,7 @@ public class CaisseRuleTest {
 		beanCtx.setOperation(operation);
 
 		// When
-		ruleXmlHelper.applyInitRules(beanCtx, rules, bean);
+		ruleXmlHelper.applyAllRules(beanCtx, bean, rules);
 
 		// Then
 //		assertFalse(bean.getArticleCode().isEditable());

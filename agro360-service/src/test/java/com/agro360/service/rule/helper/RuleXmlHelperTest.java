@@ -7,7 +7,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.function.Executable;
 
-import com.agro360.service.rule.constraint.common.IsEditableBean;
+import com.agro360.service.rule.constraint.common.IsEditable;
 import com.agro360.service.rule.lookup.common.RootBeanLookup;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -27,7 +27,7 @@ public class RuleXmlHelperTest {
 			() -> assertNotNull(rules.getEditableContraints().get(0)),
 			() -> assertNotNull(rules.getEditableContraints().get(0).getRule()),
 			() -> assertEquals(rules.getEditableContraints().get(0).getRule().size(), 1),
-			() -> assertEquals(rules.getEditableContraints().get(0).getRule().get(0).getRuleClass(), IsEditableBean.class.getName()),
+			() -> assertEquals(rules.getEditableContraints().get(0).getRule().get(0).getRuleClass(), IsEditable.class.getName()),
 			() -> assertEquals(rules.getEditableContraints().get(0).getRule().get(0).getLookupClass(), RootBeanLookup.class.getName())
 		);
 		

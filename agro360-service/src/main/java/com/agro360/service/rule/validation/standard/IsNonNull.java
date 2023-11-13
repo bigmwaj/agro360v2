@@ -1,4 +1,4 @@
-package com.agro360.service.rule.constraint.common;
+package com.agro360.service.rule.validation.standard;
 
 import java.util.Map;
 
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.agro360.service.bean.common.AbstractBean;
 import com.agro360.service.message.Message;
 import com.agro360.service.metadata.FieldMetadata;
+import com.agro360.service.rule.constraint.common.AbstractValidationRule;
 
 @Component
 public class IsNonNull extends AbstractValidationRule {

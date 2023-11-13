@@ -6,7 +6,7 @@
 	
 	<editableContraints>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.common.IsEditableBean"/>
+			<rule class="com.agro360.service.rule.constraint.common.IsEditable"/>
 		</constraint>
 	</editableContraints> 
 	
@@ -42,7 +42,7 @@
 	<beanList name="conversions">		
 		<bean name="unite">
 			<field name="uniteCode" required="true">
-				<validationContraints>
+				<validation>
 					<constraint>
 						<!-- sur l'article est CREATE ou UPDATE -->
 						<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction" />
@@ -53,10 +53,10 @@
 						
 					</constraint>
 					<!-- La conversion doit être unique -->
-					<validator 
+					<rule 
 						class="com.agro360.service.rule.validation.stock.article.conversion.UniqueValidator" 
 						lookupClass="com.agro360.service.rule.lookup.common.SelfBeanLookup"/>
-				</validationContraints>
+				</validation>
 				
 				<editableContraints>		
 					<constraint>

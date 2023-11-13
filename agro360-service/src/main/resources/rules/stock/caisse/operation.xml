@@ -6,7 +6,7 @@
 	
 	<editableContraints>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.common.IsEditableBean"/>
+			<rule class="com.agro360.service.rule.constraint.common.IsEditable"/>
 		</constraint>
 	</editableContraints>
 		

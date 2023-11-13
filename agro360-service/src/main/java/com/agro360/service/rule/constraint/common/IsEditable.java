@@ -9,7 +9,7 @@ import com.agro360.service.context.BeanContext;
  * Check if the root bean is editable
  */
 @Component("common/IsEditableBean")
-public class IsEditableBean extends AbstractConstraint{
+public class IsEditable extends AbstractConstraint{
 
 	public boolean apply(BeanContext ctx, AbstractBean bean) {
 		return true;

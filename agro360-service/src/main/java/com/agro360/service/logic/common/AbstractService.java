@@ -45,7 +45,7 @@ public abstract class AbstractService<E extends AbstractDto, K> {
 
 		var rules = helper.loadRulesFromXml(getRulePath());
 		
-		helper.applyInitRules(beanCtx, rules, bean);
+		helper.applyAllRules(beanCtx, bean, rules);
 		
 		bean.setOperation(operation);
 		
@@ -80,10 +80,10 @@ public abstract class AbstractService<E extends AbstractDto, K> {
 		var rules = helper.loadRulesFromXml(getRulePath());
 		
 		beanCtx.setOperation(operation);
-		helper.applyInitRules(beanCtx, rules, bean);
+		helper.applyAllRules(beanCtx, bean, rules);
 		
 		beanCtx.setOperation("validation-form");
-		helper.applyValidationRules(beanCtx, rules, bean);
+		helper.applyValidationRules(beanCtx, bean, rules);
 		
 		return bean;
 	}

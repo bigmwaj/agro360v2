@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
+import com.agro360.service.rule.validation.standard.IsMaxLengthOk;
+import com.agro360.service.rule.validation.standard.IsNonNull;
+
 @TestInstance(Lifecycle.PER_CLASS)
 public class AllTest extends AbstractCollectionBaseRuleTest{
 

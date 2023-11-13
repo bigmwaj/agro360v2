@@ -11,6 +11,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.agro360.service.bean.common.AbstractBean;
+import com.agro360.service.rule.validation.standard.IsNonNull;
 
 @TestInstance(Lifecycle.PER_CLASS)
 public class IsNonNullTest {
