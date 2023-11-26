@@ -6,14 +6,14 @@
 	
 	<editableContraints>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.common.IsEditable"/>
+			<rule class="com.agro360.service.rule.common.IsEditableRule"/>
 		</constraint>
 	</editableContraints>
 	
 	<field name="variantCode" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 			</constraint>
 		</editableContraints>		
 	</field>
@@ -21,7 +21,7 @@
 	<field name="description">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>		
 	</field>

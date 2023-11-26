@@ -1,14 +1,13 @@
 package com.agro360.dto.vente;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import com.agro360.dto.common.AbstractLigneDto;
 import com.agro360.dto.stock.CasierDto;
 import com.agro360.dto.stock.MagasinDto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

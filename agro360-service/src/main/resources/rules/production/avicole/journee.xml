@@ -6,7 +6,7 @@
 	
 	<editableContraints>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.common.IsEditable"/>
+			<rule class="com.agro360.service.rule.common.IsEditableRule"/>
 		</constraint>
 	</editableContraints>
 	
@@ -22,7 +22,7 @@
 		<field name="alveole" required="false" editable="true">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 				</constraint>
 			</editableContraints>
 		</field>
@@ -32,7 +32,7 @@
 		<field name="commentaire">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 				</constraint>
 			</editableContraints>			
 		</field>
@@ -40,7 +40,7 @@
 		<field name="quantite">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 				</constraint>
 			</editableContraints>
 		</field>	

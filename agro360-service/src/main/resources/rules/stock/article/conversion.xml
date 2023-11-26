@@ -6,7 +6,7 @@
 	
 	<editableContraints>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.common.IsEditable"/>
+			<rule class="com.agro360.service.rule.common.IsEditableRule"/>
 		</constraint>
 	</editableContraints>
 	
@@ -14,7 +14,7 @@
 		<field name="uniteCode" required="true">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 				</constraint>
 			</editableContraints>
 		</field>
@@ -24,7 +24,7 @@
 	<field name="facteur" required="true" min="0">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 			</constraint>
 		</editableContraints>		
 	</field>

@@ -1,6 +1,6 @@
 package com.agro360.service.rule.helper;
 
-import com.agro360.service.rule.lookup.common.RootBeanLookup;
+import com.agro360.service.rule.common.lookup.RootBeanLookup;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 
 import lombok.Data;

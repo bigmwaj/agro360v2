@@ -6,7 +6,7 @@
 	<field name="uniteCode" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>

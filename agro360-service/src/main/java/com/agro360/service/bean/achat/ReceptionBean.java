@@ -1,5 +1,6 @@
 package com.agro360.service.bean.achat;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -21,7 +22,7 @@ public class ReceptionBean extends AbstractStatusTrackingBean<StatusReceptionEnu
 
 	private FieldMetadata<String> description = new FieldMetadata<>();
 
-	private FieldMetadata<Double> prixUnitaire = new FieldMetadata<>();
+	private FieldMetadata<BigDecimal> prixUnitaire = new FieldMetadata<>();
 
 	private FieldMetadata<Double> quantite = new FieldMetadata<>();
 

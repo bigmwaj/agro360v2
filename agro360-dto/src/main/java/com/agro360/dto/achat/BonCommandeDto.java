@@ -2,19 +2,18 @@ package com.agro360.dto.achat;
 
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
 import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.stock.MagasinDto;
 import com.agro360.dto.tiers.TiersDto;
 import com.agro360.vd.achat.StatusBonCommandeEnumVd;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

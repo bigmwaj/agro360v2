@@ -1,6 +1,6 @@
 package com.agro360.service.logic.achat;
 
-import static com.agro360.service.mapper.achat.BonCommandeMapper.*;
+import static com.agro360.service.mapper.achat.BonCommandeMapper.OPTION_MAP_LIGNE_KEY;
 import static com.agro360.service.mapper.stock.CaisseMapper.OPTION_MAP_PLUS_KEY;
 
 import java.time.LocalDateTime;
@@ -11,9 +11,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.Predicate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +25,9 @@ import com.agro360.service.logic.common.AbstractService;
 import com.agro360.service.mapper.achat.BonCommandeMapper;
 import com.agro360.service.message.Message;
 import com.agro360.vd.common.EditActionEnumVd;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.Predicate;
 
 @Service
 public class BonCommandeService extends AbstractService<BonCommandeDto, String> {

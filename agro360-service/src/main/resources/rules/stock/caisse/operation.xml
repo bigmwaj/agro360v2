@@ -6,7 +6,7 @@
 	
 	<editableContraints>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.common.IsEditable"/>
+			<rule class="com.agro360.service.rule.common.IsEditableRule"/>
 		</constraint>
 	</editableContraints>
 		
@@ -14,7 +14,7 @@
 		<field name="articleCode" required="true">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 				</constraint>
 			</editableContraints>
 		</field>
@@ -24,7 +24,7 @@
 		<field name="uniteCode" required="true">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 				</constraint>
 			</editableContraints>
 		</field>	
@@ -35,7 +35,7 @@
 	<field name="numero" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>
@@ -43,7 +43,7 @@
 	<field name="typeLigne" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>
@@ -51,7 +51,7 @@
 	<field name="description">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>
@@ -59,7 +59,7 @@
 	<field name="quantite" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>
@@ -67,7 +67,7 @@
 	<field name="prixUnitaire" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>
@@ -77,7 +77,7 @@
 	<field name="variantCode">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>
@@ -85,7 +85,7 @@
 	<field name="dateOperation" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>		
 	</field>
@@ -93,7 +93,7 @@
 	<field name="typeOperation" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>		
 	</field>

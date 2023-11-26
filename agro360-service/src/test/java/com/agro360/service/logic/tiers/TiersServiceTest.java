@@ -1,7 +1,7 @@
 package com.agro360.service.logic.tiers;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +22,6 @@ import org.springframework.data.domain.Example;
 import com.agro360.dao.tiers.ITiersCategoryDao;
 import com.agro360.dao.tiers.ITiersDao;
 import com.agro360.dto.tiers.TiersDto;
-import com.agro360.service.bean.tiers.TiersBean;
 import com.agro360.service.bean.tiers.TiersSearchBean;
 import com.agro360.service.mapper.tiers.TiersMapper;
 import com.agro360.vd.tiers.TiersTypeEnumVd;
@@ -45,19 +44,19 @@ public class TiersServiceTest {
 	List<TiersDto> tiersModel;
 	
 	Optional<TiersDto> findById(String code) {
-		return tiersModel.stream().filter(e->code.equals(e.getTiersCode())).findFirst();
+		return tiersModel.stream().filter(e -> code.equals(e.getTiersCode())).findFirst();
 	}
 	
 	@BeforeAll
 	void setUpBeforeClass() throws Exception {
 		MockitoAnnotations.openMocks(this);
 		
-		TiersDto company = new TiersDto();
+		var company = new TiersDto();
 		company.setTiersCode("COMPANY");
 		company.setTiersType(TiersTypeEnumVd.COMPANY);
 		company.setName("Company Name");
 
-		TiersDto person = new TiersDto();
+		var person = new TiersDto();
 		person.setTiersCode("PERSON");
 		person.setTiersType(TiersTypeEnumVd.PERSON);
 		person.setFirstName("First Name");
@@ -70,11 +69,11 @@ public class TiersServiceTest {
 	@Test
 	void testSearch() {
 		// Given
-		TiersSearchBean bean = new TiersSearchBean();
+		var bean = new TiersSearchBean();
 		
 		// When
 		when(tiersDao.findAll(any(Example.class))).thenReturn(tiersModel);		
-		List<TiersBean> results = service.search(bean);
+		var results = service.search(bean);
 		
 		// Then
 		assertAll(

@@ -1,5 +1,6 @@
 package com.agro360.service.bean.common;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import com.agro360.dto.common.AbstractLigneDto;
@@ -28,9 +29,9 @@ public abstract class AbstractLigneBean<E extends AbstractLigneDto> extends Abst
 
 	private FieldMetadata<Double> quantite = new FieldMetadata<>("Quantité");
 
-	private FieldMetadata<Double> prixUnitaire = new FieldMetadata<>("Prix Unitaire");
+	private FieldMetadata<BigDecimal> prixUnitaire = new FieldMetadata<>("Prix Unitaire");
 
-	private FieldMetadata<Double> prixTotal = new FieldMetadata<>("Prix Total");
+	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total");
 	
 	private FieldMetadata<String> variantCode = new FieldMetadata<>("Variant");
 

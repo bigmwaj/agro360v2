@@ -24,7 +24,6 @@ import org.springframework.data.domain.Example;
 import com.agro360.dao.tiers.ICategoryDao;
 import com.agro360.dao.tiers.ITiersCategoryDao;
 import com.agro360.dto.tiers.CategoryDto;
-import com.agro360.service.bean.tiers.CategoryBean;
 import com.agro360.service.mapper.tiers.CategoryMapper;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -119,7 +118,7 @@ public class CategoryServiceTest {
 		
 		// When
 		when(categoryDao.getReferenceById(any())).thenReturn(root);	
-		CategoryBean bean = service.findRootCategory(Optional.empty());
+		var bean = service.findRootCategory(Optional.empty());
 		
 		// Then
 		assertAll(
@@ -142,7 +141,7 @@ public class CategoryServiceTest {
 		
 		// When
 		when(categoryDao.findAll(any(Example.class))).thenReturn(dtos);	
-		List<CategoryBean> children = service.findChildrenCategory(code);
+		var children = service.findChildrenCategory(code);
 		
 		// Then
 		assertAll(

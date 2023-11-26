@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.agro360.dao.common.IDao;
 import com.agro360.dto.common.AbstractDto;
 import com.agro360.service.bean.common.AbstractBean;
-import com.agro360.service.context.BeanContext;
+import com.agro360.service.context.UserContext;
 import com.agro360.service.rule.helper.RuleXmlHelper;
 
 public abstract class AbstractService<E extends AbstractDto, K> {
@@ -39,16 +39,9 @@ public abstract class AbstractService<E extends AbstractDto, K> {
 
 	protected <B extends AbstractBean> B applyInitRules(B bean, String operation) {
 		var helper = new RuleXmlHelper();
-		
-		var beanCtx = new BeanContext();
-		beanCtx.setOperation(operation);
-
-		var rules = helper.loadRulesFromXml(getRulePath());
-		
-		helper.applyAllRules(beanCtx, bean, rules);
-		
+		var userCtx = new UserContext();
+		helper.applyInitRules(userCtx, bean, getRulePath(), operation);
 		bean.setOperation(operation);
-		
 		return bean;
 	}
 	
@@ -73,17 +66,10 @@ public abstract class AbstractService<E extends AbstractDto, K> {
 		if( operation == null ) {
 			throw new RuntimeException("Opéraiton initiale inconnue!");
 		}
-		
 		var helper = new RuleXmlHelper();
-		var beanCtx = new BeanContext();
-
-		var rules = helper.loadRulesFromXml(getRulePath());
+		var userCtx = new UserContext();
 		
-		beanCtx.setOperation(operation);
-		helper.applyAllRules(beanCtx, bean, rules);
-		
-		beanCtx.setOperation("validation-form");
-		helper.applyValidationRules(beanCtx, bean, rules);
+		helper.applyValidationRules(userCtx, bean, getRulePath(), operation);
 		
 		return bean;
 	}

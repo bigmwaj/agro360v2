@@ -1,22 +1,22 @@
 package com.agro360.dto.achat;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.stock.CasierDto;
 import com.agro360.dto.stock.MagasinDto;
 import com.agro360.vd.achat.StatusReceptionEnumVd;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -42,7 +42,7 @@ public class ReceptionDto extends AbstractStatusTrackingDto<StatusReceptionEnumV
 	private StatusReceptionEnumVd status;
 
 	@Column(name = "PRIX_UNITAIRE", nullable = false, precision = 16, scale = 4)
-	private Double prixUnitaire;
+	private BigDecimal prixUnitaire;
 
 	@Column(name = "QUANTITE", nullable = false)
 	private Double quantite;

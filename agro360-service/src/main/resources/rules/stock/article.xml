@@ -6,7 +6,7 @@
 	
 	<editableContraints>
 		<constraint>
-			<rule class="com.agro360.service.rule.constraint.common.IsEditable"/>
+			<rule class="com.agro360.service.rule.common.IsEditableOperationRule"/>
 		</constraint>
 	</editableContraints> 
 	
@@ -14,7 +14,7 @@
 		<field name="uniteCode" required="true">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 				</constraint>
 			</editableContraints>
 		</field>
@@ -25,7 +25,7 @@
 		<field name="variantCode" required="true">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 				</constraint>
 			</editableContraints>		
 		</field>
@@ -33,7 +33,7 @@
 		<field name="description">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 				</constraint>
 			</editableContraints>		
 		</field>		
@@ -45,22 +45,22 @@
 				<validation>
 					<constraint>
 						<!-- sur l'article est CREATE ou UPDATE -->
-						<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction" />
+						<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule" />
 						<!-- L'action sur la conversion est CREATE -->
 						<rule 
-							class="com.agro360.service.rule.constraint.common.IsCreateAction" 
-							lookupClass="com.agro360.service.rule.lookup.common.SelfBeanLookup"/>
+							class="com.agro360.service.rule.common.IsCreateOperationRule" 
+							lookupClass="com.agro360.service.rule.common.lookup.SelfBeanLookup"/>
 						
 					</constraint>
 					<!-- La conversion doit être unique -->
 					<rule 
-						class="com.agro360.service.rule.validation.stock.article.conversion.UniqueValidator" 
-						lookupClass="com.agro360.service.rule.lookup.common.SelfBeanLookup"/>
+						class="com.agro360.service.rule.module.stock.article.conversion.UniqueArticleCodeRule" 
+						lookupClass="com.agro360.service.rule.common.lookup.SelfBeanLookup"/>
 				</validation>
 				
 				<editableContraints>		
 					<constraint>
-						<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+						<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 					</constraint>
 				</editableContraints>
 				
@@ -70,7 +70,7 @@
 		<field name="facteur" required="true" min="0">
 			<editableContraints>
 				<constraint>
-					<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+					<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 				</constraint>
 			</editableContraints>		
 		</field>
@@ -79,7 +79,7 @@
 	<field name="articleCode" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>
@@ -87,7 +87,7 @@
 	<field name="description">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateOrEditAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOrEditOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>
@@ -95,7 +95,7 @@
 	<field name="typeArticle" required="true">
 		<editableContraints>
 			<constraint>
-				<rule class="com.agro360.service.rule.constraint.common.IsCreateAction"/>
+				<rule class="com.agro360.service.rule.common.IsCreateOperationRule"/>
 			</constraint>
 		</editableContraints>
 	</field>
