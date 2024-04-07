@@ -3,7 +3,22 @@
         <div class="container-fluid main-menu">
             <mat-selection-list role="list">
                 <mat-list-item role="listitem">
-                    <a href="/tiers/tiers">Gestion des tiers</a>
+                    <a href="">Tableau de bord</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/vente">Ventes & Clients</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/achat">Achats & Fournisseurs</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/paie">Paies & Employés</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/finance/transaction">Gestion des transactions</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
+                    <a href="/core/partner">Gestion des Partenaires</a>
                 </mat-list-item>
                 <mat-list-item role="listitem">
                     <a href="/stock/article">Gestion des articles</a>
@@ -13,12 +28,6 @@
                 </mat-list-item>
                 <mat-list-item role="listitem">
                     <a href="/stock/caisse">Gestion des caisses</a>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <a href="/vente/commande">Gestion des commandes</a>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <a href="/achat/bon-commande">Gestion des bons de commande</a>
                 </mat-list-item>
                 <mat-list-item role="listitem">
                     <a href="/production/avicole/cycle">Gestion des cycles de production</a>
@@ -33,6 +42,7 @@
             </button>
             <span class="ms-3">
                 {{ui.title}}
+                <router-outlet name='title'></router-outlet>
             </span>
             <span class="menu-spacer"></span>
             <button mat-icon-button class="favorite-icon">
@@ -42,7 +52,7 @@
                 <mat-icon>share</mat-icon>
             </button>
         </mat-toolbar>
-        <div class="container-fluid container-main pb-3 pt-3">                           
+        <div class="container-fluid container-main pb-3 pt-3">           
             <router-outlet></router-outlet>
         </div>
     </mat-drawer-content>

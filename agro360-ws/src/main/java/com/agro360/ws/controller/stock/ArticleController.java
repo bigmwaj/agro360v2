@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agro360.service.bean.stock.ArticleBean;
-import com.agro360.service.bean.stock.ArticleSearchBean;
-import com.agro360.service.bean.stock.ConversionBean;
-import com.agro360.service.bean.stock.VariantBean;
-import com.agro360.service.logic.stock.ArticleService;
-import com.agro360.service.logic.stock.ConversionService;
-import com.agro360.service.logic.stock.VariantService;
+import com.agro360.bo.bean.stock.ArticleBean;
+import com.agro360.bo.bean.stock.ArticleSearchBean;
+import com.agro360.bo.bean.stock.ConversionBean;
+import com.agro360.bo.bean.stock.VariantBean;
+import com.agro360.form.stock.ArticleForm;
+import com.agro360.form.stock.ConversionForm;
+import com.agro360.form.stock.VariantForm;
+import com.agro360.service.stock.ArticleService;
 import com.agro360.ws.controller.common.AbstractController;
 
 @RestController
@@ -28,53 +29,57 @@ import com.agro360.ws.controller.common.AbstractController;
 public class ArticleController extends AbstractController {
 
 	@Autowired
-	private ArticleService articleService;
+	private ArticleService service;
 	
 	@Autowired
-	private VariantService variantService;
+	private ArticleForm form;
 	
 	@Autowired
-	private ConversionService conversionService;
+	private VariantForm variantForm;
+	
+	@Autowired
+	private ConversionForm conversionForm;
 
 	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
 			@RequestBody(required = false) @Validated Optional<ArticleSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, articleService
-				.search(searchBean.orElse(new ArticleSearchBean()))));
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service
+				.searchAction(getClientContext(), searchBean)));
 	}
 
 	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated ArticleBean bean, BindingResult br) {
-		return ResponseEntity.ok(new ModelMap().addAllAttributes(articleService.save(bean)));
+		service.saveAction(getClientContext(), bean);
+		return ResponseEntity.ok(new ModelMap());
 	}
 	
 	@GetMapping(SEARCH_FORM_RN)
 	public ResponseEntity<ArticleSearchBean> getSearchFormAction() {
-		return ResponseEntity.ok(articleService.initSearchFormBean());
+		return ResponseEntity.ok(form.initSearchFormBean(getClientContext()));
 	}
 	
 	@GetMapping(EDIT_FORM_RN)
 	public ResponseEntity<ArticleBean> getEditFormAction(@RequestParam String articleCode) {
-		return ResponseEntity.ok(articleService.initEditFormBean(articleCode));
+		return ResponseEntity.ok(form.initUpdateFormBean(getClientContext(), articleCode));
 	}
 
 	@GetMapping(CREATE_FORM_RN)
 	public ResponseEntity<ArticleBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
-		return ResponseEntity.ok(articleService.initCreateFormBean(copyFrom));
+		return ResponseEntity.ok(form.initCreateFormBean(getClientContext(), copyFrom));
 	}
 
 	@GetMapping(DELETE_FORM_RN)
 	public ResponseEntity<ArticleBean> getDeleteFormAction(@RequestParam String articleCode) {
-		return ResponseEntity.ok(articleService.initDeleteFormBean(articleCode));
+		return ResponseEntity.ok(form.initDeleteFormBean(getClientContext(), articleCode));
 	}
 	
 	@GetMapping("/variant/create-form")
 	public ResponseEntity<VariantBean> getVariantCreateFormAction(@RequestParam String articleCode, @RequestParam Optional<String> copyFrom) {
-		return ResponseEntity.ok(variantService.initCreateFormBean(articleCode, copyFrom));
+		return ResponseEntity.ok(variantForm.initCreateFormBean(getClientContext(), articleCode, copyFrom));
 	}
 	
 	@GetMapping("/conversion/create-form")
 	public ResponseEntity<ConversionBean> getConversionCreateFormAction(@RequestParam String articleCode, @RequestParam Optional<String> copyFrom) {
-		return ResponseEntity.ok(conversionService.initCreateFormBean(articleCode, copyFrom));
+		return ResponseEntity.ok(conversionForm.initCreateFormBean(getClientContext(), articleCode, copyFrom));
 	}
 }

@@ -9,6 +9,7 @@ import { BeanList } from 'src/app/common/component/bean.list';
 import { BeanTools } from 'src/app/common/bean.tools';
 import { SharedModule } from 'src/app/common/shared.module';
 import { UIService } from 'src/app/common/service/ui.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     standalone: true,
@@ -34,7 +35,7 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
 
     constructor(
         private http: HttpClient,
-        private ui: UIService) {
+        public dialog: MatDialog) {
         super()
     }
 

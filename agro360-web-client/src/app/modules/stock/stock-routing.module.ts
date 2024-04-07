@@ -22,7 +22,7 @@ const routes: Routes = [
     { path: 'stock/caisse', component: CaisseIndexPageComponent },
     { path: 'stock/caisse/index', component: CaisseIndexPageComponent },
     { path: 'stock/caisse/create', component: CaisseEditPageComponent },
-    { path: 'stock/caisse/edit/:magasin/:agent/:journee', component: CaisseEditPageComponent },
+    { path: 'stock/caisse/edit/:magasin/:Partner/:journee', component: CaisseEditPageComponent },
 ];
 
 @NgModule({

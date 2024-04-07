@@ -28,7 +28,7 @@ export class IndexPageComponent extends BeanList<CaisseBean> implements OnInit {
     displayedColumns: string[] = [
         'select',
         'magasin',
-        'agent',
+        'Partner',
         'journee',
         'status',
         'note',
@@ -86,7 +86,7 @@ export class IndexPageComponent extends BeanList<CaisseBean> implements OnInit {
             [
                 'edit',
                 bean.magasin.magasinCode.value,
-                bean.agent.tiersCode.value,
+                bean.Partner.partnerCode.value,
                 bean.journee.value
             ],
             {
@@ -98,7 +98,7 @@ export class IndexPageComponent extends BeanList<CaisseBean> implements OnInit {
     private mapToBeanId(bean: CaisseBean): CaisseIdBean {
         return {
             magasin: bean.magasin.magasinCode.value,
-            agent: bean.agent.tiersCode.value,
+            Partner: bean.Partner.partnerCode.value,
             journee: bean.journee.value
         };
     }

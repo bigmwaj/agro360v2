@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { EditPageComponent } from './bon-commande/edit.page.component';
-import { IndexPageComponent } from './bon-commande/index.page.component';
+import { IndexPageComponent } from './index/index.page.component';
 
-const routes: Routes = [
-    { path: 'achat/bon-commande', component: IndexPageComponent },
-    { path: 'achat/bon-commande/index', component: IndexPageComponent },
-    { path: 'achat/bon-commande/create', component: EditPageComponent },
-    { path: 'achat/bon-commande/edit/:bonCommandeCode', component: EditPageComponent },
+const routes: Routes = [    
+    { path: 'achat', pathMatch: 'full', redirectTo: 'achat/index' },
+    { path: 'achat/index', component: IndexPageComponent }
 ];
 
 @NgModule({

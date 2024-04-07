@@ -3,9 +3,9 @@ package com.agro360.dto.vente;
 import java.time.LocalDate;
 
 import com.agro360.dto.common.AbstractStatusTrackingDto;
+import com.agro360.dto.core.PartnerDto;
 import com.agro360.dto.stock.MagasinDto;
-import com.agro360.dto.tiers.TiersDto;
-import com.agro360.vd.vente.StatusCommandeEnumVd;
+import com.agro360.vd.vente.CommandeStatusEnumVd;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,18 +20,18 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "VENTE_TBL_COMMANDE")
-public class CommandeDto extends AbstractStatusTrackingDto<StatusCommandeEnumVd> {
+public class CommandeDto extends AbstractStatusTrackingDto<CommandeStatusEnumVd> {
 	@Id
 	@Column(name = "COMMANDE_CODE", length = 16, nullable = false, updatable = false)
 	@EqualsAndHashCode.Include()
 	private String commandeCode;
 
-	@Column(name = "DATE_COMMANDE", nullable = false)
-	private LocalDate dateCommande;
+	@Column(name = "COMMANDE_DATE", nullable = false)
+	private LocalDate date;
 
 	@ManyToOne()
 	@JoinColumn(name = "CLIENT_CODE", nullable = false)
-	private TiersDto client;
+	private PartnerDto client;
 
 	@ManyToOne()
 	@JoinColumn(name = "MAGASIN_CODE", nullable = false)
@@ -44,8 +44,8 @@ public class CommandeDto extends AbstractStatusTrackingDto<StatusCommandeEnumVd>
 	private Boolean livree;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUT", nullable = false, length = StatusCommandeEnumVd.COLUMN_LENGTH)
-	private StatusCommandeEnumVd status;
+	@Column(name = "STATUT", nullable = false, length = CommandeStatusEnumVd.COLUMN_LENGTH)
+	private CommandeStatusEnumVd status;
 
 	@Column(name = "DESCRIPTION", length = 255)
 	private String description;

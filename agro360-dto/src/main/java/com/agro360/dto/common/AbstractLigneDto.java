@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.UniteDto;
 import com.agro360.dto.stock.VariantDto;
-import com.agro360.vd.stock.TypeLigneEnumVd;
+import com.agro360.vd.av.LigneTypeEnumVd;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -45,8 +45,8 @@ public abstract class AbstractLigneDto extends AbstractDto {
 	private String variantCode;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TYPE_LIGNE", nullable = false, updatable = false, length = TypeLigneEnumVd.COLUMN_LENGTH)
-	private TypeLigneEnumVd typeLigne;
+	@Column(name = "TYPE_LIGNE", nullable = false, updatable = false, length = LigneTypeEnumVd.COLUMN_LENGTH)
+	private LigneTypeEnumVd typeLigne;
 
 	@Column(name = "DESCRIPTION", length = 128)
 	private String description;

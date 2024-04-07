@@ -4,10 +4,10 @@ spring:
    jpa:
       show-sql: true
       database-platform: org.hibernate.dialect.MySQL8Dialect
-      hibernate.ddl-auto: update
+      hibernate.ddl-auto: none
    datasource:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/agro360_dev
+      url: jdbc:mysql://localhost:3306/agro360_dev2
       username: agro360
       password: Agr0360Today       
    devtools:

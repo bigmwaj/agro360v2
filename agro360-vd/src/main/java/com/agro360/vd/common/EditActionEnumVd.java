@@ -3,27 +3,27 @@ package com.agro360.vd.common;
 public enum EditActionEnumVd {
 
 	/**
-	 * L'information est synchronisée avec la source de donnée(BD)
+	 * Synch the underlined bean with the DB
 	 */
 	SYNC,
 	
 	/**
-	 * L'information doit être créée dans la source de données(BD)
+	 * Create the underlined bean in the DB
 	 */
 	CREATE,
 	
 	/**
-	 * L'information doit être modifiée dans la source de données(BD)
+	 * Update the underlined bean in the DB
 	 */
 	UPDATE,
 	
 	/**
-	 * L'information doit être supprimée dans la source de données(BD)
+	 * Delete the underlined bean from the DB
 	 */
 	DELETE,
 	
 	/**
-	 * Le statut de l'information doit être modifiée dans la source de données(BD)
+	 * Change the underlined bean status in the DB
 	 */
 	CHANGE_STATUS;
 	

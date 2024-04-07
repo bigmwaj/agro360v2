@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { OperationCaisseBean } from 'src/app/backed/bean.stock';
 import { FieldMetadata } from 'src/app/backed/metadata';
-import { TypeOperationEnumVd } from 'src/app/backed/vd.stock';
+import { OperationTypeEnumVd } from 'src/app/backed/vd.stock';
 import { AbstractEditLigneListComponent } from 'src/app/common/component/abstract.edit.ligne.list.component';
 import { SharedModule } from 'src/app/common/shared.module';
 
@@ -55,7 +55,7 @@ export class EditOperationListComponent extends AbstractEditLigneListComponent<O
         let queryParams = new HttpParams();
         queryParams = queryParams.appendAll(this.ownerId);
         queryParams = queryParams.append('articleCode', this.plusVendus.value);        
-        queryParams = queryParams.append('typeOperation', TypeOperationEnumVd.RECETTE);
+        queryParams = queryParams.append('typeOperation', OperationTypeEnumVd.RECETTE);
         this.__add(queryParams);
         
         this.plusVendus.value = '';
@@ -69,7 +69,7 @@ export class EditOperationListComponent extends AbstractEditLigneListComponent<O
         let queryParams = new HttpParams();
         queryParams = queryParams.appendAll(this.ownerId);
         queryParams = queryParams.append('articleCode', this.plusAchetes.value);
-        queryParams = queryParams.append('typeOperation', TypeOperationEnumVd.DEPENSE);
+        queryParams = queryParams.append('typeOperation', OperationTypeEnumVd.DEPENSE);
         this.__add(queryParams);
         
         this.plusAchetes.value = '';

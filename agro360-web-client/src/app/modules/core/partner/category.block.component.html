@@ -1,0 +1,11 @@
+<div *ngIf="bean" class="here">
+    <input-checkbox-field 
+        [field]="bean.selected" 
+        [label]="bean.categoryCode.value + ' ' + bean.description.value">
+    </input-checkbox-field>
+    <div *ngIf="bean.children" style="margin-left:32px;">
+        <div *ngFor="let child of bean.children">
+            <core-partner-category-block [bean] = "child"></core-partner-category-block>
+        </div>
+    </div>
+</div>

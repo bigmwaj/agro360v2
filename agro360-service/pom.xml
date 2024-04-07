@@ -21,7 +21,7 @@
 		
 		<dependency>
 			<groupId>com.agro360</groupId>
-			<artifactId>agro360-dao</artifactId>
+			<artifactId>agro360-operation</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

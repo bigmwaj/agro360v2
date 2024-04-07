@@ -1,0 +1,79 @@
+<h2 mat-dialog-title class="p-3">    
+    <nav aria-label="breadcrumb" style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">Ventes</li>
+            <li class="breadcrumb-item">Commandes</li>
+            <li class="breadcrumb-item active" aria-current="page">Edition</li>
+        </ol>
+    </nav>
+</h2>
+
+<section class="p-3">
+    <div class="row">
+        <div class="col-8">
+            <div class="row">
+                <div class="col-4">  
+                    <select-one-field [field]="bean.type"></select-one-field>                      
+                </div>
+                <div class="col-4">   
+                    <input-text-field [field]="bean.commandeCode"></input-text-field>                       
+                </div>
+                <div class="col-4">    
+                    <input-date-field [field]="bean.date"></input-date-field>                      
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">   
+                    <select-one-field [field]="bean.status"></select-one-field>                     
+                </div>
+                <div class="col-4"> 
+                    <select-one-field [field]="bean.partner.partnerCode" [label]="'Fournisseur'"></select-one-field>                        
+                </div>
+                <div class="col-4">  
+                    <select-one-field [field]="bean.magasin.magasinCode" [label]="'Magasin'"></select-one-field>                      
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">      
+                    <input-textarea-field [field]="bean.description"></input-textarea-field>                  
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="row">
+                <div class="col-12">   
+                    <input-number-field [field]="bean.prixTotal"></input-number-field>
+                </div> 
+                <div class="col-12">   
+                    <select-one-field [field]="bean.compte.compteCode"></select-one-field>
+                </div> 
+                <div class="col-12">
+                    <div class="input-group">
+                        <input-number-field [field]="bean.paiementComptant"></input-number-field>
+                        <button mat-raised-button class="ms-3" (click)="piementComptantTotalAction()">
+                            <mat-icon>save</mat-icon>
+                        </button>
+                    </div>      
+                </div>                     
+            </div>
+        </div>
+    </div>    
+</section>
+
+<section class="mat-elevation-z8 p-3">
+    <h4>
+        Lignes de la commande
+    </h4>
+    <achat-vente-edit-ligne-list *ngIf="bean.lignes" 
+        [lignes]="bean.lignes" 
+        (updateOwnerPrixTotal)="updatePrixTotalEvent()" 
+        [ownerId]="{'commandeCode': bean.commandeCode.value}">
+    </achat-vente-edit-ligne-list>
+</section>
+
+<section class="p-3">
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button cdkFocusInitial (click)="saveAction()">
+        <mat-icon>save</mat-icon>Enregistrer
+    </button>
+</section>
