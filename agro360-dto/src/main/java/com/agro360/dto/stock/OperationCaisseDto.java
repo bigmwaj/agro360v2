@@ -3,8 +3,8 @@ package com.agro360.dto.stock;
 import java.time.LocalDateTime;
 
 import com.agro360.dto.common.AbstractLigneDto;
-import com.agro360.vd.stock.StatusCaisseEnumVd;
-import com.agro360.vd.stock.TypeOperationEnumVd;
+import com.agro360.vd.stock.CaisseStatusEnumVd;
+import com.agro360.vd.stock.OperationTypeEnumVd;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +24,7 @@ public class OperationCaisseDto extends AbstractLigneDto{
 	@ManyToOne()
 	@JoinColumns({
 		@JoinColumn(name = "MAGASIN_CODE", updatable = false, nullable = false, referencedColumnName = "MAGASIN_CODE"),
-		@JoinColumn(name = "AGENT_CODE", updatable = false, nullable = false, referencedColumnName = "AGENT_CODE"),
+		@JoinColumn(name = "Partner_CODE", updatable = false, nullable = false, referencedColumnName = "Partner_CODE"),
 		@JoinColumn(name = "JOURNEE", updatable = false, nullable = false, referencedColumnName = "JOURNEE") 
 	})
 	private CaisseDto caisse;
@@ -34,7 +34,7 @@ public class OperationCaisseDto extends AbstractLigneDto{
 	
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TYPE_OPERATION", nullable = false, length = StatusCaisseEnumVd.COLUMN_LENGTH)
-	private TypeOperationEnumVd typeOperation;
+	@Column(name = "TYPE_OPERATION", nullable = false, length = CaisseStatusEnumVd.COLUMN_LENGTH)
+	private OperationTypeEnumVd typeOperation;
 
 }

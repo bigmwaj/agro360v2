@@ -3,8 +3,8 @@ package com.agro360.dto.stock;
 import java.time.LocalDate;
 
 import com.agro360.dto.common.AbstractStatusTrackingDto;
-import com.agro360.dto.tiers.TiersDto;
-import com.agro360.vd.stock.StatusCaisseEnumVd;
+import com.agro360.dto.core.PartnerDto;
+import com.agro360.vd.stock.CaisseStatusEnumVd;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "STOCK_TBL_CAISSE")
 @IdClass(CaissePk.class)
-public class CaisseDto extends AbstractStatusTrackingDto<StatusCaisseEnumVd> {
+public class CaisseDto extends AbstractStatusTrackingDto<CaisseStatusEnumVd> {
 
 	@Id
 	@ManyToOne()
@@ -31,9 +31,9 @@ public class CaisseDto extends AbstractStatusTrackingDto<StatusCaisseEnumVd> {
 	
 	@Id
 	@ManyToOne()
-	@JoinColumn(name = "AGENT_CODE", nullable = false, updatable = false, referencedColumnName = "TIERS_CODE")
+	@JoinColumn(name = "Partner_CODE", nullable = false, updatable = false, referencedColumnName = "PARTNER_CODE")
 	@EqualsAndHashCode.Include()
-	private TiersDto agent;
+	private PartnerDto Partner;
 
 	@Id
 	@Column(name = "JOURNEE", updatable = false, nullable = false)
@@ -41,8 +41,8 @@ public class CaisseDto extends AbstractStatusTrackingDto<StatusCaisseEnumVd> {
 	private LocalDate journee;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = StatusCaisseEnumVd.COLUMN_LENGTH)
-	private StatusCaisseEnumVd status;
+	@Column(name = "STATUS", nullable = false, length = CaisseStatusEnumVd.COLUMN_LENGTH)
+	private CaisseStatusEnumVd status;
 
 	@Column(name = "NOTE", length = 128)
 	private String note;

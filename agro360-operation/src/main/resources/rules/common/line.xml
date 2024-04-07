@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bean-rules xmlns="http://mouafo.com/xml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://mouafo.com/xml ./../bean-init-rules.xsd"
+	namespace="default" editable="true" visible="true">
+	
+	<editableContraints>
+		<constraint>
+			<rule class="com.agro360.service.rule.common.IsEditableRule"/>
+		</constraint>
+	</editableContraints>
+	
+	<bean name="article" editable="true" visible="true">
+		<field name="articleCode" required="true">
+			<editableContraints>
+				<constraint>
+					<rule class="com.agro360.service.rule.common.IsCreateOrUpdateOperationRule"/>
+				</constraint>
+			</editableContraints>
+		</field>
+	</bean>	
+	
+	<bean name="unite" editable="true" visible="true">
+		<field name="uniteCode" required="true">
+			<editableContraints>
+				<constraint>
+					<rule class="com.agro360.service.rule.common.IsCreateOrUpdateOperationRule"/>
+				</constraint>
+			</editableContraints>
+		</field>	
+	</bean>
+	
+	<field name="ligneId" required="true" editable="false"/>
+	
+	<field name="numero" required="true">
+		<editableContraints>
+			<constraint>
+				<rule class="com.agro360.service.rule.common.IsCreateOrUpdateOperationRule"/>
+			</constraint>
+		</editableContraints>
+	</field>
+	
+	<field name="typeLigne" required="true">
+		<editableContraints>
+			<constraint>
+				<rule class="com.agro360.service.rule.common.IsCreateOrUpdateOperationRule"/>
+			</constraint>
+		</editableContraints>
+	</field>
+	
+	<field name="description">
+		<editableContraints>
+			<constraint>
+				<rule class="com.agro360.service.rule.common.IsCreateOrUpdateOperationRule"/>
+			</constraint>
+		</editableContraints>
+	</field>
+	
+	<field name="quantite">
+		<editableContraints>
+			<constraint>
+				<rule class="com.agro360.service.rule.common.IsCreateOrUpdateOperationRule"/>
+			</constraint>
+		</editableContraints>
+	</field>
+	
+	<field name="prixUnitaire">
+		<editableContraints>
+			<constraint>
+				<rule class="com.agro360.service.rule.common.IsCreateOrUpdateOperationRule"/>
+			</constraint>
+		</editableContraints>
+	</field>
+	
+	<field name="prixTotal" editable="false"/>
+	
+	<field name="variantCode">
+		<editableContraints>
+			<constraint>
+				<rule class="com.agro360.service.rule.common.IsCreateOrUpdateOperationRule"/>
+			</constraint>
+		</editableContraints>
+	</field>
+</bean-rules>

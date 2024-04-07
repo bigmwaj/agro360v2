@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.stock.MagasinDto;
-import com.agro360.vd.production.avicole.StatusCycleEnumVd;
+import com.agro360.vd.production.avicole.CycleStatusEnumVd;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "P_AVI_TBL_CYCLE")
-public class CycleDto extends AbstractStatusTrackingDto<StatusCycleEnumVd> {
+public class CycleDto extends AbstractStatusTrackingDto<CycleStatusEnumVd> {
 
 	@Id
 	@Column(name = "CYCLE_CODE", updatable = false, length = 16)
@@ -27,8 +27,8 @@ public class CycleDto extends AbstractStatusTrackingDto<StatusCycleEnumVd> {
 	private String cycleCode;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = StatusCycleEnumVd.COLUMN_LENGTH)
-	private StatusCycleEnumVd status;
+	@Column(name = "STATUS", nullable = false, length = CycleStatusEnumVd.COLUMN_LENGTH)
+	private CycleStatusEnumVd status;
 
 	@ManyToOne()
 	@JoinColumn(name = "MAGASIN_CODE", nullable = false)

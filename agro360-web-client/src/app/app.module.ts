@@ -11,11 +11,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UIService } from './common/service/ui.service';
-import { AchatModule } from './modules/achat/achat.module';
 import { ProductionAvicoleModule } from './modules/production/avicole/production.avicole.module';
 import { StockModule } from './modules/stock/stock.module';
-import { TiersModule } from './modules/tiers/tiers.module';
 import { VenteModule } from './modules/vente/vente.module';
+import { FinanceModule } from './modules/finance/finance.module';
+import { HomeModule } from './modules/home/home.module';
+import { PartnerModule } from './modules/core/core.module';
+import { AchatVentModule } from './modules/achat-vente/achat-vente.module';
+import { AchatModule } from './modules/achat/achat.module';
+import { PaieModule } from './modules/paie/paie.module';
 
 @NgModule({
     declarations: [
@@ -32,16 +36,19 @@ import { VenteModule } from './modules/vente/vente.module';
         MatSidenavModule,
         MatToolbarModule,
         MatListModule,
-        TiersModule,
+        PartnerModule,
         StockModule,
-        AchatModule,
+        AchatVentModule,
         VenteModule,
-        ProductionAvicoleModule
+        AchatModule,
+        FinanceModule,
+        ProductionAvicoleModule,
+        HomeModule,
+        PaieModule
     ],
     providers: [
         UIService
     ],
-    exports:[],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

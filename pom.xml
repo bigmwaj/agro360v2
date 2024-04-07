@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.0</version>
+		<version>3.2.4</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
@@ -32,7 +32,10 @@
 		<module>agro360-vd</module>
 		<module>agro360-dto</module>
 		<module>agro360-dao</module>
+		<module>agro360-bo</module>
+		<module>agro360-operation</module>
 		<module>agro360-service</module>
+		<module>agro360-form</module>
 		<module>agro360-ws</module>
 	</modules>
 

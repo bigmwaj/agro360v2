@@ -1,5 +1,7 @@
 package com.agro360.ws.controller.common;
 
+import com.agro360.operation.context.ClientContext;
+
 public class AbstractController {
 
 	protected final static String RECORDS_MODEL_KEY = "records";
@@ -23,4 +25,8 @@ public class AbstractController {
 	}
 	
 	protected final static String CHANGE_STATUS_FORM_RN = "change-status-form";
+	
+	protected ClientContext getClientContext() {
+		return new ClientContext();
+	}
 }

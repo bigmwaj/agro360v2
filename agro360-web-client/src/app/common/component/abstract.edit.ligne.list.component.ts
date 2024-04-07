@@ -5,12 +5,11 @@ import { map } from 'rxjs';
 import { AbstractLigneBean } from 'src/app/backed/bean.common';
 import { ArticleBean, ArticleSearchBean, ConversionBean, UniteBean, VariantBean } from 'src/app/backed/bean.stock';
 import { FieldMetadata } from 'src/app/backed/metadata';
+import { LigneTypeEnumVd } from 'src/app/backed/vd.av';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
-import { TypeArticleEnumVd, TypeLigneEnumVd } from 'src/app/backed/vd.stock';
+import { ArticleTypeEnumVd } from 'src/app/backed/vd.stock';
 import { BeanList } from 'src/app/common/component/bean.list';
-import { StockService } from 'src/app/modules/stock/stock.service';
 import { StockUtils } from 'src/app/modules/stock/stock.utils';
-import { CommonUtlis } from '../utils/common.utils';
 
 @Component({
     selector: 'common-edit-ligne-list',
@@ -39,11 +38,11 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
     }
     
     selectUniteFromList(bean: B): boolean{
-        return [ TypeLigneEnumVd.ARTC, TypeLigneEnumVd.SSTD].includes(bean.typeLigne.value);
+        return [ LigneTypeEnumVd.ARTC, LigneTypeEnumVd.SSTD].includes(bean.typeLigne.value);
     }
 
     selectArticleFromList(bean: B): boolean{
-        return [ TypeLigneEnumVd.ARTC, TypeLigneEnumVd.SSTD].includes(bean.typeLigne.value);
+        return [ LigneTypeEnumVd.ARTC, LigneTypeEnumVd.SSTD].includes(bean.typeLigne.value);
     }
 
     protected abstract getCreateFormUrl():string
@@ -59,7 +58,7 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
     override setData(data: B[]){
         super.setData(data);
         data.forEach(e => {
-            this.onSelectTypeLigneEvent(e);
+            this.onSelectLigneTypeEvent(e);
             this.onSelectArticleEvent(e);
             this._updatePrixTotal(e);
         })
@@ -67,7 +66,7 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
     
     override addItem(bean: B){
         super.addItem(bean);
-        this.onSelectTypeLigneEvent(bean);
+        this.onSelectLigneTypeEvent(bean);
         this.onSelectArticleEvent(bean);
         this._updatePrixTotal(bean);
     }
@@ -77,14 +76,14 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
         this.updateOwnerPrixTotal.emit();
     }
     
-    onSelectTypeLigneEvent(bean: B) {
+    onSelectLigneTypeEvent(bean: B) {
         if (bean.typeLigne.value) {
             switch (bean.typeLigne.value) {
-                case TypeLigneEnumVd.ARTC:
+                case LigneTypeEnumVd.ARTC:
                     this.initSelectArticleOptions(bean)
                     break;
 
-                case TypeLigneEnumVd.SSTD:
+                case LigneTypeEnumVd.SSTD:
                     this.initSelectServiceOptions(bean);
                     break;
 
@@ -97,7 +96,7 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
     onSelectArticleEvent(bean: B) {
         bean.unite.uniteCode.valueOptions = {}
         bean.variantCode.valueOptions = {}
-        const types = [TypeLigneEnumVd.ARTC, TypeLigneEnumVd.SSTD];
+        const types = [LigneTypeEnumVd.ARTC, LigneTypeEnumVd.SSTD];
         if( !bean.article.articleCode.value || !types.includes(bean.typeLigne.value) ){
             return;
         }
@@ -163,21 +162,21 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
             });
     }
 
-    private initSelectArticleOrServiceOptions(bean: B, type: TypeArticleEnumVd.ARTC | TypeArticleEnumVd.SSTD){
+    private initSelectArticleOrServiceOptions(bean: B, type: ArticleTypeEnumVd.ARTC | ArticleTypeEnumVd.SSTD){
         const searchQuery = <ArticleSearchBean>{};
-        searchQuery.typeArticle = <FieldMetadata<TypeArticleEnumVd>>{};
-        searchQuery.typeArticle.value = type;
+        searchQuery.type = <FieldMetadata<ArticleTypeEnumVd>>{};
+        searchQuery.type.value = type;
 
         StockUtils.getArticlesAsValueOptions(this.http, searchQuery)
             .subscribe( (data:any) => bean.article.articleCode.valueOptions = data)
     }
 
     private initSelectArticleOptions(bean: B){
-        this.initSelectArticleOrServiceOptions(bean, TypeArticleEnumVd.ARTC);
+        this.initSelectArticleOrServiceOptions(bean, ArticleTypeEnumVd.ARTC);
     }
 
     private initSelectServiceOptions(bean: B){
-        this.initSelectArticleOrServiceOptions(bean, TypeArticleEnumVd.SSTD);
+        this.initSelectArticleOrServiceOptions(bean, ArticleTypeEnumVd.SSTD);
     }
 
     private _updatePrixTotal(bean: B) {

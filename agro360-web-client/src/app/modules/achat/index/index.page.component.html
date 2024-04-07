@@ -1,0 +1,25 @@
+<mat-tab-group>
+    <mat-tab label="Dépenses">
+        <ng-template matTabContent>
+            <finance-transaction-index-page module="achat"></finance-transaction-index-page>
+        </ng-template>
+    </mat-tab>
+
+    <mat-tab label="Commandes">
+        <ng-template matTabContent>
+            <achat-vente-commande-index-page module="achat"></achat-vente-commande-index-page>
+        </ng-template>
+    </mat-tab>
+    
+    <mat-tab label="Factures">
+        <ng-template matTabContent>
+            <achat-vente-facture-index-page module="achat"></achat-vente-facture-index-page>
+        </ng-template>
+    </mat-tab>
+    
+    <mat-tab label="Fournisseur">
+        <ng-template matTabContent>
+            <core-partner-index-page></core-partner-index-page>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>

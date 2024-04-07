@@ -10,7 +10,6 @@ import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 import { DeleteDialogComponent } from './delete.dialog.component';
 import { map } from 'rxjs';
-import { UIService } from 'src/app/common/service/ui.service';
 
 @Component({
     standalone: true,
@@ -29,7 +28,7 @@ export class IndexPageComponent extends BeanList<ArticleBean> implements OnInit 
         'select',
         'articleCode',
         'unite',
-        'typeArticle',
+        'type',
         'description',
         'actions'
     ];

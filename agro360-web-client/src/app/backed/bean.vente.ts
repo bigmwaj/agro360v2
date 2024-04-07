@@ -1,38 +1,38 @@
 import { FieldMetadata } from './metadata';
-import { StatusCommandeEnumVd } from './vd.vente';
+import { CommandeStatusEnumVd } from './vd.vente';
 import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './bean.common';
-import { TiersBean } from './bean.tiers';
+import { PartnerBean } from './bean.core';
 import { MagasinBean } from './bean.stock';
 
 export interface CommandeSearchBean extends AbstractBean {
+	statusIn: FieldMetadata<any>;
 	commandeCode: FieldMetadata<string>;
 	client: FieldMetadata<string>;
-	statusIn: FieldMetadata<any>;
-	dateCommandeFin: FieldMetadata<any>;
-	dateCommandeDebut: FieldMetadata<any>;
 	ville: FieldMetadata<string>;
+	dateDebut: FieldMetadata<any>;
+	dateFin: FieldMetadata<any>;
 };
 
-export interface CommandeBean extends AbstractStatusTrackingBean<StatusCommandeEnumVd> {
-	description: FieldMetadata<string>;
-	plusVendus: FieldMetadata<string>;
-	livree: FieldMetadata<boolean>;
+export interface CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumVd> {
 	magasin: MagasinBean;
-	client: TiersBean;
-	adresse: FieldMetadata<string>;
+	livree: FieldMetadata<boolean>;
 	transportRequis: FieldMetadata<boolean>;
-	ville: FieldMetadata<string>;
-	status: FieldMetadata<StatusCommandeEnumVd>;
-	prixTotal: FieldMetadata<number>;
+	description: FieldMetadata<string>;
+	adresse: FieldMetadata<string>;
+	plusVendus: FieldMetadata<string>;
 	commandeCode: FieldMetadata<string>;
-	dateCommande: FieldMetadata<any>;
 	lignes: Array<LigneBean>;
+	status: FieldMetadata<CommandeStatusEnumVd>;
+	ville: FieldMetadata<string>;
+	date: FieldMetadata<any>;
+	prixTotal: FieldMetadata<number>;
+	client: PartnerBean;
 };
 
 export interface LigneBean extends AbstractLigneBean {
-	nonFacturable: FieldMetadata<boolean>;
-	casierCode: FieldMetadata<string>;
-	nonEmballee: FieldMetadata<boolean>;
 	magasin: MagasinBean;
+	casierCode: FieldMetadata<string>;
+	nonFacturable: FieldMetadata<boolean>;
 	nonCartonnee: FieldMetadata<boolean>;
+	nonEmballee: FieldMetadata<boolean>;
 };

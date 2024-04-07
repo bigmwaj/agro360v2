@@ -1,0 +1,17 @@
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTab.index">
+    <mat-tab label="Liste">
+        <achat-vente-facture-list-page 
+            [editingBeans]="editingBeans"
+            [selectedTab]="selectedTab">
+
+        </achat-vente-facture-list-page>
+    </mat-tab>
+    <ng-container *ngFor="let editingBean of editingBeans">
+        <mat-tab [label]="editingBean.factureCode.value">
+            <achat-vente-facture-edit-tab [bean]="editingBean"></achat-vente-facture-edit-tab>
+        </mat-tab>
+    </ng-container>
+  </mat-tab-group>
+
+
+

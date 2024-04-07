@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.stock.CasierDto;
 import com.agro360.dto.stock.MagasinDto;
-import com.agro360.vd.achat.StatusReceptionEnumVd;
+import com.agro360.vd.achat.ReceptionStatusEnumVd;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "ACHAT_TBL_BC_LIGNE_RECEP")
-public class ReceptionDto extends AbstractStatusTrackingDto<StatusReceptionEnumVd> {
+public class ReceptionDto extends AbstractStatusTrackingDto<ReceptionStatusEnumVd> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "RECEPTION_ID", nullable = false, updatable = false)
@@ -38,8 +38,8 @@ public class ReceptionDto extends AbstractStatusTrackingDto<StatusReceptionEnumV
 	private String description;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = StatusReceptionEnumVd.COLUMN_LENGTH)
-	private StatusReceptionEnumVd status;
+	@Column(name = "STATUS", nullable = false, length = ReceptionStatusEnumVd.COLUMN_LENGTH)
+	private ReceptionStatusEnumVd status;
 
 	@Column(name = "PRIX_UNITAIRE", nullable = false, precision = 16, scale = 4)
 	private BigDecimal prixUnitaire;

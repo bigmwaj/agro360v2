@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<models xmlns="http://mouafo.com/xml"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://mouafo.com/xml ./cycle-metadata-model.xsd">
+	<metadata 		code="salaire"		ordre="10"		inputType="salaire"		libelle="Salaire journalier d'un intervenant">		<estimationSalaires>			<estimationSalaire role='Superviseur Général' salaire='4000' taux='50'/>			<estimationSalaire role='Chef de Ferme' salaire='4000' taux='50'/>			<estimationSalaire role='Préposé(e)-1' salaire='1150' taux='100'/>			<estimationSalaire role='Préposé(e)-2' salaire='1150' taux='100'/>		</estimationSalaires>		<description>			<![CDATA[				Pour chaque employé, on doit préciser son salaire journalier et son taux d'occupation pour le cycle concerné. On pourra avoir par exemple:				<table class='table bordered table-sm'>					<thead>						<tr>							<th>#</th>							<th>Rôle/Employé</th>							<th>Salaire Jour(CFA)</th>							<th>Taux occupation(en %)</th>						</tr>					</thead>					<tbody>						<tr>							<td>1</td>							<td>Superviseur Général</td>							<td>4000</td>							<td>50</td>						</tr>						<tr>							<td>2</td>							<td>Chef de ferme</td>							<td>4000</td>							<td>50</td>						</tr>						<tr>							<td>3</td>							<td>Préposé(e) 1</td>							<td>1150</td>							<td>100</td>						</tr>						<tr>							<td>4</td>							<td>Préposé(e) 2</td>							<td>1150</td>							<td>50</td>						</tr>					<tbody>				</table>				NB: Si un employé s'occupe de 2 fermes de 5 000 et 10 000 sujets respectifs, 				alors son taux d'occupation pour la ferme de 5 000 est de (5 000/(10 000 + 5 000))*100 = 33,33%			]]>		</description>
+	</metadata>
+	<metadata 
+		code="consommation-aliment"
+		ordre="20"
+		inputType="consommation-aliment"
+		libelle="Consommation journalière d'aliments">
+		<estimationConsommationAliments>
+			<estimationConsommationAliment debut='S1' fin='S2' quantite='30'></estimationConsommationAliment>
+			<estimationConsommationAliment debut='S3' fin='S5' quantite='50'></estimationConsommationAliment>
+			<estimationConsommationAliment debut='S6' fin='S15' quantite='70'></estimationConsommationAliment>
+			<estimationConsommationAliment debut='S16' fin='S21' quantite='90'></estimationConsommationAliment>
+			<estimationConsommationAliment debut='S22' fin='S70' quantite='100'></estimationConsommationAliment>
+			<estimationConsommationAliment debut='S71' fin='S100' quantite='110'></estimationConsommationAliment>
+		</estimationConsommationAliments>
+		<description>
+			<![CDATA[
+				 Les intervalles sont configurés en semaine. On peut avoir par exemple
+				<table class='table bordered table-sm'>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Début</th>
+						<th>Fin</th>
+						<th>Quantité(g/poussin/jour)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>S1</td>
+						<td>S2</td>
+						<td>50</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>S2</td>
+						<td>S5</td>
+						<td>75</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>S5</td>
+						<td>S50</td>
+						<td>80</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>S50</td>
+						<td>S10</td>
+						<td>110</td>
+					</tr>
+				<tbody>
+			</table>
+			
+			NB: Les semaines doivent être contiguës.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="variete-aliment"
+		ordre="30"
+		inputType="variete-aliment"
+		libelle="Variétés d'aliments requis">
+		<estimationVarieteAliments>
+			<estimationVarieteAliment debut='S1' fin='S2' variete='demarrage' pu='16500'></estimationVarieteAliment>
+			<estimationVarieteAliment debut='S3' fin='S5' variete='croissance 1' pu='14000'></estimationVarieteAliment>
+			<estimationVarieteAliment debut='S6' fin='S15' variete='croissance 2' pu='14500'></estimationVarieteAliment>
+			<estimationVarieteAliment debut='S16' fin='S21' variete='croissance 3' pu='15000'></estimationVarieteAliment>
+			<estimationVarieteAliment debut='S22' fin='S120' variete='ponte' pu='14500'></estimationVarieteAliment>
+			<estimationVarieteAliment debut='S121' fin='S180' variete='reforme' pu='15500'></estimationVarieteAliment>
+		</estimationVarieteAliments>
+		<description>
+			<![CDATA[
+				Il s'agit de la variété des aliments à donner aux poules tout au long de leur cycle de vie dans le production.
+				Le tableau ci-dessous en est une illustration:
+	
+				<table class='table bordered table-sm'>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Début</th>
+						<th>Fin</th>
+						<th>Variété</th>
+						<th>Prix(sac 50kg)</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>S1</td>
+						<td>S2</td>
+						<td>Démarrage</td>
+						<td>16500</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>S2</td>
+						<td>S5</td>
+						<td>Croissance 1</td>
+						<td>14000</td>
+					</tr>
+					<tr>
+						<td>3</td>
+						<td>S5</td>
+						<td>S19</td>
+						<td>14500</td>
+						<td>Croissance 2</td>
+					</tr>
+					<tr>
+						<td>4</td>
+						<td>S19</td>
+						<td>S72</td>
+						<td>15000</td>
+						<td>Ponte</td>
+					</tr>
+					<tr>
+						<td>5</td>
+						<td>S72</td>
+						<td>S100</td>
+						<td>16500</td>
+						<td>Reformation</td>
+					</tr>
+				<tbody>
+			</table>
+			NB: Les semaines doivent être contiguës.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="prophylactique"
+		ordre="40"
+		inputType="prophylactique"
+		libelle="Vaccins et autres produits phytosanitaire">
+		<estimationProphylactiques>
+			<estimationProphylactique type="vaccin" semaine='S1' libelle='Vaccin 1' quantite='500' pu='19500'/>
+			<estimationProphylactique type="vaccin" semaine='S6' libelle='Vaccin 3' quantite='500' pu='16500'/>
+			<estimationProphylactique type="vaccin" semaine='S16' libelle='Vaccin 4' quantite='500' pu='16000'/>
+			<estimationProphylactique type="vaccin" semaine='S120' libelle='Vaccin 6' quantite='500' pu='17500'/>
+			<estimationProphylactique type="phyto" semaine='S3' libelle='Vaccin 2' quantite='500' pu='17500'/>
+			<estimationProphylactique type="phyto" semaine='S22' libelle='Vaccin 5' quantite='500' pu='16500'/>
+		</estimationProphylactiques>
+		<description>
+			<![CDATA[
+				Il s'agit des vaccins et des produits phytosanitaire à donner aux poules tout au long de leur cycle de vie dans le production.
+				Le tableau ci-dessous en est une illustration:
+	
+				<table class='table bordered table-sm'>
+				<thead>
+					<tr>
+						<th>Semaine</th>
+						<th>Type</th>
+						<th>Description</th>
+						<th>Variété</th>
+						<th>Quantité</th>
+						<th>Prix Unitaire</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>S1</td>
+						<td>Vaccin</td>
+						<td>Description</td>
+						<td>ABC</td>
+						<td>500</td>
+						<td>25000</td>
+					</tr>
+					<tr>
+						<td>S1</td>
+						<td>Phyto</td>
+						<td>Description</td>
+						<td>ABC</td>
+						<td>500</td>
+						<td>25000</td>
+					</tr>
+				<tbody>
+			</table>
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="cout-transport-poussin"
+		ordre="50"
+		inputType="input"
+		value="300"
+		libelle="Cout de transport des poussins">
+		<description>
+			<![CDATA[
+				
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="prix-poussin"
+		ordre="60"
+		inputType="input"
+		value="850"
+		libelle="Prix d'achat d'un poussin">
+		<description>
+			<![CDATA[
+				Estimation du prix en CFA d'un poussin pondeuse au début du cycle
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="duree-chauffage"
+		ordre="70"
+		inputType="input"
+		value="3"
+		libelle="Durée(en semaine) du chauffage des poussin">
+		<description>
+			<![CDATA[
+				Nombre de semaines dont les poussins pondeuses doivent être chauffés. On a généralement 3 semaines.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="duree-entree-ponte"
+		ordre="80"
+		inputType="input"
+		value="20"
+		libelle="Durée(en semaine) avant l'entrée en ponte">
+		<description>
+			<![CDATA[
+				Nombre de semaines depuis le début(Jour 1) qui doit s'écouler avant qu'on commence à avoir 1 œuf pondu.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="duree-ponte"
+		ordre="90"
+		inputType="input"
+		value="90"
+		libelle="Durée(en semaine) de la ponte">
+		<description>
+			<![CDATA[
+				Nombre de semaines de ponte
+			]]>
+		</description>
+	</metadata>	
+	<metadata 
+		code="cout-energie-jour"
+		ordre="100"
+		inputType="input"
+		value="250"
+		libelle="Coût journalier de l'énergie">
+		<description>
+			<![CDATA[
+				Coût journalier en CFA de l'énergie(électricité ou essence) que l'on estime utilisé par jour.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="cout-bois-hebdo"
+		ordre="110"
+		inputType="input"
+		value="5000"
+		libelle="Coût hebdo. du bois de chauffage">
+		<description>
+			<![CDATA[
+				C'est le prix du bois de chauffage pour 500 sujets par semaine.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="cout-transport-bois-hebdo"
+		ordre="120"
+		inputType="input"
+		value="10"
+		libelle="Coût transport hebdo. du bois de chauffage">
+		<description>
+			<![CDATA[
+				C'est le prix du transport  du bois de chauffage pour 500 sujets par semaine.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="sujets-par-sac-copeau"
+		ordre="130"
+		inputType="input"
+		value="10"
+		libelle="Nombre de sujets par sac de copeau">
+		<description>
+			<![CDATA[
+				C'est le nombre de sujets pour un sac de copeau à répendre sur le sol pour fiente pour un tour
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="cout-sac-copeau"
+		ordre="140"
+		inputType="input"
+		value="1500"
+		libelle="Coût sac de copeau">
+		<description>
+			<![CDATA[
+				C'est le coût moyen pour avoir un sac de copeau à la ferme
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="taux-prod-fiente-par-sac-aliment"
+		ordre="150"
+		inputType="input"
+		value="60"
+		libelle="Taux(en %) de production de fiente(A partir des aliments">
+		<description>
+			<![CDATA[
+				C'est le pourcentage d'aliment qui est transformé en fiente pendant la production. 
+				Il devrait permettre de calculer le nombre de sac de fiente à partir du nombre de sac d'aliment.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="taux-prod-fiente-par-sac-copeau"
+		ordre="160"
+		inputType="input"
+		value="60"
+		libelle="Taux(en %) de production de fiente(A partir du copeau">
+		<description>
+			<![CDATA[
+				C'est le pourcentage de copeau qui est transformé en fiente pendant la production. 
+				Il devrait permettre de calculer le nombre de sac de fiente à partir du nombre de sac d'aliment.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="cout-emballage-sac-fiente"
+		ordre="170"
+		inputType="input"
+		value="100"
+		libelle="Coût d'achat d'un sac d'emballage de fiante">
+		<description>
+			<![CDATA[
+				C'est le prix du sac servant à emballer un sac de fiente
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="nombre-sortie-fiente"
+		ordre="180"
+		inputType="input"
+		value="3"
+		libelle="Coût d'achat d'un sac d'emballage de fiante">
+		<description>
+			<![CDATA[
+				On peut généralement sortir les fientes 2 fois mais on peut aussi le faire 3 fois. 
+				Si on indique 2, alors on retire en milieu de la production et à la fin. 
+				Si c'est trois, alors on retire à chaque partner de la durée de la production.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="cout-emballage-carton-oeuf"
+		ordre="190"
+		inputType="input"
+		value="1000"
+		libelle="Coût d'achat d'un carton d'emballage d'oeuf">
+		<description>
+			<![CDATA[
+				C'est le prix d'un carton servant à emballer 12 alvéoles d'oeufs
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="cout-emballage-paquet-alveole"
+		ordre="200"
+		inputType="input"
+		value="7500"
+		libelle="Coût d'achat paquet(150 emballage) d'alvéole d'oeuf">
+		<description>
+			<![CDATA[
+				C'est le prix d'un paquet de 150 qui est généralement de 7 500 F CFA
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="prix-vente-moyen-fiente"
+		ordre="210"
+		inputType="input"
+		value="3500"
+		libelle="Prix moyen de vente d'un sac de fiente">
+		<description>
+			<![CDATA[
+				Prix de sac de fiente. C'est estimé à 3 500 F CFA
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="prix-vente-moyen-alveole-oeuf"
+		ordre="220"
+		inputType="input"
+		value="1500"
+		libelle="Prix moyen de vente d'un alvérole d'oeuf">
+		<description>
+			<![CDATA[
+				Prix d'un alvéole de 30 œufs. On peut estimer à 1 500 F CFA en moyenne
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="taux-casse"
+		ordre="230"
+		inputType="input"
+		value="1.5"
+		libelle="Taux(en %) de casse d'oeuf pendant la ponte">
+		<description>
+			<![CDATA[
+				Le taux de casse permet d'estimer le nombre d'œufs cassés sur le nombre d'œufs pondus en une journée. Il est généralement de 1.5%.
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="duree-reformation"
+		ordre="240"
+		inputType="input"
+		value="2"
+		libelle="Durée(en semaine) pour la reformation des pondeuses">
+		<description>
+			<![CDATA[
+				Nombre de semaines pour réformer les pondeuses pour en faire des chaises.
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="prix-moyen-poulet-reforme"
+		ordre="250"
+		inputType="input"
+		value="1300"
+		libelle="Prix moyen de vente d'une pondeuse reformée">
+		<description>
+			<![CDATA[
+				Il est estimé à 1 300 F CFA
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="cout-transport-aliment"
+		ordre="260"
+		inputType="input"
+		value="150"
+		libelle="Coût de transport d'un sac de 50kg d'aliment">
+		<description>
+			<![CDATA[
+				Il s'agit ici du coût estimé du transport d'un sac de 50 Kg d'aliments
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="cout-acheminement-carton-oeuf"
+		ordre="270"
+		inputType="input"
+		value="1000"
+		libelle="Coût d'acheminement d'un carton d'oeuf">
+		<description>
+			<![CDATA[
+				C'est l'ensemble des coûts nécessaires pour acheminer un carton d'œuf jusqu'au distributeur. 
+				Il peut inclure le coût de manutention, le coût de transport.
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="cout-hebdo-suivi-sanitaire"
+		ordre="280"
+		inputType="input"
+		value="25000"
+		libelle="Coût hebdo du suivi sanitaire">
+		<description>
+			<![CDATA[
+				C'est l'ensemble des coûts nécessaires pour le suivi sanitaire par le gouvernement. 
+				On peut l'estimer à 25 000 F CFA par semaine.
+				Il ne s'applique que lorsqu'on atteint la ponte.
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="taux-deces"
+		ordre="290"
+		inputType="input"
+		value="2"
+		libelle="Taux(en %) de décès">
+		<description>
+			<![CDATA[
+				Une fois le nombre de décès estimé, on l'étale sur chaque 4 semaines d'élevage. Par exemple, si on a un cheptel de 4000 sujets, 
+				en appliquant le taux de décès, on obtient 80 sujets qui peuvent potentiellement mourir. Si on estime la durée avant la 
+				reformation de 2 ans qui correspondent à 108 semaines, alors on aura 108/4 = 27 pour 
+				enregistrer les décès estimés soit environ 3 décès toutes les 4 semaines.
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="taux-maximal-ponte"
+		ordre="300"
+		inputType="input"
+		value="93"
+		libelle="Taux(en %) maximal de ponte">
+		<description>
+			<![CDATA[
+				Il s'agit du taux espéré pour avoir une activité réussie. Il peut être de 95%
+			]]>
+		</description>
+	</metadata>
+	
+	<metadata 
+		code="taux-progression-ponte"
+		ordre="310"
+		inputType="input"
+		value="6.7"
+		libelle="Taux(en %) de progression de ponte">
+		<description>
+			<![CDATA[
+				Une fois la semaine de ponte arrivée, ce taux permet de calculer 
+				la ponte progressive jusqu'à atteindre le taux maximal de ponte. On estime atteindre le taux 
+				maximal après un mois du début de la ponte. Pour atteindre ce taux tout en estimant un progression linéaire, 
+				on peut juste faire TAUX_MAX / 30 = T. Si on indique un taux inférieur à T, 
+				alors l'atteinte du taux max pourra prendre plus d'un mois. Si le taux est supérieur, on pourra l'atteindre avant un mois.
+			]]>
+		</description>
+	</metadata>
+	<metadata 
+		code="portion-investissement"
+		ordre="320"
+		inputType="input"
+		value="0"
+		libelle="Portion des investissements à amortir pendant le cycle de production">
+		<description>
+			<![CDATA[
+				Pendant un cycle de production on mobilise des investissements. Il peut s'agir d'un local loué 
+				dans ce cas il faut indiquer le montant total pendant le cycle
+			]]>
+		</description>
+	</metadata>
+</models>

@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "tiers",
+			"name": "partner",
 			"item": [
 				{
 					"name": "category",
@@ -41,14 +41,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/tiers/category?deep=2",
+									"raw": "http://localhost:8080/partner/category?deep=2",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
-										"tiers",
+										"partner",
 										"category"
 									],
 									"query": [
@@ -90,14 +90,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/tiers/category/children/ROOT",
+									"raw": "http://localhost:8080/partner/category/children/ROOT",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
-										"tiers",
+										"partner",
 										"category",
 										"children",
 										"ROOT"
@@ -132,14 +132,14 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/tiers/category/edit",
+									"raw": "http://localhost:8080/partner/category/edit",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
-										"tiers",
+										"partner",
 										"category",
 										"edit"
 									]
@@ -150,7 +150,7 @@
 					]
 				},
 				{
-					"name": "tiers",
+					"name": "partner",
 					"item": [
 						{
 							"name": "index",
@@ -173,7 +173,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n   \"tiersCode\":{\n       \"value\":\"MOUAF\"\n   },\n   \"tiersName\":{\n       \"value\":\"Moua\"\n   }\n}",
+									"raw": "{\n   \"partnerCode\":{\n       \"value\":\"MOUAF\"\n   },\n   \"partnerName\":{\n       \"value\":\"Moua\"\n   }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -181,15 +181,15 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/tiers/tiers",
+									"raw": "http://localhost:8080/partner/partner",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
-										"tiers",
-										"tiers"
+										"partner",
+										"partner"
 									]
 								}
 							},
@@ -224,15 +224,15 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/tiers/tiers/A.MOUAFO",
+									"raw": "http://localhost:8080/partner/partner/A.MOUAFO",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
-										"tiers",
-										"tiers",
+										"partner",
+										"partner",
 										"A.MOUAFO"
 									]
 								}
@@ -257,7 +257,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"action\": \"UPDATE\",\n    \"tiersCode\": {\n        \"value\": \"A.MOUAFO\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"tiersType\": {\n        \"value\": \"PERSON\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"status\": {\n        \"value\": \"ACTIVE\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"tiersName\": {\n        \"value\": \"Alain Joel Mouafo Wakem\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"name\": {\n        \"value\": \"\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"firstname\": {\n        \"value\": \"Alain Joel\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"lastname\": {\n        \"value\": \"Mouafo Wakem\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"title\": {\n        \"value\": \"MR\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"phone\": {\n        \"value\": \"4182552407\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"email\": {\n        \"value\": \"alainmouafo@gmail.com\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"address\": {\n        \"value\": \"301-6810 Rue de pertuis\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"city\": {\n        \"value\": \"Dschang\"\n    },\n    \"country\": {\n        \"value\": \"Cameroun\"\n    },\n    \"categoriesHierarchie\": {\n        \"action\": null,\n        \"categoryCode\": {\n            \"value\": \"ROOT\"\n        },\n        \"description\": {\n            \"value\": \"Catégorie racine\"\n        },\n        \"selected\": {\n            \"value\": null\n        },\n        \"children\": [\n            {\n                \"categoryCode\": {\n                    \"value\": \"EMPLOYE\"\n                },\n                \"description\": {\n                    \"value\": \"Employé\"\n                },\n                \"selected\": {\n                    \"value\": true\n                }\n            },\n            {\n                \"categoryCode\": {\n                    \"value\": \"FOURNISSEUR\"\n                },\n                \"description\": {\n                    \"value\": \"Fournisseur\"\n                },\n                \"selected\": {\n                    \"value\": true\n                }\n            },\n            {\n                \"categoryCode\": {\n                    \"value\": \"CLIENT\"\n                },\n                \"description\": {\n                    \"value\": \"Client\"\n                },\n                \"selected\": {\n                    \"value\": false\n                }\n            }\n        ]\n    }\n}",
+									"raw": "{\n    \"action\": \"UPDATE\",\n    \"partnerCode\": {\n        \"value\": \"A.MOUAFO\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"partnerType\": {\n        \"value\": \"PERSON\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"status\": {\n        \"value\": \"ACTIVE\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"partnerName\": {\n        \"value\": \"Alain Joel Mouafo Wakem\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"name\": {\n        \"value\": \"\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"firstname\": {\n        \"value\": \"Alain Joel\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"lastname\": {\n        \"value\": \"Mouafo Wakem\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"title\": {\n        \"value\": \"MR\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"phone\": {\n        \"value\": \"4182552407\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"email\": {\n        \"value\": \"alainmouafo@gmail.com\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"address\": {\n        \"value\": \"301-6810 Rue de pertuis\",\n        \"required\": false,\n        \"editable\": false,\n        \"maxLength\": null,\n        \"max\": null,\n        \"min\": null,\n        \"valueOptions\": null,\n        \"tooltip\": null,\n        \"icon\": null\n    },\n    \"city\": {\n        \"value\": \"Dschang\"\n    },\n    \"country\": {\n        \"value\": \"Cameroun\"\n    },\n    \"categoriesHierarchie\": {\n        \"action\": null,\n        \"categoryCode\": {\n            \"value\": \"ROOT\"\n        },\n        \"description\": {\n            \"value\": \"Catégorie racine\"\n        },\n        \"selected\": {\n            \"value\": null\n        },\n        \"children\": [\n            {\n                \"categoryCode\": {\n                    \"value\": \"EMPLOYE\"\n                },\n                \"description\": {\n                    \"value\": \"Employé\"\n                },\n                \"selected\": {\n                    \"value\": true\n                }\n            },\n            {\n                \"categoryCode\": {\n                    \"value\": \"FOURNISSEUR\"\n                },\n                \"description\": {\n                    \"value\": \"Fournisseur\"\n                },\n                \"selected\": {\n                    \"value\": true\n                }\n            },\n            {\n                \"categoryCode\": {\n                    \"value\": \"CLIENT\"\n                },\n                \"description\": {\n                    \"value\": \"Client\"\n                },\n                \"selected\": {\n                    \"value\": false\n                }\n            }\n        ]\n    }\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -265,15 +265,15 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:8080/tiers/tiers/edit",
+									"raw": "http://localhost:8080/partner/partner/edit",
 									"protocol": "http",
 									"host": [
 										"localhost"
 									],
 									"port": "8080",
 									"path": [
-										"tiers",
-										"tiers",
+										"partner",
+										"partner",
 										"edit"
 									]
 								}
@@ -796,7 +796,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"action\": \"CREATE\",\n    \"commandeCode\": {\n        \"value\": \"C001\"\n    },\n    \"description\": {\n        \"value\": \"Description commande\"\n    },\n    \"dateCommande\": {\n        \"value\": \"2023-07-27T20:17:46.384Z\"\n    },\n    \"statut\": {\n        \"value\": \"BRLN\"\n    },\n    \"ville\": {\n        \"value\": \"Douala\"\n    },\n    \"adresse\": {\n        \"value\": \"Bonaberi\"\n    },\n    \"transportRequis\": {\n        \"value\": true\n    },\n    \"livree\": {\n        \"value\": false\n    },\n    \"client\": {\n        \"tiersCode\": {\n            \"value\": \"A.MOUAFO\"\n        }\n    },\n    \"magasin\": {\n        \"magasinCode\": {\n            \"value\": \"CENTRAL\"\n        }\n    },\n    \"lignes\": [\n        {\n            \"action\": \"CREATE\",\n            \"unite\": {\n                \"uniteCode\": {\n                    \"value\": \"KG\"\n                }\n            },\n            \"article\": {\n                \"articleCode\": {\n                    \"value\": \"TEST\"\n                }\n            },\n            \"variant\": {\n                \"variantCode\": {\n                    \"value\": \"V1\"\n                }\n            },\n            \"nonFacturable\": {\n                \"value\":false\n            },\n            \"nonEmballee\": {\n                \"value\":false\n            },\n            \"nonCartonnee\": {\n                \"value\":false\n            },\n            \"numero\": {\n                \"value\":10\n            },\n            \"typeLigne\": {\n                \"value\":\"ARTC\"\n            },\n            \"lineId\": {\n                \"value\":null\n            },\n            \"prixUnitaire\": {\n                \"value\":100\n            },\n            \"quantite\": {\n                \"value\":10\n            },\n            \"description\": {\n                \"value\":\"Détail 1\"\n            }\n        }\n    ]\n\n    \n}",
+									"raw": "{\n    \"action\": \"CREATE\",\n    \"commandeCode\": {\n        \"value\": \"C001\"\n    },\n    \"description\": {\n        \"value\": \"Description commande\"\n    },\n    \"dateCommande\": {\n        \"value\": \"2023-07-27T20:17:46.384Z\"\n    },\n    \"statut\": {\n        \"value\": \"BRLN\"\n    },\n    \"ville\": {\n        \"value\": \"Douala\"\n    },\n    \"adresse\": {\n        \"value\": \"Bonaberi\"\n    },\n    \"transportRequis\": {\n        \"value\": true\n    },\n    \"livree\": {\n        \"value\": false\n    },\n    \"client\": {\n        \"partnerCode\": {\n            \"value\": \"A.MOUAFO\"\n        }\n    },\n    \"magasin\": {\n        \"magasinCode\": {\n            \"value\": \"CENTRAL\"\n        }\n    },\n    \"lignes\": [\n        {\n            \"action\": \"CREATE\",\n            \"unite\": {\n                \"uniteCode\": {\n                    \"value\": \"KG\"\n                }\n            },\n            \"article\": {\n                \"articleCode\": {\n                    \"value\": \"TEST\"\n                }\n            },\n            \"variant\": {\n                \"variantCode\": {\n                    \"value\": \"V1\"\n                }\n            },\n            \"nonFacturable\": {\n                \"value\":false\n            },\n            \"nonEmballee\": {\n                \"value\":false\n            },\n            \"nonCartonnee\": {\n                \"value\":false\n            },\n            \"numero\": {\n                \"value\":10\n            },\n            \"typeLigne\": {\n                \"value\":\"ARTC\"\n            },\n            \"lineId\": {\n                \"value\":null\n            },\n            \"prixUnitaire\": {\n                \"value\":100\n            },\n            \"quantite\": {\n                \"value\":10\n            },\n            \"description\": {\n                \"value\":\"Détail 1\"\n            }\n        }\n    ]\n\n    \n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -933,7 +933,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"action\": \"CREATE\",\n    \"bonCommandeCode\": {\n        \"value\": \"C001\"\n    },\n    \"description\": {\n        \"value\": \"Description bon commande\"\n    },\n    \"dateBonCommande\": {\n        \"value\": \"2023-07-27T20:17:46.384Z\"\n    },\n    \"statut\": {\n        \"value\": \"BRLN\"\n    },\n    \"ville\": {\n        \"value\": \"Douala\"\n    },\n    \"adresse\": {\n        \"value\": \"Bonaberi\"\n    },\n    \"livraison\": {\n        \"value\": false\n    },\n    \"fournisseur\": {\n        \"tiersCode\": {\n            \"value\": \"A.MOUAFO\"\n        }\n    },\n    \"magasin\": {\n        \"magasinCode\": {\n            \"value\": \"CENTRAL\"\n        }\n    },\n    \"lignes\": [\n        {\n            \"action\": \"CREATE\",\n            \"unite\": {\n                \"uniteCode\": {\n                    \"value\": \"KG\"\n                }\n            },\n            \"article\": {\n                \"articleCode\": {\n                    \"value\": \"TEST\"\n                }\n            },\n            \"variant\": {\n                \"variantCode\": {\n                    \"value\": \"V1\"\n                }\n            },\n            \"numero\": {\n                \"value\":10\n            },\n            \"typeLigne\": {\n                \"value\":\"ARTC\"\n            },\n            \"lineId\": {\n                \"value\":null\n            },\n            \"prixUnitaire\": {\n                \"value\":100\n            },\n            \"quantite\": {\n                \"value\":10\n            },\n            \"description\": {\n                \"value\":\"Détail 1\"\n            }\n        }\n    ]\n\n    \n}",
+									"raw": "{\n    \"action\": \"CREATE\",\n    \"bonCommandeCode\": {\n        \"value\": \"C001\"\n    },\n    \"description\": {\n        \"value\": \"Description bon commande\"\n    },\n    \"dateBonCommande\": {\n        \"value\": \"2023-07-27T20:17:46.384Z\"\n    },\n    \"statut\": {\n        \"value\": \"BRLN\"\n    },\n    \"ville\": {\n        \"value\": \"Douala\"\n    },\n    \"adresse\": {\n        \"value\": \"Bonaberi\"\n    },\n    \"livraison\": {\n        \"value\": false\n    },\n    \"fournisseur\": {\n        \"partnerCode\": {\n            \"value\": \"A.MOUAFO\"\n        }\n    },\n    \"magasin\": {\n        \"magasinCode\": {\n            \"value\": \"CENTRAL\"\n        }\n    },\n    \"lignes\": [\n        {\n            \"action\": \"CREATE\",\n            \"unite\": {\n                \"uniteCode\": {\n                    \"value\": \"KG\"\n                }\n            },\n            \"article\": {\n                \"articleCode\": {\n                    \"value\": \"TEST\"\n                }\n            },\n            \"variant\": {\n                \"variantCode\": {\n                    \"value\": \"V1\"\n                }\n            },\n            \"numero\": {\n                \"value\":10\n            },\n            \"typeLigne\": {\n                \"value\":\"ARTC\"\n            },\n            \"lineId\": {\n                \"value\":null\n            },\n            \"prixUnitaire\": {\n                \"value\":100\n            },\n            \"quantite\": {\n                \"value\":10\n            },\n            \"description\": {\n                \"value\":\"Détail 1\"\n            }\n        }\n    ]\n\n    \n}",
 									"options": {
 										"raw": {
 											"language": "json"

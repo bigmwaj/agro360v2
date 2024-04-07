@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BeanTools } from 'src/app/common/bean.tools';
-import { TiersUtils } from '../../tiers/tiers.utils';
+import { CoreUtils } from '../../core/core.utils';
 import { CaisseBean, CaisseIdBean } from 'src/app/backed/bean.stock';
 import { StockService } from '../stock.service';
-import { TypeOperationEnumVd } from 'src/app/backed/vd.stock';
+import { OperationTypeEnumVd } from 'src/app/backed/vd.stock';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
 import { map } from 'rxjs';
 import { SharedModule } from 'src/app/common/shared.module';
@@ -51,7 +51,7 @@ export class EditPageComponent implements OnInit {
             const prms: any = {};
             this.route.paramMap.subscribe(params => {
                 prms.magasin = params.get('magasin');
-                prms.agent = params.get('agent');
+                prms.Partner = params.get('Partner');
                 prms.journee = params.get('journee');
                 this.http
                     .get<any>(`stock/caisse/edit-form`, { params: this.service.encodeQuery(prms) })
@@ -70,7 +70,7 @@ export class EditPageComponent implements OnInit {
     getEncodedOwnerId(bean: CaisseBean): any {
         const query = this.service.encodeQuery({
             magasin: bean.magasin.magasinCode.value,
-            agent: bean.agent.tiersCode.value,
+            Partner: bean.Partner.partnerCode.value,
             journee: bean.journee.value
         });
 
@@ -134,7 +134,7 @@ export class EditPageComponent implements OnInit {
                 '/stock/caisse',
                 'edit', 
                 id.magasin, 
-                id.agent, 
+                id.Partner, 
                 id.journee
             ]
         )
@@ -156,11 +156,11 @@ export class EditPageComponent implements OnInit {
     }
 
     private initSelectClientOptions() {
-        TiersUtils.getTiersAsValueOptions(this.http, {})
-            .subscribe(e => this.bean.agent.tiersCode.valueOptions = e)
+        CoreUtils.getPartnerAsValueOptions(this.http, {})
+            .subscribe(e => this.bean.Partner.partnerCode.valueOptions = e)
     }
 
-    private calculerTotalOperation(ope: TypeOperationEnumVd): number {
+    private calculerTotalOperation(ope: OperationTypeEnumVd): number {
         return this.bean.operations
             .filter(e => e.typeOperation.value == ope)
             .filter(e => e.prixUnitaire.value != null)
@@ -171,8 +171,8 @@ export class EditPageComponent implements OnInit {
     }
 
     private initSolde() {
-        this.bean.depense.value = this.calculerTotalOperation(TypeOperationEnumVd.DEPENSE);
-        this.bean.recette.value = this.calculerTotalOperation(TypeOperationEnumVd.RECETTE);
+        this.bean.depense.value = this.calculerTotalOperation(OperationTypeEnumVd.DEPENSE);
+        this.bean.recette.value = this.calculerTotalOperation(OperationTypeEnumVd.RECETTE);
         this.bean.solde.value = this.bean.recette.value - this.bean.depense.value;
     }
 }

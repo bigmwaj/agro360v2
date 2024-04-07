@@ -1,0 +1,55 @@
+<h2 class="p-3">{{pageTitle}}</h2>
+<section class="p-3">
+    <div class="row">
+        <div class="col-9">
+            <h4>
+                Détails du partenaire
+            </h4>
+            <div class="row">
+                <div class="col-3">
+                    <input-text-field [field]="bean.partnerCode"></input-text-field>
+                    <select-one-field [field]="bean.partnerType"></select-one-field>
+                    <select-one-field [field]="bean.status"></select-one-field>
+                </div>
+        
+                <div class="col-3">
+                    <input-text-field 
+                        *ngIf="bean.partnerType.value == 'COMPANY'"
+                        [field]="bean.name">
+                    </input-text-field>
+                    <input-text-field 
+                        *ngIf="bean.partnerType.value == 'PERSON'"
+                        [field]="bean.firstName">
+                    </input-text-field>
+                    <input-text-field
+                        *ngIf="bean.partnerType.value == 'PERSON'"
+                        [field]="bean.lastName">
+                    </input-text-field>
+                </div>
+        
+                <div class="col-3">
+                    <input-tel-field [field]="bean.phone"></input-tel-field>
+                    <input-email-field [field]="bean.email"></input-email-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.country"></input-text-field>
+                    <input-text-field [field]="bean.city"></input-text-field>
+                    <input-textarea-field [field]="bean.address"></input-textarea-field>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <h4>
+                Catégories
+            </h4>
+            <core-partner-category-block [bean]="bean.categoriesHierarchie"></core-partner-category-block>
+        </div>
+    </div>
+    
+</section> 
+<section class="p-3">    
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button cdkFocusInitial (click)="saveAction()">
+        <mat-icon>save</mat-icon>Enregistrer
+    </button>
+</section>

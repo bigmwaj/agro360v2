@@ -1,0 +1,17 @@
+<div *ngIf="bean">
+    <div>
+        <strong>
+            <input type="text" [value]="bean.categoryCode.value"/>
+        </strong>
+        <span>
+            <input type="text" [value]="bean.description.value"/>
+        </span>
+        <button>Ajouter</button>
+        <button>Supprimer</button>
+    </div>    
+    <div *ngIf="bean.children" style="margin-left:32px;">
+        <div *ngFor="let child of bean.children">
+            <partner-category-category-block [bean] = "child"></partner-category-category-block>
+        </div>
+    </div>
+</div>
