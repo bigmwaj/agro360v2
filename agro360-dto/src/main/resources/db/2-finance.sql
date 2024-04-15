@@ -44,5 +44,20 @@ create table `fin_tbl_transaction` (
   key `fin_tbl_transaction_fk_fin_tbl_rubrique` (`rubrique_code`),
   constraint `fin_tbl_transaction_fk_core_tbl_partner` foreign key (`partner_code`) references `core_tbl_partner` (`partner_code`),
   constraint `fin_tbl_transaction_fk_fin_tbl_rubrique` foreign key (`rubrique_code`) references `fin_tbl_rubrique` (`rubrique_code`),
-  constraint `fin_tbl_transaction_fk_fin_tbl_compte` foreign key (`compte_code`) references `fin_tbl_compte` (`compte_code`)
+  constraint `fin_tbl_transaction_fk_fin_tbl_compte` foreign key (`compte_code`) references `fin_tbl_compte` (`compte_code`);
+  
+drop table if exists `fin_tbl_taxe`;
+create table `fin_tbl_taxe` (
+  `taxe_code` varchar(16) not null,
+  
+  `created_at` datetime(6) not null,
+  `created_by` varchar(16) not null,
+  `updated_at` datetime(6) not null,
+  `updated_by` varchar(16) not null,
+  
+  `description` varchar(256) default null,
+  `taux` double not null,
+  
+  primary key `fin_tbl_taxe_pk`(`taxe_code`)
 ) engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+

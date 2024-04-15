@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { EditTabComponent } from './edit.tab.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ListPageComponent } from './list.page.component';
+import { ListTabComponent } from './list.tab.component';
 
 @Component({
     standalone: true,
@@ -20,7 +20,7 @@ import { ListPageComponent } from './list.page.component';
         MatToolbarModule, 
         MatIconModule,
         MatTabsModule,
-        ListPageComponent
+        ListTabComponent
     ],
     selector: 'finance-transaction-index-page',
     templateUrl: './index.page.component.html'

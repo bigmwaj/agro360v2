@@ -25,11 +25,6 @@ public class ReglementCommandeOperation extends AbstractOperation<ReglementComma
 	protected IDao<ReglementCommandeDto, Long> getDao() {
 		return dao;
 	}
-	
-	@Override
-	protected String getRulePath() {
-		return "achat/commande";
-	}
 
 	@RuleNamespace("av/reglement-commande/create")
 	public void createCommande(ClientContext ctx, ReglementCommandeBean bean) {

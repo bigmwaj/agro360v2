@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.stock.MagasinBean;
 import com.agro360.bo.bean.stock.MagasinSearchBean;
-import com.agro360.bo.mapper.stock.MagasinMapper;
+import com.agro360.bo.mapper.StockMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IMagasinDao;
 import com.agro360.dto.stock.MagasinDto;
@@ -23,17 +23,9 @@ public class MagasinOperation extends AbstractOperation<MagasinDto, String> {
 	@Autowired
 	IMagasinDao dao;
 
-	@Autowired
-	MagasinMapper mapper;
-
 	@Override
 	protected IDao<MagasinDto, String> getDao() {
 		return dao;
-	}
-	
-	@Override
-	protected String getRulePath() {
-		return "stock/magasin";
 	}
 
 	@RuleNamespace("stock/magasin/create")
@@ -63,10 +55,10 @@ public class MagasinOperation extends AbstractOperation<MagasinDto, String> {
 
 	public MagasinBean findMagasinByCode(ClientContext ctx, String magasinCode) {
 		var dto = dao.getReferenceById(magasinCode);
-		return mapper.map(dto);	
+		return StockMapper.map(dto);	
 	}
 	
 	public List<MagasinBean> findMagasinsByCriteria(ClientContext ctx, MagasinSearchBean searchBean) {
-		return dao.findAll().stream().map(mapper::map).collect(Collectors.toList());
+		return dao.findAll().stream().map(StockMapper::map).collect(Collectors.toList());
 	}
 }

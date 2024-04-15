@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { MatFormFieldAppearance } from '@angular/material/form-field';
 import { AbstractBean } from 'src/app/backed/bean.common';
 import { FieldMetadata } from 'src/app/backed/metadata';
 import { EditActionEnumVd, MessageTypeEnumVd } from 'src/app/backed/vd.common';
@@ -17,6 +18,9 @@ export abstract class AbstractFieldComponent implements OnInit {
 
     @Input()
     label?: string;
+
+    @Input()
+    appearance: MatFormFieldAppearance = 'fill';
 
     @Input()
     displayLabel: boolean = true;

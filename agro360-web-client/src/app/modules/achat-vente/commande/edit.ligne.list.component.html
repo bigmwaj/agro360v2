@@ -1,111 +1,201 @@
-<div class="table-wrapper">
-    <table mat-table [dataSource]="this" class="beans-table editable commande-lignes">
-        <ng-container matColumnDef="select">
-            <th mat-header-cell *matHeaderCellDef>
-                <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                    [checked]="selection.hasValue() && isAllSelected()"
-                    [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
-                </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row">
-                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
-                    [checked]="selection.isSelected(row)" [aria-label]="checkboxLabel(row)">
-                </mat-checkbox>
-            </td>
-        </ng-container>
+<section class="p-3">
+    <h4 class="m-0 p-0">
+        <div class="d-flex">
+            <input-text-field [field]="alias"></input-text-field>
+            <button mat-icon-button color="primary" 
+                [disabled]="alias.value == null || alias.value == ''"
+                class="field-button"
+                title="Ajouter à la liste" 
+                (click)="addFromAliasAction()">
+                <mat-icon>add_shopping_cart</mat-icon>
+            </button>
+        </div>
+    </h4>
 
-        <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>Description</th>
-            <td mat-cell *matCellDef="let element">
-                <input-text-field [field]="element.description" [displayLabel]="false"></input-text-field>
-            </td>
-        </ng-container>
+    <div class="table-wrapper">
+        <table mat-table [dataSource]="this" class="beans-table editable table-borderless">
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef class="text-start">
+                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()" 
+                        [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row" class="text-start">
+                    <mat-checkbox (click)="$event.stopPropagation()" 
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)" 
+                        [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="variantCode">
-            <th mat-header-cell *matHeaderCellDef>Variant</th>
-            <td mat-cell *matCellDef="let element">
-                <select-one-field [field]="element.variantCode" [displayLabel]="false"></select-one-field>
-            </td>
-        </ng-container>
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-text-field 
+                        [field]="element.description" 
+                        [displayLabel]="false">
+                    </input-text-field>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="article">
-            <th mat-header-cell *matHeaderCellDef>Article</th>
-            <td mat-cell *matCellDef="let element">
-                <select-one-field (onChange)="onSelectArticleEvent(element)" 
-                    *ngIf="selectArticleFromList(element)"
-                    [field]="element.article.articleCode" [displayLabel]="false">
-                </select-one-field>
-                <input-text-field *ngIf="!selectArticleFromList(element)" [field]="element.description"
-                    [displayLabel]="false">
-                </input-text-field>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="prixUnitaire">
-            <th mat-header-cell *matHeaderCellDef>PU</th>
-            <td mat-cell *matCellDef="let element">
-                <input-number-field (onChange)="updatePrixTotalEvent(element)" [field]="element.prixUnitaire"
-                    [displayLabel]="false">
-                </input-number-field>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="quantite">
-            <th mat-header-cell *matHeaderCellDef style="width: 100px;">Qté</th>
-            <td mat-cell *matCellDef="let element">
-                <input-number-field (onChange)="updatePrixTotalEvent(element)" [field]="element.quantite"
-                    [displayLabel]="false">
-                </input-number-field>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="prixTotal">
-            <th mat-header-cell *matHeaderCellDef>PT</th>
-            <td mat-cell *matCellDef="let element">
-                <input-number-field [field]="element.prixTotal" [displayLabel]="false"></input-number-field>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="type">
-            <th mat-header-cell *matHeaderCellDef>Type</th>
-            <td mat-cell *matCellDef="let element">
-                <select-one-field (onChange)="onSelectLigneTypeEvent(element)" [field]="element.type"
-                    [displayLabel]="false">
-                </select-one-field>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="unite">
-            <th mat-header-cell *matHeaderCellDef>Unité</th>
-            <td mat-cell *matCellDef="let element">
-                <select-one-field *ngIf="selectUniteFromList(element)" [field]="element.unite.uniteCode"
-                    [displayLabel]="false">
-                </select-one-field>
-                <input-text-field *ngIf="!selectUniteFromList(element)" [field]="element.unite.uniteCode"
-                    [displayLabel]="false">
-                </input-text-field>
-            </td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions" stickyEnd>
-            <th mat-header-cell *matHeaderCellDef>
-                <button mat-mini-fab color="primary" title="Ajouter" (click)="addAction()">
-                    <mat-icon>add</mat-icon>
-                </button>
-            </th>
-            <td mat-cell *matCellDef="let element">
-                <div class="text-nowrap">
-                    <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)">
-                        <mat-icon>content_copy</mat-icon>
+            <ng-container matColumnDef="remise">
+                <th mat-header-cell *matHeaderCellDef>Remise</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field  
+                        [field]="element.remiseMontant" 
+                        [displayLabel]="false">
+                    </input-number-field>
+                    <button mat-icon-button 
+                        color="primary" 
+                        class="field-button" 
+                        title="Paramétrer la remise" 
+                        (click)="editRemiseAction(element)">
+                        <mat-icon>open_in_new</mat-icon>
                     </button>
-                    <button mat-icon-button color="primary" title="Supprimer" (click)="deleteAction(element)">
-                        <mat-icon>delete</mat-icon>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="taxe">
+                <th mat-header-cell *matHeaderCellDef>Montant Taxe</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field 
+                        [field]="element.taxe" 
+                        [displayLabel]="false">
+                    </input-number-field>
+                    <button mat-icon-button color="primary" 
+                        class="field-button" 
+                        title="Liste des taxes appliquée" 
+                        (click)="listerTaxesAction(element)">
+                        <mat-icon>open_in_new</mat-icon>
+                    </button> 
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="variantCode">
+                <th mat-header-cell *matHeaderCellDef>Variant</th>
+                <td mat-cell *matCellDef="let element">
+                    <select-one-field
+                        [field]="element.variantCode" 
+                        [displayLabel]="false">
+                    </select-one-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="article">
+                <th mat-header-cell *matHeaderCellDef>Article</th>
+                <td mat-cell *matCellDef="let element">
+                    <select-one-field 
+                        (onChange)="onSelectArticleEvent(element)" 
+                        *ngIf="isStandard(element)"
+                        [field]="element.article.articleCode" 
+                        [displayLabel]="false">
+                    </select-one-field>
+
+                    <input-text-field *ngIf="!isStandard(element)" 
+                        [field]="element.description"
+                        [displayLabel]="false">
+                    </input-text-field>
+                </td>
+            </ng-container>            
+
+            <ng-container matColumnDef="unite">
+                <th mat-header-cell *matHeaderCellDef>Unité</th>
+                <td mat-cell *matCellDef="let element">
+                    <select-one-field *ngIf="isStandard(element)" 
+                        [field]="element.unite.uniteCode"
+                        [displayLabel]="false">
+                    </select-one-field>
+
+                    <input-text-field *ngIf="!isStandard(element)" 
+                        [field]="element.unite.uniteCode"
+                        [displayLabel]="false">
+                    </input-text-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="prixUnitaire">
+                <th mat-header-cell *matHeaderCellDef>Prix Unitaire</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field (onChange)="updatePrixEvent(element)" 
+                        [field]="element.prixUnitaire"
+                        [displayLabel]="false">
+                    </input-number-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="quantite">
+                <th mat-header-cell *matHeaderCellDef>Quantité</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field 
+                        (onChange)="updatePrixEvent(element)"
+                        [field]="element.quantite"
+                        [displayLabel]="false">
+                    </input-number-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="prixTotal">
+                <th mat-header-cell *matHeaderCellDef>Prix Total</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field 
+                        [field]="element.prixTotal" 
+                        [displayLabel]="false">
+                    </input-number-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Type</th>
+                <td mat-cell *matCellDef="let element">
+                    <select-one-field 
+                        (onChange)="onSelectLigneTypeEvent(element)" 
+                        [field]="element.type"
+                        [displayLabel]="false">
+                    </select-one-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef class="text-end">
+                    <button mat-mini-fab color="primary" title="Ajouter" (click)="addAction()">
+                        <mat-icon>add</mat-icon>
                     </button>
-                </div>
-            </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.text-bg-danger]="row.action == 'DELETE'">
-        </tr>
-    </table>
-</div>
+                </th>
+                <td mat-cell *matCellDef="let element" class="text-end">
+                    <div class="text-nowrap">
+                        <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)">
+                            <mat-icon>content_copy</mat-icon>
+                        </button>
+                        <button mat-icon-button color="primary" title="Supprimer" (click)="deleteAction(element)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                        <button mat-mini-fab color="secondary" [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">                                
+                            <button mat-menu-item color="primary" 
+                                title="Gérer les retours de cette ligne" 
+                                class="me-2" 
+                                (click)="editRetourAction(element)">
+                                <mat-icon>open_in_new</mat-icon>Retourner
+                            </button>                           
+                            <button mat-menu-item color="primary" 
+                                title="Receptionner cette ligne" 
+                                class="me-2" 
+                                (click)="editReceptionAction(element)">
+                                <mat-icon>open_in_new</mat-icon>Receptionner
+                            </button>
+                        </mat-menu>
+                    </div>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+                [class.text-bg-danger]="row.action == 'DELETE'">
+            </tr>
+        </table>
+    </div>
+</section>

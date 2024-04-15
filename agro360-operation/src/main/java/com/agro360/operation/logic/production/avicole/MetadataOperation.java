@@ -19,10 +19,5 @@ public class MetadataOperation extends AbstractOperation<MetadataDto, MetadataPk
 	protected IDao<MetadataDto, MetadataPk> getDao() {
 		return dao;
 	}
-	
-	@Override
-	protected String getRulePath() {
-		return "production/avicole/cycle/metadata";
-	}
 
 }

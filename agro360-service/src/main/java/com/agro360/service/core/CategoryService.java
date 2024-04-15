@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agro360.bo.bean.core.CategoryBean;
 import com.agro360.bo.message.Message;
@@ -13,6 +14,7 @@ import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.core.CategoryOperation;
 import com.agro360.service.common.AbstractService;
 
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class CategoryService extends AbstractService {
 

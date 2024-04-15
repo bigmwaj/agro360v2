@@ -1,7 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { map } from 'rxjs';
 import { PartnerBean } from 'src/app/backed/bean.core';
+import { Message } from 'src/app/backed/message';
+import { UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
 
 @Component({
@@ -19,7 +22,8 @@ export class DeleteDialogComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: {partnerCode: string},
         private http: HttpClient,
-        public dialog: MatDialog) { }
+        public dialog: MatDialog,
+        private ui: UIService) { }
 
     ngOnInit(): void {
         let queryParams = new HttpParams();
@@ -31,9 +35,10 @@ export class DeleteDialogComponent implements OnInit {
 
     deleteAction() {
         this.http.post(`core/partner`, this.bean)
-            .subscribe(data => {
-                console.log(data);
-                this.dialog.closeAll();
-            })
+        .pipe(map((e: any) => <any>e))
+        .subscribe(data => {
+            this.dialog.closeAll();
+            this.ui.displayFlashMessage(<Array<Message>>data.messages);
+        })
     }
 }

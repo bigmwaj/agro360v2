@@ -6,8 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,15 +17,17 @@ public class VariantDto extends AbstractDto {
 	public static final int VARIANT_CODE_LENGTH = 16;
 
 	@Id
-	@ManyToOne()
-	@JoinColumn(name = "ARTICLE_CODE", updatable = false, nullable = false)
+	@Column(name = "ARTICLE_CODE", updatable = false, nullable = false)
 	@EqualsAndHashCode.Include()
-	private ArticleDto article;
+	private String articleCode;
 
 	@Id
 	@Column(name = "VARIANT_CODE", updatable = false, nullable = false, length = VARIANT_CODE_LENGTH)
 	@EqualsAndHashCode.Include()
 	private String variantCode;
+	
+	@Column(name = "ALIAS", nullable = false, length = 16)
+	private String alias;
 
 	@Column(name = "DESCRIPTION", length = 64)
 	private String description;

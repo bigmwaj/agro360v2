@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerSearchBean;
-import com.agro360.bo.mapper.core.PartnerMapper;
+import com.agro360.bo.mapper.CoreMapper;
 import com.agro360.dto.core.PartnerDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.core.PartnerCategoryOperation;
@@ -19,16 +19,13 @@ import com.agro360.vd.core.PartnerStatusEnumVd;
 public class PartnerForm {
 
 	@Autowired
-	private PartnerMapper mapper;
-
-	@Autowired
 	private PartnerOperation operation;	
 
 	@Autowired
 	private PartnerCategoryOperation partnerCategoryOperation;
 
 	public PartnerBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
-		var bean = mapper.map(new PartnerDto());
+		var bean = CoreMapper.map(new PartnerDto());
 		var root = partnerCategoryOperation.findPartnerRootCategoryHierarchy(ctx, 3);
 		bean.setCategoriesHierarchie(root);
 		
@@ -78,7 +75,7 @@ public class PartnerForm {
 	}
 
 	public PartnerSearchBean initSearchFormBean(ClientContext ctx) {
-		var bean = mapper.mapToSearchBean();
+		var bean = CoreMapper.buildPartnerSearchBean();
 		return bean;
 	}
 

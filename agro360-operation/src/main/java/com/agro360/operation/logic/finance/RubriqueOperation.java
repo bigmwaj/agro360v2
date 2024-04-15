@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.finance.RubriqueBean;
 import com.agro360.bo.bean.finance.RubriqueSearchBean;
-import com.agro360.bo.mapper.finance.RubriqueMapper;
+import com.agro360.bo.mapper.FinanceMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.finance.IRubriqueDao;
 import com.agro360.dto.finance.RubriqueDto;
@@ -23,17 +23,9 @@ public class RubriqueOperation extends AbstractOperation<RubriqueDto, String> {
 	@Autowired
 	IRubriqueDao dao;
 
-	@Autowired
-	RubriqueMapper mapper;
-
 	@Override
 	protected IDao<RubriqueDto, String> getDao() {
 		return dao;
-	}
-	
-	@Override
-	protected String getRulePath() {
-		return "stock/rubrique";
 	}
 	
 	@RuleNamespace("stock/rubrique/create")
@@ -66,7 +58,7 @@ public class RubriqueOperation extends AbstractOperation<RubriqueDto, String> {
 	
 	public RubriqueBean findRubriqueByCode(ClientContext ctx, String rubriqueCode) {
 		var dto = dao.getReferenceById(rubriqueCode);
-		return mapper.map(dto);		
+		return FinanceMapper.map(dto);		
 	}
 	
 	public List<RubriqueBean> findRubriquesByCriteria(ClientContext ctx, RubriqueSearchBean searchBean) {
@@ -77,6 +69,6 @@ public class RubriqueOperation extends AbstractOperation<RubriqueDto, String> {
 		if( searchBean.getType().getValue() != null ) {
 			example.getProbe().setType(searchBean.getType().getValue());
 		}
-		return dao.findAll(example).stream().map(mapper::map).collect(Collectors.toList());
+		return dao.findAll(example).stream().map(FinanceMapper::map).collect(Collectors.toList());
 	}
 }

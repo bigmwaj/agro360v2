@@ -6,8 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,10 +18,9 @@ public class CasierDto extends AbstractDto {
 	public static final int CASIER_CODE_LENGTH = 16;
 
 	@Id
-	@ManyToOne()
-	@JoinColumn(name = "MAGASIN_CODE", updatable = false)
+	@Column(name = "MAGASIN_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
-	private MagasinDto magasin;
+	private String magasinCode;
 
 	@Id
 	@Column(name = "CASIER_CODE", updatable = false, length = CASIER_CODE_LENGTH)

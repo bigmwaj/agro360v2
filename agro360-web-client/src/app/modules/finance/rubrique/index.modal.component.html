@@ -20,12 +20,12 @@
         <mat-drawer-content>
             <section class="p-3">
                 <h4>
-                    Liste des unités
+                    Liste des rubriques
                     <button mat-icon-button (click)="drawer.toggle()">
                         <mat-icon>tune</mat-icon>
                     </button>
                 </h4>
-                <table mat-table #rubriquesTable [dataSource]="this" class="beans-table editable rubriques">
+                <table mat-table #rubriquesTable [dataSource]="this" class="beans-table editable table-borderless">
                     <ng-container matColumnDef="select">
                         <th mat-header-cell *matHeaderCellDef>
                             <mat-checkbox (change)="$event ? toggleAllRows() : null"
@@ -96,7 +96,7 @@
         </mat-drawer-content>
     </mat-drawer-container>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Fermer</button>
-    <button mat-button cdkFocusInitial (click)="saveAction()">Enregistrer</button>
+<mat-dialog-actions align="end" class="m-3 pt-0 mt-0">
+    <button mat-raised-button mat-dialog-close>Fermer</button>
+    <button mat-raised-button cdkFocusInitial (click)="saveAction()">Enregistrer</button>
 </mat-dialog-actions>

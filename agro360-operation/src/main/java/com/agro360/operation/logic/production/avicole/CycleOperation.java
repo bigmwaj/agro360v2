@@ -23,11 +23,6 @@ public class CycleOperation extends AbstractOperation<CycleDto, String> {
 	protected IDao<CycleDto, String> getDao() {
 		return dao;
 	}
-	
-	@Override
-	protected String getRulePath() {
-		return "production/avicole/cycle";
-	}
 
 	public List<CycleBean> search(ClientContext ctx, CycleSearchBean orElse) {
 		// TODO Auto-generated method stub

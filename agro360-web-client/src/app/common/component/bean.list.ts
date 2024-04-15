@@ -18,8 +18,27 @@ export abstract class BeanList<B extends AbstractBean> extends MatTableDataSourc
         return this.data;
     }
 
+    /**
+     * @deprecated The method should not be used
+     */
     addItem(bean: B) {
         this.data.push(bean);
+        if (this.getViewChild()) {
+            this.getViewChild().renderRows();
+        }
+    }
+
+    appendItem(bean: B) {
+        this.data.push(bean);
+        
+        if (this.getViewChild()) {
+            this.getViewChild().renderRows();
+        }
+    }
+    
+    prependItem(bean: B) {        
+        this.data.unshift(bean);
+        
         if (this.getViewChild()) {
             this.getViewChild().renderRows();
         }

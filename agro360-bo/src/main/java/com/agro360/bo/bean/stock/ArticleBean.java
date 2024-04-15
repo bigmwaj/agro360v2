@@ -9,6 +9,7 @@ import com.agro360.vd.stock.ArticleTypeEnumVd;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
@@ -22,13 +23,12 @@ public class ArticleBean extends AbstractBean {
 
 	private FieldMetadata<ArticleTypeEnumVd> type = new FieldMetadata<>("Type", ArticleTypeEnumVd.getAsMap());
 
+	@Setter
 	private UniteBean unite = new UniteBean();
 	
 	private List<VariantBean> variants = new ArrayList<>();
 	
 	private List<ConversionBean> conversions = new ArrayList<>();
-
-	public void setUnite(UniteBean unite) {
-		this.unite = unite;
-	}
+	
+	private List<ArticleTaxeBean> taxes = new ArrayList<>();
 }

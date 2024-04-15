@@ -19,10 +19,9 @@ import lombok.EqualsAndHashCode;
 @IdClass(ConversionPk.class)
 public class ConversionDto extends AbstractDto {
 	@Id
-	@ManyToOne()
-	@JoinColumn(name = "ARTICLE_CODE", updatable = false)
+	@Column(name = "ARTICLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
-	private ArticleDto article;
+	private String articleCode;
 
 	@Id
 	@ManyToOne()
@@ -49,7 +48,7 @@ public class ConversionDto extends AbstractDto {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = prime + Objects.hash(article.getArticleCode(), unite.getUniteCode());
+		int result = prime + Objects.hash(articleCode, unite.getUniteCode());
 		return result;
 	}
 

@@ -1,69 +1,60 @@
 package com.agro360.service.stock;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.UniteSearchBean;
-import com.agro360.bo.mapper.stock.UniteMapper;
-import com.agro360.bo.message.Message;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.UniteOperation;
 import com.agro360.service.common.AbstractService;
-import com.agro360.vd.common.EditActionEnumVd;
 
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class UniteService extends AbstractService {
 
 	@Autowired
-	UniteOperation service;
+	UniteOperation operation;
 
-	@Autowired
-	UniteMapper mapper;
-
-	public List<UniteBean> searchAction(ClientContext ctx, Optional<UniteSearchBean> searchBean) {
-		return  service.findUnitesByCriteria(ctx, searchBean.orElse(new UniteSearchBean()));
+	public List<UniteBean> search(ClientContext ctx, Optional<UniteSearchBean> searchBean) {
+		return  operation.findUnitesByCriteria(ctx, searchBean.orElse(new UniteSearchBean()));
 	}
 
-	public void saveAction(ClientContext ctx,  List<UniteBean> beans, BindingResult br) {
-		beans.stream().map(e -> save(ctx, e)).flatMap(List::stream).collect(Collectors.toList());
+	public void save(ClientContext ctx,  List<UniteBean> beans) {
+		beans.stream().forEach(e -> save(ctx, e));
+		
 	}
 	
-	private List<Message> save(ClientContext ctx, UniteBean bean) {
-		if( bean.getAction() == null ) {
-			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
-		}
-		
-		if(  EditActionEnumVd.SYNC.equals(bean.getAction())) {
-			return Collections.emptyList();
-		}
-		
-		List<Message> messages = new ArrayList<>();
+	private void save(ClientContext ctx, UniteBean bean) {
 
 		switch (bean.getAction()) {
 		case CREATE:
-			service.createUnite(ctx, bean);
+			operation.createUnite(ctx, bean);
+			
+			var msgTpl = "L'unité %s a été créée avec succès!";
+			ctx.success(String.format(msgTpl, bean.getUniteCode().getValue()));
 			break;
 
 		case UPDATE:
-			service.updateUnite(ctx, bean);
+			operation.updateUnite(ctx, bean);
+			
+			msgTpl = "L'unité %s a été modifiée avec succès!";
+			ctx.success(String.format(msgTpl, bean.getUniteCode().getValue()));
 			break;
 
 		case DELETE:
-			service.deleteUnite(ctx, bean);
+			operation.deleteUnite(ctx, bean);
+			
+			msgTpl = "L'unité %s a été supprimée avec succès!";
+			ctx.success(String.format(msgTpl, bean.getUniteCode().getValue()));
 			break;
 			
 		default:
 			
 		}
-
-		return messages;
 	}
 }

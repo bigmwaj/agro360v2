@@ -8,7 +8,7 @@ import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.bo.utils.TypeScriptInfos;
 import com.agro360.vd.av.LigneTypeEnumVd;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.av.RemiseTypeEnumVd;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -23,8 +23,6 @@ public class LigneBean extends AbstractBean {
 	
 	private FieldMetadata<Long> ligneId = new FieldMetadata<>("ID");
 
-	private FieldMetadata<Integer> numero = new FieldMetadata<>("Numéro");
-
 	private FieldMetadata<LigneTypeEnumVd> type = new FieldMetadata<>("Type", LigneTypeEnumVd.getAsMap());
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
@@ -35,16 +33,25 @@ public class LigneBean extends AbstractBean {
 
 	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total");
 	
+	private FieldMetadata<BigDecimal> prixTotalHT = new FieldMetadata<>("Prix Total(HT)");
+	
+	private FieldMetadata<BigDecimal> prixTotalTTC = new FieldMetadata<>("Prix Total(TTC)");
+	
+	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
+	
 	private FieldMetadata<String> variantCode = new FieldMetadata<>("Variant");
+	
+	private FieldMetadata<RemiseTypeEnumVd> remiseType = new FieldMetadata<>("Type Remise", RemiseTypeEnumVd.getAsMap());
+	
+	private FieldMetadata<Double> remiseTaux = new FieldMetadata<>("Taux Remise");
+	
+	private FieldMetadata<BigDecimal> remiseMontant = new FieldMetadata<>("Montant Remise");
+	
+	private FieldMetadata<String> remiseRaison = new FieldMetadata<>("Raison Remise");
 
 	@Setter
 	private UniteBean unite = new UniteBean();
 
 	@Setter
 	private ArticleBean article = new ArticleBean();
-
-	public void initForCreateForm() {
-		ligneId.setValue(null);
-		setAction(EditActionEnumVd.CREATE);
-	}
 }

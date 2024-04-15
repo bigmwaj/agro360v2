@@ -44,13 +44,14 @@ public class ArticleController extends AbstractController {
 	public ResponseEntity<ModelMap> searchAction(
 			@RequestBody(required = false) @Validated Optional<ArticleSearchBean> searchBean) {
 		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service
-				.searchAction(getClientContext(), searchBean)));
+				.search(getClientContext(), searchBean)));
 	}
 
 	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated ArticleBean bean, BindingResult br) {
-		service.saveAction(getClientContext(), bean);
-		return ResponseEntity.ok(new ModelMap());
+		var ctx = getClientContext();
+		service.save(ctx, bean);
+		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
 	}
 	
 	@GetMapping(SEARCH_FORM_RN)

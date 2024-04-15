@@ -5,10 +5,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public enum OperationTypeEnumVd {
-	RECETTE("Recette"), 
-	DEPENSE("Dépense");
+	ADJT("Ajustement"),
+	ENTR("Entrée"),
+	SORT("Sortie");
 	
-	public static final int COLUMN_LENGTH = 8;
+	public static final int COLUMN_LENGTH = 4;
 	
 	private final String libelle;
 	

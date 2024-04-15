@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
-import com.agro360.bo.mapper.av.FactureMapper;
+import com.agro360.bo.mapper.AchatVenteMapper;
 import com.agro360.dto.av.FactureDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.av.FactureOperation;
@@ -20,13 +20,10 @@ import com.agro360.vd.common.EditActionEnumVd;
 public class FactureForm {
 
 	@Autowired
-	FactureMapper mapper;
-
-	@Autowired
 	FactureOperation operation;	
 
 	public FactureBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
-		var bean = mapper.map(new FactureDto());
+		var bean = AchatVenteMapper.map(new FactureDto());
 		
 		bean.setAction(EditActionEnumVd.CREATE);
 		
@@ -78,7 +75,7 @@ public class FactureForm {
 	}
 
 	public FactureSearchBean initSearchFormBean(ClientContext ctx) {
-		var bean = mapper.mapToSearchBean();
+		var bean = AchatVenteMapper.buildFactureSearchBean();
 		return bean;
 	}
 

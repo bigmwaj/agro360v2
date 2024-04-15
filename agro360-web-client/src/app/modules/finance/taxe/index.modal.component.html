@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>Taxes</h2>
+<mat-dialog-content>
+    <section class="p-3">
+        <h4>
+            Liste des taxes
+        </h4>
+        <table mat-table #taxesTable [dataSource]="this" class="beans-table editable table-borderless">
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef>
+                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-checkbox (click)="$event.stopPropagation()" 
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)" 
+                        [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="taux">
+                <th mat-header-cell *matHeaderCellDef>Taux</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field [field]="element.taux" [displayLabel]="false">
+                    </input-number-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="taxeCode">
+                <th mat-header-cell *matHeaderCellDef>Taxe</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-text-field [field]="element.taxeCode" [displayLabel]="false">
+                    </input-text-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-text-field [field]="element.description" [displayLabel]="false">
+                    </input-text-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="text-end">
+                    <button mat-icon-button color="primary" (click)="addAction()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </th>
+                <td mat-cell *matCellDef="let element"class="text-end">
+                    <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)">
+                        <mat-icon>content_copy</mat-icon>
+                    </button>
+                    <button mat-icon-button color="primary" title="Supprimer" (click)="deleteAction(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.text-bg-danger]="row.action == 'DELETE'"></tr>
+        </table>
+    </section>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3 pt-0 mt-0">
+    <button mat-raised-button mat-dialog-close>Fermer</button>
+    <button mat-raised-button cdkFocusInitial (click)="saveAction()">Enregistrer</button>
+</mat-dialog-actions>

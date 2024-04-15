@@ -10,7 +10,7 @@ public class CasierPk implements Serializable {
 
 	private static final long serialVersionUID = -7643918247496362428L;
 
-	private String magasin;
+	private String magasinCode;
 
 	private String casierCode;
 
@@ -18,15 +18,15 @@ public class CasierPk implements Serializable {
 		super();
 	}
 
-	public CasierPk(String magasin, String casierCode) {
+	public CasierPk(String magasinCode, String casierCode) {
 		super();
-		this.magasin = magasin;
+		this.magasinCode = magasinCode;
 		this.casierCode = casierCode;
 	}
 
 	public CasierPk(CasierDto dto) {
 		super();
-		this.magasin = dto.getMagasin().getMagasinCode();
+		this.magasinCode = dto.getMagasinCode();
 		this.casierCode = dto.getCasierCode();
 	}
 
@@ -36,12 +36,12 @@ public class CasierPk implements Serializable {
 			return false;
 		}
 		CasierPk pk = (CasierPk) obj;
-		return Objects.equals(magasin, pk.magasin) && Objects.equals(casierCode, pk.casierCode);
+		return Objects.equals(magasinCode, pk.magasinCode) && Objects.equals(casierCode, pk.casierCode);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(magasin, casierCode);
+		return Objects.hash(magasinCode, casierCode);
 	}
 
 }

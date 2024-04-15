@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.bean.production.avicole.ProductionBean;
 import com.agro360.bo.bean.production.avicole.ProductionSearchBean;
-import com.agro360.bo.mapper.production.avicole.ProductionMapper;
+import com.agro360.bo.mapper.ProductionMapper;
 import com.agro360.bo.message.Message;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.production.avicole.IProductionDao;
@@ -39,22 +39,14 @@ public class ProductionOperation extends AbstractOperation<ProductionDto, Long> 
 	@Autowired
 	private IArticleDao articleDao;
 
-	@Autowired
-	private ProductionMapper mapper;
-
 	@Override
 	protected IDao<ProductionDto, Long> getDao() {
 		return dao;
 	}
 	
-	@Override
-	protected String getRulePath() {
-		return "production/avicole/production";
-	}
-	
 	public ProductionSearchBean initSearchFormBean() {
-		var bean = mapper.mapToSearchBean();
-		return applyInitSearchRules(bean);
+		var bean = ProductionMapper.mapToSearchBean();
+		return bean;
 	}
 	
 	public List<ProductionBean> search(ProductionSearchBean searchBean) {
@@ -67,38 +59,33 @@ public class ProductionOperation extends AbstractOperation<ProductionDto, Long> 
 		var pouleFilter = Example.of(new ArticleDto());
 		pouleFilter.getProbe().setArticleCode("POULE");
 		var poules = articleDao.findAll(pouleFilter).stream()
-		.map(mapper::mapPouleToBean);
+		.map(ProductionMapper::mapPouleToBean);
 
 		var copeauxFilter = Example.of(new VariantDto());
-		copeauxFilter.getProbe().setArticle(new ArticleDto());
-		copeauxFilter.getProbe().getArticle().setArticleCode("COPEAUX");
+		copeauxFilter.getProbe().setArticleCode("COPEAUX");
 		var copeaux = variantDao.findAll(copeauxFilter).stream()
-		.map(mapper::mapCopeauxToBean);
+		.map(ProductionMapper::mapCopeauxToBean);
 		
 		var oeufFilter = Example.of(new VariantDto());
-		oeufFilter.getProbe().setArticle(new ArticleDto());
-		oeufFilter.getProbe().getArticle().setArticleCode("OEUF");
+		oeufFilter.getProbe().setArticleCode("OEUF");
 		
 		var oeufs = variantDao.findAll(oeufFilter).stream()
-			.map(mapper::mapOeufToBean);
+			.map(ProductionMapper::mapOeufToBean);
 		
 		var phytoFilter = Example.of(new VariantDto());
-		phytoFilter.getProbe().setArticle(new ArticleDto());
-		phytoFilter.getProbe().getArticle().setArticleCode("PHYTO");
+		phytoFilter.getProbe().setArticleCode("PHYTO");
 		
 		var phytos = variantDao.findAll(phytoFilter).stream()
-			.map(mapper::mapPhytoEtVaccinToBean);
+			.map(ProductionMapper::mapPhytoEtVaccinToBean);
 		
 		var vaccinFilter = Example.of(new VariantDto());
-		vaccinFilter.getProbe().setArticle(new ArticleDto());
-		vaccinFilter.getProbe().getArticle().setArticleCode("VACCIN");
+		vaccinFilter.getProbe().setArticleCode("VACCIN");
 		
 		var vaccins = variantDao.findAll(vaccinFilter).stream()
-			.map(mapper::mapPhytoEtVaccinToBean);
+			.map(ProductionMapper::mapPhytoEtVaccinToBean);
 		
 		return Stream.of(oeufs, poules, copeaux, phytos, vaccins)
 			.flatMap(e -> e)
-			.map(this::applyInitEditRules)
 			.collect(Collectors.toList());
 	}
 	
@@ -143,11 +130,11 @@ public class ProductionOperation extends AbstractOperation<ProductionDto, Long> 
 
 	public ProductionBean initCreateFormBean(Optional<Long> copyFrom) {
 		var dto = copyFrom.map(dao::findById).flatMap(e -> e).orElseGet(ProductionDto::new);
-		var bean = mapper.mapToBean(dto);
+		var bean = ProductionMapper.mapToBean(dto);
 		bean.getProductionId().setValue(null);
 		
 		AbstractBean.setActionToCreate.accept(bean);
 		
-		return applyInitCreateRules(bean);
+		return bean;
 	}
 }

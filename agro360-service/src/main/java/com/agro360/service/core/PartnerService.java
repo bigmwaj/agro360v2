@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerCategoryBean;
@@ -17,6 +18,7 @@ import com.agro360.operation.logic.core.PartnerCategoryOperation;
 import com.agro360.operation.logic.core.PartnerOperation;
 import com.agro360.service.common.AbstractService;
 
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class PartnerService extends AbstractService {
 

@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
     ],
     selector: 'input-textarea-field',
     template: `
-    <mat-form-field appearance="outline" [class]="getCssClass()">
+    <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
         <textarea matInput [(ngModel)]="field.value" (change)="_onChange()"
             [disabled]="!field.editable"

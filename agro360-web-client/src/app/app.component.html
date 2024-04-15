@@ -12,6 +12,9 @@
                     <a href="/achat">Achats & Fournisseurs</a>
                 </mat-list-item>
                 <mat-list-item role="listitem">
+                    <a href="/stock">Gestion des stocks</a>
+                </mat-list-item>
+                <mat-list-item role="listitem">
                     <a href="/paie">Paies & Employés</a>
                 </mat-list-item>
                 <mat-list-item role="listitem">
@@ -19,18 +22,6 @@
                 </mat-list-item>
                 <mat-list-item role="listitem">
                     <a href="/core/partner">Gestion des Partenaires</a>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <a href="/stock/article">Gestion des articles</a>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <a href="/stock/magasin">Gestion des magasins</a>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <a href="/stock/caisse">Gestion des caisses</a>
-                </mat-list-item>
-                <mat-list-item role="listitem">
-                    <a href="/production/avicole/cycle">Gestion des cycles de production</a>
                 </mat-list-item>
             </mat-selection-list>
         </div>
@@ -40,10 +31,8 @@
             <button mat-icon-button (click)="drawerLeft.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
-            <span class="ms-3">
-                {{ui.title}}
-                <router-outlet name='title'></router-outlet>
-            </span>
+            <div class="ms-3" #pageTitle>
+            </div>
             <span class="menu-spacer"></span>
             <button mat-icon-button class="favorite-icon">
                 <mat-icon>favorite</mat-icon>

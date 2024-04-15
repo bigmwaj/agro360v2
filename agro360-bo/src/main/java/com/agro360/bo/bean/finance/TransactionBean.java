@@ -29,7 +29,7 @@ public class TransactionBean extends AbstractStatusTrackingBean<TransactionStatu
 	
 	private FieldMetadata<String> note = new FieldMetadata<>("Note");
 	
-	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
+	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant HT");
 	
 	@Setter
 	private PartnerBean partner = new PartnerBean();

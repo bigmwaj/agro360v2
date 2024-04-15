@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,14 +37,14 @@ public class MagasinController extends AbstractController {
 	@GetMapping()
 	public ResponseEntity<ModelMap> searchAction(
 			@RequestBody(required = false) @Validated Optional<MagasinSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service.searchAction(getClientContext(), searchBean)));
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service.search(getClientContext(), searchBean)));
 	}
 
 	@PostMapping
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated MagasinBean bean, BindingResult br) {
-		service.saveAction(getClientContext(), bean);
-		
-		return ResponseEntity.ok(new ModelMap());
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated MagasinBean bean) {
+		var ctx = getClientContext();
+		service.save(ctx, bean);
+		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
 	}
 	
 	@GetMapping("/search-form")

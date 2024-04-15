@@ -79,7 +79,6 @@ export class EditTabComponent implements OnInit {
                 else            
                     this.title = `Edition du salaire employé ${this.bean.transactionCode.value}`;
                 break;
-                break;
             }   
             
             if( isCreation ){

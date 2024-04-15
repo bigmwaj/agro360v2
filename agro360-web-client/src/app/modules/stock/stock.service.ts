@@ -26,4 +26,8 @@ export class StockService extends CommonService {
     getUnitesAsValueOptions(http: HttpClient, searchQuery: any): Observable<any> {
         return this.getBeansAsValueOptions(http, 'stock/unite', this.uniteKeyValMapper, searchQuery);
     }
+
+    getStockableArticlesAsValueOptions(http: HttpClient, searchQuery: any): Observable<any> {
+        return this.getBeansAsValueOptions2(http, 'stock/inventaire/non-stocked-articles', this.articleKeyValMapper, searchQuery);
+    }
 }

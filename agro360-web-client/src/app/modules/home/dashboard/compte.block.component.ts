@@ -1,13 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/common/shared.module';
 import { map } from 'rxjs';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { EtatCompteBean } from 'src/app/backed/bean.finance';
+import { MatDialog } from '@angular/material/dialog';
+import { IndexModalComponent } from '../../finance/compte/index.modal.component';
 
 @Component({
     standalone: true,
     imports: [
-        SharedModule,     
+        SharedModule, 
+        IndexModalComponent    
     ],
     selector: 'home-dashboard-compte-block',
     templateUrl: './compte.block.component.html'
@@ -18,7 +21,10 @@ export class CompteBlockComponent implements OnInit {
 
     totaux:number = 0
 
-    constructor(private http: HttpClient) {
+    constructor(
+        private http: HttpClient,     
+        private dialog: MatDialog) {
+
     }
 
     ngOnInit(): void {
@@ -29,5 +35,12 @@ export class CompteBlockComponent implements OnInit {
                 this.etatComptes = data.records;
                 this.totaux = this.etatComptes.map(e => e.solde.value).reduce((a,b)=>a+b)
             });
+    }
+    
+    compteAction() {
+        let dialogRef =  this.dialog.open(IndexModalComponent);
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
+        });  
     }
 }

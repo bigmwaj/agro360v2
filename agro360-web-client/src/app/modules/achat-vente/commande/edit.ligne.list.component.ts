@@ -1,16 +1,22 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { LigneBean } from 'src/app/backed/bean.av';
-import { FieldMetadata } from 'src/app/backed/metadata';
-import { ArticleTypeEnumVd } from 'src/app/backed/vd.stock';
-import { SharedModule } from 'src/app/common/shared.module';
-import { BeanList } from 'src/app/common/component/bean.list';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { LigneTypeEnumVd } from 'src/app/backed/vd.av';
-import { ArticleBean, ArticleSearchBean, ConversionBean, UniteBean, VariantBean } from 'src/app/backed/bean.stock';
 import { map } from 'rxjs';
+import { CommandeBean, LigneBean } from 'src/app/backed/bean.av';
+import { ArticleBean, ArticleSearchBean, ConversionBean, UniteBean, VariantBean } from 'src/app/backed/bean.stock';
+import { Message } from 'src/app/backed/message';
+import { FieldMetadata } from 'src/app/backed/metadata';
+import { LigneTypeEnumVd, RemiseTypeEnumVd } from 'src/app/backed/vd.av';
 import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ArticleTypeEnumVd } from 'src/app/backed/vd.stock';
+import { BeanList } from 'src/app/common/component/bean.list';
+import { UIService } from 'src/app/common/service/ui.service';
+import { SharedModule } from 'src/app/common/shared.module';
 import { StockUtils } from '../../stock/stock.utils';
+import { DisplayLigneTaxeDialogComponent } from './display.ligne.taxe.dialog.component';
+import { EditRemiseDialogComponent } from './edit.remise.dialog.component';
+import { EditRetourDialogComponent } from './edit.retour.dialog.component';
 
 @Component({
     standalone: true,
@@ -24,31 +30,38 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     
     displayedColumns: string[] = [
         'select',
+        'quantite',
+        'prixUnitaire',
+        'prixTotal',
         'type',
         'article',
         'variantCode',
         'unite',
-        'quantite',
-        'prixUnitaire',
-        'prixTotal',
+        'remise',
+        'taxe',
         'actions'
     ];
 
-    constructor(public http: HttpClient) {
+    constructor(
+        public http: HttpClient,
+        public dialog: MatDialog,
+        private ui: UIService) {
         super()
     }
 
-    @Input()
-    public ownerId: {};
-
-    @Input()
-    public lignes: Array<LigneBean>;
+    @Input({required:true})
+    public commande: CommandeBean;
     
     @Output()
-    updateOwnerPrixTotal = new EventEmitter();
+    updatePrixCommande = new EventEmitter();
 
     @ViewChild(MatTable)
     private table: MatTable<LigneBean>;
+
+    public alias:FieldMetadata<string> = {
+        label:'Variant ou alias',
+        editable:true
+    } as FieldMetadata<string>;
 
     override getViewChild(): MatTable<LigneBean> {
         return this.table;
@@ -59,52 +72,32 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     }
 
     ngOnInit(): void {
-        this.setData(this.lignes)
+        this.setData(this.commande.lignes)
     }
-    
-    /**
-     * Lorsque le type de la ligne est ARTC ou SSTD, alors, on change le type de champ unité en select.
-     * Sinon ça reste un champ de texte afin que l'utilisateur puisse saisir le descriptif de l'article.
-     * @param bean 
-     * @returns <strong>true</strong> si le type de ligne est dans la liste (ARTC, SSTD)
-     */
-    selectUniteFromList(bean: LigneBean): boolean{
+
+    isStandard(bean: LigneBean): boolean{
         return [ LigneTypeEnumVd.ARTC, LigneTypeEnumVd.SSTD ].includes(bean.type.value);
     }
-
-    /**
-     * Lorsque le type de la ligne est ARTC ou SSTD, alors, on change le type de champ article en select.
-     * Sinon ça reste un champ de texte afin que l'utilisateur puisse saisir le descriptif de l'article.
-     * @param bean 
-     * @returns  <strong>true</strong> si le type de ligne est dans la liste (ARTC, SSTD)
-     */
-    selectArticleFromList(bean: LigneBean): boolean{
-        return [ LigneTypeEnumVd.ARTC, LigneTypeEnumVd.SSTD ].includes(bean.type.value);
-    }
-
-    getCreateFormUrl():string{
-        return 'achat-vente/commande/ligne/create-form';
-    }
-
+  
     override setData(data: LigneBean[]){
         super.setData(data);
+
         data.forEach(e => {
             this.onSelectLigneTypeEvent(e);
             this.onSelectArticleEvent(e);
-            this.updatePrixTotal(e);
         })
     }
-    
-    override addItem(bean: LigneBean){
-        super.addItem(bean);
+   
+    override prependItem(bean: LigneBean){
+        super.prependItem(bean);
         this.onSelectLigneTypeEvent(bean);
         this.onSelectArticleEvent(bean);
-        this.updatePrixTotal(bean);
+        this.updatePrix(bean);
     }
     
     override removeItem(bean: LigneBean){
         super.removeItem(bean);
-        this.updateOwnerPrixTotal.emit();
+        this.updatePrixCommande.emit();
     }
 
     onSelectLigneTypeEvent(bean: LigneBean) {
@@ -143,29 +136,42 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
             });
     }
     
-    updatePrixTotalEvent(bean: LigneBean) {
-        this.updatePrixTotal(bean)
-        this.updateOwnerPrixTotal.emit();
+    updatePrixEvent(bean: LigneBean) {
+        this.updatePrix(bean)
+        this.updatePrixCommande.emit();
     }
 
-    addAction() {
+    addAction(alias?:string) {
         let queryParams = new HttpParams();
-        queryParams = queryParams.appendAll(this.ownerId);
+        queryParams = queryParams.append('commandeCode', this.commande.commandeCode.value);
+        if( alias ){
+            queryParams = queryParams.append('alias', this.alias.value);
+            queryParams = queryParams.append('magasinCode', this.commande.magasin.magasinCode.value);
+        }
         this.http
-            .get(`${this.getCreateFormUrl()}`, { params: queryParams })
-            .pipe(map((data: any) => <LigneBean>data))
-            .subscribe(ligne => {
-                this.addItem(ligne);
-                this.updateOwnerPrixTotal.emit();
+            .get(`achat-vente/commande/ligne/create-form`, { params: queryParams })
+            .pipe(map((data: any) => data))
+            .subscribe(data => {
+                this.prependItem(data.record);
+
+                if( (<Message[]>data.messages).length > 0 ){
+                    this.ui.displayFlashMessage(<Message[]>data.messages);
+                }
+                this.updatePrixCommande.emit();
+                this.alias.value = ''; // Pour la création à partir de l'alias
             });
+    }
+
+    addFromAliasAction() {
+        this.addAction(this.alias.value);
     }
 
     copyAction(ligne: LigneBean) {
         const copy:LigneBean = JSON.parse(JSON.stringify(ligne)); //deep clone
         copy.action = EditActionEnumVd.CREATE
         copy.ligneId.value = 0
-        this.addItem(copy);
-        this.updateOwnerPrixTotal.emit();
+        this.prependItem(copy);
+        this.updatePrixCommande.emit();
     }
 
     deleteAction(ligne: LigneBean) {
@@ -179,8 +185,44 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
                 ligne.action = EditActionEnumVd.SYNC;
                 ligne.valueChanged = false;
             }
-            this.updatePrixTotalEvent(ligne)
+            this.updatePrixEvent(ligne)
         }
+    }
+    
+    listerTaxesAction(bean: LigneBean) {
+        let dialogRef = this.dialog.open(DisplayLigneTaxeDialogComponent, { 
+            data: {
+                ligne:bean,
+                commande:this.commande
+            } 
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
+            console.log(result)
+        });  
+    }
+
+    editRemiseAction(bean: LigneBean) {
+        let dialogRef = this.dialog.open(EditRemiseDialogComponent, { data: bean });
+        dialogRef.afterClosed().subscribe(result => {
+            this.updatePrix(bean)
+        });  
+    }
+        
+    editRetourAction(bean: LigneBean) {
+        let dialogRef = this.dialog.open(EditRetourDialogComponent, { data: bean });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
+            console.log(result)
+        });  
+    }
+        
+    editReceptionAction(bean: LigneBean) {
+        let dialogRef = this.dialog.open(EditRetourDialogComponent, { data: bean });
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
+            console.log(result)
+        });  
     }
 
     private initSelectArticleOrServiceOptions(bean: LigneBean, type: ArticleTypeEnumVd.ARTC | ArticleTypeEnumVd.SSTD){
@@ -200,11 +242,31 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
         this.initSelectArticleOrServiceOptions(bean, ArticleTypeEnumVd.SSTD);
     }
 
-    private updatePrixTotal(bean: LigneBean) {
+    private updatePrix(bean: LigneBean) {
+        bean.prixTotalHT.value = 0;
         bean.prixTotal.value = 0;
-        if( bean.prixUnitaire.value && bean.quantite.value ){
-            bean.prixTotal.value = bean.prixUnitaire.value * bean.quantite.value;
+        bean.taxe.value = 0; 
+
+        if( !bean.prixUnitaire.value ){
+            bean.prixUnitaire.value = 0
+        } 
+
+        if( !bean.remiseMontant.value ){
+            bean.remiseMontant.value = 0
+        }   
+
+        if( !bean.quantite.value ){
+            bean.quantite.value = 0
+        }  
+
+        bean.prixTotalHT.value =  bean.prixUnitaire.value * bean.quantite.value;
+        
+        if( RemiseTypeEnumVd.TAUX == bean.remiseType.value && bean.remiseTaux.value > 0 ){
+            bean.remiseMontant.value = bean.prixTotalHT.value * bean.remiseTaux.value / 100
         }
+
+        //bean.taxe.value = 0 // TODO calculer taxe
+        bean.prixTotal.value = bean.prixTotalHT.value - bean.remiseMontant.value + bean.taxe.value;
     }
 
     private initSelectUniteOptions(bean:LigneBean, uniteBase:UniteBean, conversions: Array<ConversionBean>){

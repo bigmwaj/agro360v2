@@ -12,7 +12,7 @@ public class Message {
 	private MessageTypeEnumVd type;
 
 	private String message;
-
+	
 	private Message(MessageTypeEnumVd type, String message) {
 		this.message = message;
 		this.type = type;

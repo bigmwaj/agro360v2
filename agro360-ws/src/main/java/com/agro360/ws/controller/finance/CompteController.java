@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.bo.bean.finance.CompteBean;
 import com.agro360.bo.bean.finance.CompteSearchBean;
-import com.agro360.bo.mapper.finance.CompteMapper;
 import com.agro360.form.finance.CompteForm;
 import com.agro360.service.finance.CompteService;
 import com.agro360.ws.controller.common.AbstractController;
@@ -28,9 +27,6 @@ public class CompteController extends AbstractController {
 
 	@Autowired
 	CompteService service;
-
-	@Autowired
-	CompteMapper mapper;
 	
 	@Autowired
 	CompteForm form;

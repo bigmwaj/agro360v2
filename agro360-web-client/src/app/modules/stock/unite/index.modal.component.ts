@@ -10,6 +10,7 @@ import { BeanTools } from 'src/app/common/bean.tools';
 import { SharedModule } from 'src/app/common/shared.module';
 import { UIService } from 'src/app/common/service/ui.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Message } from 'src/app/backed/message';
 
 @Component({
     standalone: true,
@@ -35,7 +36,8 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
 
     constructor(
         private http: HttpClient,
-        public dialog: MatDialog) {
+        public dialog: MatDialog,
+        private ui: UIService) {
         super()
     }
 
@@ -105,11 +107,15 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
                 bean.action = EditActionEnumVd.SYNC;
                 bean.valueChanged = false;
             }
-            //this.updatePrixTotalEvent(ligne)
         }
     }
 
     saveAction() {
-        this.http.post(`stock/unite`, BeanTools.reviewBeansAction(this.getData())).subscribe(data => console.log(data))
+        this.http.post(`stock/unite`, BeanTools.reviewBeansAction(this.getData()))
+        .pipe(map((e: any) => <any>e))
+        .subscribe(data => {
+            this.ui.displayFlashMessage(<Array<Message>>data.messages);
+            this.dialog.closeAll();
+        })
     }
 }

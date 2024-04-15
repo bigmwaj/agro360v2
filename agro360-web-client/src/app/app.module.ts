@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +10,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { UIService } from './common/service/ui.service';
 import { ProductionAvicoleModule } from './modules/production/avicole/production.avicole.module';
 import { StockModule } from './modules/stock/stock.module';
 import { VenteModule } from './modules/vente/vente.module';
@@ -20,6 +19,8 @@ import { PartnerModule } from './modules/core/core.module';
 import { AchatVentModule } from './modules/achat-vente/achat-vente.module';
 import { AchatModule } from './modules/achat/achat.module';
 import { PaieModule } from './modules/paie/paie.module';
+import { UIModule } from './common/ui.module';
+import { XhrInterceptor } from './common/interceptor/XhrInterceptor';
 
 @NgModule({
     declarations: [
@@ -44,11 +45,20 @@ import { PaieModule } from './modules/paie/paie.module';
         FinanceModule,
         ProductionAvicoleModule,
         HomeModule,
-        PaieModule
+        PaieModule,
+        UIModule.forRoot({title:'Bienvenue sur Agro360'})
+        
     ],
     providers: [
-        UIService
+        {
+            multi: true,
+            provide: HTTP_INTERCEPTORS,
+            useClass: XhrInterceptor
+        }
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+
 })
-export class AppModule { }
+export class AppModule {
+    
+}

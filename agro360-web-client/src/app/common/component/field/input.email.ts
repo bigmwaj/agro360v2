@@ -18,7 +18,7 @@ import { MatDatetimepickerModule , MatNativeDatetimeModule } from '@mat-datetime
     ],
     selector: 'input-email-field',
     template: `
-    <mat-form-field appearance="outline" [class]="getCssClass()">
+    <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
         <input matInput type="email" 
             [(ngModel)]="field.value" 

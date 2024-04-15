@@ -46,6 +46,10 @@ body {
     min-height: 500px;
 }
 
+.bordered-cell {
+    border: 1px solid #e0e0e0;
+  }
+
 /*
 .mat-table td .mat-form-field-underline {
     display: none;
@@ -181,22 +185,5 @@ table.cycle-metadatas td.mat-column-value .mat-mdc-form-field-infix  input{
 .productions .mat-mdc-form-field-infix{
     padding:3px 0 !important;
 }
-
-
-/**
- * Design de la page listant les lignes d'une commande
- */
- 
- .commande-lignes td.mat-column-quantite .mat-mdc-form-field-infix{ width: 40px !important;}
- .commande-lignes td.mat-column-quantite .mat-mdc-form-field-infix input{ text-align: center;}
- 
- .commande-lignes td.mat-column-prixUnitaire .mat-mdc-form-field-infix{ width: 70px !important;}
- .commande-lignes td.mat-column-prixUnitaire .mat-mdc-form-field-infix input{ text-align: center;}
-
- .commande-lignes td.mat-column-prixTotal .mat-mdc-form-field-infix{ width: 80px !important;}
- .commande-lignes td.mat-column-prixTotal .mat-mdc-form-field-infix input{ text-align: center;}
-
- .commande-lignes td.mat-column-type .mat-mdc-form-field-infix,
- .commande-lignes td.mat-column-unite .mat-mdc-form-field-infix,
- .commande-lignes td.mat-column-variantCode .mat-mdc-form-field-infix,
- .commande-lignes td.mat-column-article .mat-mdc-form-field-infix{ width: 100px !important; overflow: visible;}
+.field-button{margin-left: -48px;}
+table .field-button{padding-top: 2px !important}

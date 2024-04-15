@@ -1,101 +1,33 @@
 
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTable } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ArticleBean, ArticleSearchBean } from 'src/app/backed/bean.stock';
-import { IndexModalComponent } from '../unite/index.modal.component';
-import { BeanList } from 'src/app/common/component/bean.list';
+import { Component, Input, OnInit } from '@angular/core';
 import { SharedModule } from 'src/app/common/shared.module';
-import { DeleteDialogComponent } from './delete.dialog.component';
-import { map } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { EditTabComponent } from './edit.tab.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ListTabComponent } from './list.tab.component';
+import { ArticleBean } from 'src/app/backed/bean.stock';
 
 @Component({
     standalone: true,
     imports: [
-        IndexModalComponent,
-        SharedModule
+        EditTabComponent,
+        SharedModule,        
+        MatToolbarModule, 
+        MatIconModule,
+        MatTabsModule,
+        ListTabComponent
     ],
     selector: 'stock-article-index-page',
     templateUrl: './index.page.component.html'
 })
-export class IndexPageComponent extends BeanList<ArticleBean> implements OnInit {
+export class IndexPageComponent implements OnInit {
 
-    searchForm: ArticleSearchBean;
+    editingBeans: ArticleBean[] = [];
 
-    displayedColumns: string[] = [
-        'select',
-        'articleCode',
-        'unite',
-        'type',
-        'description',
-        'actions'
-    ];
-
-    @ViewChild(MatTable)
-    table: MatTable<ArticleBean>;
-
-    constructor(
-        private router: Router,
-        private route: ActivatedRoute,
-        private http: HttpClient,       
-        private dialog: MatDialog) {
-        super()
-    }
-
-    override getViewChild(): MatTable<ArticleBean> {
-        return this.table;
-    }
-
-    getKeyLabel(bean: ArticleBean): string {
-        return bean.articleCode.value;
-    }
+    selectedTab: {index:number} = {index:0}
 
     ngOnInit(): void {
-        this.resetSearchFormAction()
-    }
 
-    resetSearchFormAction() {
-        this.http        
-            .get(`stock/article/search-form`)  
-            .subscribe(data => {
-                this.searchForm = <ArticleSearchBean>data;
-                this.searchAction();
-            });
-    }
-
-    searchAction() {
-        let objJsonStr = JSON.stringify(this.searchForm);
-        let objJsonB64 = btoa(objJsonStr);
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('q', objJsonB64);
-        this.http
-            .get(`stock/article`, { params: queryParams })  
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                this.setData(data.records);
-            });
-    }
-
-    addAction() {
-        this.router.navigate(['create'], { relativeTo: this.route })
-    }
-
-    editAction(bean: ArticleBean) {
-        this.router.navigate(['edit', bean.articleCode.value], { relativeTo: this.route })
-    }
-
-    copyAction(bean: ArticleBean) {
-        this.router.navigate(['create'], { relativeTo: this.route, queryParams: { 'copyFrom': bean.articleCode.value } })
-    }
-
-    deleteAction(bean: ArticleBean) {
-        this.dialog.open(DeleteDialogComponent, { data: { articleCode:bean.articleCode.value} });
-    }
-
-    uniteAction() {
-        this.dialog.open(IndexModalComponent);
     }
 }

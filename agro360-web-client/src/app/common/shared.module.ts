@@ -1,4 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 import { InputCheckboxFieldComponent } from './component/field/input.checkbox';
 import { InputDateFieldComponent } from './component/field/input.date';
 import { InputDateRangeFieldComponent } from './component/field/input.daterange';
@@ -10,19 +20,6 @@ import { InputTextFieldComponent } from './component/field/input.text';
 import { InputTextareaFieldComponent } from './component/field/input.textarea';
 import { SelectMultipleFieldComponent } from './component/field/select.multiple';
 import { SelectOneFieldComponent } from './component/field/select.one';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableModule } from '@angular/material/table';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatMenuModule} from '@angular/material/menu';
-import { UIService } from './service/ui.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { XhrInterceptor } from './interceptor/XhrInterceptor';
 
 @NgModule({
     imports: [ 
@@ -72,12 +69,6 @@ import { XhrInterceptor } from './interceptor/XhrInterceptor';
         
     ],
     providers:[
-        UIService,
-        {
-            multi: true,
-            provide: HTTP_INTERCEPTORS,
-            useClass: XhrInterceptor
-        }
     ]
 })
-export class SharedModule { }
+export class SharedModule {}

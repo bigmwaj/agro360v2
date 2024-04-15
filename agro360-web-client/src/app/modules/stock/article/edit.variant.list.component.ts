@@ -31,6 +31,7 @@ export class EditVariantListComponent extends BeanList<VariantBean> implements O
     displayedColumns: string[] = [
         'select',
         'variantCode',
+        'alias',
         'description',
         'actions'
     ];

@@ -1,5 +1,6 @@
 package com.agro360.form.av;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -8,19 +9,18 @@ import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.CommandeSearchBean;
-import com.agro360.bo.mapper.av.CommandeMapper;
+import com.agro360.bo.mapper.AchatVenteMapper;
 import com.agro360.dto.av.CommandeDto;
+import com.agro360.form.common.AbstractForm;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.av.CommandeOperation;
 import com.agro360.operation.logic.av.LigneOperation;
 import com.agro360.vd.av.CommandeStatusEnumVd;
+import com.agro360.vd.av.RemiseTypeEnumVd;
 import com.agro360.vd.common.EditActionEnumVd;
 
 @Component
-public class CommandeForm {
-
-	@Autowired
-	CommandeMapper mapper;
+public class CommandeForm extends AbstractForm{
 
 	@Autowired
 	CommandeOperation operation;	
@@ -32,7 +32,7 @@ public class CommandeForm {
 	LigneForm ligneForm;	
 
 	public CommandeBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
-		var bean = mapper.map(new CommandeDto());
+		var bean = AchatVenteMapper.map(new CommandeDto());
 		
 		bean.setAction(EditActionEnumVd.CREATE);
 		
@@ -50,6 +50,24 @@ public class CommandeForm {
 		bean.getPartner().getPartnerCode().setRequired(true);
 		
 		bean.getMagasin().getMagasinCode().setRequired(true);
+		
+		bean.getRemiseMontant().setValue(BigDecimal.ZERO);
+		bean.getRemiseType().setValue(RemiseTypeEnumVd.MONTANT);
+		
+		bean.getPrixTotal().setValue(BigDecimal.ZERO);
+		bean.getPrixTotal().setEditable(false);
+		
+		bean.getRemise().setValue(BigDecimal.ZERO);
+		bean.getRemise().setEditable(false);
+		
+		bean.getTaxe().setValue(BigDecimal.ZERO);
+		bean.getTaxe().setEditable(false);
+		
+		bean.getPrixTotalHT().setValue(BigDecimal.ZERO);
+		bean.getPrixTotalHT().setEditable(false);
+		
+		bean.getPrixTotalTTC().setValue(BigDecimal.ZERO);
+		bean.getPrixTotalTTC().setEditable(false);
 		return bean;
 	}
 	
@@ -69,6 +87,12 @@ public class CommandeForm {
 		bean.getPartner().getPartnerCode().setEditable(false);
 		
 		bean.getMagasin().getMagasinCode().setEditable(false);
+		
+		bean.getPrixTotal().setEditable(false);
+		bean.getRemise().setEditable(false);
+		bean.getTaxe().setEditable(false);
+		bean.getPrixTotalHT().setEditable(false);
+		bean.getPrixTotalTTC().setEditable(false);
 		
 		var lignes = ligneService.findLignesCommande(ctx, commandeCode);
 
@@ -102,7 +126,7 @@ public class CommandeForm {
 	}
 
 	public CommandeSearchBean initSearchFormBean(ClientContext ctx) {
-		var bean = mapper.mapToSearchBean();
+		var bean = AchatVenteMapper.buildCommandeSearchBean();
 		return bean;
 	}
 

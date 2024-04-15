@@ -19,13 +19,6 @@ export interface PartnerBean extends AbstractStatusTrackingBean<PartnerStatusEnu
 	name: FieldMetadata<string>;
 };
 
-export interface CategoryBean extends AbstractBean {
-	categoryCode: FieldMetadata<string>;
-	description: FieldMetadata<string>;
-	children: Array<CategoryBean>;
-	parentCategoryCode: FieldMetadata<string>;
-};
-
 export interface PartnerSearchBean extends AbstractBean {
 	phone: FieldMetadata<string>;
 	partnerCode: FieldMetadata<string>;
@@ -40,4 +33,11 @@ export interface PartnerCategoryBean extends AbstractBean {
 	categoryCode: FieldMetadata<string>;
 	description: FieldMetadata<string>;
 	selected: FieldMetadata<boolean>;
+};
+
+export interface CategoryBean extends AbstractBean {
+	categoryCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+	children: Array<CategoryBean>;
+	parentCategoryCode: FieldMetadata<string>;
 };
