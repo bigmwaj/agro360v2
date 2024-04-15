@@ -14,10 +14,8 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 import org.springframework.data.domain.Example;
 
-import com.agro360.bo.mapper.core.PartnerMapper;
 import com.agro360.dao.core.IPartnerCategoryDao;
 import com.agro360.dao.core.IPartnerDao;
 import com.agro360.dto.core.PartnerDto;
@@ -35,9 +33,6 @@ public class PartnerServiceTest {
 
 	@Mock
 	IPartnerCategoryDao partnerCategoryDao;
-	
-	@Spy
-	PartnerMapper partnerMapper;
 	
 	List<PartnerDto> partnerModel;
 	

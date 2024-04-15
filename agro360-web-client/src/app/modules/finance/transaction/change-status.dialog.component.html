@@ -1,5 +1,5 @@
 <h2 mat-dialog-title>Confirmation changement de statut</h2>
-<mat-dialog-content>
+<mat-dialog-content class="mb-0">
     <div *ngIf="bean" class="mt-1">
         <div class="row">
             <div class="col-6">
@@ -19,7 +19,7 @@
         </div>
     </div>    
 </mat-dialog-content>
-<mat-dialog-actions align="end" class="m-3">
-    <button mat-button mat-dialog-close>Annuler</button>
-    <button mat-button cdkFocusInitial (click)="changeStatusAction()">Changer</button>
+<mat-dialog-actions align="end" class="m-3 pt-0 mt-0">
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button cdkFocusInitial (click)="changeStatusAction()">Changer</button>
 </mat-dialog-actions>

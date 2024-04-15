@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { CommandeBean, LigneBean } from 'src/app/backed/bean.av';
 import { Message } from 'src/app/backed/message';
@@ -11,12 +12,13 @@ import { CoreUtils } from '../../core/core.utils';
 import { FinanceService } from '../../finance/finance.service';
 import { StockService } from '../../stock/stock.service';
 import { EditLigneListComponent } from './edit.ligne.list.component';
+import { EditRemiseDialogComponent } from './edit.remise.dialog.component';
 
 @Component({
     standalone: true,
     imports: [
         SharedModule,
-        EditLigneListComponent
+        EditLigneListComponent,
     ],
     selector: 'achat-vente-commande-edit-tab',
     templateUrl: './edit.tab.component.html'
@@ -32,7 +34,8 @@ export class EditTabComponent implements OnInit {
         private http: HttpClient,
         private ui: UIService,
         private stockService:StockService,
-        private financeService:FinanceService)
+        private financeService:FinanceService,
+        public dialog: MatDialog)
     { }
 
     ngOnInit(): void {
@@ -45,7 +48,7 @@ export class EditTabComponent implements OnInit {
         this.initSelectMagasinOptions();
         this.initSelectClientOptions();
         this.initSelectCompteOptions();
-        this.initPrixTotal();
+        
     }
 
     /**************************************************
@@ -55,12 +58,11 @@ export class EditTabComponent implements OnInit {
 
     /**
      * Cette évènement est enregistré au niveau des lignes
-     * du bon de commande et permet de mettre à jour le prix total 
-     * du bon de commande lorsque l'on modifie la quantité ou le prix 
-     * unitaire d'une ligne.
+     * de la commande de même que la commande et permet de mettre à jour les prix total 
+     * de la commande lorsque l'on modifie une information influencant le prix
      */
-    updatePrixTotalEvent() {
-        this.initPrixTotal()
+    updatePrixEvent() {
+        this.initPrix()
     }
 
     /* ********************
@@ -84,13 +86,19 @@ export class EditTabComponent implements OnInit {
             .subscribe(data => {
                 this.ui.displayFlashMessage(<Array<Message>>data.messages);
             });
+    }    
+
+    editRemiseAction(bean: CommandeBean) {
+        let dialogRef = this.dialog.open(EditRemiseDialogComponent, { data: bean });
+        dialogRef.afterClosed().subscribe(result => {
+            this.initPrix();
+        });  
     }
 
     /* *****************
      * Fin des actions *
      * *****************
      */
-
     private isCreation(): boolean {
         return EditActionEnumVd.CREATE == this.bean.action;
     }
@@ -117,7 +125,22 @@ export class EditTabComponent implements OnInit {
             .subscribe(e => this.bean.partner.partnerCode.valueOptions = e)
     }
 
-    private initPrixTotal() {
+    /**
+     * Invoquée uniquement lorsqu'un facteur de prix a été modifié. Lors du chargement de la commande, tous les champs 
+     * calculables doivent avoir été initialisés par le serveur.
+     * Les facteurs de prix sont les suivants:
+     * - Le montant de la remise sur la commande. Le type de la remise étant MONTANT
+     * - Le taux de la remise sur la commande.
+     * - Les facteurs de prix des lignes de la commande qui sont:
+     *   . Le montant de la remise sur la ligne de commande. Le type de la remise étant MONTANT
+     *   . Le taux de la remise sur la ligne. Le type de la remise étant TAUX
+     *   . La quantité d'article commandé sur la ligne
+     *   . Le prix unitaire sur la ligne
+     *   . Le montanr de la taxe si applicable
+     * 
+     */
+    private initPrix() {
+
         this.bean.prixTotal.value = this.bean.lignes.map(e => this.calculerPrixTotalLigne(e))
             .reduce((a, b) => a + b, 0)
     }

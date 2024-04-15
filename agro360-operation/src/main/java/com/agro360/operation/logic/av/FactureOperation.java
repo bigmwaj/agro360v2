@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
-import com.agro360.bo.mapper.av.FactureMapper;
+import com.agro360.bo.mapper.AchatVenteMapper;
 import com.agro360.dao.av.ICommandeDao;
 import com.agro360.dao.av.IFactureDao;
 import com.agro360.dao.common.IDao;
@@ -38,9 +38,6 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 	
 	@Autowired
 	private EntityManager entityManager;
-
-	@Autowired
-	private FactureMapper mapper;
 	
 	@Autowired
 	private ICodeGeneratorDao codeGeneratorDao;
@@ -52,11 +49,6 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 	@Override
 	protected IDao<FactureDto, String> getDao() {
 		return dao;
-	}
-	
-	@Override
-	protected String getRulePath() {
-		return "achat/commande";
 	}
 
 	public List<FactureBean> findFacturesByCriteria(ClientContext ctx, FactureSearchBean searchBean) {
@@ -109,7 +101,7 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 		
 		var query = entityManager.createQuery(rootQuery);
 		System.out.println("FactureService.search() La requette est " + query);
-        return query.getResultList().stream().map(mapper::map).collect(Collectors.toList());
+        return query.getResultList().stream().map(AchatVenteMapper::map).collect(Collectors.toList());
 		
 	}
 
@@ -154,7 +146,7 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 
 	public FactureBean findFactureByCode(ClientContext ctx, String commandeCode) {
 		var dto = dao.getReferenceById(commandeCode);
-		return mapper.map(dto);	
+		return AchatVenteMapper.map(dto);	
 	}
 	
 	private void changeFactureStatus(ClientContext ctx, FactureBean bean) {

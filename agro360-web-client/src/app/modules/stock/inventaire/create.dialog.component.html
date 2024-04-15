@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Ajout d'article en inventaire</h2>
+<mat-dialog-content>
+    <div *ngIf="bean">
+        <div class="row">
+            <div class="col-6">
+                <select-one-field 
+                    [field]="bean.magasin.magasinCode"
+                    (onChange)="onMagasinChanged(bean)">
+                </select-one-field>
+            </div>
+            <div class="col-6">
+                <select-one-field                
+                    (onChange)="onArticleChanged(bean)"
+                    [field]="bean.article.articleCode">
+                </select-one-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <stock-inventaire-edit-variant-list></stock-inventaire-edit-variant-list>
+            </div>
+        </div>
+    </div>    
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3">
+    <button mat-button mat-dialog-close>Fermer</button>
+    <button mat-button cdkFocusInitial (click)="createAction()">Ajouter</button>
+</mat-dialog-actions>

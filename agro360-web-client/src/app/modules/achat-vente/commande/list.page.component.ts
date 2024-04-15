@@ -5,16 +5,16 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { map } from 'rxjs';
 import { CommandeBean, CommandeSearchBean } from 'src/app/backed/bean.av';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
-import { MatSidenavModule } from '@angular/material/sidenav';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
     standalone: true,
@@ -51,9 +51,11 @@ export class ListPageComponent extends BeanList<CommandeBean> implements OnInit 
         'type',
         'magasin',
         'partner',
-        'paiementComptant',
         'compte',
+        'taxe',
+        'remise',
         'prixTotal',
+        'paiementComptant',
         'actions'
     ];
 

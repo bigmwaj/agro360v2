@@ -14,7 +14,7 @@ public class TransactionSearchBean extends AbstractBean{
 
 	private static final long serialVersionUID = -1273209527092665188L;
 
-	private FieldMetadata<String> transactionCode = new FieldMetadata<>("Code");
+	private FieldMetadata<String> transactionCode = new FieldMetadata<>("Transaction");
 
 	private FieldMetadata<TransactionTypeEnumVd> type = new FieldMetadata<>("Type", TransactionTypeEnumVd.getAsMap());
 

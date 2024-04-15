@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Confirmation changement de statut</h2>
+<h2 mat-dialog-title>Transfert de compte à compte</h2>
 <mat-dialog-content>
     <div *ngIf="bean" class="mt-1">
         <div class="row">
@@ -27,7 +27,7 @@
         </div>
     </div>    
 </mat-dialog-content>
-<mat-dialog-actions align="end" class="m-3">
-    <button mat-button mat-dialog-close>Annuler</button>
-    <button mat-button cdkFocusInitial (click)="transfertAction()">Transférer</button>
+<mat-dialog-actions align="end" class="m-3 pt-0 mt-0">
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button cdkFocusInitial (click)="transfertAction()">Transférer</button>
 </mat-dialog-actions>

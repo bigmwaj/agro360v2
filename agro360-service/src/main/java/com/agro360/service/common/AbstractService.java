@@ -1,5 +1,8 @@
 package com.agro360.service.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class AbstractService {
 
 	protected final static String RECORDS_MODEL_KEY = "records";
@@ -23,4 +26,8 @@ public class AbstractService {
 	}
 	
 	protected final static String CHANGE_STATUS_FORM_RN = "change-status-form";
+	
+	protected Logger getLogger() {
+		return LoggerFactory.getLogger(getClass());
+	}
 }

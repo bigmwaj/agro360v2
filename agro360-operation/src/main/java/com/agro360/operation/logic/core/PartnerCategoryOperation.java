@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerCategoryBean;
-import com.agro360.bo.mapper.core.PartnerCategoryMapper;
+import com.agro360.bo.mapper.CoreMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.core.ICategoryDao;
 import com.agro360.dao.core.IPartnerCategoryDao;
@@ -32,17 +32,9 @@ public class PartnerCategoryOperation extends AbstractOperation<PartnerCategoryD
 	@Autowired
 	private ICategoryDao categoryDao;
 	
-	@Autowired
-	private PartnerCategoryMapper mapper;
-	
 	@Override
 	protected IDao<PartnerCategoryDto, PartnerCategoryPk> getDao() {
 		return dao;
-	}
-	
-	@Override
-	protected String getRulePath() {
-		return "core/partner/category";
 	}
 	
 	private List<PartnerCategoryDto> findPartnerCategoryDtos(String partnerCode){
@@ -56,7 +48,7 @@ public class PartnerCategoryOperation extends AbstractOperation<PartnerCategoryD
 
 	public PartnerCategoryBean findPartnerRootCategoryHierarchy(ClientContext ctx, int deep) {
 		var root = categoryDao.getReferenceById("ROOT");
-		var bean = mapper.map(new PartnerCategoryDto(root));
+		var bean = CoreMapper.map(new PartnerCategoryDto(root));
 		
 		addChildCategories(ctx, bean, deep);
 		
@@ -84,7 +76,7 @@ public class PartnerCategoryOperation extends AbstractOperation<PartnerCategoryD
 		matcher = matcher.withMatcher("parent.categoryCode", ExampleMatcher.GenericPropertyMatchers.exact().ignoreCase());
 		var example = Example.of(probe, matcher);
 		
-		return categoryDao.findAll(example).stream().map(mapper::map).collect(Collectors.toList());
+		return categoryDao.findAll(example).stream().map(CoreMapper::map).collect(Collectors.toList());
 	}
 	
 	public PartnerCategoryBean findPartnerCategoryHierarchyFromLeaves(ClientContext ctx, String partnerCode) {
@@ -103,7 +95,7 @@ public class PartnerCategoryOperation extends AbstractOperation<PartnerCategoryD
 			while( category != null ){
 				var code = category.getCategoryCode();
 				if( !categoryMap.containsKey(code) ) {
-					var categoryBean = mapper.map(new PartnerCategoryDto(category));
+					var categoryBean = CoreMapper.map(new PartnerCategoryDto(category));
 					categoryBean.getSelected().setValue(true);
 					categoryMap.put(code, categoryBean);
 				}
@@ -114,7 +106,7 @@ public class PartnerCategoryOperation extends AbstractOperation<PartnerCategoryD
 				if( parent != null ) {
 					var parentCode = parent.getCategoryCode();
 					if( !categoryMap.containsKey(parentCode) ) {
-						var parentBean = mapper.map(new PartnerCategoryDto(parent));
+						var parentBean = CoreMapper.map(new PartnerCategoryDto(parent));
 						categoryMap.put(parentCode, parentBean);
 					}
 					

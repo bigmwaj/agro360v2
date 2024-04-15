@@ -1,97 +1,34 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTable } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs';
-import { MagasinBean, MagasinSearchBean } from 'src/app/backed/bean.stock';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { SharedModule } from 'src/app/common/shared.module';
-import { IndexModalComponent } from '../unite/index.modal.component';
 
+import { Component, Input, OnInit } from '@angular/core';
+import { SharedModule } from 'src/app/common/shared.module';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { EditTabComponent } from './edit.tab.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ListTabComponent } from './list.tab.component';
+import { MagasinBean } from 'src/app/backed/bean.stock';
+import { CommonModule } from '@angular/common';
 
 @Component({
     standalone: true,
     imports: [
-        IndexModalComponent,
-        SharedModule
+        EditTabComponent,        
+        CommonModule,        
+        MatToolbarModule, 
+        MatIconModule,
+        MatTabsModule,
+        ListTabComponent
     ],
     selector: 'stock-magasin-index-page',
     templateUrl: './index.page.component.html'
 })
-export class IndexPageComponent extends BeanList<MagasinBean> implements OnInit {
+export class IndexPageComponent implements OnInit {
 
-    searchForm: MagasinSearchBean;
+    editingBeans: MagasinBean[] = [];
 
-    @ViewChild(MatTable)
-    table: MatTable<MagasinBean>;
-
-    displayedColumns: string[] = [
-        'select',
-        'magasinCode',
-        'description',
-        'actions'
-    ];
-
-    constructor(private router: Router,
-        private route: ActivatedRoute,
-        private http: HttpClient,
-        public dialog: MatDialog) {
-            super()
-    }
-
-    override getViewChild(): MatTable<MagasinBean> {
-        return this.table;
-    }
-
-    getKeyLabel(bean: MagasinBean): string {
-        return bean.magasinCode.value;
-    }
+    selectedTab: {index:number} = {index:0}
 
     ngOnInit(): void {
-        this.resetSearchFormAction()
-    }
 
-    resetSearchFormAction() {
-        this.http
-            .get("stock/magasin/search-form")
-            .subscribe(data => {
-                this.searchForm = <MagasinSearchBean>data;
-                this.searchAction();
-            });
-    }
-
-    searchAction() {
-        let objJsonStr = JSON.stringify(this.searchForm);
-        let objJsonB64 = btoa(objJsonStr);
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('q', objJsonB64);
-        this.http
-            .get("stock/magasin", { params: queryParams })
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                this.setData(data.records);
-            });
-    }
-
-    addAction() {
-        this.router.navigate(['create'], { relativeTo: this.route })
-    }
-
-    editAction(bean: MagasinBean) {
-        this.router.navigate(['edit', bean.magasinCode.value], { relativeTo: this.route })
-    }
-
-    copyAction(bean: MagasinBean) {
-        this.router.navigate(['create'], { relativeTo: this.route, queryParams: { 'copyFrom': bean.magasinCode.value } })
-    }
-
-    deleteAction(bean: MagasinBean) {
-        // Open Dialog
-    }
-
-    uniteAction() {
-        this.dialog.open(IndexModalComponent);
     }
 }

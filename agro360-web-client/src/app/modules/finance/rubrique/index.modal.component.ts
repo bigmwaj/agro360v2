@@ -10,6 +10,7 @@ import { BeanTools } from 'src/app/common/bean.tools';
 import { SharedModule } from 'src/app/common/shared.module';
 import { UIService } from 'src/app/common/service/ui.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Message } from 'src/app/backed/message';
 
 @Component({
     standalone: true,
@@ -37,7 +38,8 @@ export class IndexModalComponent extends BeanList<RubriqueBean> implements OnIni
 
     constructor(
         private http: HttpClient,
-        public dialog: MatDialog) {
+        public dialog: MatDialog,
+        private ui: UIService) {
         super()
     }
 
@@ -111,10 +113,11 @@ export class IndexModalComponent extends BeanList<RubriqueBean> implements OnIni
     }
 
     saveAction() {
-        this.http.post(`finance/rubrique`, BeanTools.reviewBeansAction(this.getData())).
-            subscribe(data => {
-                console.log(data);                
-                this.dialog.closeAll();
-            })
+        this.http.post(`finance/rubrique`, BeanTools.reviewBeansAction(this.getData()))
+        .pipe(map((e: any) => <any>e))
+        .subscribe(data => {
+            this.dialog.closeAll();
+            this.ui.displayFlashMessage(<Array<Message>>data.messages);
+        })
     }
 }

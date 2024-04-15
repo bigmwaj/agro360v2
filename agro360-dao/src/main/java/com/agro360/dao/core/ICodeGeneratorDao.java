@@ -19,6 +19,10 @@ public interface ICodeGeneratorDao extends IDao<CodeGenetorDto, String>{
 	default String generateFactureCode() {
 		return generateCode(getReferenceById("FACTURE"));
 	}
+
+	default String generateRetourCode(){
+		return generateCode(getReferenceById("RETOUR"));
+	}
 	
 	default String generateCode(CodeGenetorDto dto) {
 		var code = dto.getPrefix() + padLeftZeros(dto.getSequence().toString(), 4);

@@ -1,7 +1,7 @@
 <div class="example-pizza-party container-fluid" matSnackBarLabel>
     <ul *ngIf="messages">
         <li *ngFor="let msg of messages">
-            <span class="text-{{msg.type | lowercase}} p-1 mb-1">
+            <span class="text-{{getBootrapType(msg.type) | lowercase}} p-1 mb-1">
                 <span class="p-0 m-0" innerHTML={{msg.message}}>{{msg.message}}</span>
             </span>
         </li>

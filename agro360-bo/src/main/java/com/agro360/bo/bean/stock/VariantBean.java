@@ -12,7 +12,11 @@ public class VariantBean extends AbstractBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 	
-	private FieldMetadata<String> variantCode = new FieldMetadata<>("Code");
-
+	private FieldMetadata<String> articleCode = new FieldMetadata<>("Article");
+	
+	private FieldMetadata<String> variantCode = new FieldMetadata<>("Variant");
+	
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
+	
+	private FieldMetadata<String> alias = new FieldMetadata<>("Alias");
 }

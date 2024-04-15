@@ -1,18 +1,15 @@
 package com.agro360.operation.logic.production.avicole;
 
-import static com.agro360.bo.mapper.production.avicole.JourneeMapper.OPTION_MAP_PRODUCTION_KEY;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.production.avicole.JourneeBean;
 import com.agro360.bo.bean.production.avicole.JourneeSearchBean;
-import com.agro360.bo.mapper.production.avicole.JourneeMapper;
+import com.agro360.bo.mapper.ProductionMapper;
 import com.agro360.bo.message.Message;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.production.avicole.ICycleDao;
@@ -24,9 +21,6 @@ import com.agro360.vd.common.EditActionEnumVd;
 @Service
 public class JourneeOperation extends AbstractOperation<CycleDto, String>{
 
-	@Autowired
-	private JourneeMapper mapper;
-	
 	@Autowired
 	private ICycleDao cycleDao;
 	
@@ -41,14 +35,14 @@ public class JourneeOperation extends AbstractOperation<CycleDto, String>{
 	}
 	
 	public JourneeSearchBean initSearchFormBean() {
-		var bean = mapper.mapToSearchBean();
+		var bean = ProductionMapper.buildJourneeSearchBean();
 		return bean;
 	}
 	
 	public List<JourneeBean> search(ClientContext ctx, JourneeSearchBean searchBean) {
 		var cycle = this.cycleDao.getReferenceById(searchBean.getCycleCode().getValue());
-		var journee = mapper.mapToBean(cycle, searchBean.getJournee().getValue(), Map.of(OPTION_MAP_PRODUCTION_KEY, true));
-		return Collections.singletonList(applyInitCreateRules(journee));
+		var journee = ProductionMapper.mapToBean(cycle, searchBean.getJournee().getValue());
+		return Collections.singletonList(journee);
 	}
 	
 	public List<Message> save(JourneeBean bean) {

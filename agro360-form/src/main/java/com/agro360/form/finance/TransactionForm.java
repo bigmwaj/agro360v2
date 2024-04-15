@@ -20,7 +20,7 @@ import com.agro360.bo.bean.finance.RubriqueSearchBean;
 import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.bean.finance.TransactionSearchBean;
 import com.agro360.bo.bean.finance.TransfertBean;
-import com.agro360.bo.mapper.finance.TransactionMapper;
+import com.agro360.bo.mapper.FinanceMapper;
 import com.agro360.bo.utils.Constants;
 import com.agro360.dto.finance.TransactionDto;
 import com.agro360.operation.context.ClientContext;
@@ -33,9 +33,6 @@ import com.agro360.vd.finance.TransactionStatusEnumVd;
 
 @Component
 public class TransactionForm {
-
-	@Autowired
-	TransactionMapper mapper;
 
 	@Autowired
 	TransactionOperation operation;	
@@ -51,7 +48,7 @@ public class TransactionForm {
 	
 	public TransactionBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
 		var bean = copyFrom.map(e -> operation.findTransactionByCode(ctx, e))
-				.orElse(mapper.map(new TransactionDto()));
+				.orElse(FinanceMapper.map(new TransactionDto()));
 		
 		bean.setAction(EditActionEnumVd.CREATE);
 		
@@ -135,7 +132,7 @@ public class TransactionForm {
 	}
 
 	public TransactionSearchBean initSearchFormBean(ClientContext ctx) {
-		var bean = mapper.mapToSearchBean();
+		var bean = FinanceMapper.buildTransactionSearchBean();
 		return bean;
 	}
 	

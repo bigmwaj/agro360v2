@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldAppearance } from '@angular/material/form-field';
 
 @Component({
     standalone: true,
@@ -19,7 +20,7 @@ import { MatInputModule } from '@angular/material/input';
     ],
     selector: 'input-daterange-field',
     template: `
-    <mat-form-field appearance="outline" [class]="getCssClass()">
+    <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
         <mat-date-range-input    
             [rangePicker]="datePicker"   
@@ -40,6 +41,9 @@ import { MatInputModule } from '@angular/material/input';
     `
 })
 export class InputDateRangeFieldComponent implements OnInit {
+
+    @Input()
+    appearance: MatFormFieldAppearance = 'outline';
 
     @Input()
     startField: FieldMetadata<any>;

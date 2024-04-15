@@ -13,7 +13,18 @@ create table `av_tbl_commande` (
   `magasin_code` varchar(16) not null,
   `partner_code` varchar(16) not null,
   `paiement_comptant` decimal(16,4) default null,
-  `compte_code` varchar(16) default null,
+  `compte_code` varchar(16) default null,  
+  
+  `remise_raison` varchar(256) default null,
+  `remise_type` varchar(8) default null,
+  `remise_taux` double default null,
+  `remise_montant` decimal(16,4) not null,
+  
+  `taxe` decimal(16,4) not null,
+  `remise` decimal(16,4) not null,
+  `prix_total_ht` decimal(16,4) not null,
+  `prix_total_ttc` decimal(16,4) not null,
+  `prix_total` decimal(16,4) not null,
   
   primary key `av_tbl_commande_pk`(`commande_code`),
   
@@ -41,6 +52,17 @@ create table `av_tbl_ligne` (
   `article_code` varchar(16) default null,
   `commande_code` varchar(16) not null,
   `unite_code` varchar(16) default null,
+  
+  `remise_raison` varchar(256) default null,
+  `remise_type` varchar(8) default null,
+  `remise_taux` double default null,
+  `remise_montant` decimal(16,4) not null,
+  
+  `taxe` decimal(16,4) not null,
+  `prix_total_ht` decimal(16,4) not null,
+  `prix_total_ttc` decimal(16,4) not null,
+  `prix_total` decimal(16,4) not null,
+  
   primary key `av_tbl_ligne_pk`(`ligne_id`),
   key `av_tbl_ligne_fk_stock_tbl_article` (`article_code`),
   key `av_tbl_ligne_fk_av_tbl_commande` (`commande_code`),
@@ -106,25 +128,85 @@ create table `av_tbl_reg_cmd` (
   constraint `av_tbl_reg_cmd_fk_av_tbl_commande` foreign key (`commande_code`) references `av_tbl_commande` (`commande_code`)
 ) engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
 
-drop table if exists `av_tbl_ligne_recep`;
-create table `av_tbl_ligne_recep` (
-  `reception_id` bigint not null auto_increment,
+
+drop table if exists `av_tbl_ligne_taxe`;
+create table `av_tbl_ligne_taxe` (
+  `commande_code` varchar(16) not null,
+  `ligne_id` bigint not null,
+  `taxe_code` varchar(16) not null,
+  
   `created_at` datetime(6) not null,
   `created_by` varchar(16) not null,
   `updated_at` datetime(6) not null,
   `updated_by` varchar(16) not null,
+  
+  `taxe` double not null,
+  
+  primary key `av_tbl_ligne_taxe_pk`(`commande_code`, `ligne_id`, `taxe_code`),
+  
+  key `av_tbl_ligne_taxe_fk_fin_tbl_taxe` (`taxe_code`),
+  key `av_tbl_ligne_taxe_fk_fin_tbl_ligne` (`commande_code`, `ligne_id`),
+  
+  constraint `av_tbl_ligne_taxe_fk_fin_tbl_taxe` foreign key (`taxe_code`) references `fin_tbl_taxe` (`taxe_code`),
+  constraint `av_tbl_ligne_taxe_fk_fin_tbl_ligne` foreign key (`commande_code`, `ligne_id`) references `av_tbl_ligne`(`commande_code`, `ligne_id`)
+) engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+
+drop table if exists `av_tbl_reception`;
+create table `av_tbl_reception` (
+  `reception_id` bigint not null auto_increment,
+  `commande_code` varchar(16) not null,
+  `ligne_id` bigint not null,
+  
+  `created_at` datetime(6) not null,
+  `created_by` varchar(16) not null,
+  `updated_at` datetime(6) not null,
+  `updated_by` varchar(16) not null,
+  
+  `status` varchar(4) not null,
   `status_date` datetime(6) default null,
+  
   `reception_date` datetime(6) not null,
   `description` varchar(128) default null,
   `quantite` double not null,
-  `status` varchar(4) not null,
-  `ligne_id` bigint not null,
   `unite_code` varchar(16) not null,
-  primary key `av_tbl_ligne_recep_pk`(`reception_id`),
-  key `av_tbl_ligne_recep_fk_av_tbl_ligne` (`ligne_id`),
-  key `av_tbl_ligne_recep_fk_stock_tbl_unite` (`unite_code`),
-  constraint `av_tbl_ligne_recep_fk_av_tbl_ligne` foreign key (`ligne_id`) references `av_tbl_ligne` (`ligne_id`),
-  constraint `av_tbl_ligne_recep_fk_stock_tbl_unite` foreign key (`unite_code`) references `stock_tbl_unite` (`unite_code`)
+  
+  primary key `av_tbl_reception_pk`(`reception_id`),
+  
+  key `av_tbl_reception_fk_av_tbl_ligne` (`commande_code`, `ligne_id`),
+  key `av_tbl_reception_fk_stock_tbl_unite` (`unite_code`),
+  
+  constraint `av_tbl_reception_fk_av_tbl_ligne` foreign key (`commande_code`, `ligne_id`) references `av_tbl_ligne` (`commande_code`, `ligne_id`),
+  constraint `av_tbl_reception_fk_stock_tbl_unite` foreign key (`unite_code`) references `stock_tbl_unite` (`unite_code`)
 ) engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+
+drop table if exists `av_tbl_retour`;
+create table `av_tbl_retour` (
+  `retour_id` bigint not null auto_increment,
+  `commande_code` varchar(16) not null,
+  `ligne_id` bigint not null,
+  
+  `created_at` datetime(6) not null,
+  `created_by` varchar(16) not null,
+  `updated_at` datetime(6) not null,
+  `updated_by` varchar(16) not null,
+  
+  `status` varchar(4) not null,
+  `status_date` datetime(6) default null,
+  
+  `quantite` double not null,
+  `retour_date` datetime(6) not null,
+  `description` varchar(128) default null,
+  `unite_code` varchar(16) not null,
+  
+  primary key `av_tbl_retour_pk`(`retour_id`),
+  
+  key `av_tbl_retour_fk_av_tbl_ligne` (`commande_code`, `ligne_id`),
+  key `av_tbl_retour_fk_stock_tbl_unite` (`unite_code`),
+  
+  constraint `av_tbl_retour_fk_av_tbl_ligne` foreign key (`commande_code`, `ligne_id`) references `av_tbl_ligne` (`commande_code`, `ligne_id`),
+  constraint `av_tbl_retour_fk_stock_tbl_unite` foreign key (`unite_code`) references `stock_tbl_unite` (`unite_code`)
+) engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+
+
 
 

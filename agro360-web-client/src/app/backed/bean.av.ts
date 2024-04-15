@@ -1,81 +1,15 @@
 import { FieldMetadata } from './metadata';
-import { ReceptionStatusEnumVd } from './vd.achat';
-import { CommandeStatusEnumVd, CommandeTypeEnumVd, FactureStatusEnumVd, FactureTypeEnumVd, LigneTypeEnumVd } from './vd.av';
+import { CommandeStatusEnumVd, CommandeTypeEnumVd, FactureStatusEnumVd, FactureTypeEnumVd, LigneTypeEnumVd, ReceptionStatusEnumVd, RemiseTypeEnumVd, RetourStatusEnumVd } from './vd.av';
 import { AbstractBean, AbstractStatusTrackingBean } from './bean.common';
 import { PartnerBean } from './bean.core';
-import { CompteBean, TransactionBean } from './bean.finance';
+import { CompteBean, TaxeBean, TransactionBean } from './bean.finance';
 import { ArticleBean, MagasinBean, UniteBean } from './bean.stock';
-
-export interface FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd> {
-	montant: FieldMetadata<any>;
-	status: FieldMetadata<FactureStatusEnumVd>;
-	description: FieldMetadata<string>;
-	partner: PartnerBean;
-	factureCode: FieldMetadata<string>;
-	date: FieldMetadata<any>;
-	type: FieldMetadata<FactureTypeEnumVd>;
-	commande: CommandeBean;
-};
-
-export interface FactureSearchBean extends AbstractBean {
-	statusIn: FieldMetadata<any>;
-	dateDebut: FieldMetadata<any>;
-	partner: FieldMetadata<string>;
-	dateFin: FieldMetadata<any>;
-	factureCode: FieldMetadata<string>;
-};
-
-export interface LigneBean extends AbstractBean {
-	variantCode: FieldMetadata<string>;
-	unite: UniteBean;
-	quantite: FieldMetadata<number>;
-	article: ArticleBean;
-	numero: FieldMetadata<number>;
-	description: FieldMetadata<string>;
-	prixTotal: FieldMetadata<any>;
-	ligneId: FieldMetadata<number>;
-	type: FieldMetadata<LigneTypeEnumVd>;
-	prixUnitaire: FieldMetadata<any>;
-};
-
-export interface CommandeSearchBean extends AbstractBean {
-	statusIn: FieldMetadata<any>;
-	commandeCode: FieldMetadata<string>;
-	ville: FieldMetadata<string>;
-	dateDebut: FieldMetadata<any>;
-	partner: FieldMetadata<string>;
-	dateFin: FieldMetadata<any>;
-};
 
 export interface ReglementFactureBean extends AbstractBean {
 	reglementId: FieldMetadata<number>;
-	montant: FieldMetadata<any>;
 	transaction: TransactionBean;
+	montant: FieldMetadata<number>;
 	factureCode: FieldMetadata<string>;
-};
-
-export interface CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumVd> {
-	magasin: MagasinBean;
-	commandeCode: FieldMetadata<string>;
-	paiementComptant: FieldMetadata<any>;
-	lignes: Array<LigneBean>;
-	description: FieldMetadata<string>;
-	prixTotal: FieldMetadata<any>;
-	partner: PartnerBean;
-	status: FieldMetadata<CommandeStatusEnumVd>;
-	date: FieldMetadata<any>;
-	type: FieldMetadata<CommandeTypeEnumVd>;
-	compte: CompteBean;
-};
-
-export interface ReceptionBean extends AbstractStatusTrackingBean<ReceptionStatusEnumVd> {
-	quantite: FieldMetadata<number>;
-	description: FieldMetadata<string>;
-	receptionId: FieldMetadata<number>;
-	ligne: LigneBean;
-	status: FieldMetadata<ReceptionStatusEnumVd>;
-	prixUnitaire: FieldMetadata<any>;
-	dateReception: FieldMetadata<any>;
 };
 
 export interface ReceptionInputBean extends AbstractBean {
@@ -88,9 +22,106 @@ export interface ReceptionInputBean extends AbstractBean {
 	dateReception: FieldMetadata<any>;
 };
 
+export interface ReceptionLigneBean extends AbstractStatusTrackingBean<ReceptionStatusEnumVd> {
+	unite: UniteBean;
+	quantite: FieldMetadata<number>;
+	prixUnitaire: FieldMetadata<number>;
+	description: FieldMetadata<string>;
+	receptionId: FieldMetadata<number>;
+	date: FieldMetadata<any>;
+	ligne: LigneBean;
+	status: FieldMetadata<ReceptionStatusEnumVd>;
+};
+
+export interface CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumVd> {
+	magasin: MagasinBean;
+	paiementComptant: FieldMetadata<number>;
+	prixTotalHT: FieldMetadata<number>;
+	remiseTaux: FieldMetadata<number>;
+	lignes: Array<LigneBean>;
+	description: FieldMetadata<string>;
+	partner: PartnerBean;
+	remiseType: FieldMetadata<RemiseTypeEnumVd>;
+	compte: CompteBean;
+	remiseMontant: FieldMetadata<number>;
+	remiseRaison: FieldMetadata<string>;
+	prixTotalTTC: FieldMetadata<number>;
+	commandeCode: FieldMetadata<string>;
+	remise: FieldMetadata<number>;
+	taxe: FieldMetadata<number>;
+	status: FieldMetadata<CommandeStatusEnumVd>;
+	date: FieldMetadata<any>;
+	type: FieldMetadata<CommandeTypeEnumVd>;
+	prixTotal: FieldMetadata<number>;
+};
+
+export interface RetourLigneBean extends AbstractBean {
+	unite: UniteBean;
+	quantite: FieldMetadata<number>;
+	prixUnitaire: FieldMetadata<number>;
+	retourId: FieldMetadata<number>;
+	description: FieldMetadata<string>;
+	date: FieldMetadata<any>;
+	status: FieldMetadata<RetourStatusEnumVd>;
+	ligne: LigneBean;
+};
+
 export interface ReglementCommandeBean extends AbstractBean {
 	commandeCode: FieldMetadata<string>;
 	reglementId: FieldMetadata<number>;
-	montant: FieldMetadata<any>;
 	transaction: TransactionBean;
+	montant: FieldMetadata<number>;
+};
+
+export interface CommandeSearchBean extends AbstractBean {
+	statusIn: FieldMetadata<any>;
+	commandeCode: FieldMetadata<string>;
+	ville: FieldMetadata<string>;
+	dateDebut: FieldMetadata<any>;
+	partner: FieldMetadata<string>;
+	dateFin: FieldMetadata<any>;
+};
+
+export interface FactureSearchBean extends AbstractBean {
+	statusIn: FieldMetadata<any>;
+	dateDebut: FieldMetadata<any>;
+	partner: FieldMetadata<string>;
+	dateFin: FieldMetadata<any>;
+	factureCode: FieldMetadata<string>;
+};
+
+export interface LigneBean extends AbstractBean {
+	variantCode: FieldMetadata<string>;
+	quantite: FieldMetadata<number>;
+	prixUnitaire: FieldMetadata<number>;
+	prixTotalHT: FieldMetadata<number>;
+	article: ArticleBean;
+	remiseTaux: FieldMetadata<number>;
+	description: FieldMetadata<string>;
+	remiseType: FieldMetadata<RemiseTypeEnumVd>;
+	prixTotalTTC: FieldMetadata<number>;
+	remiseMontant: FieldMetadata<number>;
+	remiseRaison: FieldMetadata<string>;
+	unite: UniteBean;
+	taxe: FieldMetadata<number>;
+	ligneId: FieldMetadata<number>;
+	type: FieldMetadata<LigneTypeEnumVd>;
+	prixTotal: FieldMetadata<number>;
+};
+
+export interface FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd> {
+	montant: FieldMetadata<number>;
+	status: FieldMetadata<FactureStatusEnumVd>;
+	description: FieldMetadata<string>;
+	partner: PartnerBean;
+	factureCode: FieldMetadata<string>;
+	date: FieldMetadata<any>;
+	type: FieldMetadata<FactureTypeEnumVd>;
+	commande: CommandeBean;
+};
+
+export interface LigneTaxeBean extends AbstractBean {
+	montant: FieldMetadata<number>;
+	taux: FieldMetadata<number>;
+	taxe: TaxeBean;
 };

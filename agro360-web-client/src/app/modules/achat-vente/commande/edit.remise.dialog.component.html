@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Edition Remise</h2>
+<mat-dialog-content>
+    <div class="container-fluid mt-3">
+        <div *ngIf="bean">
+            <div class="row">
+                <div class="col-4">
+                    <input-text-field [field]="bean.remiseMontant"></input-text-field>
+                </div>
+                <div class="col-4">
+                    <select-one-field [field]="bean.remiseType"></select-one-field>
+                </div>
+                <div class="col-4">
+                    <input-text-field [field]="bean.remiseTaux"></input-text-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <input-textarea-field [field]="bean.remiseRaison"></input-textarea-field>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3">
+    <button mat-button cdkFocusInitial (click)="appliquerAction()">Fermer</button>
+</mat-dialog-actions>

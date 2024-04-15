@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.agro360.bo.bean.finance.CompteBean;
 import com.agro360.bo.bean.finance.CompteSearchBean;
 import com.agro360.bo.bean.finance.EtatCompteBean;
-import com.agro360.bo.mapper.finance.CompteMapper;
+import com.agro360.bo.mapper.FinanceMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.finance.ICompteDao;
 import com.agro360.dto.finance.CompteDto;
@@ -25,17 +25,9 @@ public class CompteOperation extends AbstractOperation<CompteDto, String> {
 	@Autowired
 	ICompteDao dao;
 
-	@Autowired
-	CompteMapper mapper;
-
 	@Override
 	protected IDao<CompteDto, String> getDao() {
 		return dao;
-	}
-	
-	@Override
-	protected String getRulePath() {
-		return "stock/compte";
 	}
 	
 	@RuleNamespace("stock/compte/create")
@@ -65,7 +57,7 @@ public class CompteOperation extends AbstractOperation<CompteDto, String> {
 	
 	public CompteBean findCompteByCode(ClientContext ctx, String compteCode) {
 		var dto = dao.getReferenceById(compteCode);
-		return mapper.map(dto);		
+		return FinanceMapper.map(dto);		
 	}
 	
 	public List<CompteBean> findComptesByCriteria(ClientContext ctx, CompteSearchBean searchBean) {
@@ -75,7 +67,7 @@ public class CompteOperation extends AbstractOperation<CompteDto, String> {
 			example.getProbe().setCompteCode(compteCode);
 		}
 		return dao.findAll(example).stream()
-				.map(mapper::map)
+				.map(FinanceMapper::map)
 				.collect(Collectors.toList());
 	}
 	
@@ -88,7 +80,7 @@ public class CompteOperation extends AbstractOperation<CompteDto, String> {
 	
 	public List<EtatCompteBean> generateEtatCompte(ClientContext ctx) {		
 		return dao.findAll().stream()
-				.map(mapper::map)
+				.map(FinanceMapper::map)
 				.map(EtatCompteBean::new)
 				.map(this::initSolde)
 				.collect(Collectors.toList());

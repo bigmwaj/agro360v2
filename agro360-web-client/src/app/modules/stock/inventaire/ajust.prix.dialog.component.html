@@ -1,0 +1,32 @@
+<h2 mat-dialog-title>Ajustement du prix de vente</h2>
+<mat-dialog-content>
+    <div *ngIf="bean">        
+        <div class="row">
+            <div class="col-12">
+                <div class="bg-info p-3 mb-2">
+                    Veuillez indiquer le nouveau prix de vente de la variante
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input-text-field [field]="bean.magasin.magasinCode"></input-text-field>
+            </div>
+            <div class="col-6">
+                <input-text-field [field]="bean.article.articleCode"></input-text-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input-text-field [field]="bean.article.unite.uniteCode"></input-text-field>
+            </div>
+            <div class="col-6">
+                <input-number-field [field]="bean.prixUnitaireVente"></input-number-field>
+            </div>
+        </div>
+    </div>    
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3">
+    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button cdkFocusInitial (click)="ajusterAction()">Ajuster</button>
+</mat-dialog-actions>

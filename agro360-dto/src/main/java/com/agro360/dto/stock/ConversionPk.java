@@ -10,7 +10,7 @@ public class ConversionPk implements Serializable {
 
 	private static final long serialVersionUID = -7643918247496362428L;
 
-	private String article;
+	private String articleCode;
 
 	private String unite;
 
@@ -18,17 +18,15 @@ public class ConversionPk implements Serializable {
 		super();
 	}
 
-	public ConversionPk(String article, String unite) {
+	public ConversionPk(String articleCode, String unite) {
 		super();
-		this.article = article;
+		this.articleCode = articleCode;
 		this.unite = unite;
 	}
 
 	public ConversionPk(ConversionDto dto) {
 		super();
-		if (dto.getArticle() != null) {
-			this.article = dto.getArticle().getArticleCode();
-		}
+		this.articleCode = dto.getArticleCode();
 		if (dto.getUnite() != null) {
 			this.unite = dto.getUnite().getUniteCode();
 		}
@@ -40,12 +38,12 @@ public class ConversionPk implements Serializable {
 			return false;
 		}
 		var pk = (ConversionPk) obj;
-		return Objects.equals(article, pk.article) && Objects.equals(unite, pk.unite);
+		return Objects.equals(articleCode, pk.articleCode) && Objects.equals(unite, pk.unite);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(article, unite);
+		return Objects.hash(articleCode, unite);
 	}
 
 }

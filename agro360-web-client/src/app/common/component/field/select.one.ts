@@ -17,7 +17,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ],
     selector: 'select-one-field',
     template: `    
-    <mat-form-field appearance="outline" [class]="getCssClass()">
+    <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
         <mat-select [(ngModel)]="field.value" (selectionChange)="_onChange()"
             [disabled]="!field.editable"

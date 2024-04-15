@@ -25,4 +25,11 @@ export class CommonService {
             .pipe(map((e: any) => e.join(",")))
             .pipe(map((e: any) => JSON.parse(`{${e}}`)));
     }
+
+    getBeansAsValueOptions2<B extends AbstractBean>(http: HttpClient, url: string, keyValMapper: (e: B) => string, searchQuery: any): Observable<any> {
+        return http.get( url, { params: searchQuery })
+            .pipe(map((e: any) => e.records.map(keyValMapper)))
+            .pipe(map((e: any) => e.join(",")))
+            .pipe(map((e: any) => JSON.parse(`{${e}}`)));
+    }
 }

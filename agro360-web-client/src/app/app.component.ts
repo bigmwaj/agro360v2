@@ -1,20 +1,22 @@
-import { Component, AfterViewInit  } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { UIService } from './common/service/ui.service';
 
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html'
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent  {
     constructor(public ui: UIService) { }
 
-    title = 'Agro 360';
+    @ViewChild("pageTitle")
+    pageTitle:ElementRef;
+
+    ngOnInit(): void {
+
+    }
 
     ngAfterViewInit(): void {
-        this.title = this.ui.title;
-
-        console.log('Je ne comprends plus rien!')
-        console.log(this.ui.title)
-
+        console.log('AppComponent ... ')
+        this.ui.setPageTitle(this.pageTitle)
     }
 }

@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.CommandeSearchBean;
-import com.agro360.bo.mapper.av.CommandeMapper;
-import com.agro360.bo.mapper.core.PartnerMapper;
-import com.agro360.bo.mapper.finance.CompteMapper;
-import com.agro360.bo.mapper.stock.MagasinMapper;
+import com.agro360.bo.mapper.AchatVenteMapper;
 import com.agro360.dao.av.ICommandeDao;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.core.ICodeGeneratorDao;
@@ -28,7 +25,7 @@ import com.agro360.operation.utils.RuleNamespace;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.Predicate;
 
-@Service("av/CommandeService")
+@Service
 public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 
 	@Autowired
@@ -36,9 +33,6 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 	
 	@Autowired
 	private EntityManager entityManager;
-
-	@Autowired
-	private CommandeMapper mapper;
 
 	@Autowired
 	private IPartnerDao partnerDao;
@@ -52,15 +46,6 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 	@Autowired
 	private ICodeGeneratorDao codeGeneratorDao;
 
-	@Autowired
-	private PartnerMapper partnerMapper;
-
-	@Autowired
-	private MagasinMapper magasinMapper;
-	
-	@Autowired
-	CompteMapper compteMapper;
-	
 	public String generateCommandeCode() {
 		return codeGeneratorDao.generateCommandeCode();
 	}
@@ -70,41 +55,6 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		return dao;
 	}
 	
-	@Override
-	protected String getRulePath() {
-		return "achat/commande";
-	}
-	
-	public CommandeSearchBean mapToSearchBean() {
-		var bean = new CommandeSearchBean();
-		return bean;
-	}
-
-	public CommandeBean map(CommandeDto dto) {
-		var bean = new CommandeBean();
-
-		bean.getCommandeCode().setValue(dto.getCommandeCode());
-		bean.getDate().setValue(dto.getDate());
-		bean.getStatus().setValue(dto.getStatus());
-		bean.getDescription().setValue(dto.getDescription());
-		bean.getType().setValue(dto.getType());
-		bean.getPaiementComptant().setValue(dto.getPaiementComptant());
-		
-		if (null != dto.getPartner()) {
-			bean.setPartner(partnerMapper.map(dto.getPartner()));
-		}
-
-		if (dto.getMagasin() != null) {
-			bean.setMagasin(magasinMapper.map(dto.getMagasin()));
-		}
-		
-		if( dto.getCompte() != null ) {
-			bean.setCompte(compteMapper.map(dto.getCompte()));
-		}
-
-		return bean;
-	}
-
 	public List<CommandeBean> findCommandesByCriteria(ClientContext ctx, CommandeSearchBean searchBean) {
 		var criteriaBuilder = entityManager.getCriteriaBuilder();
 		
@@ -154,7 +104,7 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		}
 		
 		var query = entityManager.createQuery(rootQuery);
-        return query.getResultList().stream().map(mapper::map).collect(Collectors.toList());
+        return query.getResultList().stream().map(AchatVenteMapper::map).collect(Collectors.toList());
 		
 	}
 
@@ -182,6 +132,15 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		setDtoValue(dto::setDate, bean.getDate());
 		setDtoValue(dto::setDescription, bean.getDescription());
 		setDtoValue(dto::setPaiementComptant, bean.getPaiementComptant());
+		setDtoValue(dto::setRemiseType, bean.getRemiseType());
+		setDtoValue(dto::setRemiseTaux, bean.getRemiseTaux());
+		setDtoValue(dto::setRemiseMontant, bean.getRemiseMontant());
+		setDtoValue(dto::setRemiseRaison, bean.getRemiseRaison());
+		setDtoValue(dto::setPrixTotal, bean.getPrixTotal());
+		setDtoValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
+		setDtoValue(dto::setPrixTotalTTC, bean.getPrixTotalTTC());
+		setDtoValue(dto::setTaxe, bean.getTaxe());
+		setDtoValue(dto::setRemise, bean.getRemise());
 		
 		dto = super.save(dto);	
 	}
@@ -199,8 +158,17 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		setDtoChangedValue(dto::setDate, bean.getDate());
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		setDtoChangedValue(dto::setPaiementComptant, bean.getPaiementComptant());
+		setDtoChangedValue(dto::setRemiseType, bean.getRemiseType());
+		setDtoChangedValue(dto::setRemiseTaux, bean.getRemiseTaux());
+		setDtoChangedValue(dto::setRemiseMontant, bean.getRemiseMontant());
+		setDtoChangedValue(dto::setRemiseRaison, bean.getRemiseRaison());		
+
+		setDtoChangedValue(dto::setPrixTotal, bean.getPrixTotal());
+		setDtoChangedValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
+		setDtoChangedValue(dto::setPrixTotalTTC, bean.getPrixTotalTTC());
+		setDtoChangedValue(dto::setTaxe, bean.getTaxe());
+		setDtoChangedValue(dto::setRemise, bean.getRemise());
 		
-		getLogger().debug("Le montant du paiement comptant est {}", dto.getPaiementComptant());
 		super.save(dto);		
 	}
 
@@ -212,7 +180,7 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 
 	public CommandeBean findCommandeByCode(ClientContext ctx, String commandeCode) {
 		var dto = dao.getReferenceById(commandeCode);
-		return mapper.map(dto);	
+		return AchatVenteMapper.map(dto);	
 	}
 	
 	private void changeCommandeStatus(ClientContext ctx, CommandeBean bean) {

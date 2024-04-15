@@ -5,6 +5,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.agro360.bo.bean.core.PartnerBean;
+import com.agro360.dto.core.PartnerDto;
 import com.agro360.vd.core.PartnerTypeEnumVd;
 
 public class Constants {
@@ -19,6 +20,11 @@ public class Constants {
 	PartnerTypeEnumVd.PERSON.equals(bean.getPartnerType().getValue()) 
 	? FULL_NAME_FN.apply(bean.getFirstName().getValue(), bean.getLastName().getValue())
 	: bean.getName().getValue();
+	
+	public static final Function<PartnerDto, String> PARTNER_DTO2STR = dto -> 
+	PartnerTypeEnumVd.PERSON.equals(dto.getPartnerType()) 
+	? FULL_NAME_FN.apply(dto.getFirstName(), dto.getLastName())
+			: dto.getName();
 	
 
 }

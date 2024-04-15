@@ -1,19 +1,18 @@
 package com.agro360.operation.logic.stock;
 
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.VariantBean;
-import com.agro360.bo.mapper.stock.VariantMapper;
+import com.agro360.bo.mapper.StockMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dao.stock.IVariantDao;
-import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.VariantDto;
 import com.agro360.dto.stock.VariantPk;
 import com.agro360.operation.context.ClientContext;
@@ -30,28 +29,19 @@ public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
 	@Autowired
 	IArticleDao articleDao;
 
-	@Autowired
-	VariantMapper mapper;
-
 	@Override
 	protected IDao<VariantDto, VariantPk> getDao() {
 		return dao;
 	}
 	
-	@Override
-	protected String getRulePath() {
-		return "stock/article/variant";
-	}
-	
 	@RuleNamespace("stock/article/variant/create")
 	public void createVariant(ClientContext ctx, ArticleBean article, VariantBean bean) {
 		var dto = new VariantDto();
-		var articleDto = articleDao.getReferenceById(article.getArticleCode().getValue());
 		
+		setDtoValue(dto::setArticleCode, article.getArticleCode());
 		setDtoValue(dto::setVariantCode, bean.getVariantCode());
 		setDtoValue(dto::setDescription, bean.getDescription());
-		
-		dto.setArticle(articleDto);
+		setDtoValue(dto::setAlias, bean.getAlias());
 		
 		super.save(dto);		
 	}
@@ -62,6 +52,7 @@ public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
 		var dto = dao.getReferenceById(buildPK(article, bean));
 
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
+		setDtoChangedValue(dto::setAlias, bean.getAlias());
 		
 		super.save(dto);
 		
@@ -75,11 +66,9 @@ public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
 	}
 	
 	public List<VariantBean> findVariantsByArticleCode(ClientContext ctx, String articleCode) {
-		var example = Example.of(new VariantDto());
-		example.getProbe().setArticle(new ArticleDto());
-		example.getProbe().getArticle().setArticleCode(articleCode);
-		
-		return dao.findAll(example).stream().map(mapper::map).collect(Collectors.toList());
+		return dao.findAllByArticleCode(articleCode).stream()
+				.map(StockMapper::map)
+				.collect(Collectors.toList());
 	}
 	
 	private VariantPk buildPK(ArticleBean article, VariantBean bean) {
@@ -87,5 +76,11 @@ public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
 		var variantCode = bean.getVariantCode().getValue();
 		
 		return new VariantPk(articleCode, variantCode);
+	}
+
+	public VariantBean findVariantByAlias(ClientContext ctx, String alias) {
+		var msgFormat = "Aucun variant n'a été trouvé ayant pour alias <strong>%s</strong>";
+		Supplier<RuntimeException> exSplr= () -> new RuntimeException(String.format(msgFormat, alias));
+		return dao.findOneByAliasIgnoreCase(alias).map(StockMapper::map).orElseThrow(exSplr);
 	}
 }

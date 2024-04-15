@@ -8,7 +8,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.core.CategoryBean;
-import com.agro360.bo.mapper.core.CategoryMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.core.ICategoryDao;
 import com.agro360.dto.core.CategoryDto;
@@ -22,17 +21,21 @@ public class CategoryOperation extends AbstractOperation<CategoryDto, String> {
 	@Autowired
 	private ICategoryDao dao;
 
-	@Autowired
-	private CategoryMapper mapper;
-
 	@Override
 	protected IDao<CategoryDto, String> getDao() {
 		return dao;
 	}
 	
-	@Override
-	protected String getRulePath() {
-		return "core/category";
+	public CategoryBean map(CategoryDto dto) {
+		var bean = new CategoryBean();
+		
+		bean.getCategoryCode().setValue(dto.getCategoryCode());
+		bean.getDescription().setValue(dto.getDescription());
+		
+		if( dto.getParent() != null ) {
+			bean.getParentCategoryCode().setValue(dto.getParent().getCategoryCode());
+		}
+		return bean;
 	}
 	
 	@RuleNamespace("core/category/create")
@@ -46,7 +49,7 @@ public class CategoryOperation extends AbstractOperation<CategoryDto, String> {
 		dto.setParent(parent);
 		
 		dto = super.save(dto);		
-		return mapper.map(dto);
+		return this.map(dto);
 	}
 	
 	@RuleNamespace("core/category/update")
@@ -56,7 +59,7 @@ public class CategoryOperation extends AbstractOperation<CategoryDto, String> {
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		
 		dto = super.save(dto);		
-		return mapper.map(dto);
+		return this.map(dto);
 	}
 	
 	@RuleNamespace("core/category/delete")
@@ -69,7 +72,7 @@ public class CategoryOperation extends AbstractOperation<CategoryDto, String> {
 		var example = Example.of(new CategoryDto());
 		example.getProbe().setParent(new CategoryDto());
 		example.getProbe().getParent().setCategoryCode(categoryCode);
-		return dao.findAll(example).stream().map(mapper::map).toList();
+		return dao.findAll(example).stream().map(this::map).toList();
 	}
 	
 	private void loadChildren(ClientContext ctx, CategoryBean bean, Integer deep) {
@@ -90,7 +93,7 @@ public class CategoryOperation extends AbstractOperation<CategoryDto, String> {
 	
 	public CategoryBean findCategoryByCode(ClientContext ctx, String categoryCode, Optional<Integer> deep) {
 		var dto = dao.getReferenceById(categoryCode);
-		var bean = mapper.map(dto);
+		var bean = this.map(dto);
 		var deepVal = deep.orElse(0);
 		loadChildren(ctx, bean, deepVal);
 		return bean;

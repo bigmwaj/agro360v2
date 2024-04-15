@@ -7,6 +7,7 @@ import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.UniteDto;
 import com.agro360.dto.stock.VariantDto;
 import com.agro360.vd.av.LigneTypeEnumVd;
+import com.agro360.vd.av.RemiseTypeEnumVd;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -57,5 +58,30 @@ public class LigneDto extends AbstractDto {
 
 	@Column(name = "PRIX_UNITAIRE", nullable = false, precision = 16, scale = 4)
 	private BigDecimal prixUnitaire;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "REMISE_TYPE", length = RemiseTypeEnumVd.COLUMN_LENGTH)
+	private RemiseTypeEnumVd remiseType;
+
+	@Column(name = "REMISE_TAUX")
+	private Double remiseTaux;
+	
+	@Column(name = "REMISE_MONTANT", precision = 16, scale = 4)
+	private BigDecimal remiseMontant;
+
+	@Column(name = "REMISE_RAISON", length = 256)
+	private String remiseRaison;
+	
+	@Column(name = "TAXE", precision = 16, scale = 4, nullable = false)
+	private BigDecimal taxe;
+	
+	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4, nullable = false)
+	private BigDecimal prixTotalHT;
+	
+	@Column(name = "PRIX_TOTAL_TTC", precision = 16, scale = 4, nullable = false)
+	private BigDecimal prixTotalTTC;
+	
+	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4, nullable = false)
+	private BigDecimal prixTotal;
 
 }

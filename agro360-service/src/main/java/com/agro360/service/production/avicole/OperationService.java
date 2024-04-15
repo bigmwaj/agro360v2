@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agro360.bo.bean.production.avicole.OperationBean;
 import com.agro360.bo.bean.production.avicole.OperationSearchBean;
@@ -11,6 +12,7 @@ import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.production.avicole.OperationOperation;
 import com.agro360.service.common.AbstractService;
 
+@Transactional(rollbackFor = Exception.class)
 public abstract class OperationService extends AbstractService {
 
 	@Autowired

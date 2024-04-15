@@ -8,24 +8,22 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agro360.bo.bean.finance.CompteBean;
 import com.agro360.bo.bean.finance.CompteSearchBean;
-import com.agro360.bo.mapper.finance.CompteMapper;
 import com.agro360.bo.message.Message;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.finance.CompteOperation;
 import com.agro360.service.common.AbstractService;
 import com.agro360.vd.common.EditActionEnumVd;
 
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class CompteService extends AbstractService {
 
 	@Autowired
 	CompteOperation service;
-
-	@Autowired
-	CompteMapper mapper;
 	
 	public List<CompteBean> searchAction(ClientContext ctx, Optional<CompteSearchBean> searchBean) {
 		return service.findComptesByCriteria(ctx, searchBean.orElse(new CompteSearchBean()));

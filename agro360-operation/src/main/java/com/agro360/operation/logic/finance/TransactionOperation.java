@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.bean.finance.TransactionSearchBean;
 import com.agro360.bo.bean.finance.TransfertBean;
-import com.agro360.bo.mapper.finance.TransactionMapper;
+import com.agro360.bo.mapper.FinanceMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.core.ICodeGeneratorDao;
 import com.agro360.dao.core.IPartnerDao;
@@ -28,19 +28,16 @@ import com.agro360.vd.finance.TransactionTypeEnumVd;
 public class TransactionOperation extends AbstractOperation<TransactionDto, String> {
 
 	@Autowired
-	ITransactionDao dao;
+	private ITransactionDao dao;
 
 	@Autowired
-	TransactionMapper mapper;
+	private IPartnerDao partnerDao;
 	
 	@Autowired
-	IPartnerDao partnerDao;
+	private IRubriqueDao rubriqueDao;
 	
 	@Autowired
-	IRubriqueDao rubriqueDao;
-	
-	@Autowired
-	ICompteDao compteDao;
+	private ICompteDao compteDao;
 	
 	@Autowired
 	private ICodeGeneratorDao codeGeneratorDao;
@@ -53,6 +50,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 	protected IDao<TransactionDto, String> getDao() {
 		return dao;
 	}
+	
 
 	@RuleNamespace("finance/transaction/create")
 	public void createTransaction(ClientContext ctx, TransactionBean bean) {
@@ -121,7 +119,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 
 	public TransactionBean findTransactionByCode(ClientContext ctx, String transactionCode) {
 		var dto = dao.getReferenceById(transactionCode);
-		return mapper.map(dto);	
+		return FinanceMapper.map(dto);	
 	}
 	
 	public List<TransactionBean> findTransactionsByCriteria(ClientContext ctx, TransactionSearchBean searchBean) {
@@ -132,7 +130,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		if( searchBean.getType().getValue() != null ) {
 			example.getProbe().setType(searchBean.getType().getValue());
 		}
-		return dao.findAll(example).stream().map(mapper::map).collect(Collectors.toList());
+		return dao.findAll(example).stream().map(FinanceMapper::map).collect(Collectors.toList());
 	}
 
 	@RuleNamespace("finance/transaction/transfert")
@@ -190,10 +188,5 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		dto.setTransactionCode(generateTransactionCode());
 		
 		dto = super.save(dto);	
-	}
-	
-	@Override
-	protected String getRulePath() {
-		return "finance/transaction";
 	}
 }

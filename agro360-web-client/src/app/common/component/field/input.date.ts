@@ -21,7 +21,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     ],
     selector: 'input-date-field',
     template: `
-        <mat-form-field appearance="outline" [class]="getCssClass()">
+        <mat-form-field [appearance]="appearance" [class]="getCssClass()">
             <mat-label *ngIf="displayLabel">{{label}}</mat-label>
             <input matInput 
                 [matDatepicker]="picker" 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerSearchBean;
-import com.agro360.bo.mapper.core.PartnerMapper;
+import com.agro360.bo.mapper.CoreMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.core.IPartnerDao;
 import com.agro360.dto.core.PartnerDto;
@@ -25,17 +25,9 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 	@Autowired
 	private IPartnerDao dao;
 
-	@Autowired
-	private PartnerMapper mapper;
-
 	@Override
 	protected IDao<PartnerDto, String> getDao() {
 		return dao;
-	}
-	
-	@Override
-	protected String getRulePath() {
-		return "core/partner";
 	}
 	
 	@RuleNamespace("core/partner/create")
@@ -56,7 +48,7 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 		setDtoValue(dto::setTitle, bean.getTitle());		
 		
 		dto = super.save(dto);		
-		return mapper.map(dto);	
+		return CoreMapper.map(dto);	
 	}
 	
 	@RuleNamespace("core/partner/update")
@@ -75,7 +67,7 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 		setDtoChangedValue(dto::setTitle, bean.getTitle());
 		
 		dto = super.save(dto);		
-		return mapper.map(dto);
+		return CoreMapper.map(dto);
 	}
 	
 	private void changePartnerStatus(ClientContext ctx, PartnerBean bean) {
@@ -105,7 +97,7 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 	
 	public PartnerBean findPartnerByCode(ClientContext ctx, String partnerCode) {
 		var dto = dao.getReferenceById(partnerCode);
-		return mapper.map(dto);		
+		return CoreMapper.map(dto);		
 	}
 	
 	@RuleNamespace("core/partner/search")
@@ -147,7 +139,7 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 			probe.setPartnerType(searchBean.getPartnerType().getValue());
 		}
 		var example = Example.of(probe, matcher);
-		return dao.findAll(example).stream().map(mapper::map).collect(Collectors.toList());	
+		return dao.findAll(example).stream().map(CoreMapper::map).collect(Collectors.toList());	
 	}
 
 }

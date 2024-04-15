@@ -1,0 +1,70 @@
+<section class="p-3">
+    <div class="row">
+        <div class="col-7">
+            <section class="mat-elevation-z8 p-3 mb-3">
+                <h4>
+                    Détails de l'article
+                </h4>
+                <div class="row">
+                    <div class="col-6">
+                        <input-text-field [field]="bean.articleCode"></input-text-field>
+                    </div>
+                    <div class="col-6">
+                        <select-one-field [field]="bean.type"></select-one-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <input-text-field [field]="bean.description"></input-text-field>
+                    </div>
+                    <div class="col-6">
+                        <select-one-field [field]="bean.unite.uniteCode"></select-one-field>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mat-elevation-z8 p-3 mb-3">
+                <h4>
+                    Liste des variants
+                </h4>
+                <stock-article-edit-variant-list 
+                    *ngIf="bean.variants" 
+                    [variants]="bean.variants"
+                    [articleCode]="bean.articleCode.value">
+                </stock-article-edit-variant-list>
+            </section>
+
+            <section class="mat-elevation-z8 p-3 mb-3">
+                <h4>
+                    Liste des unités
+                </h4>
+                <stock-article-edit-conversion-list 
+                    *ngIf="bean.conversions" 
+                    [conversions]="bean.conversions"
+                    [articleCode]="bean.articleCode.value">
+                </stock-article-edit-conversion-list>
+            </section>
+
+            <section class="mat-elevation-z8 p-3">
+                <h4>
+                    Liste des taxes
+                </h4>
+                <stock-article-edit-taxe-list 
+                    *ngIf="bean.taxes" 
+                    [taxes]="bean.taxes"
+                    [articleCode]="bean.articleCode.value">
+                </stock-article-edit-taxe-list>
+            </section>
+        </div>
+        <div class="col-5">
+            On affiche le stock de l'article ici
+        </div>
+        
+    </div>
+</section>
+
+<section class="p-3">
+    <button mat-raised-button color="primary" class="me-2" (click)="saveAction()">
+        <mat-icon>save</mat-icon>Enregistrer
+    </button>
+</section>

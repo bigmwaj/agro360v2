@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +24,10 @@ import com.agro360.ws.controller.common.AbstractController;
 public class FactureController extends AbstractController {
 
 	@Autowired
-	FactureService service;
+	private FactureService service;
 	
 	@Autowired
-	FactureForm form;
+	private FactureForm form;
 
 	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
@@ -62,8 +61,9 @@ public class FactureController extends AbstractController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated FactureBean bean, BindingResult br) {
-		service.saveAction(getClientContext(), bean);
-		return ResponseEntity.ok(new ModelMap());
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated FactureBean bean) {
+		var ctx = getClientContext();
+		service.save(ctx, bean);
+		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
 	}
 }

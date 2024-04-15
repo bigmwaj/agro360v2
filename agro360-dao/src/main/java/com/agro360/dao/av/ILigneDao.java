@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.agro360.dao.common.IDao;
 import com.agro360.dto.av.LigneDto;
 
-@Repository(value = "av/ILigneDao")
+@Repository
 public interface ILigneDao extends IDao<LigneDto, Long>{
 
 	List<LigneDto> findAllByCommandeCode(String commandeCode);

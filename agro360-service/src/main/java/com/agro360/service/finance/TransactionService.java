@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.bean.finance.TransactionSearchBean;
@@ -13,6 +14,7 @@ import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.finance.TransactionOperation;
 import com.agro360.service.common.AbstractService;
 
+@Transactional(rollbackFor = Exception.class)
 @Service
 public class TransactionService extends AbstractService {
 

@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     ],
     selector: 'select-multiple-field',
     template: `    
-    <mat-form-field appearance="outline" [class]="getCssClass()">
+    <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
         <mat-select multiple [(ngModel)]="field.value" (change)="_onChange()"
             [disabled]="!field.editable"

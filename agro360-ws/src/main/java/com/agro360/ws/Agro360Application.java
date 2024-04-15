@@ -12,11 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @ComponentScan(basePackages = {
 	"com.agro360.ws.controller",
 	"com.agro360.ws.filter",
-	
-	"com.agro360.bo.mapper",
-	
+
 	"com.agro360.operation.logic",
-	"com.agro360.operation.mapper",
 	"com.agro360.operation.rule",
 	"com.agro360.operation.validator",
 	

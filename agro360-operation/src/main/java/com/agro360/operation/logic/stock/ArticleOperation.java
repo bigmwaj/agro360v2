@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.ArticleSearchBean;
-import com.agro360.bo.mapper.stock.ArticleMapper;
+import com.agro360.bo.mapper.StockMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dao.stock.IUniteDao;
@@ -24,9 +24,6 @@ public class ArticleOperation extends AbstractOperation<ArticleDto, String> {
 	@Autowired
 	IArticleDao dao;
 
-	@Autowired
-	ArticleMapper mapper;
-	
 	@Autowired
 	IUniteDao uniteDao;
 
@@ -67,7 +64,7 @@ public class ArticleOperation extends AbstractOperation<ArticleDto, String> {
 
 	public ArticleBean findArticleByCode(ClientContext ctx, String articleCode) {
 		var dto = dao.getReferenceById(articleCode);
-		return mapper.map(dto);	
+		return StockMapper.map(dto);	
 	}
 	
 	public List<ArticleBean> findArticlesByCriteria(ClientContext ctx, ArticleSearchBean searchBean) {
@@ -78,11 +75,6 @@ public class ArticleOperation extends AbstractOperation<ArticleDto, String> {
 		if( searchBean.getType().getValue() != null ) {
 			example.getProbe().setType(searchBean.getType().getValue());
 		}
-		return dao.findAll(example).stream().map(mapper::map).collect(Collectors.toList());
-	}
-	
-	@Override
-	protected String getRulePath() {
-		return "stock/article";
+		return dao.findAll(example).stream().map(StockMapper::map).collect(Collectors.toList());
 	}
 }

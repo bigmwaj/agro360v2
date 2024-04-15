@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.LigneBean;
-import com.agro360.bo.mapper.av.LigneMapper;
+import com.agro360.bo.mapper.AchatVenteMapper;
 import com.agro360.dao.av.ILigneDao;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IArticleDao;
@@ -20,7 +20,7 @@ import com.agro360.operation.logic.common.AbstractOperation;
 import com.agro360.operation.utils.RuleNamespace;
 import com.agro360.vd.av.LigneTypeEnumVd;
 
-@Service("av/LigneService")
+@Service
 public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 
 	@Autowired
@@ -34,21 +34,13 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 	
 	@Autowired
 	IVariantDao variantDao;
-	
-	@Autowired
-	LigneMapper mapper;
 
 	@Override
 	protected IDao<LigneDto, Long> getDao() {
 		return dao;
 	}
 	
-	@Override
-	protected String getRulePath() {
-		return "av/commande/ligne";
-	}
-	
-	@RuleNamespace("av/ligne/create")
+	@RuleNamespace("av/commande/ligne/create")
 	public void createLigne(ClientContext ctx, CommandeBean commande, LigneBean bean) {
 		var dto = new LigneDto();
 		dto.setCommandeCode(commande.getCommandeCode().getValue());		
@@ -72,11 +64,21 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 		setDtoValue(dto::setDescription, bean.getDescription());
 		setDtoValue(dto::setQuantite, bean.getQuantite());
 		setDtoValue(dto::setPrixUnitaire, bean.getPrixUnitaire());
+		setDtoValue(dto::setRemiseType, bean.getRemiseType());
+		setDtoValue(dto::setRemiseTaux, bean.getRemiseTaux());
+		setDtoValue(dto::setRemiseMontant, bean.getRemiseMontant());
+		setDtoValue(dto::setRemiseRaison, bean.getRemiseRaison());
+		
+
+		setDtoValue(dto::setPrixTotal, bean.getPrixTotal());
+		setDtoValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
+		setDtoValue(dto::setPrixTotalTTC, bean.getPrixTotalTTC());
+		setDtoValue(dto::setTaxe, bean.getTaxe());
 		
 		super.save(dto);
 	}
 
-	@RuleNamespace("av/ligne/update")
+	@RuleNamespace("av/commande/ligne/update")
 	public void updateLigne(ClientContext ctx, CommandeBean commande, LigneBean bean) {
 
 		var dto = findLigneDto(commande, bean);
@@ -103,6 +105,15 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		setDtoChangedValue(dto::setQuantite, bean.getQuantite());
 		setDtoChangedValue(dto::setPrixUnitaire, bean.getPrixUnitaire());
+		setDtoChangedValue(dto::setRemiseType, bean.getRemiseType());
+		setDtoChangedValue(dto::setRemiseTaux, bean.getRemiseTaux());
+		setDtoChangedValue(dto::setRemiseMontant, bean.getRemiseMontant());
+		setDtoChangedValue(dto::setRemiseRaison, bean.getRemiseRaison());		
+
+		setDtoChangedValue(dto::setPrixTotal, bean.getPrixTotal());
+		setDtoChangedValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
+		setDtoChangedValue(dto::setPrixTotalTTC, bean.getPrixTotalTTC());
+		setDtoChangedValue(dto::setTaxe, bean.getTaxe());
 		
 		super.save(dto);
 	}
@@ -114,12 +125,12 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 	}
 
 	public LigneBean findLigneByCode(ClientContext ctx, String commandeCode, Long ligneId) {
-		return mapper.map(findLigneDto(commandeCode, ligneId));
+		return AchatVenteMapper.map(findLigneDto(commandeCode, ligneId));
 	}
 
 	public List<LigneBean> findLignesCommande(ClientContext ctx, String commandeCode) {
 		return dao.findAllByCommandeCode(commandeCode)
-				.stream().map(mapper::map)
+				.stream().map(AchatVenteMapper::map)
 				.collect(Collectors.toList());
 	}
 	

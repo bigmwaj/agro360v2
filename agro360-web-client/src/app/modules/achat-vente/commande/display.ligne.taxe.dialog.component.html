@@ -1,0 +1,68 @@
+<h2 mat-dialog-title>Taxes à appliquer</h2>
+<mat-dialog-content>
+    <div class="container-fluid mt-3">
+        <div *ngIf="bean">
+            <div class="row">
+                <div class="col-3">
+                    <input-text-field [field]="bean.article.articleCode"></input-text-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.unite.uniteCode"></input-text-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.quantite"></input-text-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.prixUnitaire"></input-text-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <input-text-field [field]="bean.prixTotalHT"></input-text-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.remiseMontant"></input-text-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.taxe"></input-text-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.prixTotal"></input-text-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <table mat-table [dataSource]="ligneTaxes">
+                        <ng-container matColumnDef="taxeCode">
+                            <th mat-header-cell *matHeaderCellDef>Taxe</th>
+                            <td mat-cell *matCellDef="let element">{{element.taxe.taxeCode.value}}</td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="taux">
+                            <th mat-header-cell *matHeaderCellDef>Taux</th>
+                            <td mat-cell *matCellDef="let element">{{element.taux.value}}</td>
+                        </ng-container>
+    
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef>Description</th>
+                            <td mat-cell *matCellDef="let element">{{element.taxe.description.value}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="taxe">
+                            <th mat-header-cell *matHeaderCellDef>Taxe</th>
+                            <td mat-cell *matCellDef="let element">{{((bean.prixTotalHT.value - bean.remiseMontant.value) * element.taux.value / 100)  | currency: ' ' : 'symbol' : '1.2-2'}}</td>
+                        </ng-container>
+    
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                            [class.text-bg-danger]="row.action == 'DELETE'">
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3">
+    <button mat-button mat-dialog-close cdkFocusInitial>Fermer</button>
+</mat-dialog-actions>

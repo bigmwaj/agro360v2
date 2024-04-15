@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.UniteSearchBean;
-import com.agro360.bo.mapper.stock.UniteMapper;
+import com.agro360.bo.mapper.StockMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IUniteDao;
 import com.agro360.dto.stock.UniteDto;
@@ -23,17 +23,9 @@ public class UniteOperation extends AbstractOperation<UniteDto, String> {
 	@Autowired
 	IUniteDao dao;
 
-	@Autowired
-	UniteMapper mapper;
-
 	@Override
 	protected IDao<UniteDto, String> getDao() {
 		return dao;
-	}
-	
-	@Override
-	protected String getRulePath() {
-		return "stock/unite";
 	}
 	
 	@RuleNamespace("stock/unite/create")
@@ -63,7 +55,7 @@ public class UniteOperation extends AbstractOperation<UniteDto, String> {
 	
 	public UniteBean findUniteByCode(ClientContext ctx, String uniteCode) {
 		var dto = dao.getReferenceById(uniteCode);
-		return mapper.map(dto);		
+		return StockMapper.map(dto);		
 	}
 	
 	public List<UniteBean> findUnitesByCriteria(ClientContext ctx, UniteSearchBean searchBean) {
@@ -72,8 +64,7 @@ public class UniteOperation extends AbstractOperation<UniteDto, String> {
 			example.getProbe().setUniteCode(searchBean.getUniteCode().getValue());
 		}
 		return dao.findAll(example).stream()
-				.map(mapper::map)
-				.map(this::applyInitEditRules)
+				.map(StockMapper::map)
 				.collect(Collectors.toList());
 	}
 }

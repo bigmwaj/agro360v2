@@ -1,0 +1,37 @@
+<section class="p-3">
+    <div class="row">
+        <div class="col-6">
+            <section class="mat-elevation-z8 p-3 mb-3">
+                <h4>
+                    Détails de l'article
+                </h4>
+                <div class="row">
+                    <div class="col-6">
+                        <input-text-field [field]="bean.article.articleCode"></input-text-field>
+                    </div>
+                    <div class="col-6">
+                        <select-one-field [field]="bean.article.unite.uniteCode"></select-one-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <input-text-field [field]="bean.quantite"></input-text-field>
+                    </div>
+                    <div class="col-6">
+                        <select-one-field [field]="bean.article.unite.uniteCode"></select-one-field>
+                    </div>
+                </div>
+            </section>            
+        </div>
+        <div class="col-6">
+            On affiche le stock de l'article ici
+        </div>
+        
+    </div>
+</section>
+
+<section class="p-3">
+    <button mat-raised-button color="primary" class="me-2" (click)="saveAction()">
+        <mat-icon>save</mat-icon>Enregistrer
+    </button>
+</section>

@@ -1,12 +1,12 @@
 
 import { Component, Input, OnInit } from '@angular/core';
-import { SharedModule } from 'src/app/common/shared.module';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { EditTabComponent } from './edit.tab.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ListPageComponent } from './list.page.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { PartnerBean } from 'src/app/backed/bean.core';
+import { SharedModule } from 'src/app/common/shared.module';
+import { EditTabComponent } from './edit.tab.component';
+import { ListPageComponent } from './list.page.component';
 
 @Component({
     standalone: true,
@@ -22,6 +22,9 @@ import { PartnerBean } from 'src/app/backed/bean.core';
     templateUrl: './index.page.component.html'
 })
 export class IndexPageComponent implements OnInit {
+
+    @Input()
+    module:string
 
     editingBeans: PartnerBean[] = [];
 

@@ -5,7 +5,6 @@ import { map } from 'rxjs';
 import { ArticleBean } from 'src/app/backed/bean.stock';
 import { UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
-import { StockService } from '../stock.service';
 
 @Component({
     standalone: true,
@@ -21,7 +20,6 @@ export class DeleteDialogComponent implements OnInit {
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private service: StockService,
         private http: HttpClient,
         private ui: UIService) { }
 

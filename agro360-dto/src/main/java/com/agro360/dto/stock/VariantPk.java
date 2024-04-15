@@ -10,7 +10,7 @@ public class VariantPk implements Serializable {
 
 	private static final long serialVersionUID = -7643918247496362428L;
 
-	private String article;
+	private String articleCode;
 
 	private String variantCode;
 
@@ -18,15 +18,15 @@ public class VariantPk implements Serializable {
 		super();
 	}
 
-	public VariantPk(String article, String variantCode) {
+	public VariantPk(String articleCode, String variantCode) {
 		super();
-		this.article = article;
+		this.articleCode = articleCode;
 		this.variantCode = variantCode;
 	}
 
 	public VariantPk(VariantDto dto) {
 		super();
-		this.article = dto.getArticle().getArticleCode();
+		this.articleCode = dto.getArticleCode();
 		this.variantCode = dto.getVariantCode();
 	}
 
@@ -36,12 +36,12 @@ public class VariantPk implements Serializable {
 			return false;
 		}
 		VariantPk pk = (VariantPk) obj;
-		return Objects.equals(article, pk.article) && Objects.equals(variantCode, pk.variantCode);
+		return Objects.equals(articleCode, pk.articleCode) && Objects.equals(variantCode, pk.variantCode);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(article, variantCode);
+		return Objects.hash(articleCode, variantCode);
 	}
 
 }

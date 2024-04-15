@@ -9,7 +9,6 @@ import { StockModule } from '../stock/stock.module';
     ],
     imports: [  
         VenteRoutingModule, 
-        SharedModule,
         StockModule
     ],
     providers: [
