@@ -17,11 +17,11 @@ import lombok.Setter;
 public class ReglementFactureBean extends AbstractBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
-	
+
 	private FieldMetadata<Long> reglementId = new FieldMetadata<>("ID");
 
 	private FieldMetadata<String> factureCode = new FieldMetadata<>("Code Facture");
-	
+
 	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
 
 	@Setter

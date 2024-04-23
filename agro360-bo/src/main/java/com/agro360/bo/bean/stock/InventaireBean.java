@@ -18,14 +18,14 @@ public class InventaireBean extends AbstractBean {
 	private FieldMetadata<String> variantCode = new FieldMetadata<>("Variant");
 
 	private FieldMetadata<BigDecimal> prixUnitaireAchat = new FieldMetadata<>("Prix Achat");
-	
+
 	private FieldMetadata<BigDecimal> prixUnitaireVente = new FieldMetadata<>("Prix Vente");
-	
+
 	private FieldMetadata<Double> quantite = new FieldMetadata<>("Quantité");
 
 	@Setter
 	private MagasinBean magasin = new MagasinBean();
-	
+
 	@Setter
 	private ArticleBean article = new ArticleBean();
 }

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 	"com.agro360.operation.logic",
 	"com.agro360.operation.rule",
 	"com.agro360.operation.validator",
+	"com.agro360.operation.spring",
 	
 	"com.agro360.form",
 	

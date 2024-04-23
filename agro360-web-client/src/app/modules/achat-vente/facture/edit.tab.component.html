@@ -24,7 +24,10 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <select-one-field [field]="bean.partner.partnerCode"></select-one-field>
+                    <select-one-field 
+                        [field]="bean.partner.partnerCode"
+                        [label]="partnerLabel">
+                    </select-one-field>
                 </div>
                 <div class="col-6">
                     <input-number-field [field]="bean.montant"></input-number-field>                

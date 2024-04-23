@@ -43,7 +43,9 @@ public class RubriqueController extends AbstractController {
 
 	@GetMapping()
 	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<RubriqueSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service.searchAction(getClientContext(), searchBean)));
+		var ctx = getClientContext();
+		var list = service.searchAction(ctx, searchBean);
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, form.initUpdateFormBean(ctx, list)));
 	}
 
 	@PostMapping

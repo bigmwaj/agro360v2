@@ -1,20 +1,29 @@
-<mat-tab-group preserveContent>    
+<mat-tab-group 
+    #stock
+    [selectedIndex]="selectedTab.index"
+    (selectedTabChange)="selectedTabChange($event)">    
     
     <mat-tab label="Inventaire">
         <ng-template matTabContent>
-            <stock-inventaire-index-page></stock-inventaire-index-page>
+            <stock-inventaire-index-page #indexPage
+                [breadcrumb]="breadcrumb">
+            </stock-inventaire-index-page>
         </ng-template>
     </mat-tab>
 
-    <mat-tab label="Articles">
+    <mat-tab label="Articles & services">
         <ng-template matTabContent>
-            <stock-article-index-page></stock-article-index-page>
+            <stock-article-index-page #indexPage
+                [breadcrumb]="breadcrumb">
+            </stock-article-index-page>
         </ng-template>
     </mat-tab>
     
     <mat-tab label="Magasins">
         <ng-template matTabContent>
-            <stock-magasin-index-page></stock-magasin-index-page>
+            <stock-magasin-index-page #indexPage
+                [breadcrumb]="breadcrumb">                
+            </stock-magasin-index-page>
         </ng-template>
     </mat-tab>
 </mat-tab-group>

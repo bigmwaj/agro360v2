@@ -9,16 +9,19 @@ export interface ArticleSearchBean extends AbstractBean {
 	type: FieldMetadata<ArticleTypeEnumVd>;
 };
 
-export interface VariantBean extends AbstractBean {
-	variantCode: FieldMetadata<string>;
-	alias: FieldMetadata<string>;
-	articleCode: FieldMetadata<string>;
+export interface UniteSearchBean extends AbstractBean {
 	description: FieldMetadata<string>;
+	uniteCode: FieldMetadata<string>;
 };
 
-export interface ArticleTaxeBean extends AbstractBean {
-	selected: FieldMetadata<boolean>;
-	taxe: TaxeBean;
+export interface InventaireSearchBean extends AbstractBean {
+	magasinCode: FieldMetadata<string>;
+	articleCode: FieldMetadata<string>;
+};
+
+export interface UniteBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	uniteCode: FieldMetadata<string>;
 };
 
 export interface OperationBean extends AbstractBean {
@@ -33,9 +36,21 @@ export interface OperationBean extends AbstractBean {
 	type: FieldMetadata<OperationTypeEnumVd>;
 };
 
-export interface UniteSearchBean extends AbstractBean {
+export interface OperationSearchBean extends AbstractBean {
+	variantCode: FieldMetadata<string>;
+	magasinCode: FieldMetadata<string>;
+	articleCode: FieldMetadata<string>;
+};
+
+export interface MagasinBean extends AbstractBean {
+	magasinCode: FieldMetadata<string>;
 	description: FieldMetadata<string>;
-	uniteCode: FieldMetadata<string>;
+	casiers: Array<CasierBean>;
+};
+
+export interface MagasinSearchBean extends AbstractBean {
+	magasinCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
 };
 
 export interface InventaireBean extends AbstractBean {
@@ -47,20 +62,9 @@ export interface InventaireBean extends AbstractBean {
 	prixUnitaireVente: FieldMetadata<number>;
 };
 
-export interface MagasinSearchBean extends AbstractBean {
-	magasinCode: FieldMetadata<string>;
-	description: FieldMetadata<string>;
-};
-
-export interface MagasinBean extends AbstractBean {
-	magasinCode: FieldMetadata<string>;
-	description: FieldMetadata<string>;
-	casiers: Array<CasierBean>;
-};
-
-export interface UniteBean extends AbstractBean {
-	description: FieldMetadata<string>;
-	uniteCode: FieldMetadata<string>;
+export interface ConversionBean extends AbstractBean {
+	unite: UniteBean;
+	facteur: FieldMetadata<number>;
 };
 
 export interface ArticleBean extends AbstractBean {
@@ -73,23 +77,19 @@ export interface ArticleBean extends AbstractBean {
 	type: FieldMetadata<ArticleTypeEnumVd>;
 };
 
-export interface OperationSearchBean extends AbstractBean {
+export interface VariantBean extends AbstractBean {
 	variantCode: FieldMetadata<string>;
-	magasinCode: FieldMetadata<string>;
+	alias: FieldMetadata<string>;
 	articleCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+};
+
+export interface ArticleTaxeBean extends AbstractBean {
+	selected: FieldMetadata<boolean>;
+	taxe: TaxeBean;
 };
 
 export interface CasierBean extends AbstractBean {
 	casierCode: FieldMetadata<string>;
 	description: FieldMetadata<string>;
-};
-
-export interface ConversionBean extends AbstractBean {
-	unite: UniteBean;
-	facteur: FieldMetadata<number>;
-};
-
-export interface InventaireSearchBean extends AbstractBean {
-	magasinCode: FieldMetadata<string>;
-	articleCode: FieldMetadata<string>;
 };

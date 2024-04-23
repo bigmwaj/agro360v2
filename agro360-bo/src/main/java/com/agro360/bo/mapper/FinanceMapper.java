@@ -13,12 +13,12 @@ import com.agro360.dto.finance.TaxeDto;
 import com.agro360.dto.finance.TransactionDto;
 
 public class FinanceMapper {
-	
+
 	public static CompteSearchBean buildCompteSearchBean() {
 		var bean = new CompteSearchBean();
 		return bean;
 	}
-	
+
 	public static CompteBean map(CompteDto dto) {
 		var bean = new CompteBean();
 		bean.getCompteCode().setValue(dto.getCompteCode());
@@ -30,13 +30,13 @@ public class FinanceMapper {
 
 	public static RubriqueSearchBean buildRubriqueSearchBean() {
 		var bean = new RubriqueSearchBean();
-		
+
 		return bean;
 	}
-	
+
 	public static RubriqueBean map(RubriqueDto dto) {
 		var bean = new RubriqueBean();
-		
+
 		bean.getRubriqueCode().setValue(dto.getRubriqueCode());
 
 		bean.getType().setValue(dto.getType());
@@ -45,7 +45,7 @@ public class FinanceMapper {
 
 		return bean;
 	}
-	
+
 	public static TransactionSearchBean buildTransactionSearchBean() {
 		var bean = new TransactionSearchBean();
 		return bean;
@@ -53,7 +53,7 @@ public class FinanceMapper {
 
 	public static TransactionBean map(TransactionDto dto) {
 		var bean = new TransactionBean();
-		
+
 		bean.getTransactionCode().setValue(dto.getTransactionCode());
 		bean.getNote().setValue(dto.getNote());
 		bean.getMontant().setValue(dto.getMontant());
@@ -61,22 +61,22 @@ public class FinanceMapper {
 		bean.getType().setValue(dto.getType());
 
 		bean.getStatus().setValue(dto.getStatus());
-		
+
 		if( dto.getPartner() != null ) {
 			bean.setPartner(CoreMapper.map(dto.getPartner()));
 		}
-		
+
 		if( dto.getRubrique() != null ) {
 			bean.setRubrique(FinanceMapper.map(dto.getRubrique()));
 		}
-		
+
 		if( dto.getCompte() != null ) {
 			bean.setCompte(FinanceMapper.map(dto.getCompte()));
 		}
 
 		return bean;
 	}
-	
+
 	public static TaxeBean map(TaxeDto dto) {
 		var bean = new TaxeBean();
 

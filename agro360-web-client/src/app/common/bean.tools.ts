@@ -1,6 +1,6 @@
 import { AbstractBean } from 'src/app/backed/bean.common';
 import { FieldMetadata } from '../backed/metadata';
-import { EditActionEnumVd } from '../backed/vd.common';
+import { ClientOperationEnumVd } from '../backed/vd.common';
 
 export class BeanTools{
 
@@ -39,8 +39,8 @@ export class BeanTools{
         }).reduce((a, b) => a || b, false);
 
         bean.valueChanged = changed || bean.valueChanged;
-        if (bean.valueChanged && bean.action != EditActionEnumVd.CREATE && bean.action != EditActionEnumVd.DELETE) {
-            bean.action = EditActionEnumVd.UPDATE;
+        if (bean.valueChanged && bean.action != ClientOperationEnumVd.CREATE && bean.action != ClientOperationEnumVd.DELETE) {
+            bean.action = ClientOperationEnumVd.UPDATE;
         }
 
         return bean.valueChanged;

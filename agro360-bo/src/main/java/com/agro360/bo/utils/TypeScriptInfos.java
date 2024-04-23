@@ -14,5 +14,5 @@ public @interface TypeScriptInfos {
 	public String type() default("");
 
 	public boolean igroreSuperClassParam() default(true);
-	
+
 }

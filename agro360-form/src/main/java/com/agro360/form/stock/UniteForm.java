@@ -8,10 +8,9 @@ import org.springframework.stereotype.Component;
 import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.UniteSearchBean;
 import com.agro360.bo.mapper.StockMapper;
-import com.agro360.dto.stock.UniteDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.UniteOperation;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
 public class UniteForm {
@@ -27,9 +26,9 @@ public class UniteForm {
 
 	public UniteBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
 		var bean = copyFrom.map(e -> operation.findUniteByCode(ctx, e))
-				.orElse(StockMapper.map(new UniteDto()));
+				.orElse(new UniteBean());
 		bean.getUniteCode().setValue(null);
-		bean.setAction(EditActionEnumVd.CREATE);
+		bean.setAction(ClientOperationEnumVd.CREATE);
 		
 		return bean;
 	}

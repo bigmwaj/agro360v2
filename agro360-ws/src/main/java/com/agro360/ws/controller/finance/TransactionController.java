@@ -20,6 +20,7 @@ import com.agro360.bo.bean.finance.TransfertBean;
 import com.agro360.form.finance.TransactionForm;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.service.finance.TransactionService;
+import com.agro360.vd.finance.TransactionTypeEnumVd;
 import com.agro360.ws.controller.common.AbstractController;
 
 @RestController()
@@ -54,8 +55,8 @@ public class TransactionController extends AbstractController {
 	}
 
 	@GetMapping("/create-form")
-	public ResponseEntity<TransactionBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
-		return ResponseEntity.ok(form.initCreateFormBean(getClientContext(), copyFrom));
+	public ResponseEntity<TransactionBean> getCreateFormAction(@RequestParam TransactionTypeEnumVd type, @RequestParam Optional<String> copyFrom) {
+		return ResponseEntity.ok(form.initCreateFormBean(getClientContext(), type, copyFrom));
 	}
 
 	@GetMapping("/delete-form")
@@ -82,8 +83,12 @@ public class TransactionController extends AbstractController {
 	
 	@PostMapping("transfert")
 	public ResponseEntity<ModelMap> transfertAction(@RequestBody @Validated TransfertBean bean, BindingResult br) {
-		service.transfert(getClientContext(), bean);
-		return ResponseEntity.ok(new ModelMap());
+		var ctx = getClientContext();
+		var result = service.transfert(ctx, bean);
+		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
+
+		model.addAttribute(RECORDS_MODEL_KEY, result);
+		return ResponseEntity.ok(model);
 	}
 
 }

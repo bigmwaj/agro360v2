@@ -1,7 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { TransfertBean } from 'src/app/backed/bean.finance';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { map } from 'rxjs';
+import { TransactionBean, TransfertBean } from 'src/app/backed/bean.finance';
+import { Message } from 'src/app/backed/message';
+import { UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
 
 @Component({
@@ -18,7 +21,9 @@ export class TransfertDialogComponent implements OnInit {
 
     constructor(
         private http: HttpClient,
-        public dialog: MatDialog) { }
+        public dialog: MatDialog,
+        private ui: UIService,
+        public dialogRef: MatDialogRef<TransfertDialogComponent>) { }
 
     ngOnInit(): void {
         this.http
@@ -27,6 +32,11 @@ export class TransfertDialogComponent implements OnInit {
     }
 
     transfertAction() {
-        this.http.post(`finance/transaction/transfert`, this.bean).subscribe(data => console.log(data))
+        this.http.post(`finance/transaction/transfert`, this.bean)
+        .pipe(map((e: any) => <any>e))
+        .subscribe(data => {        
+            this.dialogRef.close(data.records)
+            this.ui.displayFlashMessage(<Array<Message>>data.messages);
+        })
     }
 }

@@ -1,9 +1,6 @@
-<h2 mat-dialog-title>Taxes</h2>
+<h2 mat-dialog-title>Liste des taxes</h2>
 <mat-dialog-content>
     <section class="p-3">
-        <h4>
-            Liste des taxes
-        </h4>
         <table mat-table #taxesTable [dataSource]="this" class="beans-table editable table-borderless">
             <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef>
@@ -47,7 +44,7 @@
 
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef class="text-end">
-                    <button mat-icon-button color="primary" (click)="addAction()">
+                    <button mat-mini-fab color="primary" (click)="addAction()">
                         <mat-icon>add</mat-icon>
                     </button>
                 </th>
@@ -55,7 +52,11 @@
                     <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)">
                         <mat-icon>content_copy</mat-icon>
                     </button>
-                    <button mat-icon-button color="primary" title="Supprimer" (click)="deleteAction(element)">
+                    <button mat-icon-button 
+                        color="primary" 
+                        title="Supprimer"
+                        *ngIf="element.deleteBtn.visible" 
+                        (click)="deleteAction(element)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </td>

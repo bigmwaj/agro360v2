@@ -4,7 +4,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { UniteBean, UniteSearchBean } from 'src/app/backed/bean.stock';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { BeanTools } from 'src/app/common/bean.tools';
 import { SharedModule } from 'src/app/common/shared.module';
@@ -97,14 +97,14 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
     }
 
     deleteAction(bean: UniteBean) {
-        if( bean.action == EditActionEnumVd.CREATE ){
+        if( bean.action == ClientOperationEnumVd.CREATE ){
             this.removeItem(bean);
         }else {
-            if( bean.action != EditActionEnumVd.DELETE){
-                bean.action = EditActionEnumVd.DELETE;
+            if( bean.action != ClientOperationEnumVd.DELETE){
+                bean.action = ClientOperationEnumVd.DELETE;
                 bean.valueChanged = true;
             }else{                
-                bean.action = EditActionEnumVd.SYNC;
+                bean.action = ClientOperationEnumVd.SYNC;
                 bean.valueChanged = false;
             }
         }

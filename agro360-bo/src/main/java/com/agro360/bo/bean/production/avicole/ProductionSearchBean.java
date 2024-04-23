@@ -13,5 +13,5 @@ public class ProductionSearchBean extends AbstractBean{
 	private static final long serialVersionUID = -2528590034330460986L;
 
 	private FieldMetadata<String> cycleCode = new FieldMetadata<>("Cycle");
-	
+
 }

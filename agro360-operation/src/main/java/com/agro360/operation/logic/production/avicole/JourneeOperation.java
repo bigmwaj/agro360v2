@@ -16,7 +16,7 @@ import com.agro360.dao.production.avicole.ICycleDao;
 import com.agro360.dto.production.avicole.CycleDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.common.AbstractOperation;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Service
 public class JourneeOperation extends AbstractOperation<CycleDto, String>{
@@ -50,7 +50,7 @@ public class JourneeOperation extends AbstractOperation<CycleDto, String>{
 			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
 		}
 		
-		if(  EditActionEnumVd.SYNC.equals(bean.getAction())) {
+		if(  ClientOperationEnumVd.SYNC.equals(bean.getAction())) {
 			return Collections.emptyList();
 		}
 		

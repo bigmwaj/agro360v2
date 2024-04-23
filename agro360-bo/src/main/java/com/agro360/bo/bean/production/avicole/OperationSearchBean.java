@@ -19,5 +19,5 @@ public class OperationSearchBean extends AbstractBean{
 	private FieldMetadata<PhaseEnumVd> phase = new FieldMetadata<>("Phase");
 
 	private FieldMetadata<RubriqueEnumVd> rubrique = new FieldMetadata<>("Rubrique");
-	
+
 }

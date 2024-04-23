@@ -1,25 +1,37 @@
-<mat-tab-group  preserveContent (selectedTabChange)="selectedTabChange($event)">
-    <mat-tab label="Recettes">
+<mat-tab-group preserveContent (selectedTabChange)="selectedTabChange($event)" #vente>
+    <mat-tab label="Recettes" #recettesTab>
         <ng-template matTabContent>
-            <finance-transaction-index-page [module]="module"></finance-transaction-index-page>
+            <finance-transaction-index-page #indexPage
+                [module]="module"
+                [breadcrumb]="breadcrumb">
+            </finance-transaction-index-page>
         </ng-template>
     </mat-tab>
 
-    <mat-tab label="Commandes">
+    <mat-tab label="Commandes" #commandesTab>
         <ng-template matTabContent>
-            <achat-vente-commande-index-page [module]="module"></achat-vente-commande-index-page>
+            <achat-vente-commande-index-page #indexPage
+                [module]="module"
+                [breadcrumb]="breadcrumb">
+            </achat-vente-commande-index-page>
         </ng-template>
     </mat-tab>
     
-    <mat-tab label="Factures">
+    <mat-tab label="Factures" #facturesTab>
         <ng-template matTabContent>
-            <achat-vente-facture-index-page [module]="module"></achat-vente-facture-index-page>
+            <achat-vente-facture-index-page #indexPage
+                [module]="module"
+                [breadcrumb]="breadcrumb">
+            </achat-vente-facture-index-page>
         </ng-template>
     </mat-tab>
     
-    <mat-tab label="Clients">
+    <mat-tab label="Clients" #clientsTab>
         <ng-template matTabContent>
-            <core-partner-index-page [module]="module"></core-partner-index-page>
+            <core-partner-index-page #indexPage
+                [module]="module"
+                [breadcrumb]="breadcrumb">
+            </core-partner-index-page>
         </ng-template>
     </mat-tab>
 </mat-tab-group>

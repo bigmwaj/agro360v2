@@ -13,7 +13,7 @@ public class InventaireSearchBean extends AbstractBean{
 	private static final long serialVersionUID = 355487810396906725L;
 
 	private FieldMetadata<String> magasinCode = new FieldMetadata<>("Magasin");
-	
+
 	private FieldMetadata<String> articleCode = new FieldMetadata<>("Article");
-	
+
 }

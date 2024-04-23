@@ -15,5 +15,5 @@ public class UniteSearchBean extends AbstractBean{
 	private FieldMetadata<String> uniteCode = new FieldMetadata<>("Code");
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
-	
+
 }

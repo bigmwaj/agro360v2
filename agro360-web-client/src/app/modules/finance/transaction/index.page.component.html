@@ -1,14 +1,37 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTab.index">
-    <mat-tab label="Liste">
+<mat-tab-group mat-stretch-tabs="false" 
+    mat-align-tabs="start"     
+    #finance_transaction
+    [selectedIndex]="selectedTab.index"
+    (selectedTabChange)="selectedTabChange($event)">
+    <mat-tab>        
+        <ng-template mat-tab-label>
+            <mat-icon>list_task</mat-icon>
+            <span class="ms-2">
+                Liste
+            </span>
+        </ng-template> 
         <finance-transaction-list-tab 
             [editingBeans]="editingBeans"
             [selectedTab]="selectedTab"
-            [module]="module">
+            [module]="module"
+            [breadcrumb]="breadcrumb">
         </finance-transaction-list-tab>
     </mat-tab>
     <ng-container *ngFor="let editingBean of editingBeans">
-        <mat-tab [label]="editingBean.transactionCode.value">
-            <finance-transaction-edit-tab [bean]="editingBean" [module]="module"></finance-transaction-edit-tab>
+        <mat-tab>     
+            <ng-template mat-tab-label>
+                <span class="me-2">
+                    {{editingBean.transactionCode.value}}
+                </span>
+                <button mat-icon-button (click)="removeAction(editingBean)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </ng-template> 
+            <finance-transaction-edit-tab 
+                [bean]="editingBean" 
+                [module]="module"
+                [breadcrumb]="breadcrumb">
+            </finance-transaction-edit-tab>
         </mat-tab>
     </ng-container>
   </mat-tab-group>

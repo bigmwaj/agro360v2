@@ -21,9 +21,7 @@ public class CycleBean extends AbstractStatusTrackingBean<CycleStatusEnumVd> {
 
 	private FieldMetadata<String> cycleCode = new FieldMetadata<>("Cycle");
 
-	private FieldMetadata<CycleStatusEnumVd> status = new FieldMetadata<>("Statut", 
-			getOptionsMap(CycleStatusEnumVd.values(), 
-			CycleStatusEnumVd::getLibelle));
+	private FieldMetadata<CycleStatusEnumVd> status = new FieldMetadata<>("Statut", CycleStatusEnumVd.getAsMap());
 
 	private MagasinBean magasin = new MagasinBean();
 
@@ -34,13 +32,13 @@ public class CycleBean extends AbstractStatusTrackingBean<CycleStatusEnumVd> {
 	private FieldMetadata<Double> quantitePlanifiee = new FieldMetadata<>("Qté(Plan.)");
 
 	private FieldMetadata<LocalDate> datePlanifiee = new FieldMetadata<>("Date(Plan.)");
-	
+
 	private FieldMetadata<String> raceEffective = new FieldMetadata<>("Race(Eff.)");
 
 	private FieldMetadata<Double> quantiteEffective = new FieldMetadata<>("Qté(Eff.)");
 
 	private FieldMetadata<LocalDate> dateEffective = new FieldMetadata<>("Date(Eff.)");
-	
+
 	private List<MetadataBean> metadatas = new ArrayList<>();
 
 	public void setMagasin(MagasinBean magasin) {

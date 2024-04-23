@@ -16,9 +16,9 @@ import lombok.Getter;
 public class OperationBean extends AbstractLigneBean<OperationDto> {
 
 	private static final long serialVersionUID = 1647090333349627006L;
-	
+
 	private FieldMetadata<Long> numeroJournee = new FieldMetadata<>("#Journée");
-	
+
 	private FieldMetadata<PhaseEnumVd> phase = new FieldMetadata<>("Phase");
 
 	private FieldMetadata<RubriqueEnumVd> rubrique = new FieldMetadata<>("Rubrique");

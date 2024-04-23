@@ -17,7 +17,6 @@ import com.agro360.bo.bean.stock.ArticleTaxeBean;
 import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.UniteSearchBean;
 import com.agro360.bo.mapper.StockMapper;
-import com.agro360.dto.stock.ArticleDto;
 import com.agro360.form.common.AbstractForm;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.finance.TaxeOperation;
@@ -26,7 +25,7 @@ import com.agro360.operation.logic.stock.ArticleTaxeOperation;
 import com.agro360.operation.logic.stock.ConversionOperation;
 import com.agro360.operation.logic.stock.UniteOperation;
 import com.agro360.operation.logic.stock.VariantOperation;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
 public class ArticleForm extends AbstractForm{
@@ -76,7 +75,7 @@ public class ArticleForm extends AbstractForm{
 	public ArticleBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
 		
 		var bean = copyFrom.map(e -> operation.findArticleByCode(ctx, e))
-				.orElse(StockMapper.map(new ArticleDto()));
+				.orElse(new ArticleBean());
 		
 		initVariantsForm(ctx, bean);
 		initConversionsForm(ctx, bean);
@@ -85,7 +84,7 @@ public class ArticleForm extends AbstractForm{
 		initUniteOption(ctx, bean);
 		
 		bean.getArticleCode().setValue(null);
-		bean.setAction(EditActionEnumVd.CREATE);
+		bean.setAction(ClientOperationEnumVd.CREATE);
 		bean.getVariants().stream().forEach(AbstractBean.setActionToCreate);
 		bean.getConversions().stream().forEach(AbstractBean.setActionToCreate);
 
@@ -148,7 +147,7 @@ public class ArticleForm extends AbstractForm{
 	private ArticleTaxeBean initEdit(TaxeBean taxe) {
 		var bean = new ArticleTaxeBean();
 		bean.setTaxe(taxe);
-		bean.setAction(EditActionEnumVd.SYNC);
+		bean.setAction(ClientOperationEnumVd.SYNC);
 		return bean;
 	}
 }

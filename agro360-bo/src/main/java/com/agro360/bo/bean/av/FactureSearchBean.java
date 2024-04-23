@@ -17,14 +17,13 @@ public class FactureSearchBean extends AbstractBean{
 	private static final long serialVersionUID = 355487810396906725L;
 
 	private FieldMetadata<String> factureCode = new FieldMetadata<>("Code");
-	
-	private FieldMetadata<String> partner = new FieldMetadata<>("Partner");
 
-	private FieldMetadata<List<FactureStatusEnumVd>> statusIn = new FieldMetadata<>("Statuts dans",
-			getOptionsMap(FactureStatusEnumVd.values(), FactureStatusEnumVd::getLibelle));
+	private FieldMetadata<String> partner = new FieldMetadata<>("Partenaire");
 
-	private FieldMetadata<LocalDate> dateDebut = new FieldMetadata<>("Date de Facture(début)");
-	
-	private FieldMetadata<LocalDate> dateFin = new FieldMetadata<>("Date de Facture(fin)");
-	
+	private FieldMetadata<List<FactureStatusEnumVd>> statusIn = new FieldMetadata<>("Statuts dans", FactureStatusEnumVd.getAsMap());
+
+	private FieldMetadata<LocalDate> dateDebut = new FieldMetadata<>("Date(début)");
+
+	private FieldMetadata<LocalDate> dateFin = new FieldMetadata<>("Date(fin)");
+
 }

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { ConversionBean } from 'src/app/backed/bean.stock';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 import { map } from 'rxjs';
@@ -75,14 +75,14 @@ export class EditConversionListComponent extends BeanList<ConversionBean> implem
     }
 
     deleteAction(bean: ConversionBean) {
-        if( bean.action == EditActionEnumVd.CREATE ){
+        if( bean.action == ClientOperationEnumVd.CREATE ){
             this.removeItem(bean);
         }else {
-            if( bean.action != EditActionEnumVd.DELETE ){
-                bean.action = EditActionEnumVd.DELETE;
+            if( bean.action != ClientOperationEnumVd.DELETE ){
+                bean.action = ClientOperationEnumVd.DELETE;
                 bean.valueChanged = true;
             }else{                
-                bean.action = EditActionEnumVd.SYNC;
+                bean.action = ClientOperationEnumVd.SYNC;
                 bean.valueChanged = false;
             }
         }

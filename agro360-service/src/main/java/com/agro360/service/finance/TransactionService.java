@@ -64,9 +64,16 @@ public class TransactionService extends AbstractService {
 		};
 	}
 
-	public void transfert(ClientContext ctx, TransfertBean bean) {
-		service.transfert(ctx, bean);
+	public List<TransactionBean> transfert(ClientContext ctx, TransfertBean bean) {
+		var result = service.transfert(ctx, bean);
+		var montant = bean.getMontant().getValue();
+		var source = bean.getCompteSource().getCompteCode().getValue();
+		var cible = bean.getCompteCible().getCompteCode().getValue();
+		var partner = bean.getPartner().getPartnerName().getValue();
+		var msgTpl = "Le transfert de %.2f du compte %s au compte %s au profit de %s effectué avec succès!";
+		ctx.success(String.format(msgTpl, montant, source, cible,  partner));
 		
+		return result;
 	}
 
 }

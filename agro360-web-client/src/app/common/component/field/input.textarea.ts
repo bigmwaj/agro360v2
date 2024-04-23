@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
     <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
         <textarea matInput [(ngModel)]="field.value" (change)="_onChange()"
+            [maxLength]="field.maxLength && field.maxLength > 0 ? field.maxLength : 256"
             [disabled]="!field.editable"
             [required]="field.required"></textarea>
     </mat-form-field>

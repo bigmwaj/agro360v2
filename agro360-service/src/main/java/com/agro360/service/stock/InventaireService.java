@@ -15,7 +15,7 @@ import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.InventaireOperation;
 import com.agro360.service.common.AbstractService;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
@@ -47,7 +47,7 @@ public class InventaireService extends AbstractService {
 		var msgTpl = "Les variantes sélectionnées de l'article %s ont été ajoutées au magasin %s avec succès!";
 		ctx.success(String.format(msgTpl, articleCode, magasinCode));
 		for (var variant : variants) {
-			if( !EditActionEnumVd.CREATE.equals(variant.getAction())) {
+			if( !ClientOperationEnumVd.CREATE.equals(variant.getAction())) {
 				continue;
 			}
 			var variantCode = variant.getVariantCode().getValue();

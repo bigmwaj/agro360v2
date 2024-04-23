@@ -10,11 +10,9 @@ import org.springframework.stereotype.Component;
 import com.agro360.bo.bean.stock.ConversionBean;
 import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.UniteSearchBean;
-import com.agro360.bo.mapper.StockMapper;
-import com.agro360.dto.stock.ConversionDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.UniteOperation;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
 public class ConversionForm {
@@ -23,8 +21,8 @@ public class ConversionForm {
 	UniteOperation uniteService;
 
 	public ConversionBean initCreateFormBean(ClientContext ctx, String articleCode, Optional<String> copyFrom) {
-		var bean = StockMapper.map(new ConversionDto());
-		bean.setAction(EditActionEnumVd.CREATE);
+		var bean = new ConversionBean();
+		bean.setAction(ClientOperationEnumVd.CREATE);
 		initUniteOption(ctx, bean);
 		return bean;
 	}

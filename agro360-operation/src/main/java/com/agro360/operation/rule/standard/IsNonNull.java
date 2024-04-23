@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.message.Message;
 import com.agro360.bo.metadata.FieldMetadata;
-import com.agro360.operation.context.BeanRuleContext;
+import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.rule.common.AbstractRule;
 
 @Component
@@ -31,7 +31,7 @@ public class IsNonNull extends AbstractRule {
 	}
 	
 	@Override
-	public boolean apply(BeanRuleContext ctx, AbstractBean bean) {
+	public boolean eval(ClientContext ctx, AbstractBean bean) {
 		return false;
 	}
 }

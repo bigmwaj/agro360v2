@@ -26,18 +26,20 @@ public class TransactionBean extends AbstractStatusTrackingBean<TransactionStatu
 	private FieldMetadata<LocalDate> date = new FieldMetadata<>("Date Transaction");
 
 	private FieldMetadata<TransactionStatusEnumVd> status = new FieldMetadata<>("Status", TransactionStatusEnumVd.getAsMap());
-	
+
 	private FieldMetadata<String> note = new FieldMetadata<>("Note");
-	
-	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant HT");
-	
+
+	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
+
+	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
+
 	@Setter
 	private PartnerBean partner = new PartnerBean();
-	
+
 	@Setter
 	private RubriqueBean rubrique = new RubriqueBean();
-	
+
 	@Setter
 	private CompteBean compte = new CompteBean();
-	
+
 }

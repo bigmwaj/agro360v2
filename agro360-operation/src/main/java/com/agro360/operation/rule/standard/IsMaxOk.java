@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.message.Message;
-import com.agro360.bo.metadata.FieldMetadata;
-import com.agro360.operation.context.BeanRuleContext;
+import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.rule.common.AbstractRule;
 import com.agro360.operation.rule.exception.RuleException;
 
@@ -44,7 +43,7 @@ public class IsMaxOk extends AbstractRule {
 	}
 
 	public boolean apply(AbstractBean bean, String fieldName, Map<String, Object> params) {
-		FieldMetadata<?> field = bean.getField(fieldName);
+		var field = bean.getField(fieldName);
 		var _value = field.getValue();
 		
 		if( _value == null ) {
@@ -74,7 +73,7 @@ public class IsMaxOk extends AbstractRule {
 	}
 	
 	@Override
-	public boolean apply(BeanRuleContext ctx, AbstractBean bean) {
-		return false;
+	public boolean eval(ClientContext ctx, AbstractBean bean) {
+		return true;
 	}
 }

@@ -19,16 +19,16 @@ public class ArticleBean extends AbstractBean {
 
 	private FieldMetadata<String> articleCode = new FieldMetadata<>("Article");
 
-	private FieldMetadata<String> description = new FieldMetadata<>("Libellé");
+	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 
 	private FieldMetadata<ArticleTypeEnumVd> type = new FieldMetadata<>("Type", ArticleTypeEnumVd.getAsMap());
 
 	@Setter
 	private UniteBean unite = new UniteBean();
-	
+
 	private List<VariantBean> variants = new ArrayList<>();
-	
+
 	private List<ConversionBean> conversions = new ArrayList<>();
-	
+
 	private List<ArticleTaxeBean> taxes = new ArrayList<>();
 }

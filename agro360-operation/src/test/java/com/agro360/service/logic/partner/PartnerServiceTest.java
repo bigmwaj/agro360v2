@@ -46,12 +46,12 @@ public class PartnerServiceTest {
 		
 		var company = new PartnerDto();
 		company.setPartnerCode("COMPANY");
-		company.setPartnerType(PartnerTypeEnumVd.COMPANY);
+		company.setType(PartnerTypeEnumVd.COMPANY);
 		company.setName("Company Name");
 
 		var person = new PartnerDto();
 		person.setPartnerCode("PERSON");
-		person.setPartnerType(PartnerTypeEnumVd.PERSON);
+		person.setType(PartnerTypeEnumVd.PERSON);
 		person.setFirstName("First Name");
 		person.setLastName("Last Name");
 		

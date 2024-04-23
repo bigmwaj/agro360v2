@@ -4,10 +4,10 @@ import { TransactionBean } from 'src/app/backed/bean.finance';
 import { SharedModule } from 'src/app/common/shared.module';
 import { BeanTools } from 'src/app/common/bean.tools';
 import { Message } from 'src/app/backed/message';
-import { UIService } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
 import { map } from 'rxjs';
 import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 
 @Component({
     standalone: true,
@@ -18,14 +18,15 @@ import { EditActionEnumVd } from 'src/app/backed/vd.common';
     templateUrl: './edit.tab.component.html'
 })
 export class EditTabComponent implements OnInit {
-
+    @Input({required:true})
+    breadcrumb:BreadcrumbItem
+    
     @Input({required:true})
     bean: TransactionBean;
     
     @Input({required:true})
     module: string;
     
-    title: string = "Création d'une transaction";
 
     partnerLabel: string = "Partenaire";
 
@@ -37,6 +38,7 @@ export class EditTabComponent implements OnInit {
 
         let isCreation = this.isCreation();
 
+        let title = "Création d'une transaction";
         if( this.module != null ){
             this.bean.rubrique.rubriqueCode.editable = false
             this.bean.type.editable = false
@@ -51,9 +53,9 @@ export class EditTabComponent implements OnInit {
                 this.partnerLabel = "Client";
 
                 if( isCreation )
-                    this.title = `Création d'un encaissement client`;
+                    title = `Création d'un encaissement client`;
                 else            
-                    this.title = `Edition de l'encaissement client ${this.bean.transactionCode.value}`;
+                    title = `Edition de l'encaissement client ${this.bean.transactionCode.value}`;
                 break;
 
                 case "achat": 
@@ -62,9 +64,9 @@ export class EditTabComponent implements OnInit {
                 this.partnerLabel = "Fournisseur";
 
                 if( isCreation )
-                    this.title = `Création d'un règlement fournisseur`;
+                    title = `Création d'un règlement fournisseur`;
                 else            
-                    this.title = `Edition du règlement fournisseur ${this.bean.transactionCode.value}`;
+                    title = `Edition du règlement fournisseur ${this.bean.transactionCode.value}`;
                 break;
                 break;
 
@@ -72,12 +74,12 @@ export class EditTabComponent implements OnInit {
                 transactionType = TransactionTypeEnumVd.DEPENSE;
                 rubriqueCode = 'SALAIRE';
                 this.partnerLabel = "Employé";
-                this.title = "Création d'un salaire employé";
+                title = "Création d'un salaire employé";
 
                 if( isCreation )
-                    this.title = `Création d'un salaire employé`;
+                    title = `Création d'un salaire employé`;
                 else            
-                    this.title = `Edition du salaire employé ${this.bean.transactionCode.value}`;
+                    title = `Edition du salaire employé ${this.bean.transactionCode.value}`;
                 break;
             }   
             
@@ -88,13 +90,21 @@ export class EditTabComponent implements OnInit {
                 this.bean.rubrique.rubriqueCode.value = rubriqueCode
             }
         }
+        this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title)
     }
 
     ngOnInit(): void {
         this.initModule()
-        this.ui.setTitle(this.title)
     }
 
+    ngAfterViewInit(): void {
+        this.refreshPageTitle()
+    }
+
+    refreshPageTitle():void{
+        this.ui.setBreadcrumb(this.breadcrumb)
+    }
+    
     saveAction() {
         this.http.post(`finance/transaction`, BeanTools.reviewBeanAction(this.bean))   
             .pipe(map((e: any) => <any>e))
@@ -104,7 +114,7 @@ export class EditTabComponent implements OnInit {
     }
 
     private isCreation(): boolean {
-        return EditActionEnumVd.CREATE == this.bean.action;
+        return ClientOperationEnumVd.CREATE == this.bean.action;
     }
 
 }

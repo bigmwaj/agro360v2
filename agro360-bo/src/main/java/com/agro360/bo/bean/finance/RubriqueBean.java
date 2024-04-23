@@ -16,10 +16,12 @@ public class RubriqueBean extends AbstractBean{
 	private FieldMetadata<String> rubriqueCode = new FieldMetadata<>("Rubrique");
 
 	private FieldMetadata<TransactionTypeEnumVd> type = new FieldMetadata<>("Type", TransactionTypeEnumVd.getAsMap());
-	
+
 	private FieldMetadata<String> nom = new FieldMetadata<>("Nom");
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 
-	
+	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
+
+
 }

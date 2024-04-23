@@ -1,18 +1,16 @@
 package com.agro360.bo.bean.common;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.common.ClientOperationEnumVd;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,7 +20,7 @@ import lombok.EqualsAndHashCode;
 public class AbstractBean implements Serializable {
 
 	private static final long serialVersionUID = -8531682957497502966L;
-	
+
 	private final String __TYPE__ = "BEAN";
 
 	private boolean valueChanged;
@@ -33,15 +31,19 @@ public class AbstractBean implements Serializable {
 
 	private String label;
 
-	@NonNull
-	private EditActionEnumVd action = EditActionEnumVd.SYNC;
-	
-	private ClientOperationEnumVd operation;
+	@JsonIgnore
+	private AbstractBean ownerBean;
 
-	public static final Consumer<AbstractBean> setActionToCreate = b -> b.setAction(EditActionEnumVd.CREATE);
-	
-	protected <T>Map<Object, String> getOptionsMap(T[] values, Function<T, String> libelle) {
-		return Arrays.stream(values).collect(Collectors.toMap( e -> Object.class.cast(e), libelle));
+	@JsonIgnore
+	private AbstractBean rootBean;
+
+	@NonNull
+	private ClientOperationEnumVd action = ClientOperationEnumVd.SYNC;
+
+	public static final Consumer<AbstractBean> setActionToCreate = b -> b.setAction(ClientOperationEnumVd.CREATE);
+
+	protected Logger getLogger() {
+		return LoggerFactory.getLogger(getClass());
 	}
 
 	private String getGetterName(String fieldName) {
@@ -53,18 +55,20 @@ public class AbstractBean implements Serializable {
 		try {
 			return (FieldMetadata<T>) getClass().getMethod(getGetterName(fieldName)).invoke(this);
 		} catch (Exception e) {
-			e.printStackTrace();
+			var msgTpl = "L'attribut %s n'existe pas";
+			getLogger().error(String.format(msgTpl, fieldName), e);
+			throw new RuntimeException(String.format(msgTpl, fieldName));
 		}
-		return null;
 	}
 
 	public AbstractBean getBean(String fieldName) {
 		try {
 			return (AbstractBean) getClass().getMethod(getGetterName(fieldName)).invoke(this);
 		} catch (Exception e) {
-			e.printStackTrace();
+			var msgTpl = "L'attribut %s n'existe pas";
+			getLogger().error(String.format(msgTpl, fieldName), e);
+			throw new RuntimeException(String.format(msgTpl, fieldName));
 		}
-		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,8 +76,9 @@ public class AbstractBean implements Serializable {
 		try {
 			return (Collection<AbstractBean>) getClass().getMethod(getGetterName(fieldName)).invoke(this);
 		} catch (Exception e) {
-			e.printStackTrace();
+			var msgTpl = "L'attribut %s n'existe pas";
+			getLogger().error(String.format(msgTpl, fieldName), e);
+			throw new RuntimeException(String.format(msgTpl, fieldName));
 		}
-		return null;
 	}
 }

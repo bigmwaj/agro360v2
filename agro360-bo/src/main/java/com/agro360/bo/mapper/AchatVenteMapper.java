@@ -1,8 +1,6 @@
 package com.agro360.bo.mapper;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Map;
 
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.CommandeSearchBean;
@@ -22,7 +20,7 @@ import com.agro360.dto.av.ReceptionLigneDto;
 import com.agro360.dto.av.RetourLigneDto;
 
 public class AchatVenteMapper {
-	
+
 	public static CommandeSearchBean buildCommandeSearchBean() {
 		var bean = new CommandeSearchBean();
 		return bean;
@@ -42,13 +40,13 @@ public class AchatVenteMapper {
 		bean.getRemiseTaux().setValue(dto.getRemiseTaux());
 		bean.getRemiseMontant().setValue(dto.getRemiseMontant());
 		bean.getRemiseRaison().setValue(dto.getRemiseRaison());
-		
+
 		bean.getPrixTotal().setValue(dto.getPrixTotal());
 		bean.getPrixTotalHT().setValue(dto.getPrixTotalHT());
 		bean.getPrixTotalTTC().setValue(dto.getPrixTotalTTC());
 		bean.getTaxe().setValue(dto.getTaxe());
 		bean.getRemise().setValue(dto.getRemise());
-		
+
 		if (null != dto.getPartner()) {
 			bean.setPartner(CoreMapper.map(dto.getPartner()));
 		}
@@ -56,7 +54,7 @@ public class AchatVenteMapper {
 		if (dto.getMagasin() != null) {
 			bean.setMagasin(StockMapper.map(dto.getMagasin()));
 		}
-		
+
 		if( dto.getCompte() != null ) {
 			bean.setCompte(FinanceMapper.map(dto.getCompte()));
 		}
@@ -72,20 +70,20 @@ public class AchatVenteMapper {
 	public static FactureBean map(FactureDto dto) {
 		var bean = new FactureBean();
 
-		bean.getFactureCode().setValue(dto.getFactureCode());		
+		bean.getFactureCode().setValue(dto.getFactureCode());
 		bean.getDate().setValue(dto.getDate());
 		bean.getStatus().setValue(dto.getStatus());
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getMontant().setValue(dto.getMontant());
 		bean.getType().setValue(dto.getType());
-		
+
 		if (null != dto.getPartner()) {
 			var partner = new PartnerBean();
 			partner.getPartnerName().setValue(Constants.PARTNER_DTO2STR.apply(dto.getPartner()));
 			partner.getPartnerCode().setValue(dto.getPartner().getPartnerCode());
 			bean.setPartner(partner);
 		}
-		
+
 		if (null != dto.getCommande()) {
 			var commande = new CommandeBean();
 			commande.getCommandeCode().setValue(dto.getCommande().getCommandeCode());
@@ -101,31 +99,27 @@ public class AchatVenteMapper {
 		bean.getQuantite().setValue(dto.getQuantite());
 		bean.getPrixUnitaire().setValue(dto.getPrixUnitaire());
 		bean.getVariantCode().setValue(dto.getVariantCode	());
-		
+
 		bean.getRemiseType().setValue(dto.getRemiseType());
 		bean.getRemiseTaux().setValue(dto.getRemiseTaux());
 		bean.getRemiseMontant().setValue(dto.getRemiseMontant());
 		bean.getRemiseRaison().setValue(dto.getRemiseRaison());
-		
+
 		bean.getPrixTotal().setValue(dto.getPrixTotal());
 		bean.getPrixTotalHT().setValue(dto.getPrixTotalHT());
 		bean.getPrixTotalTTC().setValue(dto.getPrixTotalTTC());
 		bean.getTaxe().setValue(dto.getTaxe());
-		
+
 		if( dto.getArticle() != null ) {
 			bean.setArticle(StockMapper.map(dto.getArticle()));
-		}			
-		if( dto.getUnite() != null ) {
-			bean.setUnite(StockMapper.map(dto.getUnite()));			
 		}
-		
+		if( dto.getUnite() != null ) {
+			bean.setUnite(StockMapper.map(dto.getUnite()));
+		}
+
 		bean.getType().setValue(dto.getType());
 
 		return bean;
-	}
-	
-	public static ReceptionLigneBean mapToBean(ReceptionLigneDto dto) {
-		return mapToBean(dto, Collections.emptyMap());
 	}
 
 	public static ReceptionLigneBean mapToBean(LigneDto dto, Double quantite) {
@@ -141,37 +135,52 @@ public class AchatVenteMapper {
 		return mapToBean(dto, dto.getQuantite());
 	}
 
-	public static ReceptionLigneBean mapToBean(ReceptionLigneDto dto, Map<String, Object> options) {
+	public static ReceptionLigneBean map(ReceptionLigneDto dto) {
 		var bean = new ReceptionLigneBean();
-
+		bean.getReceptionId().setValue(dto.getReceptionId());
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getQuantite().setValue(dto.getQuantite());
 		bean.getDate().setValue(dto.getDate());
-		bean.getReceptionId().setValue(dto.getReceptionId());
 		bean.getStatus().setValue(dto.getStatus());
+
+		if( dto.getLigne() != null ) {
+			bean.setLigne(map(dto.getLigne()));
+			bean.getPrixUnitaire().setValue(dto.getLigne().getPrixUnitaire());
+		}
+
+		if( dto.getUnite() != null ) {
+			bean.setUnite(StockMapper.map(dto.getUnite()));
+		}
 
 		return bean;
 	}
 
 	public static RetourLigneBean map(RetourLigneDto dto) {
 		var bean = new RetourLigneBean();
-
+		bean.getRetourId().setValue(dto.getRetourId());
 		bean.getQuantite().setValue(dto.getQuantite());
 		bean.getDescription().setValue(dto.getDescription());
-		
+		bean.getStatus().setValue(dto.getStatus());
+		bean.getDate().setValue(dto.getDate());
+
 		if( dto.getLigne() != null ) {
-			bean.setLigne(map(dto.getLigne()));			
+			bean.setLigne(map(dto.getLigne()));
+			bean.getPrixUnitaire().setValue(dto.getLigne().getPrixUnitaire());
+		}
+
+		if( dto.getUnite() != null ) {
+			bean.setUnite(StockMapper.map(dto.getUnite()));
 		}
 
 		return bean;
 	}
-	
+
 	public static LigneTaxeBean map(LigneTaxeDto dto) {
 		var bean = new LigneTaxeBean();
 
 		bean.getTaux().setValue(dto.getTaux());
 		if( dto.getTaxe() != null ) {
-			bean.setTaxe(FinanceMapper.map(dto.getTaxe()));			
+			bean.setTaxe(FinanceMapper.map(dto.getTaxe()));
 		}
 		return bean;
 	}

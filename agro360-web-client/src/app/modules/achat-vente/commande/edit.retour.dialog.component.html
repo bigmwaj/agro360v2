@@ -21,17 +21,18 @@
                     <input-text-field [field]="bean.quantite" label="Quantité commandée"></input-text-field>
                 </div>
                 <div class="col-4">
-                    <input-text-field [field]="bean.prixUnitaire"></input-text-field>
+                    <input-number-field [field]="bean.prixUnitaire"></input-number-field>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    On affiche les lignes retourner ici
+                    <achat-vente-edit-retour-list [ligne]="bean" [commande]="commande"></achat-vente-edit-retour-list>
                 </div>
             </div>
         </div>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end" class="m-3">
-    <button mat-button cdkFocusInitial (click)="appliquerAction()">Fermer</button>
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button (click)="saveAction()">Enregistrer</button>
 </mat-dialog-actions>

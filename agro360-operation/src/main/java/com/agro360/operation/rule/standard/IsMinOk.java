@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.message.Message;
 import com.agro360.bo.metadata.FieldMetadata;
-import com.agro360.operation.context.BeanRuleContext;
+import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.rule.common.AbstractRule;
 import com.agro360.operation.rule.exception.RuleException;
 
@@ -74,7 +74,8 @@ public class IsMinOk extends AbstractRule {
 	}
 	
 	@Override
-	public boolean apply(BeanRuleContext ctx, AbstractBean bean) {
+	public boolean eval(ClientContext ctx, AbstractBean bean) {
+		System.out.println("IsMinOk.apply() On apply ... ");
 		return false;
 	}
 }

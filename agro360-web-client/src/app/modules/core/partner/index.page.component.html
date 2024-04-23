@@ -1,13 +1,29 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTab.index">
-    <mat-tab label="Liste">
-        <core-partner-list-page 
+<mat-tab-group mat-stretch-tabs="false" 
+    mat-align-tabs="start" 
+    #core_partenaire
+    [selectedIndex]="selectedTab.index"
+    (selectedTabChange)="selectedTabChange($event)">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon>list_task</mat-icon>
+            <span class="ms-2">
+                Liste
+            </span>
+        </ng-template> 
+        <core-partner-list-tab 
             [editingBeans]="editingBeans"
-            [selectedTab]="selectedTab">
-        </core-partner-list-page>
+            [selectedTab]="selectedTab"
+            [module]="module"
+            [breadcrumb]="breadcrumb">
+        </core-partner-list-tab>
     </mat-tab>
     <ng-container *ngFor="let editingBean of editingBeans">
         <mat-tab [label]="editingBean.partnerCode.value">
-            <core-partner-edit-tab [bean]="editingBean"></core-partner-edit-tab>
+            <core-partner-edit-tab 
+                [bean]="editingBean"
+                [module]="module"
+                [breadcrumb]="breadcrumb">
+            </core-partner-edit-tab>
         </mat-tab>
     </ng-container>
   </mat-tab-group>

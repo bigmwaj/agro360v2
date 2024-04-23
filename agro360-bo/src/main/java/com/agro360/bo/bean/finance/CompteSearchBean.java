@@ -15,5 +15,5 @@ public class CompteSearchBean extends AbstractBean{
 	private FieldMetadata<String> compteCode = new FieldMetadata<>("Compte");
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
-	
+
 }

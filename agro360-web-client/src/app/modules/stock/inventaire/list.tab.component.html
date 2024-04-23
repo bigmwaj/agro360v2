@@ -21,14 +21,13 @@
         </mat-drawer>
         <mat-drawer-content class="search-result">
             <section class="p-3">
-                <h4>
-                    <button mat-icon-button (click)="drawer.toggle()">
-                        <mat-icon>tune</mat-icon>
-                    </button>
-                    <span>
-                        Liste des inventaires
-                    </span>
-                </h4>
+                <mat-toolbar color="secondary">                      
+                    <mat-toolbar-row>
+                        <button mat-icon-button (click)="drawer.toggle()">
+                            <mat-icon>tune</mat-icon>
+                        </button>
+                    </mat-toolbar-row>
+                </mat-toolbar>
                 <table mat-table #inventaires [dataSource]="this">
                     <ng-container matColumnDef="select">
                         <th mat-header-cell *matHeaderCellDef>

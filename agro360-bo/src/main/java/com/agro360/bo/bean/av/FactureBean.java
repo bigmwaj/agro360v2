@@ -24,18 +24,20 @@ public class FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd>
 	private FieldMetadata<LocalDate> date = new FieldMetadata<>("Date");
 
 	private FieldMetadata<FactureTypeEnumVd> type = new FieldMetadata<>("Type", FactureTypeEnumVd.getAsMap());
-	
+
 	private FieldMetadata<FactureStatusEnumVd> status = new FieldMetadata<>("Statut", FactureStatusEnumVd.getAsMap());
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
-	
+
 	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
+
+	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
 
 	@Setter
 	private PartnerBean partner = new PartnerBean();
 
 	@Setter
 	private CommandeBean commande = new CommandeBean();
-	
+
 
 }

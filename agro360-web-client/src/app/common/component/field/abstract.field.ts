@@ -2,7 +2,7 @@ import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
 import { AbstractBean } from 'src/app/backed/bean.common';
 import { FieldMetadata } from 'src/app/backed/metadata';
-import { EditActionEnumVd, MessageTypeEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd, MessageTypeEnumVd } from 'src/app/backed/vd.common';
 
 @Component({
     selector: 'field-wrapper',
@@ -56,8 +56,8 @@ export abstract class AbstractFieldComponent implements OnInit {
     _onChange(){
         this.onChange.emit()
         this.field.valueChanged = true;
-        if( this.owner && this.owner.action == EditActionEnumVd.SYNC){
-            this.owner.action = EditActionEnumVd.UPDATE
+        if( this.owner && this.owner.action == ClientOperationEnumVd.SYNC){
+            this.owner.action = ClientOperationEnumVd.UPDATE
         }
     }
 

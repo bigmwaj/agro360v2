@@ -19,7 +19,7 @@ import lombok.Setter;
 public class RetourLigneBean extends AbstractBean {
 
 private static final long serialVersionUID = -16328407145183398L;
-	
+
 	private FieldMetadata<Long> retourId = new FieldMetadata<>();
 
 	private FieldMetadata<String> description = new FieldMetadata<>();
@@ -29,12 +29,12 @@ private static final long serialVersionUID = -16328407145183398L;
 	private FieldMetadata<Double> quantite = new FieldMetadata<>();
 
 	private FieldMetadata<LocalDateTime> date = new FieldMetadata<>();
-	
+
 	private FieldMetadata<RetourStatusEnumVd> status = new FieldMetadata<>();
-	
+
 	@Setter
 	private LigneBean ligne = new LigneBean();
-	
+
 	@Setter
 	private UniteBean unite = new UniteBean();
 }

@@ -15,5 +15,7 @@ public class CompteBean extends AbstractBean{
 	private FieldMetadata<String> compteCode = new FieldMetadata<>("Compte");
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
-	
+
+	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
+
 }
