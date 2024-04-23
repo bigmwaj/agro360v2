@@ -9,7 +9,6 @@ import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.bean.stock.MagasinBean;
 import com.agro360.bo.bean.stock.MagasinSearchBean;
 import com.agro360.bo.mapper.StockMapper;
-import com.agro360.dto.stock.MagasinDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.MagasinOperation;
 
@@ -36,7 +35,7 @@ public class MagasinForm {
 	}
 
 	public MagasinBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
-		var bean = StockMapper.map(new MagasinDto());
+		var bean = new MagasinBean();
 		bean.getMagasinCode().setValue(null);
 		
 		AbstractBean.setActionToCreate.accept(bean);

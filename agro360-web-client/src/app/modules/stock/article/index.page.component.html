@@ -1,25 +1,36 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTab.index">
-    <mat-tab>    
+<mat-tab-group 
+    mat-stretch-tabs="false" 
+    mat-align-tabs="start" 
+    #stock_article
+    [selectedIndex]="selectedTab.index"
+    (selectedTabChange)="selectedTabChange($event)">
+    <mat-tab>
         <ng-template mat-tab-label>
-            <span class="list-link">                
-                <mat-icon>arrow-left-circle-fill</mat-icon>
-                <span  class="ms-2">
-                    Liste
-                </span>
+            <mat-icon>list_task</mat-icon>
+            <span class="ms-2">
+                Liste
             </span>
         </ng-template>    
         <stock-article-list-tab 
             [editingBeans]="editingBeans"
-            [selectedTab]="selectedTab">
+            [selectedTab]="selectedTab"
+            [breadcrumb]="breadcrumb">
         </stock-article-list-tab>
     </mat-tab>
     <ng-container *ngFor="let editingBean of editingBeans">
-        <mat-tab>            
+        <mat-tab>                                
             <ng-template mat-tab-label>
-                {{editingBean.articleCode.value}}
-                <mat-icon class="ms-2">thumb_up</mat-icon>
-            </ng-template>
-            <stock-article-edit-tab [bean]="editingBean"></stock-article-edit-tab>
+                <span class="me-2">
+                    {{editingBean.articleCode.value}}
+                </span>
+                <button mat-icon-button (click)="removeAction(editingBean)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </ng-template> 
+            <stock-article-edit-tab 
+                [bean]="editingBean"
+                [breadcrumb]="breadcrumb">
+            </stock-article-edit-tab>
         </mat-tab>
     </ng-container>
   </mat-tab-group>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/transfert/note">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation" />						
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="255"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>
+	</bean>	
+			
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/transfert/montant">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />				
+			</list>
+		</property>
+		<property name="min">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="45"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>		
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />					
+			</list>
+		</property>
+	</bean>								
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/transfert/date">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>		
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />					
+			</list>
+		</property>
+	</bean>				
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/transfert/partner.partnerCode">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />				
+			</list>
+		</property>
+	</bean>		
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/transfert/compte.compteSource">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />			
+			</list>
+		</property>
+	</bean>		
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/transfert/compte.compteCible">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />					
+			</list>
+		</property>
+	</bean>		
+
+    <bean name="finance/transaction/transfert" class="com.agro360.operation.metadata.BeanMetadataConfig">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue"/>
+			</list>
+		</property>
+		<property name="fields">
+			<map>
+				<entry key="date" value-ref="transaction/transfert/date"/>
+				<entry key="montant" value-ref="transaction/transfert/montant"/>
+				<entry key="note" value-ref="transaction/transfert/note"/>
+			</map>
+		</property>
+		<property name="beans">
+			<map>
+				 <entry key="partner">
+					 <bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+					 	<property name="fields">
+							 <map>
+								 <entry key="partnerCode" value-ref="transaction/transfert/partner.partnerCode"/>
+							 </map>
+						 </property>
+					 </bean>
+				 </entry>
+				 <entry key="compteCible">
+					 <bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+					 	<property name="fields">
+							 <map>
+								 <entry key="compteCode" value-ref="transaction/transfert/compte.compteCible"/>
+							 </map>
+						 </property>
+					 </bean>
+				 </entry>
+				 <entry key="compteSource">
+					 <bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+					 	<property name="fields">
+							 <map>
+								 <entry key="compteCode" value-ref="transaction/transfert/compte.compteSource"/>
+							 </map>
+						 </property>
+					 </bean>
+				 </entry>
+			</map>
+		</property>
+	</bean>
+</beans>

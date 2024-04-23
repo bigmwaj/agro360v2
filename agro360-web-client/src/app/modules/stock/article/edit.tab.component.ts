@@ -4,12 +4,12 @@ import { map } from 'rxjs';
 import { ArticleBean } from 'src/app/backed/bean.stock';
 import { Message } from 'src/app/backed/message';
 import { BeanTools } from 'src/app/common/bean.tools';
-import { UIService } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
 import { EditConversionListComponent } from './edit.conversion.list.component';
 import { EditTaxeListComponent } from './edit.taxe.list.component';
 import { EditVariantListComponent } from './edit.variant.list.component';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 
 @Component({
     standalone: true,
@@ -27,20 +27,31 @@ export class EditTabComponent implements OnInit {
     @Input({required:true})
     bean: ArticleBean;
 
+    @Input({required:true})
+    breadcrumb:BreadcrumbItem
+
     constructor(
         private http: HttpClient,
         private ui: UIService) { }
 
     isCreation(): boolean {
-        return EditActionEnumVd.CREATE == this.bean.action;
+        return ClientOperationEnumVd.CREATE == this.bean.action;
     }
 
     ngOnInit(): void {
-        if (this.isCreation()) {
-            this.ui.setTitle(`Création d'un article`)
+        if ( this.isCreation() ) {
+            this.breadcrumb = this.breadcrumb.addAndReturnChildItem(`Création d'un article`);
         } else {
-            this.ui.setTitle(`Édition de l'article ${this.bean.articleCode.value}`)
+            this.breadcrumb = this.breadcrumb.addAndReturnChildItem(`Édition de l'article ${this.bean.articleCode.value}`);
         }
+    }
+
+    ngAfterViewInit(): void {
+        this.refreshPageTitle()
+    }
+
+    refreshPageTitle():void{
+        this.ui.setBreadcrumb(this.breadcrumb)
     }
 
     saveAction() {

@@ -29,31 +29,39 @@ public class CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumV
 	private FieldMetadata<LocalDate> date = new FieldMetadata<>("Date");
 
 	private FieldMetadata<CommandeTypeEnumVd> type = new FieldMetadata<>("Type", CommandeTypeEnumVd.getAsMap());
-	
+
 	private FieldMetadata<CommandeStatusEnumVd> status = new FieldMetadata<>("Statut", CommandeStatusEnumVd.getAsMap());
 
-	private FieldMetadata<String> description = new FieldMetadata<>("Description");	
-	
+	private FieldMetadata<String> description = new FieldMetadata<>("Description");
+
 	private FieldMetadata<BigDecimal> paiementComptant = new FieldMetadata<>("Paiement Comptant");
-	
+
 	private FieldMetadata<RemiseTypeEnumVd> remiseType = new FieldMetadata<>("Type Remise", RemiseTypeEnumVd.getAsMap());
-	
+
 	private FieldMetadata<Double> remiseTaux = new FieldMetadata<>("Taux Remise");
-	
+
 	private FieldMetadata<BigDecimal> remiseMontant = new FieldMetadata<>("Montant Remise");
-	
+
 	private FieldMetadata<String> remiseRaison = new FieldMetadata<>("Raison Remise");
-	
+
 	private FieldMetadata<BigDecimal> prixTotalHT = new FieldMetadata<>("Prix Total(HT)");
-	
+
 	private FieldMetadata<BigDecimal> prixTotalTTC = new FieldMetadata<>("Prix Total(TTC)");
-	
+
 	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total");
-	
+
 	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
-	
+
 	private FieldMetadata<BigDecimal> remise = new FieldMetadata<>("Remise Totale");
-	
+
+	private FieldMetadata<String> saveBtn = new FieldMetadata<>("Créer ligne");
+
+	private FieldMetadata<String> createLigneBtn = new FieldMetadata<>();
+
+	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
+
+	private FieldMetadata<String> encaissementBtn = new FieldMetadata<>();
+
 	private List<LigneBean> lignes = new ArrayList<>();
 
 	@Setter
@@ -61,7 +69,7 @@ public class CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumV
 
 	@Setter
 	private PartnerBean partner = new PartnerBean();
-	
+
 	@Setter
 	private CompteBean compte = new CompteBean();
 }

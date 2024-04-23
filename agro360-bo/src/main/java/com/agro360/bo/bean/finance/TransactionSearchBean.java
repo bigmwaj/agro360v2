@@ -20,10 +20,10 @@ public class TransactionSearchBean extends AbstractBean{
 
 	private FieldMetadata<TransactionStatusEnumVd> status = new FieldMetadata<>("Statut", TransactionStatusEnumVd.getAsMap());
 
-	private FieldMetadata<String> partner = new FieldMetadata<>("Partner");
+	private FieldMetadata<String> partner = new FieldMetadata<>("Partenaire");
 
 	private FieldMetadata<String> rubrique = new FieldMetadata<>("Rubrique");
 
 	private FieldMetadata<String> compte = new FieldMetadata<>("Compte");
-	
+
 }

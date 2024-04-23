@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public enum ReceptionStatusEnumVd {
+	BRLN("Brouillon"),
     ATAP("Att. Appro"),
     APPR("Approuvée"),
     ANNL("Annulée");

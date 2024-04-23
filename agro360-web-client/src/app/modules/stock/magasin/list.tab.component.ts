@@ -2,10 +2,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import { MagasinBean, MagasinSearchBean } from 'src/app/backed/bean.stock';
 import { BeanList } from 'src/app/common/component/bean.list';
+import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
 import { IndexModalComponent } from '../unite/index.modal.component';
 
@@ -26,6 +26,9 @@ export class ListTabComponent extends BeanList<MagasinBean> implements OnInit {
     @Input({required:true})
     selectedTab: {index:number}
 
+    @Input({required:true})
+    breadcrumb:BreadcrumbItem
+
     searchForm: MagasinSearchBean;
 
     @ViewChild(MatTable)
@@ -38,10 +41,10 @@ export class ListTabComponent extends BeanList<MagasinBean> implements OnInit {
         'actions'
     ];
 
-    constructor(private router: Router,
-        private route: ActivatedRoute,
+    constructor(
         private http: HttpClient,
-        public dialog: MatDialog) {
+        public dialog: MatDialog,
+        private ui: UIService) {
             super()
     }
 
@@ -53,8 +56,17 @@ export class ListTabComponent extends BeanList<MagasinBean> implements OnInit {
         return bean.magasinCode.value;
     }
 
+    ngAfterViewInit(): void {
+        this.refreshPageTitle()
+    }
+
+    refreshPageTitle():void{
+        this.ui.setBreadcrumb(this.breadcrumb)
+    }
+
     ngOnInit(): void {
-        this.resetSearchFormAction()
+        this.resetSearchFormAction();
+        this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Liste des magasins');
     }
 
     resetSearchFormAction() {
@@ -80,24 +92,27 @@ export class ListTabComponent extends BeanList<MagasinBean> implements OnInit {
             });
     }
 
-    addAction() {        
-        this.http.get(`stock/magasin/create-form`).subscribe(data => {
-            this.editingBeans.push(<MagasinBean>data); 
-            this.selectedTab.index = this.editingBeans.length;
-        });
-    }
-
-    copyAction(bean: MagasinBean) {
+    addAction(bean?: MagasinBean) { 
         let queryParams = new HttpParams();
-        queryParams = queryParams.append("copyFrom", bean.magasinCode.value);
-
+        if( bean ){
+            queryParams = queryParams.append("copyFrom", bean.magasinCode.value);       
+        }
         this.http.get(`stock/magasin/create-form`, { params: queryParams }).subscribe(data => {
             this.editingBeans.push(<MagasinBean>data); 
             this.selectedTab.index = this.editingBeans.length;
         });
     }
 
+    private getEditingIndex(bean:MagasinBean){
+        return this.editingBeans.findIndex(e => bean.magasinCode.value == e.magasinCode.value)
+    }
+
     editAction(bean: MagasinBean) {
+        const index = this.getEditingIndex(bean);
+        if( index >= 0 ){
+            this.selectedTab.index = index + 1;
+            return;
+        }
         let queryParams = new HttpParams();
         queryParams = queryParams.append("magasinCode", bean.magasinCode.value);
 

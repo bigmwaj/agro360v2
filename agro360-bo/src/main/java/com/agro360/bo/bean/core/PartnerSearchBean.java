@@ -16,7 +16,7 @@ public class PartnerSearchBean extends AbstractBean{
 
 	private FieldMetadata<String> partnerCode = new FieldMetadata<>("Code");
 
-	private FieldMetadata<PartnerTypeEnumVd> partnerType = new FieldMetadata<>("Type");
+	private FieldMetadata<PartnerTypeEnumVd> type = new FieldMetadata<>("Type");
 
 	private FieldMetadata<PartnerStatusEnumVd> status = new FieldMetadata<>("Statut");
 
@@ -25,5 +25,5 @@ public class PartnerSearchBean extends AbstractBean{
 	private FieldMetadata<String> phone = new FieldMetadata<>("Téléphone");
 
 	private FieldMetadata<String> email = new FieldMetadata<>("Email");
-	
+
 }

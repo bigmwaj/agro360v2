@@ -1,13 +1,19 @@
-<mat-tab-group  preserveContent>
-    <mat-tab label="Recettes">
+<mat-tab-group  preserveContent (selectedTabChange)="selectedTabChange($event)" #paie>
+    <mat-tab label="Salaires payés">
         <ng-template matTabContent>
-            <finance-transaction-index-page module="paie"></finance-transaction-index-page>
+            <finance-transaction-index-page #indexPage
+                [module]="module"
+                [breadcrumb]="breadcrumb">
+            </finance-transaction-index-page>
         </ng-template>
     </mat-tab>
     
     <mat-tab label="Employés">
         <ng-template matTabContent>
-            <core-partner-index-page></core-partner-index-page>
+            <core-partner-index-page #indexPage
+                [module]="module"
+                [breadcrumb]="breadcrumb">
+            </core-partner-index-page>
         </ng-template>
     </mat-tab>
 </mat-tab-group>

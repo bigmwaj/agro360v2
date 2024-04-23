@@ -16,7 +16,7 @@ import { MatInputModule } from '@angular/material/input';
     template: `
     <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
-        <input matInput type="number"  [(ngModel)]="field.value" (change)="_onChange()"
+        <input matInput type="number" [(ngModel)]="field.value" (change)="_onChange()"
             [disabled]="!field.editable"
             [required]="field.required"/>
     </mat-form-field>`

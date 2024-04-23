@@ -6,7 +6,7 @@ import { AbstractLigneBean } from 'src/app/backed/bean.common';
 import { ArticleBean, ArticleSearchBean, ConversionBean, UniteBean, VariantBean } from 'src/app/backed/bean.stock';
 import { FieldMetadata } from 'src/app/backed/metadata';
 import { LigneTypeEnumVd } from 'src/app/backed/vd.av';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { ArticleTypeEnumVd } from 'src/app/backed/vd.stock';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { StockUtils } from 'src/app/modules/stock/stock.utils';
@@ -132,14 +132,14 @@ export abstract class AbstractEditLigneListComponent<B extends AbstractLigneBean
     }
 
     deleteAction(ligne: B) {
-        if( ligne.action == EditActionEnumVd.CREATE ){
+        if( ligne.action == ClientOperationEnumVd.CREATE ){
             this.removeItem(ligne);
         }else {
-            if( ligne.action != EditActionEnumVd.DELETE){
-                ligne.action = EditActionEnumVd.DELETE;
+            if( ligne.action != ClientOperationEnumVd.DELETE){
+                ligne.action = ClientOperationEnumVd.DELETE;
                 ligne.valueChanged = true;
             }else{                
-                ligne.action = EditActionEnumVd.SYNC;
+                ligne.action = ClientOperationEnumVd.SYNC;
                 ligne.valueChanged = false;
             }
             this.updatePrixTotalEvent(ligne)

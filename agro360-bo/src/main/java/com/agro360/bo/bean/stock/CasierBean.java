@@ -11,7 +11,7 @@ import lombok.Getter;
 public class CasierBean extends AbstractBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
-	
+
 	private FieldMetadata<String> casierCode = new FieldMetadata<>("Casier");
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");

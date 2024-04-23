@@ -20,10 +20,10 @@ public class JourneeBean extends AbstractBean {
 	private FieldMetadata<Long> numeroJournee = new FieldMetadata<>();
 
 	private FieldMetadata<LocalDate> journee = new FieldMetadata<>();
-	
+
 	private List<ProductionBean> productions = new ArrayList<>();
-	
-	private CycleBean cycle = new CycleBean();	
+
+	private CycleBean cycle = new CycleBean();
 
 	public void setCycle(CycleBean cycle) {
 		Objects.requireNonNull(cycle);

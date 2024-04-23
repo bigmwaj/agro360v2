@@ -25,7 +25,7 @@ import com.agro360.dto.production.avicole.ProductionDto;
 import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.VariantDto;
 import com.agro360.operation.logic.common.AbstractOperation;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Service
 public class ProductionOperation extends AbstractOperation<ProductionDto, Long> {
@@ -98,7 +98,7 @@ public class ProductionOperation extends AbstractOperation<ProductionDto, Long> 
 			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
 		}
 		
-		if(  EditActionEnumVd.SYNC.equals(bean.getAction())) {
+		if(  ClientOperationEnumVd.SYNC.equals(bean.getAction())) {
 			return Collections.emptyList();
 		}
 		

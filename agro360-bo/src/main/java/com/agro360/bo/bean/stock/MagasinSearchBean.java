@@ -15,5 +15,5 @@ public class MagasinSearchBean extends AbstractBean{
 	private FieldMetadata<String> magasinCode = new FieldMetadata<>("Magasin");
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
-	
+
 }

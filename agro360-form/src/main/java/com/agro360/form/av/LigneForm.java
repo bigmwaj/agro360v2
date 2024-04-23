@@ -4,20 +4,22 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.LigneBean;
-import com.agro360.bo.mapper.AchatVenteMapper;
-import com.agro360.dto.av.LigneDto;
 import com.agro360.form.common.AbstractForm;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.ArticleOperation;
 import com.agro360.operation.logic.stock.InventaireOperation;
 import com.agro360.operation.logic.stock.VariantOperation;
+import com.agro360.operation.metadata.BeanMetadataConfig;
+import com.agro360.vd.av.CommandeStatusEnumVd;
+import com.agro360.vd.av.CommandeTypeEnumVd;
 import com.agro360.vd.av.LigneTypeEnumVd;
 import com.agro360.vd.av.RemiseTypeEnumVd;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
 public class LigneForm extends AbstractForm{
@@ -30,6 +32,10 @@ public class LigneForm extends AbstractForm{
 	
 	@Autowired
 	private InventaireOperation inventaireOperation;	
+	
+	@Qualifier("av/ligne")
+	@Autowired
+	private BeanMetadataConfig ligneMetadataConfig;
 
 	public LigneBean initCreateFormBean(ClientContext ctx, 
 			String commandeCode, 
@@ -38,7 +44,7 @@ public class LigneForm extends AbstractForm{
 
 		var variant = alias.map(e -> variantOperation.findVariantByAlias(ctx, e)).orElse(null);
 		
-		var bean = AchatVenteMapper.map(new LigneDto());
+		var bean = new LigneBean();
 
 		bean.getPrixUnitaire().setValue(BigDecimal.ZERO);
 		if( variant != null ) {
@@ -57,34 +63,21 @@ public class LigneForm extends AbstractForm{
 			}			
 		}
 		
-		bean.setAction(EditActionEnumVd.CREATE);
-		
-		bean.getType().setRequired(true);
-		
-		bean.getQuantite().setRequired(true);
+		bean.setAction(ClientOperationEnumVd.CREATE);
 		bean.getQuantite().setValue(1.0);
 		bean.getRemiseMontant().setValue(BigDecimal.ZERO);
 		bean.getRemiseType().setValue(RemiseTypeEnumVd.MONTANT);
 		
-		bean.getPrixTotal().setEditable(false);
-		bean.getTaxe().setEditable(false);
-		bean.getPrixTotalHT().setEditable(false);
-		bean.getPrixTotalTTC().setEditable(false);
-		return bean;
-	}
-	
-	LigneBean initUpdateFormBean(ClientContext ctx, CommandeBean commande, LigneBean bean) {
+		// TODO Gérer ceci proprement pour permettre au système de bien calculer les règles sur la ligne
+		var commande = new CommandeBean();
 		
-		bean.setAction(EditActionEnumVd.UPDATE);
+		commande.setAction(ClientOperationEnumVd.CREATE);
+		commande.getType().setValue(CommandeTypeEnumVd.VENTE);
+		commande.getStatus().setValue(CommandeStatusEnumVd.BRLN);
+		bean.setRootBean(commande);
+		bean.setOwnerBean(commande);
 		
-		bean.getType().setRequired(true);
-		
-		bean.getQuantite().setRequired(true);
-		
-		bean.getPrixTotal().setEditable(false);
-		bean.getTaxe().setEditable(false);
-		bean.getPrixTotalHT().setEditable(false);
-		bean.getPrixTotalTTC().setEditable(false); 
+		ligneMetadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 	

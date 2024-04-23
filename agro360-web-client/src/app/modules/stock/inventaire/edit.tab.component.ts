@@ -4,9 +4,9 @@ import { map } from 'rxjs';
 import { InventaireBean } from 'src/app/backed/bean.stock';
 import { Message } from 'src/app/backed/message';
 import { BeanTools } from 'src/app/common/bean.tools';
-import { UIService } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 
 @Component({
     standalone: true,
@@ -21,12 +21,23 @@ export class EditTabComponent implements OnInit {
     @Input({required:true})
     bean: InventaireBean;
 
+    @Input({required:true})
+    breadcrumb:BreadcrumbItem;
+
     constructor(
         private http: HttpClient,
         private ui: UIService) { }
 
     isCreation(): boolean {
-        return EditActionEnumVd.CREATE == this.bean.action;
+        return ClientOperationEnumVd.CREATE == this.bean.action;
+    }
+
+    ngAfterViewInit(): void {
+        this.refreshPageTitle()
+    }
+
+    refreshPageTitle():void{
+        this.ui.setBreadcrumb(this.breadcrumb)
     }
 
     ngOnInit(): void {

@@ -8,7 +8,7 @@ import { map } from 'rxjs';
 import { TransactionBean, TransactionSearchBean } from 'src/app/backed/bean.finance';
 import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
 import { BeanList } from 'src/app/common/component/bean.list';
-import { UIService } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
 import { IndexModalComponent as CompteIndexModalComponent } from '../compte/index.modal.component';
 import { IndexModalComponent as RubriqueIndexModalComponent } from '../rubrique/index.modal.component';
@@ -16,6 +16,7 @@ import { IndexModalComponent as TaxeIndexModalComponent } from '../taxe/index.mo
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
 import { TransfertDialogComponent } from './transfert.dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     standalone: true,
@@ -24,12 +25,16 @@ import { TransfertDialogComponent } from './transfert.dialog.component';
         CompteIndexModalComponent,
         SharedModule,        
         MatToolbarModule, 
-        MatIconModule
+        MatIconModule,
+        MatTooltipModule
     ],
     selector: 'finance-transaction-list-tab',
     templateUrl: './list.tab.component.html',
 })
 export class ListTabComponent extends BeanList<TransactionBean> implements OnInit {
+
+    @Input({required:true})
+    breadcrumb:BreadcrumbItem
 
     searchForm: TransactionSearchBean;
 
@@ -42,23 +47,27 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
     @Input({required:true})
     selectedTab: {index:number}
 
-    title: string = "Liste des transactions";
-
     partnerLabel: string = "Partenaire";
 
     displayedColumns: string[] = [
         'select',
         'transactionCode',
         'type',
+        'rubrique',
         'date',
         'status',
-        'rubrique',
         'compte',
         'montant',
         'partner',
-        'note',
         'actions'
     ];
+
+    addOptions:Array<{type:TransactionTypeEnumVd; label:string}> = [
+        { type:TransactionTypeEnumVd.DEPENSE, label:'Dépense'},
+        { type:TransactionTypeEnumVd.RECETTE, label:'Recette'},
+        { type:TransactionTypeEnumVd.DEPOT, label:'Dépot'},
+        { type:TransactionTypeEnumVd.RETRAIT, label:'Retrait'},
+    ]
 
     @ViewChild(MatTable)
     table: MatTable<TransactionBean>;
@@ -67,7 +76,8 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
         public ui: UIService,
         private http: HttpClient,       
         private dialog: MatDialog) {
-        super()
+        super();
+        
     }
 
     override getViewChild(): MatTable<TransactionBean> {
@@ -79,29 +89,48 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
     }
         
     ngAfterViewInit(): void {
-        this.ui.setBreadcrumb(['Ventes', this.title])
+        this.refreshPageTitle()
+    }
+
+    refreshPageTitle():void{
+        this.ui.setBreadcrumb(this.breadcrumb)
     }
 
     ngOnInit(): void {
         this.resetSearchFormAction()
+        let title:string
         if( this.module != null ){
             switch(this.module){
                 case "vente": 
-                this.title = "Recettes encaissées"
-                this.partnerLabel = "Client"
+                    title = "Encaissements";
+                    this.partnerLabel = "Client";
+                    this.addOptions = [
+                        { type:TransactionTypeEnumVd.RECETTE, label:'Recette'}
+                    ]
                 break;
 
                 case "achat": 
-                this.title = "Achats réglés"
-                this.partnerLabel = "Fournisseur"
+                    title = "Paiements";
+                    this.partnerLabel = "Fournisseur";this.addOptions = [
+                        { type:TransactionTypeEnumVd.DEPENSE, label:'Dépense'},
+                    ]
                 break;
 
                 case "paie": 
-                this.title = "Salaires réglés"
-                this.partnerLabel = "Employé"
+                    title = "Salaires réglés";
+                    this.partnerLabel = "Employé";this.addOptions = [
+                        { type:TransactionTypeEnumVd.DEPENSE, label:'Dépense'},
+                    ]
+                break;
+                default:
+                    title = `Transaction module ${this.module}`
+                    this.partnerLabel = "Partenaire"
                 break;
             }                    
+        }else{
+            title = 'Liste des transactions'
         }
+        this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title);
     }
 
     resetSearchFormAction() {
@@ -144,24 +173,33 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
             });
     }
     
-    addAction() {        
-        this.http.get(`finance/transaction/create-form`).subscribe(data => {
-            this.editingBeans.push(<TransactionBean>data); 
-            this.selectedTab.index = this.editingBeans.length;
-        });
-    }
-
-    copyAction(bean: TransactionBean) {
+    addAction(type:TransactionTypeEnumVd, bean?: TransactionBean) {   
         let queryParams = new HttpParams();
-        queryParams = queryParams.append("copyFrom", bean.transactionCode.value);
+        queryParams = queryParams.append("type", type);
+        if( bean ){
+            queryParams = queryParams.append("copyFrom", bean.transactionCode.value);
+        }
 
         this.http.get(`finance/transaction/create-form`, { params: queryParams }).subscribe(data => {
             this.editingBeans.push(<TransactionBean>data); 
             this.selectedTab.index = this.editingBeans.length;
         });
     }
+    
+    copyAction(bean: TransactionBean) {   
+        this.addAction(bean.type.value, bean)
+    }
+
+    private getEditingIndex(bean:TransactionBean){
+        return this.editingBeans.findIndex(e => bean.transactionCode.value == e.transactionCode.value)
+    }
 
     editAction(bean: TransactionBean) {
+        const index = this.getEditingIndex(bean);
+        if( index >= 0 ){
+            this.selectedTab.index = index + 1;
+            return;
+        }
         let queryParams = new HttpParams();
         queryParams = queryParams.append("transactionCode", bean.transactionCode.value);
 
@@ -185,30 +223,15 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
     }
 
     rubriqueAction() {
-        let dialogRef = this.dialog.open(RubriqueIndexModalComponent);
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
-            this.searchAction();
-        });  
+        this.dialog.open(RubriqueIndexModalComponent);
     }
 
     compteAction() {
-        let dialogRef =  this.dialog.open(CompteIndexModalComponent);
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
-            this.searchAction();
-        });  
+        this.dialog.open(CompteIndexModalComponent);
     }
 
     taxeAction() {
-        let dialogRef =  this.dialog.open(TaxeIndexModalComponent);
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
-            this.searchAction();
-        });  
+        this.dialog.open(TaxeIndexModalComponent);
     }
     
     changeStatusAction(bean: TransactionBean) {
@@ -226,10 +249,12 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
     transfertAction() {
         let dialogRef = this.dialog.open(TransfertDialogComponent);
         
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
-            this.searchAction();
+        dialogRef.afterClosed().subscribe(result => { 
+            if( result ){
+                result.forEach((bean: TransactionBean) => {
+                    this.prependItem(bean)
+                });
+            }           
         });  
     }
 }

@@ -17,5 +17,5 @@ public class JourneeSearchBean extends AbstractBean{
 	private FieldMetadata<String> cycleCode = new FieldMetadata<>("Cycle");
 
 	private FieldMetadata<LocalDate> journee = new FieldMetadata<>("Journee");
-	
+
 }

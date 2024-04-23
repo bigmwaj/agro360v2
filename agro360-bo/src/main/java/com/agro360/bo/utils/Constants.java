@@ -15,16 +15,16 @@ public class Constants {
 
 	public static final BiFunction<String, String, String> FULL_NAME_FN = (lastname, firstname) -> String
 			.format("%s %s", firstname, lastname);
-	
-	public static final Function<PartnerBean, String> PARTNER_BEAN2STR = bean -> 
-	PartnerTypeEnumVd.PERSON.equals(bean.getPartnerType().getValue()) 
+
+	public static final Function<PartnerBean, String> PARTNER_BEAN2STR = bean ->
+	PartnerTypeEnumVd.PERSON.equals(bean.getType().getValue())
 	? FULL_NAME_FN.apply(bean.getFirstName().getValue(), bean.getLastName().getValue())
 	: bean.getName().getValue();
-	
-	public static final Function<PartnerDto, String> PARTNER_DTO2STR = dto -> 
-	PartnerTypeEnumVd.PERSON.equals(dto.getPartnerType()) 
+
+	public static final Function<PartnerDto, String> PARTNER_DTO2STR = dto ->
+	PartnerTypeEnumVd.PERSON.equals(dto.getType())
 	? FULL_NAME_FN.apply(dto.getFirstName(), dto.getLastName())
 			: dto.getName();
-	
+
 
 }

@@ -37,7 +37,9 @@ public class TaxeController extends AbstractController {
 
 	@GetMapping()
 	public ResponseEntity<ModelMap> searchAction() {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service.searchAction(getClientContext())));
+		var ctx = getClientContext();
+		var list = service.searchAction(ctx);
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, form.initUpdateFormBean(ctx, list)));
 	}
 
 	@PostMapping

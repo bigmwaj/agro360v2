@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
+import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
+import { BreadcrumbItem } from 'src/app/common/service/ui.service';
 import { IndexPageComponent as CommandeIndexPageComponent } from '../../achat-vente/commande/index.page.component';
 import { IndexPageComponent as FactureIndexPageComponent } from '../../achat-vente/facture/index.page.component';
 import { IndexPageComponent as PartnerIndexPageComponent } from '../../core/partner/index.page.component';
@@ -19,13 +20,28 @@ import { IndexPageComponent as TransactionIndexPageComponent } from '../../finan
 })
 export class IndexPageComponent implements OnInit {
 
-    module:string = 'vente'
+    module:string = 'vente';
+
+    breadcrumb:BreadcrumbItem
+
+    @ViewChild('vente')
+    tabGroup: MatTabGroup;
+    
+    @ViewChildren("indexPage") 
+    indexPage!: QueryList<CommandeIndexPageComponent
+        | PartnerIndexPageComponent
+        | TransactionIndexPageComponent
+        | FactureIndexPageComponent>;
 
     ngOnInit(): void {
-        
+        if( !this.breadcrumb ){
+            this.breadcrumb = new BreadcrumbItem('Ventes')
+        }
     }
 
-    selectedTabChange($event:any):void{
-        console.log('Tab changed ...')
+    selectedTabChange($event:any):void{        
+        let indexPage = this.indexPage.get($event.index);
+        indexPage?.refreshPageTitle(); 
+        
     }
 }

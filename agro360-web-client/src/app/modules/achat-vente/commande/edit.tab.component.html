@@ -17,7 +17,10 @@
                     <select-one-field [field]="bean.status"></select-one-field>                     
                 </div>
                 <div class="col-4"> 
-                    <select-one-field [field]="bean.partner.partnerCode"></select-one-field>                        
+                    <select-one-field 
+                        [field]="bean.partner.partnerCode"
+                        [label]="partnerLabel">
+                    </select-one-field>                        
                 </div>
                 <div class="col-4">  
                     <select-one-field [field]="bean.magasin.magasinCode"></select-one-field>                      
@@ -78,13 +81,16 @@
     </div>    
 </section>
 
-<achat-vente-edit-ligne-list *ngIf="bean" 
+<achat-vente-edit-ligne-list 
     (updatePrixCommande)="updatePrixEvent()" 
     [commande]="bean">
 </achat-vente-edit-ligne-list>
 
 <section class="p-3">
-    <button mat-raised-button cdkFocusInitial (click)="saveAction()">
+    <button mat-raised-button cdkFocusInitial 
+        (click)="saveAction()" 
+        color="primary"
+        *ngIf="bean.saveBtn.visible">
         <mat-icon>save</mat-icon>Enregistrer
     </button>
 </section>

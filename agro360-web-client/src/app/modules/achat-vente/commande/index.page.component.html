@@ -1,13 +1,37 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTab.index">
-    <mat-tab label="Liste">
-        <achat-vente-commande-list-page 
+<mat-tab-group mat-stretch-tabs="false" 
+    mat-align-tabs="start"  
+    #achat_vente_commande
+    (selectedTabChange)="selectedTabChange($event)"
+    [selectedIndex]="selectedTab.index">
+    <mat-tab>        
+        <ng-template mat-tab-label>
+            <mat-icon>list_task</mat-icon>
+            <span class="ms-2">
+                Liste
+            </span>
+        </ng-template> 
+        <achat-vente-commande-list-tab 
+            [module]="module" 
             [editingBeans]="editingBeans"
-            [selectedTab]="selectedTab">
-        </achat-vente-commande-list-page>
+            [selectedTab]="selectedTab"
+            [breadcrumb]="breadcrumb">
+        </achat-vente-commande-list-tab>
     </mat-tab>
     <ng-container *ngFor="let editingBean of editingBeans">
-        <mat-tab [label]="editingBean.commandeCode.value">
-            <achat-vente-commande-edit-tab [bean]="editingBean"></achat-vente-commande-edit-tab>
+        <mat-tab>                          
+            <ng-template mat-tab-label>
+                <span class="me-2">
+                    {{editingBean.commandeCode.value}}
+                </span>
+                <button mat-icon-button (click)="removeAction(editingBean)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </ng-template>
+            <achat-vente-commande-edit-tab 
+                [module]="module" 
+                [bean]="editingBean"                
+                [breadcrumb]="breadcrumb">
+            </achat-vente-commande-edit-tab>
         </mat-tab>
     </ng-container>
   </mat-tab-group>

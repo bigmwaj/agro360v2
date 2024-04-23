@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Rubriques</h2>
+<h2 mat-dialog-title>Liste des rubriques</h2>
 <mat-dialog-content>
     <mat-drawer-container> 
         <mat-drawer #drawer class="search-form">
@@ -20,7 +20,6 @@
         <mat-drawer-content>
             <section class="p-3">
                 <h4>
-                    Liste des rubriques
                     <button mat-icon-button (click)="drawer.toggle()">
                         <mat-icon>tune</mat-icon>
                     </button>
@@ -76,7 +75,7 @@
         
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef class="text-end">
-                            <button mat-icon-button color="primary" (click)="addAction()">
+                            <button mat-mini-fab color="primary" (click)="addAction()">
                                 <mat-icon>add</mat-icon>
                             </button>
                         </th>
@@ -84,7 +83,11 @@
                             <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)">
                                 <mat-icon>content_copy</mat-icon>
                             </button>
-                            <button mat-icon-button color="primary" title="Supprimer" (click)="deleteAction(element)">
+                            <button mat-icon-button 
+                                color="primary" 
+                                title="Supprimer"
+                                *ngIf="element.deleteBtn.visible"                                
+                                (click)="deleteAction(element)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </td>

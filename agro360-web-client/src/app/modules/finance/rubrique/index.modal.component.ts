@@ -1,16 +1,16 @@
 
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { RubriqueBean, RubriqueSearchBean } from 'src/app/backed/bean.finance';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { BeanTools } from 'src/app/common/bean.tools';
-import { SharedModule } from 'src/app/common/shared.module';
-import { UIService } from 'src/app/common/service/ui.service';
-import { MatDialog } from '@angular/material/dialog';
 import { Message } from 'src/app/backed/message';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
+import { BeanTools } from 'src/app/common/bean.tools';
+import { BeanList } from 'src/app/common/component/bean.list';
+import { UIService } from 'src/app/common/service/ui.service';
+import { SharedModule } from 'src/app/common/shared.module';
 
 @Component({
     standalone: true,
@@ -99,14 +99,14 @@ export class IndexModalComponent extends BeanList<RubriqueBean> implements OnIni
     }
 
     deleteAction(bean: RubriqueBean) {
-        if( bean.action == EditActionEnumVd.CREATE ){
+        if( bean.action == ClientOperationEnumVd.CREATE ){
             this.removeItem(bean);
         }else {
-            if( bean.action != EditActionEnumVd.DELETE){
-                bean.action = EditActionEnumVd.DELETE;
+            if( bean.action != ClientOperationEnumVd.DELETE){
+                bean.action = ClientOperationEnumVd.DELETE;
                 bean.valueChanged = true;
             }else{                
-                bean.action = EditActionEnumVd.SYNC;
+                bean.action = ClientOperationEnumVd.SYNC;
                 bean.valueChanged = false;
             }
         }

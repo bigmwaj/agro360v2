@@ -1,14 +1,37 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTab.index">
-    <mat-tab label="Liste">
-        <achat-vente-facture-list-page 
+<mat-tab-group mat-stretch-tabs="false" 
+    #achat_vente_facture
+    mat-align-tabs="start" 
+    [selectedIndex]="selectedTab.index"
+    (selectedTabChange)="selectedTabChange($event)">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-icon>list_task</mat-icon>
+            <span class="ms-2">
+                Liste
+            </span>
+        </ng-template> 
+        <achat-vente-facture-list-tab 
             [editingBeans]="editingBeans"
-            [selectedTab]="selectedTab">
-
-        </achat-vente-facture-list-page>
+            [module]="module" 
+            [selectedTab]="selectedTab"
+            [breadcrumb]="breadcrumb">
+        </achat-vente-facture-list-tab>
     </mat-tab>
     <ng-container *ngFor="let editingBean of editingBeans">
-        <mat-tab [label]="editingBean.factureCode.value">
-            <achat-vente-facture-edit-tab [bean]="editingBean"></achat-vente-facture-edit-tab>
+        <mat-tab>                   
+            <ng-template mat-tab-label>
+                <span class="me-2">
+                    {{editingBean.factureCode.value}}
+                </span>
+                <button mat-icon-button (click)="removeAction(editingBean)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </ng-template>
+            <achat-vente-facture-edit-tab 
+                [bean]="editingBean"
+                [module]="module" 
+                [breadcrumb]="breadcrumb">
+            </achat-vente-facture-edit-tab>
         </mat-tab>
     </ng-container>
   </mat-tab-group>

@@ -26,7 +26,7 @@ public class PartnerDto extends AbstractStatusTrackingDto<PartnerStatusEnumVd> {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "PARTNER_TYPE", updatable = false, length = 8)
-	private PartnerTypeEnumVd partnerType;
+	private PartnerTypeEnumVd type;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "STATUS", nullable = false, length = PartnerStatusEnumVd.COLUMN_LENGTH)

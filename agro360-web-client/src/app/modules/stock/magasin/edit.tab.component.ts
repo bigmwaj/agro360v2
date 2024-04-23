@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { map } from 'rxjs';
 import { MagasinBean } from 'src/app/backed/bean.stock';
+import { Message } from 'src/app/backed/message';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
+import { BeanTools } from 'src/app/common/bean.tools';
+import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
 import { EditCasierListComponent } from './edit.casier.list.component';
-import { BeanTools } from 'src/app/common/bean.tools';
-import { map } from 'rxjs';
-import { Message } from 'src/app/backed/message';
-import { UIService } from 'src/app/common/service/ui.service';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
 
 @Component({
     standalone: true,
@@ -23,19 +23,30 @@ export class EditTabComponent implements OnInit {
     @Input({required:true})
     bean: MagasinBean;
 
+    @Input({required:true})
+    breadcrumb:BreadcrumbItem;
+
     constructor(
         private http: HttpClient,
         private ui: UIService) { }
 
     isCreation(): boolean {
-        return EditActionEnumVd.CREATE == this.bean.action;
+        return ClientOperationEnumVd.CREATE == this.bean.action;
+    }
+
+    ngAfterViewInit(): void {
+        this.refreshPageTitle()
+    }
+
+    refreshPageTitle():void{
+        this.ui.setBreadcrumb(this.breadcrumb)
     }
     
     ngOnInit(): void {
         if (this.isCreation()) {
-            this.ui.setTitle(`Création d'un magasin`)
+            this.breadcrumb = this.breadcrumb.addAndReturnChildItem(`Création d'un magasin`);
         } else {
-            this.ui.setTitle(`Édition du magasin ${this.bean.magasinCode.value}`)
+            this.breadcrumb = this.breadcrumb.addAndReturnChildItem(`Édition du magasin ${this.bean.magasinCode.value}`);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.agro360.operation.logic.finance;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -134,9 +135,12 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 	}
 
 	@RuleNamespace("finance/transaction/transfert")
-	public void transfert(ClientContext ctx, TransfertBean bean) {
-		transfertOut(ctx, bean);
-		transfertIn(ctx, bean);
+	public List<TransactionBean> transfert(ClientContext ctx, TransfertBean bean) {
+		List<TransactionBean> result = new ArrayList<>();
+		result.add(transfertOut(ctx, bean));
+		result.add(transfertIn(ctx, bean));
+		
+		return result;
 	}
 	
 	private TransactionDto initTransfertDto(ClientContext ctx, TransfertBean bean, TransactionTypeEnumVd type) {
@@ -166,7 +170,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		return dto;	
 	}
 	
-	private void transfertOut(ClientContext ctx, TransfertBean bean) {
+	private TransactionBean transfertOut(ClientContext ctx, TransfertBean bean) {
 		var dto = initTransfertDto(ctx, bean, TransactionTypeEnumVd.RETRAIT);
 		
 		var compteCode = bean.getCompteSource().getCompteCode().getValue();
@@ -176,9 +180,11 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		dto.setTransactionCode(generateTransactionCode());
 		
 		dto = super.save(dto);	
+		
+		return FinanceMapper.map(dto);
 	}
 
-	private void transfertIn(ClientContext ctx, TransfertBean bean) {
+	private TransactionBean transfertIn(ClientContext ctx, TransfertBean bean) {
 		var dto = initTransfertDto(ctx, bean, TransactionTypeEnumVd.DEPOT);
 		
 		var compteCode = bean.getCompteCible().getCompteCode().getValue();
@@ -188,5 +194,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		dto.setTransactionCode(generateTransactionCode());
 		
 		dto = super.save(dto);	
+		
+		return FinanceMapper.map(dto);
 	}
 }

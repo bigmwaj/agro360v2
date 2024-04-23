@@ -1,13 +1,36 @@
-<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" [selectedIndex]="selectedTab.index">
-    <mat-tab label="Liste">        
+<mat-tab-group 
+    mat-stretch-tabs="false" 
+    mat-align-tabs="start" 
+    [selectedIndex]="selectedTab.index"
+    #stock_magasin
+    (selectedTabChange)="selectedTabChange($event)">
+    <mat-tab>  
+        <ng-template mat-tab-label>
+            <mat-icon>list_task</mat-icon>
+            <span class="ms-2">
+                Liste
+            </span>
+        </ng-template>  
         <stock-magasin-list-tab 
             [editingBeans]="editingBeans"
-            [selectedTab]="selectedTab">
+            [selectedTab]="selectedTab"
+            [breadcrumb]="breadcrumb">
         </stock-magasin-list-tab>
     </mat-tab>
     <ng-container *ngFor="let editingBean of editingBeans">
-        <mat-tab [label]="editingBean.magasinCode.value">            
-            <stock-magasin-edit-tab [bean]="editingBean"></stock-magasin-edit-tab>
+        <mat-tab>                              
+            <ng-template mat-tab-label>
+                <span class="me-2">
+                    {{editingBean.magasinCode.value}}
+                </span>
+                <button mat-icon-button (click)="removeAction(editingBean)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </ng-template>          
+            <stock-magasin-edit-tab 
+                [bean]="editingBean"
+                [breadcrumb]="breadcrumb">
+            </stock-magasin-edit-tab>
         </mat-tab>
     </ng-container>
   </mat-tab-group>

@@ -15,9 +15,7 @@ public class CycleSearchBean extends AbstractBean {
 
 	private FieldMetadata<String> cycleCode = new FieldMetadata<>("Cycle");
 
-	private FieldMetadata<CycleStatusEnumVd> status = new FieldMetadata<>("Status", 
-			getOptionsMap(CycleStatusEnumVd.values(), 
-					CycleStatusEnumVd::getLibelle));
+	private FieldMetadata<CycleStatusEnumVd> status = new FieldMetadata<>("Status", CycleStatusEnumVd.getAsMap());
 
 	private FieldMetadata<String> magasin = new FieldMetadata<>("Magasin");
 }

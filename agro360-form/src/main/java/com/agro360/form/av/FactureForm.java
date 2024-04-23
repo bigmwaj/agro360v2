@@ -10,22 +10,21 @@ import org.springframework.stereotype.Component;
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
 import com.agro360.bo.mapper.AchatVenteMapper;
-import com.agro360.dto.av.FactureDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.av.FactureOperation;
 import com.agro360.vd.av.FactureStatusEnumVd;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
 public class FactureForm {
 
 	@Autowired
-	FactureOperation operation;	
+	private FactureOperation operation;	
 
 	public FactureBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
-		var bean = AchatVenteMapper.map(new FactureDto());
+		var bean = new FactureBean();
 		
-		bean.setAction(EditActionEnumVd.CREATE);
+		bean.setAction(ClientOperationEnumVd.CREATE);
 		
 		bean.getStatus().setValue(FactureStatusEnumVd.BRLN);
 		bean.getStatus().setEditable(false);
@@ -46,7 +45,7 @@ public class FactureForm {
 	public FactureBean initEditFormBean(ClientContext ctx, String factureCode) {
 		var bean = operation.findFactureByCode(ctx, factureCode);
 		
-		bean.setAction(EditActionEnumVd.UPDATE);
+		bean.setAction(ClientOperationEnumVd.UPDATE);
 		
 		bean.getFactureCode().setRequired(true);
 		bean.getStatus().setEditable(false);
@@ -56,7 +55,7 @@ public class FactureForm {
 	public FactureBean initDeleteFormBean(ClientContext ctx, String factureCode) {
 		var bean = operation.findFactureByCode(ctx, factureCode);
 		
-		bean.setAction(EditActionEnumVd.DELETE);
+		bean.setAction(ClientOperationEnumVd.DELETE);
 		
 		bean.getFactureCode().setRequired(true);
 		return bean;
@@ -65,7 +64,7 @@ public class FactureForm {
 	public FactureBean initChangeStatusFormBean(ClientContext ctx, String factureCode) {
 		var bean = operation.findFactureByCode(ctx, factureCode);
 		
-		bean.setAction(EditActionEnumVd.CHANGE_STATUS);
+		bean.setAction(ClientOperationEnumVd.CHANGE_STATUS);
 		
 		bean.getFactureCode().setRequired(true);
 		bean.getStatus().setRequired(true);

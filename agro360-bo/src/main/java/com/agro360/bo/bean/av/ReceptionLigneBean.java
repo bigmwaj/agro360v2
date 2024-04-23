@@ -17,7 +17,7 @@ import lombok.Setter;
 public class ReceptionLigneBean extends AbstractStatusTrackingBean<ReceptionStatusEnumVd> {
 
 	private static final long serialVersionUID = -16328407145183398L;
-	
+
 	private FieldMetadata<Long> receptionId = new FieldMetadata<>();
 
 	private FieldMetadata<String> description = new FieldMetadata<>();
@@ -27,12 +27,12 @@ public class ReceptionLigneBean extends AbstractStatusTrackingBean<ReceptionStat
 	private FieldMetadata<Double> quantite = new FieldMetadata<>();
 
 	private FieldMetadata<LocalDateTime> date = new FieldMetadata<>();
-	
+
 	private FieldMetadata<ReceptionStatusEnumVd> status = new FieldMetadata<>();
-	
+
 	@Setter
 	private LigneBean ligne = new LigneBean();
-	
+
 	@Setter
 	private UniteBean unite = new UniteBean();
 

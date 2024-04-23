@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Comptes</h2>
+<h2 mat-dialog-title>Liste des comptes</h2>
 <mat-dialog-content>
     <mat-drawer-container> 
         <mat-drawer #drawer class="search-form">
@@ -23,7 +23,6 @@
                     <button mat-icon-button (click)="drawer.toggle()">
                         <mat-icon>tune</mat-icon>
                     </button>
-                    Liste des comptes
                 </h4>
                 <table mat-table #comptesTable [dataSource]="this"  class="beans-table editable table-borderless">
                     <ng-container matColumnDef="select">
@@ -60,7 +59,7 @@
         
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef class="text-end">
-                            <button mat-icon-button color="primary" (click)="addAction()">
+                            <button mat-mini-fab color="primary" (click)="addAction()">
                                 <mat-icon>add</mat-icon>
                             </button>
                         </th>
@@ -68,7 +67,11 @@
                             <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)">
                                 <mat-icon>content_copy</mat-icon>
                             </button>
-                            <button mat-icon-button color="primary" title="Supprimer" (click)="deleteAction(element)">
+                            <button mat-icon-button 
+                                *ngIf="element.deleteBtn.visible"
+                                color="primary" 
+                                title="Supprimer" 
+                                (click)="deleteAction(element)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </td>

@@ -4,13 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { CommandeBean, LigneBean } from 'src/app/backed/bean.av';
 import { Message } from 'src/app/backed/message';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanTools } from 'src/app/common/bean.tools';
-import { UIService } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
-import { CoreUtils } from '../../core/core.utils';
-import { FinanceService } from '../../finance/finance.service';
-import { StockService } from '../../stock/stock.service';
 import { EditLigneListComponent } from './edit.ligne.list.component';
 import { EditRemiseDialogComponent } from './edit.remise.dialog.component';
 
@@ -23,31 +20,48 @@ import { EditRemiseDialogComponent } from './edit.remise.dialog.component';
     selector: 'achat-vente-commande-edit-tab',
     templateUrl: './edit.tab.component.html'
 })
-export class EditTabComponent implements OnInit {
+export class EditTabComponent implements OnInit{
 
     @Input({required:true})
     bean: CommandeBean;
 
-    pageTitle: string = "Edition";
+    @Input({required:true})
+    breadcrumb:BreadcrumbItem
+    
+    @Input({required:true})
+    module:string;
+
+    partnerLabel: string
 
     constructor(
         private http: HttpClient,
         private ui: UIService,
-        private stockService:StockService,
-        private financeService:FinanceService,
         public dialog: MatDialog)
     { }
+        
+    ngAfterViewInit(): void {
+        this.refreshPageTitle();
+        switch(this.module){
+            case 'vente': this.partnerLabel = 'Client'; break;
+            case 'achat': this.partnerLabel = 'Fournisseur'; break;
+            default:
+                throw new Error(`Aucun type de partenaire n'a été configuré pour le module ${this.module}`)
+        }
+    }
+
+    refreshPageTitle():void{
+        this.ui.setBreadcrumb(this.breadcrumb)
+    }
 
     ngOnInit(): void {
+        let title;
         if (this.isCreation()) {
-            this.pageTitle = "Création d'une Commande"
+            title = `Création de la commande ${this.bean.commandeCode.value}`
         } else {                
-            this.pageTitle = "Édition du  de Commande " + this.bean.commandeCode.value
+            title = `Édition de la commande ${this.bean.commandeCode.value}`
         }
 
-        this.initSelectMagasinOptions();
-        this.initSelectClientOptions();
-        this.initSelectCompteOptions();
+        this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title)
         
     }
 
@@ -100,7 +114,7 @@ export class EditTabComponent implements OnInit {
      * *****************
      */
     private isCreation(): boolean {
-        return EditActionEnumVd.CREATE == this.bean.action;
+        return ClientOperationEnumVd.CREATE == this.bean.action;
     }
 
     private calculerPrixTotalLigne(ligne: LigneBean) {
@@ -108,21 +122,6 @@ export class EditTabComponent implements OnInit {
             return ligne.prixUnitaire.value * ligne.quantite.value;
         }
         return 0
-    }
-
-    private initSelectMagasinOptions() {
-        this.stockService.getMagasinsAsValueOptions(this.http, {})
-            .subscribe(e => this.bean.magasin.magasinCode.valueOptions = e)
-    }
-
-    private initSelectCompteOptions() {
-        this.financeService.getComptesAsValueOptions(this.http, {})
-            .subscribe(e => this.bean.compte.compteCode.valueOptions = e)
-    }
-
-    private initSelectClientOptions() {
-        CoreUtils.getPartnerAsValueOptions(this.http, {})
-            .subscribe(e => this.bean.partner.partnerCode.valueOptions = e)
     }
 
     /**
@@ -140,7 +139,6 @@ export class EditTabComponent implements OnInit {
      * 
      */
     private initPrix() {
-
         this.bean.prixTotal.value = this.bean.lignes.map(e => this.calculerPrixTotalLigne(e))
             .reduce((a, b) => a + b, 0)
     }

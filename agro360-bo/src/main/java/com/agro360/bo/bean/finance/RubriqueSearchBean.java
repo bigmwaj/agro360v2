@@ -16,5 +16,5 @@ public class RubriqueSearchBean extends AbstractBean{
 	private FieldMetadata<String> rubriqueCode = new FieldMetadata<>("Rubrique");
 
 	private FieldMetadata<TransactionTypeEnumVd> type = new FieldMetadata<>("Type", TransactionTypeEnumVd.getAsMap());
-	
+
 }

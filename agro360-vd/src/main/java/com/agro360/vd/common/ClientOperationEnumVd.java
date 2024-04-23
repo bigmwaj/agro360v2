@@ -1,17 +1,30 @@
 package com.agro360.vd.common;
 
 public enum ClientOperationEnumVd {
-	
-	INIT_SEARCH_FORM,
 
-	VALIDATE_FORM,
+	/**
+	 * Synch the underlined bean with the DB
+	 */
+	SYNC,
 	
-	INIT_CREATE_FORM,
+	/**
+	 * Create the underlined bean in the DB
+	 */
+	CREATE,
 	
-	INIT_UPDATE_FORM,
+	/**
+	 * Update the underlined bean in the DB
+	 */
+	UPDATE,
 	
-	INIT_DELETE_FORM,
+	/**
+	 * Delete the underlined bean from the DB
+	 */
+	DELETE,
 	
-	INIT_CHANGE_STATUS_FORM;
+	/**
+	 * Change the underlined bean status in the DB
+	 */
+	CHANGE_STATUS;
 	
 }

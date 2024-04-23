@@ -16,7 +16,7 @@ import com.agro360.bo.message.Message;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.finance.RubriqueOperation;
 import com.agro360.service.common.AbstractService;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
@@ -38,7 +38,7 @@ public class RubriqueService extends AbstractService {
 			return Collections.singletonList(Message.error("Aucune action sélectionnée"));
 		}
 		
-		if(  EditActionEnumVd.SYNC.equals(bean.getAction())) {
+		if(  ClientOperationEnumVd.SYNC.equals(bean.getAction())) {
 			return Collections.emptyList();
 		}
 		

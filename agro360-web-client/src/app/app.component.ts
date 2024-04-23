@@ -11,12 +11,7 @@ export class AppComponent  {
     @ViewChild("pageTitle")
     pageTitle:ElementRef;
 
-    ngOnInit(): void {
-
-    }
-
     ngAfterViewInit(): void {
-        console.log('AppComponent ... ')
         this.ui.setPageTitle(this.pageTitle)
     }
 }

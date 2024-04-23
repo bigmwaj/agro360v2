@@ -17,11 +17,11 @@ import lombok.Setter;
 public class ReglementCommandeBean extends AbstractBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
-	
+
 	private FieldMetadata<Long> reglementId = new FieldMetadata<>("ID");
 
 	private FieldMetadata<String> commandeCode = new FieldMetadata<>("Commande");
-	
+
 	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
 
 	@Setter

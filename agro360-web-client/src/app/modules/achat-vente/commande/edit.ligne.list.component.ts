@@ -8,7 +8,7 @@ import { ArticleBean, ArticleSearchBean, ConversionBean, UniteBean, VariantBean 
 import { Message } from 'src/app/backed/message';
 import { FieldMetadata } from 'src/app/backed/metadata';
 import { LigneTypeEnumVd, RemiseTypeEnumVd } from 'src/app/backed/vd.av';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { ArticleTypeEnumVd } from 'src/app/backed/vd.stock';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { UIService } from 'src/app/common/service/ui.service';
@@ -17,6 +17,7 @@ import { StockUtils } from '../../stock/stock.utils';
 import { DisplayLigneTaxeDialogComponent } from './display.ligne.taxe.dialog.component';
 import { EditRemiseDialogComponent } from './edit.remise.dialog.component';
 import { EditRetourDialogComponent } from './edit.retour.dialog.component';
+import { EditReceptionDialogComponent } from './edit.reception.dialog.component';
 
 @Component({
     standalone: true,
@@ -168,21 +169,21 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
 
     copyAction(ligne: LigneBean) {
         const copy:LigneBean = JSON.parse(JSON.stringify(ligne)); //deep clone
-        copy.action = EditActionEnumVd.CREATE
+        copy.action = ClientOperationEnumVd.CREATE
         copy.ligneId.value = 0
         this.prependItem(copy);
         this.updatePrixCommande.emit();
     }
 
     deleteAction(ligne: LigneBean) {
-        if( ligne.action == EditActionEnumVd.CREATE ){
+        if( ligne.action == ClientOperationEnumVd.CREATE ){
             this.removeItem(ligne);
         }else {
-            if( ligne.action != EditActionEnumVd.DELETE){
-                ligne.action = EditActionEnumVd.DELETE;
+            if( ligne.action != ClientOperationEnumVd.DELETE){
+                ligne.action = ClientOperationEnumVd.DELETE;
                 ligne.valueChanged = true;
             }else{                
-                ligne.action = EditActionEnumVd.SYNC;
+                ligne.action = ClientOperationEnumVd.SYNC;
                 ligne.valueChanged = false;
             }
             this.updatePrixEvent(ligne)
@@ -190,16 +191,12 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     }
     
     listerTaxesAction(bean: LigneBean) {
-        let dialogRef = this.dialog.open(DisplayLigneTaxeDialogComponent, { 
+        this.dialog.open(DisplayLigneTaxeDialogComponent, { 
             data: {
                 ligne:bean,
                 commande:this.commande
             } 
         });
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
-        });  
     }
 
     editRemiseAction(bean: LigneBean) {
@@ -210,7 +207,7 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     }
         
     editRetourAction(bean: LigneBean) {
-        let dialogRef = this.dialog.open(EditRetourDialogComponent, { data: bean });
+        let dialogRef = this.dialog.open(EditRetourDialogComponent, { data: {ligne:bean, commande: this.commande } });
         dialogRef.afterClosed().subscribe(result => {
             console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
             console.log(result)
@@ -218,7 +215,7 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     }
         
     editReceptionAction(bean: LigneBean) {
-        let dialogRef = this.dialog.open(EditRetourDialogComponent, { data: bean });
+        let dialogRef = this.dialog.open(EditReceptionDialogComponent, { data: {ligne:bean, commande: this.commande }});
         dialogRef.afterClosed().subscribe(result => {
             console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
             console.log(result)

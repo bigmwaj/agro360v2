@@ -8,7 +8,7 @@ import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.bo.utils.TypeScriptInfos;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 import com.agro360.vd.production.avicole.ProductionCategoryEnumVd;
 
 import lombok.EqualsAndHashCode;
@@ -20,7 +20,7 @@ import lombok.Getter;
 public class ProductionBean extends AbstractBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
-	
+
 	private FieldMetadata<Long> numeroJournee = new FieldMetadata<>("#Journée");
 
 	private FieldMetadata<Long> productionId = new FieldMetadata<>("ID");
@@ -32,7 +32,7 @@ public class ProductionBean extends AbstractBean {
 	private FieldMetadata<Double> alveole = new FieldMetadata<>("Alvéole");
 
 	private VariantBean variant = new VariantBean();
-	
+
 	private FieldMetadata<ProductionCategoryEnumVd> category = new FieldMetadata<>("Catégrie");
 
 	private UniteBean unite = new UniteBean();
@@ -40,22 +40,22 @@ public class ProductionBean extends AbstractBean {
 	private FieldMetadata<String> uniteLibelle = new FieldMetadata<>("Unite");
 
 	private ArticleBean article = new ArticleBean();
-	
+
 	public void setUnite(UniteBean unite) {
 		Objects.requireNonNull(unite);
 		this.unite = unite;
 	}
-	
+
 	public void setVariant(VariantBean variant) {
 		Objects.requireNonNull(variant);
 		this.variant = variant;
 	}
-	
+
 	public void initForCreateForm() {
 		productionId.setValue(null);
-		setAction(EditActionEnumVd.CREATE);
+		setAction(ClientOperationEnumVd.CREATE);
 	}
-	
+
 	public void setArticle(ArticleBean article) {
 		Objects.requireNonNull(article);
 		this.article = article;

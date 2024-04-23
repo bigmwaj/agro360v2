@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import com.agro360.dao.core.IPartnerDao;
 import com.agro360.dto.core.PartnerDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.common.AbstractOperation;
+import com.agro360.operation.metadata.BeanMetadataConfig;
 import com.agro360.operation.utils.RuleNamespace;
 import com.agro360.vd.core.PartnerStatusEnumVd;
 
@@ -44,17 +46,21 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 		setDtoValue(dto::setLastName, bean.getLastName());
 		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setName, bean.getName());
-		setDtoValue(dto::setPartnerType, bean.getPartnerType());
+		setDtoValue(dto::setType, bean.getType());
 		setDtoValue(dto::setTitle, bean.getTitle());		
 		
 		dto = super.save(dto);		
 		return CoreMapper.map(dto);	
 	}
 	
+	@Qualifier("core/partner")
+	@Autowired()
+	BeanMetadataConfig beanConfig;
+	
 	@RuleNamespace("core/partner/update")
 	public PartnerBean updatePartner(ClientContext ctx, PartnerBean bean) {
 		var dto = dao.getReferenceById(bean.getPartnerCode().getValue());
-		
+
 		setDtoChangedValue(dto::setAddress, bean.getAddress());
 		setDtoChangedValue(dto::setCity, bean.getCity());
 		setDtoChangedValue(dto::setCountry, bean.getCountry());
@@ -63,7 +69,7 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 		setDtoChangedValue(dto::setFirstName, bean.getFirstName());
 		setDtoChangedValue(dto::setLastName, bean.getLastName());
 		setDtoChangedValue(dto::setName, bean.getName());
-		setDtoChangedValue(dto::setPartnerType, bean.getPartnerType());
+		setDtoChangedValue(dto::setType, bean.getType());
 		setDtoChangedValue(dto::setTitle, bean.getTitle());
 		
 		dto = super.save(dto);		
@@ -101,7 +107,7 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 	}
 	
 	@RuleNamespace("core/partner/search")
-	public List<PartnerBean> findPartnerByCriteria(ClientContext ctx, PartnerSearchBean searchBean) {
+	public List<PartnerBean> findPartnersByCriteria(ClientContext ctx, PartnerSearchBean searchBean) {
 		getLogger().debug("Find Partner by criteria ... ");
 		var probe = new PartnerDto();
 		var matcher = ExampleMatcher.matchingAll();
@@ -135,8 +141,8 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 			probe.setStatus((PartnerStatusEnumVd) searchBean.getStatus().getValue());
 		}
 
-		if (searchBean.getPartnerType() != null) {
-			probe.setPartnerType(searchBean.getPartnerType().getValue());
+		if (searchBean.getType() != null) {
+			probe.setType(searchBean.getType().getValue());
 		}
 		var example = Example.of(probe, matcher);
 		return dao.findAll(example).stream().map(CoreMapper::map).collect(Collectors.toList());	

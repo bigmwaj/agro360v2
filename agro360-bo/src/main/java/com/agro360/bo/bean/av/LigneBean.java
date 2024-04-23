@@ -20,7 +20,7 @@ import lombok.Setter;
 public class LigneBean extends AbstractBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
-	
+
 	private FieldMetadata<Long> ligneId = new FieldMetadata<>("ID");
 
 	private FieldMetadata<LigneTypeEnumVd> type = new FieldMetadata<>("Type", LigneTypeEnumVd.getAsMap());
@@ -32,22 +32,28 @@ public class LigneBean extends AbstractBean {
 	private FieldMetadata<BigDecimal> prixUnitaire = new FieldMetadata<>("Prix Unitaire");
 
 	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total");
-	
+
 	private FieldMetadata<BigDecimal> prixTotalHT = new FieldMetadata<>("Prix Total(HT)");
-	
+
 	private FieldMetadata<BigDecimal> prixTotalTTC = new FieldMetadata<>("Prix Total(TTC)");
-	
+
 	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
-	
+
 	private FieldMetadata<String> variantCode = new FieldMetadata<>("Variant");
-	
+
 	private FieldMetadata<RemiseTypeEnumVd> remiseType = new FieldMetadata<>("Type Remise", RemiseTypeEnumVd.getAsMap());
-	
+
 	private FieldMetadata<Double> remiseTaux = new FieldMetadata<>("Taux Remise");
-	
+
 	private FieldMetadata<BigDecimal> remiseMontant = new FieldMetadata<>("Montant Remise");
-	
+
 	private FieldMetadata<String> remiseRaison = new FieldMetadata<>("Raison Remise");
+
+	private FieldMetadata<String> deleteBtn = new FieldMetadata<>("Supprimer ligne");
+
+	private FieldMetadata<String> receptionBtn = new FieldMetadata<>("Réception ligne");
+
+	private FieldMetadata<String> retourBtn = new FieldMetadata<>("Retour ligne");
 
 	@Setter
 	private UniteBean unite = new UniteBean();

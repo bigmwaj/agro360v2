@@ -3,11 +3,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { map } from 'rxjs';
 import { FactureBean } from 'src/app/backed/bean.av';
 import { Message } from 'src/app/backed/message';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanTools } from 'src/app/common/bean.tools';
-import { UIService } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
 import { SharedModule } from 'src/app/common/shared.module';
-import { CoreUtils } from '../../core/core.utils';
 
 @Component({
     standalone: true,
@@ -18,23 +17,45 @@ import { CoreUtils } from '../../core/core.utils';
     templateUrl: './edit.tab.component.html'
 })
 export class EditTabComponent implements OnInit {
+    
+    @Input({required:true})
+    breadcrumb:BreadcrumbItem
 
     @Input({required:true})
     bean: FactureBean;
 
-    pageTitle: string = "Edition";
+    @Input({required:true})
+    module:string;
+
+    partnerLabel: string;
 
     constructor(
         private http: HttpClient,
         private ui: UIService)
     { }
+        
+    ngAfterViewInit(): void {
+        this.refreshPageTitle();
+        switch(this.module){
+            case 'vente': this.partnerLabel = 'Client'; break;
+            case 'achat': this.partnerLabel = 'Fournisseur'; break;
+            default:
+                throw new Error(`Aucun type de partenaire n'a été configuré pour le module ${this.module}`)
+        }
+    }
+
+    refreshPageTitle():void{
+        this.ui.setBreadcrumb(this.breadcrumb)
+    }
 
     ngOnInit(): void {
+        let title:string
         if (this.isCreation()) {
-            this.pageTitle = "Création d'une Facture"
+            title = `Création de la facture ${this.bean.factureCode.value}`
         } else {
-            this.pageTitle = "Édition du  de Facture " + this.bean.factureCode.value
+            title = `Édition de la facture ${this.bean.factureCode.value}`
         }
+        this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title)        
     }
 
     /**************************************************
@@ -67,12 +88,7 @@ export class EditTabComponent implements OnInit {
      */
 
     private isCreation(): boolean {
-        return EditActionEnumVd.CREATE == this.bean.action;
-    }
-
-    private initSelectClientOptions() {
-        CoreUtils.getPartnerAsValueOptions(this.http, {})
-            .subscribe(e => this.bean.partner.partnerCode.valueOptions = e)
+        return ClientOperationEnumVd.CREATE == this.bean.action;
     }
 
 }

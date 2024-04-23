@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <bean class="com.agro360.operation.rule.standard.IsMaxLengthOk" name="IsMaxLengthOk"/>
+    <bean class="com.agro360.operation.rule.standard.IsMaxOk" name="IsMaxOk" id="IsMaxOk" />
+    <bean class="com.agro360.operation.rule.standard.IsMinOk" name="IsMinOk"/>
+    <bean class="com.agro360.operation.rule.standard.IsNonNull" name="IsNonNull"/>
+    
+    <bean class="com.agro360.operation.rule.common.TrueRule" name="IsTrue"/>
+    <bean class="com.agro360.operation.rule.common.FalseRule" name="IsFalse"/>
+    
+    <bean class="com.agro360.operation.rule.module.common.IsBeanCreateOperation" name="IsBeanCreateOperation"/>
+    <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsBeanCreateOperation">
+		<constructor-arg ref="IsBeanCreateOperation"></constructor-arg>
+    </bean>
+    
+    <bean class="com.agro360.operation.rule.module.common.IsBeanUpdateOperation" name="IsBeanUpdateOperation"/>
+    <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsBeanUpdateOperation">
+		<constructor-arg ref="IsBeanUpdateOperation"></constructor-arg>
+    </bean>
+    
+    <bean class="com.agro360.operation.rule.common.OrRule" name="IsBeanCreateOrUpdateOperation">
+		<constructor-arg>
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+				<ref bean="IsBeanUpdateOperation"/>
+			</list>
+		</constructor-arg>
+    </bean>
+    
+    <bean class="com.agro360.operation.rule.module.common.IsBeanDeleteOperation" name="IsBeanDeleteOperation"/>
+    
+    <bean class="com.agro360.operation.rule.module.common.IsBeanChangeStatusOperation" name="IsBeanChangeStatusOperation"/>
+    <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsBeanChangeStatusOperation">
+		<constructor-arg ref="IsBeanChangeStatusOperation"></constructor-arg>
+    </bean>
+    
+    <bean class="com.agro360.operation.rule.module.core.IsRootCategory" name="IsRootCategory"></bean>
+    <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsRootCategory">
+		<constructor-arg ref="IsRootCategory"></constructor-arg>
+    </bean>
+    
+    <bean class="com.agro360.operation.rule.module.av.IsCommandeEditableStatus" name="IsCommandeEditableStatus"></bean>
+    <bean class="com.agro360.operation.rule.module.av.IsRetournable" name="IsRetournable"></bean>
+    <bean class="com.agro360.operation.rule.module.av.IsReceptionnable" name="IsReceptionnable"></bean>
+    
+</beans>

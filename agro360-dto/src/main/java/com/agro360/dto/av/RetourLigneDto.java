@@ -20,7 +20,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Entity(name = "AV_TBL_RETOUR_LIGNE")
+@Entity(name = "AV_TBL_RETOUR")
 public class RetourLigneDto extends AbstractStatusTrackingDto<RetourStatusEnumVd> {
 	
 	@Id

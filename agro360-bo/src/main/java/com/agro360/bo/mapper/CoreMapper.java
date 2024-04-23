@@ -7,26 +7,29 @@ import java.util.function.Supplier;
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerCategoryBean;
 import com.agro360.bo.bean.core.PartnerSearchBean;
+import com.agro360.bo.bean.core.UserAccountBean;
 import com.agro360.bo.utils.Constants;
 import com.agro360.dto.core.CategoryDto;
 import com.agro360.dto.core.PartnerCategoryDto;
 import com.agro360.dto.core.PartnerDto;
+import com.agro360.dto.core.UserAccountDto;
 import com.agro360.vd.core.PartnerStatusEnumVd;
 import com.agro360.vd.core.PartnerTypeEnumVd;
+import com.agro360.vd.core.UserAccountStatusEnumVd;
 
 public class CoreMapper {
 
 	public static PartnerSearchBean buildPartnerSearchBean() {
 		var bean = new PartnerSearchBean();
 		bean.getStatus().setValueOptions(PartnerStatusEnumVd.getAsMap());
-		bean.getPartnerType().setValueOptions(PartnerTypeEnumVd.getAsMap());
+		bean.getType().setValueOptions(PartnerTypeEnumVd.getAsMap());
 		return bean;
 	}
 
 	public static PartnerBean map(PartnerDto dto) {
 		PartnerBean bean = new PartnerBean();
 		bean.getPartnerCode().setValue(dto.getPartnerCode());
-		
+
 		bean.getAddress().setValue(dto.getAddress());
 		bean.getCity().setValue(dto.getCity());
 		bean.getCountry().setValue(dto.getCountry());
@@ -40,12 +43,12 @@ public class CoreMapper {
 
 		bean.getName().setValue(dto.getName());
 
-		bean.getPartnerType().setValue(dto.getPartnerType());
-		bean.getPartnerType().setValueOptions(PartnerTypeEnumVd.getAsMap());
+		bean.getType().setValue(dto.getType());
+		bean.getType().setValueOptions(PartnerTypeEnumVd.getAsMap());
 
 		bean.getTitle().setValue(dto.getTitle());
 
-		if (PartnerTypeEnumVd.COMPANY.equals(dto.getPartnerType())) {
+		if (PartnerTypeEnumVd.COMPANY.equals(dto.getType())) {
 			bean.getPartnerName().setValue(dto.getName());
 		} else {
 			bean.getPartnerName().setValue(Constants.FULL_NAME_FN.apply(dto.getLastName(), dto.getFirstName()));
@@ -53,8 +56,19 @@ public class CoreMapper {
 
 		return bean;
 	}
-	
-	
+
+	public static UserAccountBean map(UserAccountDto dto) {
+		UserAccountBean bean = new UserAccountBean();
+		bean.getPartnerCode().setValue(dto.getPartnerCode());
+
+		bean.getStatus().setValue(dto.getStatus());
+		bean.getStatus().setValueOptions(UserAccountStatusEnumVd.getAsMap());
+
+		bean.getPassword().setValue(dto.getPassword());
+
+		return bean;
+	}
+
 	public static final String ROOT_CATEGORY_ID = "ROOT";
 
 	public static final String ROOT_CATEGORY_NOT_FOUND_MSG = "Catégorie ROOT introuvable!";
@@ -86,7 +100,7 @@ public class CoreMapper {
 //		PartnerCategoryBean bean = map(new PartnerCategoryDto(category));
 //		Set<CategoryDto> children = hierarchie.get(category);
 //		bean.getSelected().setValue(children.isEmpty() && !ROOT_CATEGORY_ID.equals(bean.getCategoryCode().getValue()));
-//		
+//
 //		for (CategoryDto child : children) {
 //			PartnerCategoryBean childBean = addToBeansHierarchie(child, hierarchie);
 //			bean.getChildren().add(childBean);
@@ -126,7 +140,7 @@ public class CoreMapper {
 //		ex.getProbe().setPartnerCode(partner.getPartnerCode());
 //
 //		return partnerCategoryDao.findAll(ex);
-		
+
 //		return null;
 //	}
 
@@ -139,8 +153,8 @@ public class CoreMapper {
 //			var root = getRootCategory(hierarchie.keySet());
 //			return addToBeansHierarchie(root, hierarchie);
 //		}
-		
-		return null;	
+
+		return null;
 	}
 
 //	private void mapToParentChildCategories(Map<CategoryDto, Set<CategoryDto>> parentChildMap, CategoryDto category) {

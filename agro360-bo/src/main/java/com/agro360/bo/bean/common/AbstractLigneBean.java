@@ -8,7 +8,7 @@ import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.dto.common.AbstractLigneDto;
 import com.agro360.vd.av.LigneTypeEnumVd;
-import com.agro360.vd.common.EditActionEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -32,23 +32,23 @@ public abstract class AbstractLigneBean<E extends AbstractLigneDto> extends Abst
 	private FieldMetadata<BigDecimal> prixUnitaire = new FieldMetadata<>("Prix Unitaire");
 
 	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total");
-	
+
 	private FieldMetadata<String> variantCode = new FieldMetadata<>("Variant");
 
 	private UniteBean unite = new UniteBean();
 
 	private ArticleBean article = new ArticleBean();
-	
+
 	public void setUnite(UniteBean unite) {
 		Objects.requireNonNull(unite);
 		this.unite = unite;
 	}
-	
+
 	public void initForCreateForm() {
 		ligneId.setValue(null);
-		setAction(EditActionEnumVd.CREATE);
+		setAction(ClientOperationEnumVd.CREATE);
 	}
-	
+
 	public void setArticle(ArticleBean article) {
 		Objects.requireNonNull(article);
 		this.article = article;

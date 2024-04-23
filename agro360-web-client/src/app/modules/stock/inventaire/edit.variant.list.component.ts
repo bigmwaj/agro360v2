@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { VariantBean } from 'src/app/backed/bean.stock';
-import { EditActionEnumVd } from 'src/app/backed/vd.common';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/common/component/bean.list';
 import { SharedModule } from 'src/app/common/shared.module';
 
@@ -43,9 +43,9 @@ export class EditVariantListComponent extends BeanList<VariantBean> implements O
 
     toggleChange(bean:VariantBean){
         if( this.selection.isSelected(bean) ){
-            bean.action = EditActionEnumVd.CREATE;
+            bean.action = ClientOperationEnumVd.CREATE;
         }else{
-            bean.action = EditActionEnumVd.SYNC;
+            bean.action = ClientOperationEnumVd.SYNC;
         }
 
         console.log( bean)

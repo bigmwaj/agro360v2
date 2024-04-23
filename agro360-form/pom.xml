@@ -13,11 +13,28 @@
 	<artifactId>agro360-form</artifactId>
 	<name>agro360-form</name>
 	<description>Web Services Project</description>
-	<dependencies>		
+	<dependencies>
 		<dependency>
 			<groupId>com.agro360</groupId>
 			<artifactId>agro360-operation</artifactId>
 			<version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.agro360</groupId>
+					<artifactId>agro360-dto</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.agro360</groupId>
+			<artifactId>agro360-vd</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
 		</dependency>
 	</dependencies>
 </project>

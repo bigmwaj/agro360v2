@@ -37,7 +37,7 @@ public class StockMapper {
 		bean.getArticleCode().setValue(dto.getArticleCode());
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getType().setValue(dto.getType());
-		
+
 		var unite = dto.getUnite();
 		if( unite == null ) {
 			unite = new UniteDto();
@@ -55,14 +55,14 @@ public class StockMapper {
 		bean.setTaxe(FinanceMapper.map(taxe));
 		return bean;
 	}
-	
+
 	public static CasierBean map(CasierDto dto) {
 		var bean = new CasierBean();
 		bean.getCasierCode().setValue(dto.getCasierCode());
 		bean.getDescription().setValue(dto.getDescription());
 		return bean;
 	}
-	
+
 	public static ConversionBean map(ConversionDto dto) {
 		var bean = new ConversionBean();
 		bean.getFacteur().setValue(dto.getFacteur());
@@ -72,7 +72,7 @@ public class StockMapper {
 		}
 		return bean;
 	}
-	
+
 	public static MagasinSearchBean buildMagasinSearchBean() {
 		var bean = new MagasinSearchBean();
 		return bean;
@@ -86,7 +86,7 @@ public class StockMapper {
 
 		return bean;
 	}
-	
+
 	public static VariantBean map(VariantDto dto) {
 		var bean = new VariantBean();
 		bean.getArticleCode().setValue(dto.getArticleCode());
@@ -95,7 +95,7 @@ public class StockMapper {
 		bean.getAlias().setValue(dto.getAlias());
 		return bean;
 	}
-	
+
 	public static UniteSearchBean buildUniteSearchBean() {
 		var bean = new UniteSearchBean();
 		return bean;
@@ -107,7 +107,7 @@ public class StockMapper {
 		bean.getDescription().setValue(dto.getDescription());
 		return bean;
 	}
-	
+
 	public static InventaireSearchBean buildInventaireSearchBean() {
 		var bean = new InventaireSearchBean();
 		return bean;
@@ -119,13 +119,13 @@ public class StockMapper {
 		bean.getQuantite().setValue(dto.getQuantite());
 		bean.getPrixUnitaireAchat().setValue(dto.getPrixUnitaireAchat());
 		bean.getPrixUnitaireVente().setValue(dto.getPrixUnitaireVente());
-		
+
 		var magasin = dto.getMagasin();
 		if( magasin == null ) {
 			magasin = new MagasinDto();
 		}
 		bean.setMagasin(map(magasin));
-		
+
 		var article = dto.getArticle();
 		if( article == null ) {
 			article = new ArticleDto();

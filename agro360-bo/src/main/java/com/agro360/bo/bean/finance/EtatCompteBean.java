@@ -17,9 +17,9 @@ public class EtatCompteBean extends AbstractBean{
 	private FieldMetadata<BigDecimal> solde = new FieldMetadata<>("Solde");
 
 	private CompteBean compte = new CompteBean();
-	
+
 	public EtatCompteBean(CompteBean compte) {
 		this.compte = compte;
 	}
-	
+
 }

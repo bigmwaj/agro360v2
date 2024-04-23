@@ -29,7 +29,7 @@ public class PartnerService extends AbstractService {
 	private PartnerCategoryOperation partnerCategoryOperation;
 
 	public List<PartnerBean> searchAction(ClientContext ctx, Optional<PartnerSearchBean> searchForm) {	
-		return service.findPartnerByCriteria(ctx, searchForm.orElse(new PartnerSearchBean()));
+		return service.findPartnersByCriteria(ctx, searchForm.orElse(new PartnerSearchBean()));
 	}
 	
 	private void retrieveSelectedCategoryCodes(Set<String> categoryCodes, PartnerCategoryBean bean){

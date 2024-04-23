@@ -14,11 +14,11 @@ import lombok.Getter;
 public class CategoryBean extends AbstractBean{
 
 	private static final long serialVersionUID = 4953208601044344467L;
-	
+
 	private FieldMetadata<String> parentCategoryCode = new FieldMetadata<>("Parent");
-	
+
 	private FieldMetadata<String> categoryCode = new FieldMetadata<>("Code");
-	
+
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 
 	private List<CategoryBean> children = new ArrayList<>();

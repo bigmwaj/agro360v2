@@ -1,8 +1,23 @@
 <h2 mat-dialog-title>Confirmation suppression</h2>
 <mat-dialog-content>
-    <div *ngIf="bean">
-        Etes-vous sure de vouloir supprimer le partner <strong>{{ bean.partnerName.value }}</strong>?
-    </div>    
+    <div *ngIf="bean" class="mt-1">
+        <div class="row">
+            <div class="col-4">
+                <input-text-field [field]="bean.partnerCode"></input-text-field>
+            </div>
+            <div class="col-4">
+                <select-one-field [field]="bean.type"></select-one-field>
+            </div>
+            <div class="col-4">
+                <input-text-field [field]="bean.partnerName"></input-text-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                Etes-vous sure de vouloir supprimer le partner <strong>{{ bean.partnerName.value }}</strong>?
+            </div>
+        </div>
+    </div>  
 </mat-dialog-content>
 <mat-dialog-actions align="end" class="m-3">
     <button mat-raised-button mat-dialog-close>Annuler</button>

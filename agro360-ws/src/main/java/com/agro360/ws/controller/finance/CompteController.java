@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agro360.bo.bean.finance.CompteBean;
 import com.agro360.bo.bean.finance.CompteSearchBean;
 import com.agro360.form.finance.CompteForm;
+import com.agro360.operation.metadata.BeanMetadataConfig;
 import com.agro360.service.finance.CompteService;
 import com.agro360.ws.controller.common.AbstractController;
 
@@ -30,6 +32,10 @@ public class CompteController extends AbstractController {
 	
 	@Autowired
 	CompteForm form;
+	
+	@Qualifier("finance/compte")
+	@Autowired
+	private BeanMetadataConfig metadataConfig;
 	
 	@GetMapping("/search-form")
 	public ResponseEntity<CompteSearchBean> getSearchFormAction() {
@@ -45,10 +51,12 @@ public class CompteController extends AbstractController {
 	public ResponseEntity<ModelMap> generateEtatCompteAction() {
 		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service.generateEtatCompteAction(getClientContext())));
 	}
-
+	
 	@GetMapping()
 	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<CompteSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service.searchAction(getClientContext(), searchBean)));
+		var ctx = getClientContext();
+		var list = service.searchAction(ctx, searchBean);
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, form.initUpdateFormBean(ctx, list)));
 	}
 
 	@PostMapping
