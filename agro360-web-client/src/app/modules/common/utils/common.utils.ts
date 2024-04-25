@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { AbstractBean } from '../../backed/bean.common';
+import { AbstractBean } from '../../../backed/bean.common';
 import { Observable, map } from 'rxjs';
 
 

@@ -56,6 +56,10 @@ public class TransactionForm {
 	@Autowired
 	private BeanMetadataConfig metadataConfig2;
 	
+	@Qualifier("finance/transaction-search")
+	@Autowired
+	private BeanMetadataConfig searchMetadataConfig;
+	
 	public TransactionBean initCreateFormBean(ClientContext ctx, TransactionTypeEnumVd type, Optional<String> copyFrom) {
 		var bean = copyFrom.map(e -> operation.findTransactionByCode(ctx, e))
 				.orElse(new TransactionBean());
@@ -111,8 +115,13 @@ public class TransactionForm {
 		return bean;
 	}
 
-	public TransactionSearchBean initSearchFormBean(ClientContext ctx) {
+	public TransactionSearchBean initSearchFormBean(ClientContext ctx, Optional<TransactionTypeEnumVd> type) {
 		var bean = FinanceMapper.buildTransactionSearchBean();
+
+		initCompteOption(ctx, bean.getCompte()::setValueOptions);
+		initRubriqueOption(ctx, type.orElse(null), bean.getRubrique()::setValueOptions);
+		
+		searchMetadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 	

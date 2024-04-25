@@ -85,12 +85,3 @@
     (updatePrixCommande)="updatePrixEvent()" 
     [commande]="bean">
 </achat-vente-edit-ligne-list>
-
-<section class="p-3">
-    <button mat-raised-button cdkFocusInitial 
-        (click)="saveAction()" 
-        color="primary"
-        *ngIf="bean.saveBtn.visible">
-        <mat-icon>save</mat-icon>Enregistrer
-    </button>
-</section>

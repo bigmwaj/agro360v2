@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.finance.TransactionBean;
@@ -124,14 +123,31 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 	}
 	
 	public List<TransactionBean> findTransactionsByCriteria(ClientContext ctx, TransactionSearchBean searchBean) {
-		var example = Example.of(new TransactionDto());
-		if( searchBean.getTransactionCode().getValue() != null ) {
-			example.getProbe().setTransactionCode(searchBean.getTransactionCode().getValue());
+		
+		var code = searchBean.getTransactionCode().getValue();
+		if( code != null ) {
+			code = code.toUpperCase();
 		}
-		if( searchBean.getType().getValue() != null ) {
-			example.getProbe().setType(searchBean.getType().getValue());
+		
+		var type = searchBean.getType().getValue();
+		var debut = searchBean.getDateDebut().getValue();
+		var fin = searchBean.getDateFin().getValue();
+		var compte = searchBean.getCompte().getValue();
+		
+		var partner = searchBean.getPartner().getValue();
+		if( partner != null ) {
+			partner = partner.toUpperCase();
 		}
-		return dao.findAll(example).stream().map(FinanceMapper::map).collect(Collectors.toList());
+		
+		var rubrique = searchBean.getRubrique().getValue();
+		var status = searchBean.getStatusIn().getValue();
+		if( status != null && status.isEmpty() ) {
+			status = null;
+		}
+		
+        return dao.findTransactionsByCriteria(code, type, debut, fin, status, partner, compte, rubrique)
+        		.stream().map(FinanceMapper::map)
+        		.collect(Collectors.toList());
 	}
 
 	@RuleNamespace("finance/transaction/transfert")

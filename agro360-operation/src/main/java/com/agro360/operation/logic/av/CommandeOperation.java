@@ -1,6 +1,5 @@
 package com.agro360.operation.logic.av;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,22 +16,15 @@ import com.agro360.dao.core.IPartnerDao;
 import com.agro360.dao.finance.ICompteDao;
 import com.agro360.dao.stock.IMagasinDao;
 import com.agro360.dto.av.CommandeDto;
-import com.agro360.dto.core.PartnerDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.common.AbstractOperation;
 import com.agro360.operation.utils.RuleNamespace;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.Predicate;
 
 @Service
 public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 
 	@Autowired
 	private ICommandeDao dao;
-	
-	@Autowired
-	private EntityManager entityManager;
 
 	@Autowired
 	private IPartnerDao partnerDao;
@@ -56,55 +48,34 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 	}
 	
 	public List<CommandeBean> findCommandesByCriteria(ClientContext ctx, CommandeSearchBean searchBean) {
-		var criteriaBuilder = entityManager.getCriteriaBuilder();
-		
-		var rootQuery = criteriaBuilder.createQuery(CommandeDto.class);
-		var from = rootQuery.from(CommandeDto.class);
-		
-		List<Predicate> wherePredicates = new ArrayList<>();
-		
 		var code = searchBean.getCommandeCode().getValue();
-		if( code != null && !code.isBlank() ) {
-			code = '%' + code.toUpperCase() + '%';
-			wherePredicates.add(criteriaBuilder.like(from.get("CommandeCode"), code));	
+		if( code != null ) {
+			code = code.toUpperCase();
 		}
-		var status = searchBean.getStatusIn().getValue();
-		if( status != null && !status.isEmpty() ) {
-			wherePredicates.add(from.get("status").in(status));
-		}
-
+		
+		var type = searchBean.getType().getValue();
 		var debut = searchBean.getDateDebut().getValue();
-		if( debut != null ) {
-			wherePredicates.add(criteriaBuilder.greaterThanOrEqualTo(from.get("date"), debut));	
-		}
-
 		var fin = searchBean.getDateFin().getValue();
-		if( fin != null ) {
-			wherePredicates.add(criteriaBuilder.lessThanOrEqualTo(from.get("date"), fin));	
-		}
-
+		var compte = searchBean.getCompte().getValue();
+		
 		var partner = searchBean.getPartner().getValue();
-		if( partner != null && !partner.isBlank() ) {			
-			partner = '%' + partner.toUpperCase() + '%';
-			
-			var subQuery = criteriaBuilder.createQuery(PartnerDto.class);
-			var subQueryFrom = subQuery.from(PartnerDto.class);
-			
-			
-			
-			subQuery.select(subQueryFrom)
-			  .distinct(true)
-			  .where(criteriaBuilder.like(subQueryFrom.get("name"), partner));
-			
-			//wherePredicates.add(criteriaBuilder.in(from.get("partner")).value(subQuery.));
+		if( partner != null ) {
+			partner = partner.toUpperCase();
 		}
 		
-		if( !wherePredicates.isEmpty() ) {
-			rootQuery.where(wherePredicates.toArray(new Predicate[0]));
+		var ville = searchBean.getVille().getValue();
+		if( ville != null ) {
+			ville = ville.toUpperCase();
 		}
 		
-		var query = entityManager.createQuery(rootQuery);
-        return query.getResultList().stream().map(AchatVenteMapper::map).collect(Collectors.toList());
+		var status = searchBean.getStatusIn().getValue();
+		if( status != null && status.isEmpty() ) {
+			status = null;
+		}
+		
+        return dao.findCommandesByCriteria(code, type, debut, fin, status, partner, compte, ville)
+        		.stream().map(AchatVenteMapper::map)
+        		.collect(Collectors.toList());
 		
 	}
 

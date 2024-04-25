@@ -102,37 +102,6 @@ body {
     min-height: auto;
 }
 
-table.caisse-operation td.mat-column-numero .mat-mdc-form-field-infix {
-    width: 50px;
-}
-
-table.caisse-operation td.mat-column-numero .mat-mdc-form-field-infix input {
-    text-align: center;
-}
-
-table.caisse-operation td.mat-column-quantite .mat-mdc-form-field-infix {
-    width: 50px;
-}
-
-table.caisse-operation td.mat-column-quantite .mat-mdc-form-field-infix input {
-    text-align: center;
-}
-
-table.caisse-operation td.mat-column-prixUnitaire .mat-mdc-form-field-infix {
-    width: 75px;
-}
-
-table.caisse-operation td.mat-column-prixUnitaire .mat-mdc-form-field-infix input {
-    text-align: center;
-}
-
-table.caisse-operation td.mat-column-prixTotal .mat-mdc-form-field-infix {
-    width: 80px;
-}
-
-table.caisse-operation td.mat-column-prixTotal .mat-mdc-form-field-infix input {
-    text-align: center;
-}
 table.cycle-metadatas td.mat-column-value {
     width: 100px;
     text-align: center;
@@ -187,3 +156,12 @@ table.cycle-metadatas td.mat-column-value .mat-mdc-form-field-infix  input{
 }
 .field-button{margin-left: -48px;}
 table .field-button{padding-top: 2px !important}
+
+.ajust-wrapper{
+    width: 120px;
+}
+.ajust-wrapper .input-ajust{
+    width: 70px;
+}
+
+.search-toolbar .mat-mdc-form-field-bottom-align{ display: none;}

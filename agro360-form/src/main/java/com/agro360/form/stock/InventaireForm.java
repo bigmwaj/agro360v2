@@ -38,7 +38,10 @@ public class InventaireForm extends AbstractForm{
 
 	public InventaireBean initCreateFormBean(ClientContext ctx) {
 		var bean = new InventaireBean();
-
+		bean.getMagasin().getMagasinCode().setEditable(true);
+		bean.getArticle().getArticleCode().setEditable(true);
+		bean.getUniteAchat().getUniteCode().setEditable(true);
+		bean.getUniteVente().getUniteCode().setEditable(true);
 		initMagasinOption(ctx, bean.getMagasin().getMagasinCode()::setValueOptions);
 		return bean;
 	}

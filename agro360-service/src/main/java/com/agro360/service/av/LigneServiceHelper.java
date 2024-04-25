@@ -29,7 +29,7 @@ public class LigneServiceHelper {
 	
 	public void initPrix(ClientContext ctx, LigneBean bean) {
 		var prixTotalHT = bean.getPrixUnitaire().getValue()
-				.add(BigDecimal.valueOf(bean.getQuantite().getValue()));
+				.multiply(BigDecimal.valueOf(bean.getQuantite().getValue()));
 		
 		if( Objects.isNull(bean.getRemiseMontant().getValue()) ){
             bean.getRemiseMontant().setValue(BigDecimal.ZERO);

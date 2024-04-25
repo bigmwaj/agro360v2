@@ -9,9 +9,7 @@ import com.agro360.dto.common.AbstractDto;
 public interface IDao <E extends AbstractDto, ID> extends JpaRepository<E, ID>{
 
 	public default E insert(E dto, ID id) {
-		/*if( Objects.nonNull(id) && existsById(id) ) {
-			throw new DtoAlreadyExistsException(S001.name(), S001.getDefaultMsg(), id);
-		}*/
+
 		return save(dto);
 	}
 	

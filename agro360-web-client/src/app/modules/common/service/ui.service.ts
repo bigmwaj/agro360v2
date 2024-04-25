@@ -1,6 +1,6 @@
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Message } from 'src/app/backed/message';
-import { FlashMessageComponent } from '../component/flash-message.component';
+import { FlashMessageComponent } from '../flash-message.component';
 import { ElementRef, Injectable, Optional } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { MessageTypeEnumVd } from 'src/app/backed/vd.common';
@@ -94,7 +94,7 @@ export class UIService {
 
     displayFlashMessage(messages: Array<Message>) {
         this._snackBar.openFromComponent(FlashMessageComponent, {
-            duration: 5 * 1000,
+            duration: 20 * 1000,
             data: messages,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,

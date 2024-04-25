@@ -18,13 +18,14 @@
             </section>
         </mat-drawer>  
         <mat-drawer-content>
-            <section class="p-3">
-                <h4>
-                    <button mat-icon-button (click)="drawer.toggle()">
-                        <mat-icon>tune</mat-icon>
-                    </button>
-                    Liste des unités
-                </h4>
+            <section>
+                <mat-toolbar color="secondary">                      
+                    <mat-toolbar-row>
+                        <button mat-icon-button (click)="drawer.toggle()">
+                            <mat-icon>tune</mat-icon>
+                        </button>
+                    </mat-toolbar-row>
+                </mat-toolbar>
                 <table mat-table #unitesTable [dataSource]="this" class="beans-table editable table-borderless">
                     <ng-container matColumnDef="select">
                         <th mat-header-cell *matHeaderCellDef>

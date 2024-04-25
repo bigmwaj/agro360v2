@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CategoryBlockComponent } from '../partner/category.block.component';
-import { SharedModule } from 'src/app/common/shared.module';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { CategoryBean } from 'src/app/backed/bean.core';
 
 @Component({

@@ -52,15 +52,19 @@ public class InventaireController extends AbstractController {
 	@PostMapping("ajuster-quantite")
 	public ResponseEntity<ModelMap> ajusterQuantiteAction(@RequestBody @Validated InventaireBean bean) {
 		var ctx = getClientContext();
-		service.ajusterQuantite(ctx, bean);
-		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
+		var record = service.ajusterQuantite(ctx, bean);
+		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
+		model.addAttribute(RECORD_MODEL_KEY, record);
+		return ResponseEntity.ok(model);
 	}
 	
 	@PostMapping("ajuster-prix")
 	public ResponseEntity<ModelMap> ajusterPrixAction(@RequestBody @Validated InventaireBean bean) {
 		var ctx = getClientContext();
-		service.ajusterPrix(ctx, bean);
-		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
+		var record = service.ajusterPrix(ctx, bean);
+		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
+		model.addAttribute(RECORD_MODEL_KEY, record);
+		return ResponseEntity.ok(model);
 	}
 	
 	@GetMapping(SEARCH_FORM_RN)

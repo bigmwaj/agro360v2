@@ -54,7 +54,11 @@ public class CommandeForm extends AbstractForm{
 	
 	@Qualifier("av/commande")
 	@Autowired
-	private BeanMetadataConfig commandeMetadataConfig;
+	private BeanMetadataConfig metadataConfig;
+	
+	@Qualifier("av/commande-search")
+	@Autowired
+	private BeanMetadataConfig searchMetadataConfig;
 
 	public CommandeBean initCreateFormBean(ClientContext ctx, CommandeTypeEnumVd type, Optional<String> copyFrom) {
 		var bean = new CommandeBean();
@@ -77,7 +81,7 @@ public class CommandeForm extends AbstractForm{
 		initCompteOption(ctx, bean.getCompte().getCompteCode()::setValueOptions);
 		initMagasinOption(ctx, bean.getMagasin().getMagasinCode()::setValueOptions);
 		
-		commandeMetadataConfig.applyMetadata(ctx, bean);
+		metadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 	
@@ -89,6 +93,12 @@ public class CommandeForm extends AbstractForm{
 		var lignes = ligneOperation.findLignesCommande(ctx, commandeCode);
 
 		for (var  ligne : lignes) {
+			/*
+			 * Pour se rassurer que chaque fois qu'on va enregistrer une commande, 
+			 * on enregistre les lignes aussi même si l'utilisateur n'a pas modifié.
+			 * Ceci garantie qu'on recalcule au besoin les prix de la ligne
+			 */
+			ligne.setAction(ClientOperationEnumVd.UPDATE);
 			bean.getLignes().add(ligne);
 		}
 
@@ -96,7 +106,7 @@ public class CommandeForm extends AbstractForm{
 		initCompteOption(ctx, bean.getCompte().getCompteCode()::setValueOptions);
 		initMagasinOption(ctx, bean.getMagasin().getMagasinCode()::setValueOptions);
 
-		commandeMetadataConfig.applyMetadata(ctx, bean);
+		metadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 
@@ -115,6 +125,9 @@ public class CommandeForm extends AbstractForm{
 
 	public CommandeSearchBean initSearchFormBean(ClientContext ctx) {
 		var bean = AchatVenteMapper.buildCommandeSearchBean();
+		initCompteOption(ctx, bean.getCompte()::setValueOptions);
+		
+		searchMetadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 

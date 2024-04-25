@@ -68,7 +68,6 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 		setDtoValue(dto::setRemiseTaux, bean.getRemiseTaux());
 		setDtoValue(dto::setRemiseMontant, bean.getRemiseMontant());
 		setDtoValue(dto::setRemiseRaison, bean.getRemiseRaison());
-		
 
 		setDtoValue(dto::setPrixTotal, bean.getPrixTotal());
 		setDtoValue(dto::setPrixTotalHT, bean.getPrixTotalHT());

@@ -22,12 +22,13 @@
         <mat-drawer-content class="search-result">
             <div class="col-6 m-0 p-0">
                 <section class="p-3">
-                    <h4>
-                        <button mat-icon-button (click)="drawer.toggle()">
-                            <mat-icon>tune</mat-icon>
-                        </button>
-                        Liste des magasins
-                    </h4>
+                    <mat-toolbar color="secondary">                      
+                        <mat-toolbar-row>
+                            <button mat-icon-button (click)="drawer.toggle()">
+                                <mat-icon>tune</mat-icon>
+                            </button>
+                        </mat-toolbar-row>
+                    </mat-toolbar>
                     <table mat-table [dataSource]="this">
                         <ng-container matColumnDef="select">
                             <th mat-header-cell *matHeaderCellDef>

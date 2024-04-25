@@ -6,20 +6,26 @@ import { MatTable } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { map } from 'rxjs';
 import { InventaireBean, InventaireSearchBean } from 'src/app/backed/bean.stock';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { IndexModalComponent } from '../unite/index.modal.component';
 import { AjustPrixDialogComponent } from './ajust.prix.dialog.component';
 import { AjustQteDialogComponent } from './ajust.qte.dialog.component';
 import { CreateDialogComponent } from './create.dialog.component';
+import { FieldMetadata } from 'src/app/backed/metadata';
+import { FormsModule } from '@angular/forms';
+import { Message } from 'src/app/backed/message';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     standalone: true,
     imports: [
         IndexModalComponent,
         SharedModule,      
-        MatToolbarModule 
+        MatToolbarModule,
+        FormsModule,        
+        MatTooltipModule
     ],
     selector: 'stock-inventaire-list-tab',
     templateUrl: './list.tab.component.html'
@@ -42,10 +48,11 @@ export class ListTabComponent extends BeanList<InventaireBean> implements OnInit
         'magasin',
         'article',
         'variantCode',
-        'article.unite',
-        'quantite',
+        'unite.achat',
         'prixUnitaireAchat',
+        'unite.vente',
         'prixUnitaireVente',
+        'quantite',
         'actions'
     ];
 
@@ -107,8 +114,31 @@ export class ListTabComponent extends BeanList<InventaireBean> implements OnInit
         this.dialog.open(AjustQteDialogComponent, { data: bean });
     }
 
+    ajusterQuantiteStockInlineAction(bean: InventaireBean) {
+        console.log(bean)
+        this.http.post(`stock/inventaire/ajuster-quantite`, bean)   
+            .pipe(map((e: any) => <any>e))
+            .subscribe(data => {
+                this.ui.displayFlashMessage(<Array<Message>>data.messages);
+                bean.quantiteAjust.editable = false;
+                bean.quantite.value = data.record.quantite.value;
+                bean.quantiteAjust.value = 0;
+            });
+    }
+
     definirPrixVenteAction(bean: InventaireBean) {
         this.dialog.open(AjustPrixDialogComponent, { data: bean });
+    }
+    
+    definirPrixVenteInlineAction(bean: InventaireBean) {
+        this.http.post(`stock/inventaire/ajuster-prix`, bean)   
+            .pipe(map((e: any) => <any>e))
+            .subscribe(data => {
+                this.ui.displayFlashMessage(<Array<Message>>data.messages);
+                bean.prixUnitaireVenteAjust.editable = false;
+                bean.prixUnitaireVente.value = data.record.prixUnitaireVente.value;
+                bean.prixUnitaireVenteAjust.value = 0;
+            });
     }
 
     uniteAction() {
@@ -117,5 +147,9 @@ export class ListTabComponent extends BeanList<InventaireBean> implements OnInit
 
     addAction() {        
         this.dialog.open(CreateDialogComponent);
+    }
+
+    toggleAjustFieldAction(field:FieldMetadata<any>) {        
+        field.editable = !field.editable;
     }
 }

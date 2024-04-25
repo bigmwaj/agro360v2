@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { InventaireBean } from 'src/app/backed/bean.stock';
-import { SharedModule } from 'src/app/common/shared.module';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
-import { UIService } from 'src/app/common/service/ui.service';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 
 @Component({
     standalone: true,
@@ -34,6 +34,8 @@ export class AjustQteDialogComponent implements OnInit {
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.ui.displayFlashMessage(<Array<Message>>data.messages);
+                this.bean.quantite.value = data.record.quantite.value;
+                this.bean.quantiteAjust.value = 0;
                 this.dialog.closeAll();
             });
     }

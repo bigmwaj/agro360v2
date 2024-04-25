@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedModule } from 'src/app/common/shared.module';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 
 @Component({
     standalone: true,

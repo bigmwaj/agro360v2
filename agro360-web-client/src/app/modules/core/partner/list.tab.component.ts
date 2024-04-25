@@ -6,12 +6,13 @@ import { MatTable } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { map } from 'rxjs';
 import { PartnerBean, PartnerSearchBean } from 'src/app/backed/bean.core';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
+import { IBeanListTab } from '../../common/bean.list.tab';
 
 @Component({
     standalone: true,
@@ -23,7 +24,7 @@ import { DeleteDialogComponent } from './delete.dialog.component';
     selector: 'core-partner-list-tab',
     templateUrl: './list.tab.component.html'
 })
-export class ListTabComponent extends BeanList<PartnerBean> implements OnInit {
+export class ListTabComponent extends BeanList<PartnerBean> implements OnInit, IBeanListTab {
     
     @Input({required:true})
     breadcrumb:BreadcrumbItem;

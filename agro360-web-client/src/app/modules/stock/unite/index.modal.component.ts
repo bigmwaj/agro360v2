@@ -5,17 +5,19 @@ import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { UniteBean, UniteSearchBean } from 'src/app/backed/bean.stock';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { BeanTools } from 'src/app/common/bean.tools';
-import { SharedModule } from 'src/app/common/shared.module';
-import { UIService } from 'src/app/common/service/ui.service';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Message } from 'src/app/backed/message';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
     standalone: true,
     imports: [
-        SharedModule
+        SharedModule, 
+        MatToolbarModule, 
     ],
     selector: 'stock-unite-index-modal',
     templateUrl: './index.modal.component.html'

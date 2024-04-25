@@ -7,9 +7,9 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { map } from 'rxjs';
 import { TransactionBean, TransactionSearchBean } from 'src/app/backed/bean.finance';
 import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { IndexModalComponent as CompteIndexModalComponent } from '../compte/index.modal.component';
 import { IndexModalComponent as RubriqueIndexModalComponent } from '../rubrique/index.modal.component';
 import { IndexModalComponent as TaxeIndexModalComponent } from '../taxe/index.modal.component';
@@ -17,6 +17,7 @@ import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
 import { TransfertDialogComponent } from './transfert.dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { IBeanListTab } from '../../common/bean.list.tab';
 
 @Component({
     standalone: true,
@@ -31,7 +32,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     selector: 'finance-transaction-list-tab',
     templateUrl: './list.tab.component.html',
 })
-export class ListTabComponent extends BeanList<TransactionBean> implements OnInit {
+export class ListTabComponent extends BeanList<TransactionBean> implements OnInit, IBeanListTab {
 
     @Input({required:true})
     breadcrumb:BreadcrumbItem
@@ -51,10 +52,10 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
 
     displayedColumns: string[] = [
         'select',
+        'date',
         'transactionCode',
         'type',
         'rubrique',
-        'date',
         'status',
         'compte',
         'montant',
@@ -133,28 +134,53 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title);
     }
 
+    private initQueryWithProperTransactionType(queryParams: HttpParams):HttpParams{
+        if( this.module != null ){
+            switch(this.module){
+                case "vente": 
+                queryParams = queryParams.append('type', TransactionTypeEnumVd.RECETTE);
+                break;
+
+                case "achat": 
+                queryParams = queryParams.append('type', TransactionTypeEnumVd.DEPENSE);
+                break;
+
+                case "paie": 
+                queryParams = queryParams.append('type', TransactionTypeEnumVd.DEPENSE);
+                break;
+            }                    
+        }
+        return queryParams;
+    }
+
+    private initSearchFormAccordingToModule(sf: TransactionSearchBean){
+        if( this.module != null ){
+            sf.type.editable = false;
+
+            switch(this.module){
+                case "vente": 
+                sf.type.value = TransactionTypeEnumVd.RECETTE;
+                break;
+
+                case "achat": 
+                sf.type.value = TransactionTypeEnumVd.DEPENSE;
+                break;
+
+                case "paie": 
+                sf.type.value = TransactionTypeEnumVd.DEPENSE;
+                break;
+            }                    
+        }
+    }
+
     resetSearchFormAction() {
+        let queryParams = this.initQueryWithProperTransactionType(new HttpParams());        
+
         this.http        
-            .get(`finance/transaction/search-form`)  
+            .get(`finance/transaction/search-form`, { params: queryParams })  
             .subscribe(data => {
                 this.searchForm = <TransactionSearchBean>data;
-                if( this.module != null ){
-                    this.searchForm.type.editable = false;
-
-                    switch(this.module){
-                        case "vente": 
-                        this.searchForm.type.value = TransactionTypeEnumVd.RECETTE;
-                        break;
-
-                        case "achat": 
-                        this.searchForm.type.value = TransactionTypeEnumVd.DEPENSE;
-                        break;
-
-                        case "paie": 
-                        this.searchForm.type.value = TransactionTypeEnumVd.DEPENSE;
-                        break;
-                    }                    
-                }
+                this.initSearchFormAccordingToModule(this.searchForm);
                 this.searchAction();
             });
     }
@@ -172,8 +198,8 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
                 this.setData(data.records);
             });
     }
-    
-    addAction(type:TransactionTypeEnumVd, bean?: TransactionBean) {   
+
+    private _addAction(type:TransactionTypeEnumVd, bean?: TransactionBean) {   
         let queryParams = new HttpParams();
         queryParams = queryParams.append("type", type);
         if( bean ){
@@ -186,8 +212,12 @@ export class ListTabComponent extends BeanList<TransactionBean> implements OnIni
         });
     }
     
+    addAction(type:TransactionTypeEnumVd) {   
+        this._addAction(type)
+    }
+    
     copyAction(bean: TransactionBean) {   
-        this.addAction(bean.type.value, bean)
+        this._addAction(bean.type.value, bean)
     }
 
     private getEditingIndex(bean:TransactionBean){

@@ -81,6 +81,7 @@ public class LigneDto extends AbstractDto {
 	@Column(name = "PRIX_TOTAL_TTC", precision = 16, scale = 4, nullable = false)
 	private BigDecimal prixTotalTTC;
 	
+	// prixTotalHT - remise + taxes
 	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4, nullable = false)
 	private BigDecimal prixTotal;
 

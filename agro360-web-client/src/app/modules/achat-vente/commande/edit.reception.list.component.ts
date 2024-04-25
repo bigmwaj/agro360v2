@@ -5,10 +5,10 @@ import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { CommandeBean, LigneBean, ReceptionLigneBean } from 'src/app/backed/bean.av';
 import { Message } from 'src/app/backed/message';
-import { BeanTools } from 'src/app/common/bean.tools';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 
 @Component({
     standalone: true,

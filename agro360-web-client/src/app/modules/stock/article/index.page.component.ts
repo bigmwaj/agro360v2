@@ -1,13 +1,13 @@
 
 import { Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { SharedModule } from 'src/app/common/shared.module';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { EditTabComponent } from './edit.tab.component';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { ListTabComponent } from './list.tab.component';
 import { ArticleBean } from 'src/app/backed/bean.stock';
-import { BreadcrumbItem } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 
 @Component({

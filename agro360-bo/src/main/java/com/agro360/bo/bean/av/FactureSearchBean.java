@@ -6,6 +6,7 @@ import java.util.List;
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.av.FactureStatusEnumVd;
+import com.agro360.vd.av.FactureTypeEnumVd;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,10 +21,14 @@ public class FactureSearchBean extends AbstractBean{
 
 	private FieldMetadata<String> partner = new FieldMetadata<>("Partenaire");
 
-	private FieldMetadata<List<FactureStatusEnumVd>> statusIn = new FieldMetadata<>("Statuts dans", FactureStatusEnumVd.getAsMap());
+	private FieldMetadata<List<FactureStatusEnumVd>> statusIn = new FieldMetadata<>("Statut", FactureStatusEnumVd.getAsMap());
+	
+	private FieldMetadata<FactureTypeEnumVd> type = new FieldMetadata<>("Type", FactureTypeEnumVd.getAsMap());
 
 	private FieldMetadata<LocalDate> dateDebut = new FieldMetadata<>("Date(début)");
 
 	private FieldMetadata<LocalDate> dateFin = new FieldMetadata<>("Date(fin)");
+	
+	private FieldMetadata<String> createFactureBtn = new FieldMetadata<>();
 
 }

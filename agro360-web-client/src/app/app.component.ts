@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { UIService } from './common/service/ui.service';
+import { UIService } from './modules/common/service/ui.service';
 
 @Component({
     selector: 'app-root',

@@ -1,6 +1,6 @@
 import { AbstractBean } from 'src/app/backed/bean.common';
-import { FieldMetadata } from '../backed/metadata';
-import { ClientOperationEnumVd } from '../backed/vd.common';
+import { FieldMetadata } from '../../backed/metadata';
+import { ClientOperationEnumVd } from '../../backed/vd.common';
 
 export class BeanTools{
 

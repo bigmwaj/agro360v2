@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ArticleBean, MagasinBean, UniteBean } from 'src/app/backed/bean.stock';
-import { CommonService } from 'src/app/common/service/common.service';
+import { CommonService } from 'src/app/modules/common/service/common.service';
 
 @Injectable({
     providedIn:'root'

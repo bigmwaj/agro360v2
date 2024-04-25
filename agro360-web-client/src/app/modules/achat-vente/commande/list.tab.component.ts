@@ -7,17 +7,18 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTable, MatTableModule } from '@angular/material/table';
-import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { map } from 'rxjs';
 import { CommandeBean, CommandeSearchBean } from 'src/app/backed/bean.av';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { SharedModule } from 'src/app/common/shared.module';
+import { CommandeTypeEnumVd } from 'src/app/backed/vd.av';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { CommandeTypeEnumVd } from 'src/app/backed/vd.av';
+import { IBeanListTab } from '../../common/bean.list.tab';
 
 @Component({
     standalone: true,
@@ -37,7 +38,7 @@ import { CommandeTypeEnumVd } from 'src/app/backed/vd.av';
     selector: 'achat-vente-commande-list-tab',
     templateUrl: './list.tab.component.html'
 })
-export class ListTabComponent extends BeanList<CommandeBean> implements OnInit {
+export class ListTabComponent extends BeanList<CommandeBean> implements OnInit, IBeanListTab {
     
     @Input({required:true})
     breadcrumb:BreadcrumbItem

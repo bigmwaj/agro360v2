@@ -10,12 +10,13 @@ import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { map } from 'rxjs';
 import { FactureBean, FactureSearchBean } from 'src/app/backed/bean.av';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { IBeanListTab } from '../../common/bean.list.tab';
 
 @Component({
     standalone: true,
@@ -34,7 +35,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     selector: 'achat-vente-facture-list-tab',
     templateUrl: './list.tab.component.html'
 })
-export class ListTabComponent extends BeanList<FactureBean> implements OnInit {
+export class ListTabComponent extends BeanList<FactureBean> implements OnInit, IBeanListTab {
 
     @Input({required:true})
     editingBeans: FactureBean[] = [];

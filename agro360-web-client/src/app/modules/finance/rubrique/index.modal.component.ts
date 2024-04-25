@@ -7,10 +7,10 @@ import { map } from 'rxjs';
 import { RubriqueBean, RubriqueSearchBean } from 'src/app/backed/bean.finance';
 import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanTools } from 'src/app/common/bean.tools';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 
 @Component({
     standalone: true,

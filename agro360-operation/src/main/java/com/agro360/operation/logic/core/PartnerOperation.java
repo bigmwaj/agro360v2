@@ -19,7 +19,6 @@ import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.common.AbstractOperation;
 import com.agro360.operation.metadata.BeanMetadataConfig;
 import com.agro360.operation.utils.RuleNamespace;
-import com.agro360.vd.core.PartnerStatusEnumVd;
 
 @Service
 public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
@@ -137,9 +136,9 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 			matcher = matcher.withMatcher("phone", ExampleMatcher.GenericPropertyMatchers.endsWith());
 		}
 
-		if (searchBean.getStatus() != null) {
-			probe.setStatus((PartnerStatusEnumVd) searchBean.getStatus().getValue());
-		}
+//		if (searchBean.getStatusIn() != null) {
+//			probe.setStatus((PartnerStatusEnumVd) searchBean.getStatusIn().getValue());
+//		}
 
 		if (searchBean.getType() != null) {
 			probe.setType(searchBean.getType().getValue());

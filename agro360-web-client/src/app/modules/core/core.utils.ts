@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
 import { PartnerBean } from 'src/app/backed/bean.core';
-import { CommonUtlis } from 'src/app/common/utils/common.utils';
+import { CommonUtlis } from 'src/app/modules/common/utils/common.utils';
 
 export class CoreUtils {
 
