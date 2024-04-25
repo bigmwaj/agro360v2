@@ -4,9 +4,9 @@ import { map } from 'rxjs';
 import { MagasinBean } from 'src/app/backed/bean.stock';
 import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanTools } from 'src/app/common/bean.tools';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { EditCasierListComponent } from './edit.casier.list.component';
 
 @Component({

@@ -7,14 +7,20 @@
                 </h4>
                 <div>
                     <input-text-field [field]="searchForm.transactionCode"></input-text-field>
+                    <input-text-field [field]="searchForm.partner"></input-text-field>
                     <select-one-field [field]="searchForm.type"></select-one-field>
+                    <select-multiple-field [field]="searchForm.statusIn"></select-multiple-field>
+                    <select-one-field [field]="searchForm.rubrique"></select-one-field>
+                    <select-one-field [field]="searchForm.compte"></select-one-field>
+                    <input-date-field [field]="searchForm.dateDebut"></input-date-field>
+                    <input-date-field [field]="searchForm.dateFin"></input-date-field>
                 </div>
                 <div class="text-nowrap">
-                    <button mat-raised-button color="primary" class="me-2" (click)="searchAction()">
+                    <button mat-raised-button class="me-2" (click)="searchAction()">
                         <mat-icon>search</mat-icon>Rechercher
                     </button>
-                    <button mat-raised-button color="primary" (click)="resetSearchFormAction()">
-                        <mat-icon>reset</mat-icon>Reinitialiser
+                    <button mat-raised-button (click)="resetSearchFormAction()">
+                        <mat-icon>restart_alt</mat-icon>Reinitialiser
                     </button>
                 </div>
             </section>
@@ -22,9 +28,28 @@
         <mat-drawer-content class="search-result">
             <section class="p-3">
                 <mat-toolbar color="secondary">                      
-                    <mat-toolbar-row>
-                        <button mat-icon-button (click)="drawer.toggle()">
-                            <mat-icon>tune</mat-icon>
+                    <mat-toolbar-row class="search-toolbar" *ngIf="searchForm"> 
+                        <div class="me-2"> 
+                            <button mat-icon-button (click)="drawer.toggle()">
+                                <mat-icon>tune</mat-icon>
+                            </button>                           
+                        </div>
+                        <div class="me-2">                            
+                            <input-date-field [field]="searchForm.dateDebut"></input-date-field>
+                        </div>
+                        <div class="me-2">                            
+                            <input-date-field [field]="searchForm.dateFin"></input-date-field>
+                        </div>
+                        <div class="me-2">                            
+                            <select-one-field [field]="searchForm.compte"></select-one-field>
+                        </div>
+
+                        <button mat-icon-button color="primary" class="me-2" (click)="searchAction()">
+                            <mat-icon>search</mat-icon>
+                        </button>
+
+                        <button mat-icon-button color="primary" (click)="resetSearchFormAction()">
+                            <mat-icon>restart_alt</mat-icon>
                         </button>
                     </mat-toolbar-row>
                 </mat-toolbar>
@@ -90,41 +115,29 @@
 
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef class="text-end">
-                            <button mat-mini-fab 
-                                *ngIf="addOptions.length == 1" 
-                                (click)="addAction(addOptions[0].type)"
-                                class="me-2" color="primary">
-                                <mat-icon>add</mat-icon>
-                            </button>
-
-                            <button mat-mini-fab 
-                                *ngIf="addOptions.length != 1"
-                                [matMenuTriggerFor]="addMenu" 
-                                class="me-2" color="primary">
-                                <mat-icon>add</mat-icon>
-                            </button>
-                            <mat-menu #addMenu="matMenu"> 
-                                <ng-container *ngFor="let o of addOptions">
-                                    <button mat-menu-item color="primary" class="me-2" (click)="addAction(o.type)">
-                                        <mat-icon>open_in_new</mat-icon>{{ o.label }}
-                                    </button>
-                                </ng-container>
-                            </mat-menu>
-
                             <button mat-icon-button color="secondary" [matMenuTriggerFor]="menu">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
+                            
                             <mat-menu #menu="matMenu">                                
-                                <button mat-menu-item color="primary" class="me-2" (click)="transfertAction()">
+                                <button mat-menu-item color="primary" 
+                                    *ngIf="searchForm && searchForm.transfertBtn.visible"
+                                    (click)="transfertAction()">
                                     <mat-icon>open_in_new</mat-icon>Transfert
                                 </button>
-                                <button mat-menu-item color="primary" class="me-2" (click)="rubriqueAction()">
+                                <button mat-menu-item color="primary"                                     
+                                    *ngIf="searchForm && searchForm.rubriqueBtn.visible"
+                                    (click)="rubriqueAction()">
                                     <mat-icon>open_in_new</mat-icon>Rubriques
                                 </button>
-                                <button mat-menu-item color="primary" (click)="compteAction()">
+                                <button mat-menu-item color="primary"                                     
+                                    *ngIf="searchForm && searchForm.compteBtn.visible"
+                                    (click)="compteAction()">
                                     <mat-icon>open_in_new</mat-icon>Comptes
                                 </button>
-                                <button mat-menu-item color="primary" (click)="taxeAction()">
+                                <button mat-menu-item color="primary"                                     
+                                    *ngIf="searchForm && searchForm.taxeBtn.visible"
+                                    (click)="taxeAction()">
                                     <mat-icon>open_in_new</mat-icon>Taxes
                                 </button>
                             </mat-menu>
@@ -144,7 +157,10 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu">   
-                                <button mat-menu-item color="primary" title="Supprimer" (click)="deleteAction(element)">
+                                <button mat-menu-item color="primary" 
+                                    *ngIf="element.deleteBtn.visible"
+                                    title="Supprimer" 
+                                    (click)="deleteAction(element)">
                                     <mat-icon>delete</mat-icon> Supprimer
                                 </button> 
                             </mat-menu>

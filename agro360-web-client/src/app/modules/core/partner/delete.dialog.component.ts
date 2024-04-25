@@ -4,8 +4,8 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { PartnerBean } from 'src/app/backed/bean.core';
 import { Message } from 'src/app/backed/message';
-import { UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 
 @Component({
     standalone: true,

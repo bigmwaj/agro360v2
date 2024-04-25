@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { AvicoleBlockComponent } from './avicole.block.component';
 import { CompteBlockComponent } from './compte.block.component';
 import { FinGenBlockComponent } from './fingen.block.component';

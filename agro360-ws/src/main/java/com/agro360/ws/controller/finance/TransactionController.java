@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,9 +34,7 @@ public class TransactionController extends AbstractController {
 
 	@GetMapping()
 	public ResponseEntity<ModelMap> searchAction(
-			@RequestBody 
-			@Validated Optional<TransactionSearchBean> searchForm, 
-			BindingResult br) {	
+			@RequestBody @Validated Optional<TransactionSearchBean> searchForm) {	
 		var ctx = new ClientContext();
 		var records = service.searchAction(ctx, searchForm);
 		var model = new ModelMap(RECORDS_MODEL_KEY, records);	
@@ -45,8 +42,9 @@ public class TransactionController extends AbstractController {
 	}
 	
 	@GetMapping("/search-form")
-	public ResponseEntity<TransactionSearchBean> getSearchFormAction() {
-		return ResponseEntity.ok(form.initSearchFormBean(getClientContext()));
+	public ResponseEntity<TransactionSearchBean> getSearchFormAction(
+			@RequestParam Optional<TransactionTypeEnumVd> type) {
+		return ResponseEntity.ok(form.initSearchFormBean(getClientContext(), type));
 	}
 	
 	@GetMapping("/edit-form")
@@ -76,13 +74,13 @@ public class TransactionController extends AbstractController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated TransactionBean bean, BindingResult br) {
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated TransactionBean bean) {
 		service.saveAction(getClientContext(), bean);
 		return ResponseEntity.ok(new ModelMap());
 	}
 	
 	@PostMapping("transfert")
-	public ResponseEntity<ModelMap> transfertAction(@RequestBody @Validated TransfertBean bean, BindingResult br) {
+	public ResponseEntity<ModelMap> transfertAction(@RequestBody @Validated TransfertBean bean) {
 		var ctx = getClientContext();
 		var result = service.transfert(ctx, bean);
 		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());

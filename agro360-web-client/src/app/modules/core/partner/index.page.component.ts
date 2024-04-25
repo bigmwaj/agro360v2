@@ -4,11 +4,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { PartnerBean } from 'src/app/backed/bean.core';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanIndexPage } from '../../common/bean.index.page';
 import { EditTabComponent } from './edit.tab.component';
 import { ListTabComponent } from './list.tab.component';
-import { BreadcrumbItem } from 'src/app/common/service/ui.service';
-import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 
 @Component({
     standalone: true,
@@ -23,7 +23,7 @@ import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
     selector: 'core-partner-index-page',
     templateUrl: './index.page.component.html'
 })
-export class IndexPageComponent implements OnInit {
+export class IndexPageComponent extends BeanIndexPage<PartnerBean, ListTabComponent, EditTabComponent> implements OnInit {
 
     @Input()
     module:string;
@@ -36,15 +36,29 @@ export class IndexPageComponent implements OnInit {
     
     @ViewChild(ListTabComponent) 
     listTab: ListTabComponent;
-
-    editingBeans: PartnerBean[] = [];
-
-    selectedTab: {index:number} = {index:0}
     
     @Input()
-    breadcrumb:BreadcrumbItem
+    breadcrumb:BreadcrumbItem;
+    
+    protected areBeansEqual(b1: PartnerBean, b2: PartnerBean):boolean{
+        return b1 == b2 || b1.partnerCode.value == b2.partnerCode.value;
+    }
 
-    ngOnInit(): void {
+    protected override getEditTabs(): QueryList<EditTabComponent> {
+        return this.editTabs;
+    }
+
+    protected override getTabGroup(): MatTabGroup {
+        return this.tabGroup;
+    }
+
+    protected override getListTab(): ListTabComponent {
+        return this.listTab;
+    }
+
+    override ngOnInit(): void {
+
+        super.ngOnInit();
         if( !this.breadcrumb ){
             this.breadcrumb = new BreadcrumbItem('Partenaires')
         }else{
@@ -65,43 +79,6 @@ export class IndexPageComponent implements OnInit {
                     this.breadcrumb = this.breadcrumb.addAndReturnChildItem(`Module ${this.module} inconnu!'`);
                     break;
             }
-        }
-    }
-    
-    refreshPageTitle():void{
-        var selectedIndex = this.tabGroup.selectedIndex
-        if( selectedIndex == null ){
-            selectedIndex = 0
-        }
-        this._refreshTabTitle(selectedIndex)
-    }
-
-    selectedTabChange($event:any):void{
-        this._refreshTabTitle($event.index);
-        this.selectedTab.index = $event.index;
-    }
-
-    private getEditingBeanIndex(bean:PartnerBean):number{
-        let filter = (e:PartnerBean) => (ClientOperationEnumVd.CREATE == bean.action && e == bean) 
-            || e.partnerCode.value == bean.partnerCode.value;
-        return this.editingBeans.findIndex(filter);
-    }
-
-    removeAction(bean:PartnerBean){
-        const selectedTabIndex = this.selectedTab.index;
-        const editingBeanIndex = this.getEditingBeanIndex(bean);
-        this.editingBeans = this.editingBeans.filter((e, i)=> i != editingBeanIndex);
-        if( selectedTabIndex == editingBeanIndex + 1 ){
-            this.selectedTab.index = editingBeanIndex //On recule
-        }
-    }
-
-    private _refreshTabTitle(index: number){
-        if( index == 0 ){
-            this.listTab.refreshPageTitle()
-        }else{
-            let editTab = this.editTabs.get(index-1);
-            editTab?.refreshPageTitle()
         }
     }
 }

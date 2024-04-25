@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTreeModule, MatTreeNestedDataSource } from '@angular/material/tree';
 import { map } from 'rxjs';
 import { CategoryBean } from 'src/app/backed/bean.core';
-import { SharedModule } from 'src/app/common/shared.module';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 
 @Component({
     standalone: true,

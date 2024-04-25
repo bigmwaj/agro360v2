@@ -4,9 +4,10 @@ import { map } from 'rxjs';
 import { FactureBean } from 'src/app/backed/bean.av';
 import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanTools } from 'src/app/common/bean.tools';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { IBeanEditTab } from '../../common/bean.edit.tab';
 
 @Component({
     standalone: true,
@@ -16,7 +17,7 @@ import { SharedModule } from 'src/app/common/shared.module';
     selector: 'achat-vente-facture-edit-tab',
     templateUrl: './edit.tab.component.html'
 })
-export class EditTabComponent implements OnInit {
+export class EditTabComponent implements OnInit, IBeanEditTab {
     
     @Input({required:true})
     breadcrumb:BreadcrumbItem

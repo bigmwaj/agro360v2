@@ -65,24 +65,34 @@ public class InventaireService extends AbstractService {
 		}		
 	}
 
-	public void ajusterQuantite(ClientContext ctx, InventaireBean bean) {
+	private InventaireBean getFreshInventaire(ClientContext ctx, InventaireBean bean) {
+		var magasinCode = bean.getMagasin().getMagasinCode().getValue();
+		var articleCode = bean.getArticle().getArticleCode().getValue();
+		var variantCode = bean.getVariantCode().getValue();
+		return operation.findInventaireByCode(ctx, magasinCode, articleCode, variantCode);		
+	}
+	
+	public InventaireBean ajusterQuantite(ClientContext ctx, InventaireBean bean) {
 		serviceHelper.ajusterQuantite(ctx, bean);
+		return getFreshInventaire(ctx, bean);
 	}
 
-	public void ajusterPrix(ClientContext ctx, InventaireBean bean) {
+	public InventaireBean ajusterPrix(ClientContext ctx, InventaireBean bean) {
 		var magasinCode = bean.getMagasin().getMagasinCode().getValue();
 		var articleCode = bean.getArticle().getArticleCode().getValue();
 		var variantCode = bean.getVariantCode().getValue();
 		
 		var freshBean = operation.findInventaireByCode(ctx, magasinCode, articleCode, variantCode);
 		
-		freshBean.getPrixUnitaireVente().setValue(bean.getPrixUnitaireVente().getValue());
+		freshBean.getPrixUnitaireVente().setValue(bean.getPrixUnitaireVenteAjust().getValue());
 		operation.updateInventairePrixVente(ctx, freshBean);
 		
 		var prix = freshBean.getPrixUnitaireVente().getValue();
 		var msgTpl = "Le prix de la variante <strong>%s</strong> de l'article <strong>%s</strong> a été ajusté au magasin <strong>%s</strong> avec succès!"
 				+ " Le nouveau prix de vente est <strong>%,.2f</strong>";
 		ctx.success(String.format(msgTpl, variantCode, articleCode, magasinCode, prix.doubleValue()));
+
+		return getFreshInventaire(ctx, bean);
 	}
 	
 }

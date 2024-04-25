@@ -5,11 +5,12 @@ import { map } from 'rxjs';
 import { PartnerBean } from 'src/app/backed/bean.core';
 import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanTools } from 'src/app/common/bean.tools';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
 import { CategoryBlockComponent } from './category.block.component';
+import { IBeanEditTab } from '../../common/bean.edit.tab';
 
 @Component({
     standalone: true,
@@ -20,7 +21,7 @@ import { CategoryBlockComponent } from './category.block.component';
     selector: 'core-partner-edit-tab',
     templateUrl: './edit.tab.component.html'
 })
-export class EditTabComponent implements OnInit {
+export class EditTabComponent implements OnInit, IBeanEditTab {
     @Input()
     module:string
 

@@ -2,14 +2,14 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs';
-import { SharedModule } from 'src/app/common/shared.module';
-import { UIService } from 'src/app/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 import { ActivatedRoute } from '@angular/router';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ProductionAvicoleService } from '../production.avicole.service';
 import { JourneeBean, JourneeSearchBean } from 'src/app/backed/bean.production.avicole';
 import { IndexProducitonListComponent } from './index.production.list.component';
-import { BeanTools } from 'src/app/common/bean.tools';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
 import { Message } from 'src/app/backed/message';
 
 @Component({

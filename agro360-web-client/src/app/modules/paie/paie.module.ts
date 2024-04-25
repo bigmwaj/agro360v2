@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PaieRoutingModule } from './paie-routing.module';
 import { PaieService } from './paie.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { StockModule } from '../stock/stock.module';
 
 @NgModule({

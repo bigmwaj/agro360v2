@@ -13,7 +13,6 @@ import com.agro360.dto.core.CategoryDto;
 import com.agro360.dto.core.PartnerCategoryDto;
 import com.agro360.dto.core.PartnerDto;
 import com.agro360.dto.core.UserAccountDto;
-import com.agro360.vd.core.PartnerStatusEnumVd;
 import com.agro360.vd.core.PartnerTypeEnumVd;
 import com.agro360.vd.core.UserAccountStatusEnumVd;
 
@@ -21,8 +20,6 @@ public class CoreMapper {
 
 	public static PartnerSearchBean buildPartnerSearchBean() {
 		var bean = new PartnerSearchBean();
-		bean.getStatus().setValueOptions(PartnerStatusEnumVd.getAsMap());
-		bean.getType().setValueOptions(PartnerTypeEnumVd.getAsMap());
 		return bean;
 	}
 
@@ -39,12 +36,10 @@ public class CoreMapper {
 		bean.getLastName().setValue(dto.getLastName());
 
 		bean.getStatus().setValue(dto.getStatus());
-		bean.getStatus().setValueOptions(PartnerStatusEnumVd.getAsMap());
 
 		bean.getName().setValue(dto.getName());
 
 		bean.getType().setValue(dto.getType());
-		bean.getType().setValueOptions(PartnerTypeEnumVd.getAsMap());
 
 		bean.getTitle().setValue(dto.getTitle());
 

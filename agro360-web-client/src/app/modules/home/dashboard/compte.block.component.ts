@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SharedModule } from 'src/app/common/shared.module';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { EtatCompteBean } from 'src/app/backed/bean.finance';

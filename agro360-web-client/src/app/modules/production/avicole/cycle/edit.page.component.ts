@@ -2,13 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { SharedModule } from 'src/app/common/shared.module';
-import { BeanTools } from 'src/app/common/bean.tools';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
 import { CycleBean } from 'src/app/backed/bean.production.avicole';
 import { EditMetadataListComponent } from './edit.metadata.list.component';
 import { map } from 'rxjs';
 import { Message } from 'src/app/backed/message';
-import { UIService } from 'src/app/common/service/ui.service';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 import { StockService } from 'src/app/modules/stock/stock.service';
 
 @Component({

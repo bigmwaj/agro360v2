@@ -20,8 +20,18 @@ public class InventaireBean extends AbstractBean {
 	private FieldMetadata<BigDecimal> prixUnitaireAchat = new FieldMetadata<>("Prix Achat");
 
 	private FieldMetadata<BigDecimal> prixUnitaireVente = new FieldMetadata<>("Prix Vente");
+	
+	private FieldMetadata<BigDecimal> prixUnitaireVenteAjust = new FieldMetadata<>("Prix Vente");
 
 	private FieldMetadata<Double> quantite = new FieldMetadata<>("Quantité");
+	
+	private FieldMetadata<Double> quantiteAjust = new FieldMetadata<>("Quantité");
+
+	@Setter
+	private UniteBean uniteAchat = new UniteBean();
+
+	@Setter
+	private UniteBean uniteVente = new UniteBean();
 
 	@Setter
 	private MagasinBean magasin = new MagasinBean();

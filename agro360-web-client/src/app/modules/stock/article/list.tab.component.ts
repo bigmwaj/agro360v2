@@ -6,18 +6,20 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { ArticleBean, ArticleSearchBean } from 'src/app/backed/bean.stock';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { IndexModalComponent } from '../unite/index.modal.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
     standalone: true,
     imports: [
         IndexModalComponent,
         SharedModule,
-        MatDividerModule
+        MatDividerModule,   
+        MatToolbarModule, 
     ],
     selector: 'stock-article-list-tab',
     templateUrl: './list.tab.component.html'

@@ -4,16 +4,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { MagasinBean, MagasinSearchBean } from 'src/app/backed/bean.stock';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { IndexModalComponent } from '../unite/index.modal.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
     standalone: true,
     imports: [
         IndexModalComponent,
-        SharedModule
+        SharedModule,           
+        MatToolbarModule, 
     ],
     selector: 'stock-magasin-list-tab',
     templateUrl: './list.tab.component.html'

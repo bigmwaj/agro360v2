@@ -34,4 +34,22 @@
             </achat-vente-commande-edit-tab>
         </mat-tab>
     </ng-container>
-  </mat-tab-group>
+</mat-tab-group>
+
+<div class="d-flex">
+    <button mat-fab extended cdkFocusInitial  class="ms-3 mb-3"
+        (click)="saveAction()" 
+        color="primary"
+        *ngIf="currentEditingBean?.saveBtn?.visible">
+        <mat-icon>save</mat-icon>Enregistrer
+    </button>
+
+    <span class="menu-spacer"></span>
+
+    <button mat-fab color="warn" extended (click)="addAction()" class="me-3 mb-3">
+        <mat-icon>add</mat-icon> Ajouter une nouvelle commande
+    </button>
+</div> 
+
+
+  

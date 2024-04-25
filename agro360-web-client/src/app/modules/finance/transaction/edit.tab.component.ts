@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { TransactionBean } from 'src/app/backed/bean.finance';
-import { SharedModule } from 'src/app/common/shared.module';
-import { BeanTools } from 'src/app/common/bean.tools';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
 import { Message } from 'src/app/backed/message';
-import { BreadcrumbItem, UIService } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
 import { map } from 'rxjs';
 import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
+import { IBeanEditTab } from '../../common/bean.edit.tab';
 
 @Component({
     standalone: true,
@@ -17,7 +18,7 @@ import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
     selector: 'finance-transaction-edit-tab',
     templateUrl: './edit.tab.component.html'
 })
-export class EditTabComponent implements OnInit {
+export class EditTabComponent implements OnInit, IBeanEditTab {
     @Input({required:true})
     breadcrumb:BreadcrumbItem
     

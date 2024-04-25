@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { Observable, map } from 'rxjs';
 import { ArticleBean, MagasinBean, UniteBean } from 'src/app/backed/bean.stock';
-import { CommonUtlis } from 'src/app/common/utils/common.utils';
+import { CommonUtlis } from 'src/app/modules/common/utils/common.utils';
 
 export class StockUtils {
 

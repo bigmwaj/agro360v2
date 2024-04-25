@@ -35,3 +35,32 @@
         </mat-tab>
     </ng-container>
   </mat-tab-group>
+
+  <div class="d-flex">
+    <button mat-fab extended cdkFocusInitial  class="ms-3 mb-3"
+        (click)="saveAction()" 
+        color="primary"
+        *ngIf="currentEditingBean?.saveBtn?.visible">
+        <mat-icon>save</mat-icon>Enregistrer
+    </button>
+
+    <span class="menu-spacer"></span>
+
+    <button mat-fab extended class="me-3 mb-3" color="warn" *ngIf="addOptions.length == 1"
+        (click)="addAction(addOptions[0].type)">
+        <mat-icon>add</mat-icon> Ajouter une nouvelle Transaction
+    </button>
+
+    <button mat-fab extended class="me-3 mb-3" color="warn" *ngIf="addOptions.length != 1"
+        [matMenuTriggerFor]="addMenu">
+        <mat-icon>add</mat-icon>  Ajouter une nouvelle Transaction
+    </button>
+
+    <mat-menu #addMenu="matMenu"> 
+        <ng-container *ngFor="let o of addOptions">
+            <button mat-menu-item color="primary" (click)="addAction(o.type)">
+                <mat-icon>open_in_new</mat-icon>{{ o.label }}
+            </button>
+        </ng-container>
+    </mat-menu>
+</div>

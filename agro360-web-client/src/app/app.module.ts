@@ -19,8 +19,8 @@ import { PartnerModule } from './modules/core/core.module';
 import { AchatVentModule } from './modules/achat-vente/achat-vente.module';
 import { AchatModule } from './modules/achat/achat.module';
 import { PaieModule } from './modules/paie/paie.module';
-import { UIModule } from './common/ui.module';
-import { XhrInterceptor } from './common/interceptor/XhrInterceptor';
+import { UIModule } from './modules/common/ui.module';
+import { XhrInterceptor } from './modules/common/interceptor/XhrInterceptor';
 
 @NgModule({
     declarations: [

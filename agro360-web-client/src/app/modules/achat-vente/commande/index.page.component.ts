@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, Input, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { CommandeBean } from 'src/app/backed/bean.av';
-import { BreadcrumbItem } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { EditTabComponent } from './edit.tab.component';
 import { ListTabComponent } from './list.tab.component';
-import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
+import { BeanIndexPage } from '../../common/bean.index.page';
 
 @Component({
     standalone: true,
@@ -20,7 +20,7 @@ import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
     selector: 'achat-vente-commande-index-page',
     templateUrl: './index.page.component.html'
 })
-export class IndexPageComponent implements OnInit {
+export class IndexPageComponent extends BeanIndexPage<CommandeBean, ListTabComponent, EditTabComponent> {
     
     @Input({required:true})
     module:string;
@@ -30,18 +30,32 @@ export class IndexPageComponent implements OnInit {
     
     @ViewChild('achat_vente_commande')
     tabGroup: MatTabGroup;
+
+    @ViewChild(ListTabComponent) 
+    listTab: ListTabComponent;
     
     @ViewChildren(EditTabComponent) 
     editTabs!: QueryList<EditTabComponent>;
-    
-    @ViewChild(ListTabComponent) 
-    listTab: ListTabComponent;
 
-    editingBeans: CommandeBean[] = [];
+    protected areBeansEqual(b1: CommandeBean, b2: CommandeBean):boolean{
+        return b1 == b2 || b1.commandeCode.value == b2.commandeCode.value;
+    }
 
-    selectedTab: {index:number} = {index:0}
+    protected override getEditTabs(): QueryList<EditTabComponent> {
+        return this.editTabs;
+    }
 
-    ngOnInit(): void {
+    protected override getTabGroup(): MatTabGroup {
+        return this.tabGroup;
+    }
+
+    protected override getListTab(): ListTabComponent {
+        return this.listTab;
+    }
+
+    override ngOnInit(): void {
+        super.ngOnInit();
+
         if( !this.breadcrumb ){
             this.breadcrumb = new BreadcrumbItem('Achats & Ventes')
         }else{
@@ -61,40 +75,4 @@ export class IndexPageComponent implements OnInit {
         }
     }
 
-    private getEditingBeanIndex(bean:CommandeBean):number{
-        let filter = (e:CommandeBean) => (ClientOperationEnumVd.CREATE == bean.action && e == bean) 
-            || e.commandeCode.value == bean.commandeCode.value;
-        return this.editingBeans.findIndex(filter);
-    }
-
-    removeAction(bean:CommandeBean){
-        const selectedTabIndex = this.selectedTab.index;
-        const editingBeanIndex = this.getEditingBeanIndex(bean);
-        this.editingBeans = this.editingBeans.filter((e, i)=> i != editingBeanIndex);
-        if( selectedTabIndex == editingBeanIndex + 1 ){
-            this.selectedTab.index = editingBeanIndex //On recule
-        }
-    }
-
-    refreshPageTitle():void{
-        var selectedIndex = this.tabGroup.selectedIndex
-        if( selectedIndex == null ){
-            selectedIndex = 0
-        }
-        this._refreshTabTitle(selectedIndex)
-    }
-
-    selectedTabChange($event:any):void{
-        this._refreshTabTitle($event.index);
-        this.selectedTab.index = $event.index;
-    }
-
-    private _refreshTabTitle(index: number){
-        if( index == 0 ){
-            this.listTab.refreshPageTitle()
-        }else{
-            let editTab = this.editTabs.get(index-1);
-            editTab?.refreshPageTitle()
-        }
-    }
 }

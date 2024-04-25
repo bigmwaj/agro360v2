@@ -1,16 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { map } from 'rxjs';
 import { InventaireBean, VariantBean } from 'src/app/backed/bean.stock';
-import { UIService } from 'src/app/common/service/ui.service';
-import { SharedModule } from 'src/app/common/shared.module';
-import { StockService } from '../stock.service';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { MatTable } from '@angular/material/table';
-import { EditVariantListComponent } from './edit.variant.list.component';
-import { BeanTools } from 'src/app/common/bean.tools';
 import { Message } from 'src/app/backed/message';
+import { UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { StockService } from '../stock.service';
+import { EditVariantListComponent } from './edit.variant.list.component';
 
 @Component({
     standalone: true,

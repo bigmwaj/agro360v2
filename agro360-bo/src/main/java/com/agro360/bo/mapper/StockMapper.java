@@ -131,6 +131,18 @@ public class StockMapper {
 			article = new ArticleDto();
 		}
 		bean.setArticle(map(article));
+		
+		var uniteAchat = dto.getUniteAchat();
+		if( uniteAchat == null ) {
+			uniteAchat = new UniteDto();
+		}
+		bean.setUniteAchat(map(uniteAchat));
+		
+		var uniteVente = dto.getUniteVente();
+		if( uniteVente == null ) {
+			uniteVente = new UniteDto();
+		}
+		bean.setUniteVente(map(uniteVente));
 		return bean;
 	}
 

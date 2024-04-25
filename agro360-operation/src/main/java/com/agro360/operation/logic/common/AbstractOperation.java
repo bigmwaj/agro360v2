@@ -5,14 +5,20 @@ import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.dao.common.IDao;
 import com.agro360.dto.common.AbstractDto;
 
+import jakarta.persistence.EntityManager;
+
 public abstract class AbstractOperation<E extends AbstractDto, K> {
 
 	protected abstract IDao<E, K> getDao();
+	
+	@Autowired
+	protected EntityManager entityManager;
 	
 	protected Logger getLogger() {
 		return LoggerFactory.getLogger(getClass());

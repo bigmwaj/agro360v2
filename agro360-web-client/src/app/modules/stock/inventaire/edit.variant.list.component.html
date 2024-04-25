@@ -20,6 +20,22 @@
         </td>
     </ng-container>
 
+    <ng-container matColumnDef="unite.vente">
+        <th mat-header-cell *matHeaderCellDef>Unité(vente)</th>
+        <td mat-cell *matCellDef="let element">
+            <select-one-field [field]="element.uniteVente.uniteCode" [displayLabel]="false">
+            </select-one-field>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="unite.achat">
+        <th mat-header-cell *matHeaderCellDef>Unité(achat)</th>
+        <td mat-cell *matCellDef="let element">
+            <select-one-field [field]="element.uniteAchat.uniteCode" [displayLabel]="false">
+            </select-one-field>
+        </td>
+    </ng-container>
+
     <ng-container matColumnDef="alias">
         <th mat-header-cell *matHeaderCellDef>Alias</th>
         <td mat-cell *matCellDef="let element">

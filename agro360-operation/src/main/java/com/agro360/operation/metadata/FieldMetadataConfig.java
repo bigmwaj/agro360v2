@@ -57,16 +57,19 @@ public class FieldMetadataConfig {
 		attrMap.put("editable", editable);
 		
 		Predicate<Entry<String, List<AbstractRule>>> isNotNull = e -> e.getValue() != null;
+		Predicate<Entry<String, List<AbstractRule>>> isNull = e -> e.getValue() == null;
 		
 		Predicate<Entry<String, List<AbstractRule>>> isNotEmpty = e -> !e.getValue().isEmpty();
+		Predicate<Entry<String, List<AbstractRule>>> isEmpty = e -> e.getValue().isEmpty();
+		Predicate<Entry<String, List<AbstractRule>>> isAditableAttr = e -> "editable".equals(e.getKey());
 		
 		Consumer<Entry<String, List<AbstractRule>>> apply;
+		Consumer<Entry<String, List<AbstractRule>>> applyOwnerEditStatus;
 		apply = e -> applyRules(ctx, bean, fieldName, e.getKey(), e.getValue(), isOwnerEditable);
+		applyOwnerEditStatus = e -> applyRules(ctx, bean, fieldName, isOwnerEditable);
 		
-		attrMap.entrySet().stream()
-			.filter(isNotNull)
-			.filter(isNotEmpty)
-			.forEach(apply);
+		attrMap.entrySet().stream().filter(isNotNull.and(isNotEmpty)).forEach(apply);
+		attrMap.entrySet().stream().filter(isAditableAttr).filter(isNull.or(isEmpty)).forEach(applyOwnerEditStatus);
 	}
 	
 	private void applyMetadataToOthersAttributes(ClientContext ctx, AbstractBean bean, String fieldName) {
@@ -128,6 +131,11 @@ public class FieldMetadataConfig {
 		}
 		
 		bean.getField(fieldName).setAttribute(attrName, eval);
+		
+	}
+	
+	private void applyRules(ClientContext ctx, AbstractBean bean, String fieldName, boolean isOwnerEditable) {
+		bean.getField(fieldName).setAttribute("editable", isOwnerEditable);
 		
 	}
 	

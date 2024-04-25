@@ -3,8 +3,8 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { ConversionBean } from 'src/app/backed/bean.stock';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/common/component/bean.list';
-import { SharedModule } from 'src/app/common/shared.module';
+import { BeanList } from 'src/app/modules/common/bean.list';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { map } from 'rxjs';
 
 @Component({

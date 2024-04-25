@@ -1,11 +1,11 @@
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
-import { SharedModule } from 'src/app/common/shared.module';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { IndexPageComponent as CommandeIndexPageComponent } from '../../achat-vente/commande/index.page.component';
 import { IndexPageComponent as FactureIndexPageComponent } from '../../achat-vente/facture/index.page.component';
 import { IndexPageComponent as PartnerIndexPageComponent } from '../../core/partner/index.page.component';
 import { IndexPageComponent as TransactionIndexPageComponent } from '../../finance/transaction/index.page.component';
-import { BreadcrumbItem } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
 
 @Component({
     standalone: true,

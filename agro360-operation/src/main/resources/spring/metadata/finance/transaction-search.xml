@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/transactionCode">
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="16"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>
+	</bean>		
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/compte">
+	</bean>	
+			
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/partner">
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="16"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>								
+			</list>
+		</property>		
+	</bean>								
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/dateDebut">
+	</bean>				
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/dateFin">
+	</bean>				
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/statusIn">
+	</bean>				
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/type">
+	</bean>				
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/rubrique">
+	</bean>	
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/compteBtn">
+		<property name="visible">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>	
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/transfertBtn">
+		<property name="visible">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>	
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/taxeBtn">
+		<property name="visible">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>		
+	</bean>	
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/rubriqueBtn">
+		<property name="visible">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>		
+	</bean>	
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/createTransactionBtn">
+		<property name="visible">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>		
+	</bean>	
+
+    <bean name="finance/transaction-search" class="com.agro360.operation.metadata.BeanMetadataConfig">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue"/>
+			</list>
+		</property>
+		<property name="fields">
+			<map>
+				<entry key="transactionCode" value-ref="transaction-search/transactionCode"/>
+				<entry key="type" value-ref="transaction-search/type"/>
+				<entry key="dateDebut" value-ref="transaction-search/dateDebut"/>
+				<entry key="dateFin" value-ref="transaction-search/dateFin"/>
+				<entry key="statusIn" value-ref="transaction-search/statusIn"/>
+				<entry key="rubrique" value-ref="transaction-search/rubrique"/>
+				<entry key="partner" value-ref="transaction-search/partner"/>
+				<entry key="compte" value-ref="transaction-search/compte"/>
+				
+				<entry key="compteBtn" value-ref="transaction-search/compteBtn"/>
+				<entry key="transfertBtn" value-ref="transaction-search/transfertBtn"/>
+				<entry key="taxeBtn" value-ref="transaction-search/taxeBtn"/>
+				<entry key="rubriqueBtn" value-ref="transaction-search/rubriqueBtn"/>
+				<entry key="createTransactionBtn" value-ref="transaction-search/createTransactionBtn"/>
+			</map>
+		</property>
+	</bean>
+</beans>

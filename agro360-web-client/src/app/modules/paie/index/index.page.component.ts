@@ -1,9 +1,9 @@
 import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { SharedModule } from 'src/app/common/shared.module';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
 import { IndexPageComponent as TransactionIndexPageComponent } from '../../finance/transaction/index.page.component';
 import { IndexPageComponent as PartnerIndexPageComponent } from '../../core/partner/index.page.component';
-import { BreadcrumbItem } from 'src/app/common/service/ui.service';
+import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
 
 @Component({
     standalone: true,

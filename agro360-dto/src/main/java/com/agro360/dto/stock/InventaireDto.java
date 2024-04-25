@@ -29,7 +29,15 @@ public class InventaireDto extends AbstractDto {
 	@ManyToOne()
 	@JoinColumn(name = "ARTICLE_CODE", updatable = false, nullable = false)
 	@EqualsAndHashCode.Include()
-	private ArticleDto article;
+	private ArticleDto article;	
+
+	@ManyToOne()
+	@JoinColumn(name = "UNITE_ACHAT_CODE", nullable = false)
+	private UniteDto uniteAchat;
+
+	@ManyToOne()
+	@JoinColumn(name = "UNITE_VENTE_CODE", nullable = false)
+	private UniteDto uniteVente;
 	
 	@Id
 	@Column(name = "VARIANT_CODE", updatable = false, nullable = false)
