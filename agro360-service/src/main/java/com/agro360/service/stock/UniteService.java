@@ -1,7 +1,6 @@
 package com.agro360.service.stock;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,8 +19,8 @@ public class UniteService extends AbstractService {
 	@Autowired
 	UniteOperation operation;
 
-	public List<UniteBean> search(ClientContext ctx, Optional<UniteSearchBean> searchBean) {
-		return  operation.findUnitesByCriteria(ctx, searchBean.orElse(new UniteSearchBean()));
+	public List<UniteBean> search(ClientContext ctx, UniteSearchBean searchBean) {
+		return  operation.findUnitesByCriteria(ctx, searchBean);
 	}
 
 	public void save(ClientContext ctx,  List<UniteBean> beans) {

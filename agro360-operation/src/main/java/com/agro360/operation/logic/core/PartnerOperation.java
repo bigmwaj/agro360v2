@@ -5,8 +5,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.core.PartnerBean;
@@ -107,44 +105,23 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 	
 	@RuleNamespace("core/partner/search")
 	public List<PartnerBean> findPartnersByCriteria(ClientContext ctx, PartnerSearchBean searchBean) {
-		getLogger().debug("Find Partner by criteria ... ");
-		var probe = new PartnerDto();
-		var matcher = ExampleMatcher.matchingAll();
-
-		if (searchBean.getPartnerCode() != null) {
-			probe.setPartnerCode(searchBean.getPartnerCode().getValue());
-			matcher = matcher.withMatcher("partnerCode", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
+		var code = getNullOrUpperCase(searchBean::getPartnerCode);
+		var type = searchBean.getType().getValue();
+		var email = getNullOrUpperCase(searchBean::getEmail);
+		var phone = getNullOrUpperCase(searchBean::getPhone);
+		var name = getNullOrUpperCase(searchBean::getPartnerName);
+		var city = getNullOrUpperCase(searchBean::getCity);
+		
+		var status = searchBean.getStatusIn().getValue();
+		if( status != null && status.isEmpty() ) {
+			status = null;
 		}
-
-		if (searchBean.getPartnerName() != null) {
-//			probe.setName(bean.getPartnerName().getValue());
-			probe.setFirstName(searchBean.getPartnerName().getValue());
-//			probe.setLastName(bean.getPartnerName().getValue());
-
-//			matcher = matcher.withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-			matcher = matcher.withMatcher("firstName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-//			matcher = matcher.withMatcher("lastName", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-		}
-
-		if (searchBean.getEmail() != null) {
-			probe.setEmail(searchBean.getEmail().getValue());
-			matcher = matcher.withMatcher("email", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase());
-		}
-
-		if (searchBean.getPhone() != null) {
-			probe.setPhone(searchBean.getPhone().getValue());
-			matcher = matcher.withMatcher("phone", ExampleMatcher.GenericPropertyMatchers.endsWith());
-		}
-
-//		if (searchBean.getStatusIn() != null) {
-//			probe.setStatus((PartnerStatusEnumVd) searchBean.getStatusIn().getValue());
-//		}
-
-		if (searchBean.getType() != null) {
-			probe.setType(searchBean.getType().getValue());
-		}
-		var example = Example.of(probe, matcher);
-		return dao.findAll(example).stream().map(CoreMapper::map).collect(Collectors.toList());	
+		var length = dao.countPartnersByCriteria(code, type, city, phone, email, status, name);
+        searchBean.setLength(length);
+        return dao.findPartnersByCriteria(searchBean.getOffset(), searchBean.getLimit(), 
+        		code, type, city, phone, email, status, name)
+        		.stream().map(CoreMapper::map)
+        		.collect(Collectors.toList());
 	}
 
 }

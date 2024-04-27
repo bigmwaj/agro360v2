@@ -6,14 +6,10 @@
                     Recherche
                 </h4>
                 <div>
-                    <input-text-field [field]="searchForm.transactionCode"></input-text-field>
                     <input-text-field [field]="searchForm.partner"></input-text-field>
                     <select-one-field [field]="searchForm.type"></select-one-field>
                     <select-multiple-field [field]="searchForm.statusIn"></select-multiple-field>
                     <select-one-field [field]="searchForm.rubrique"></select-one-field>
-                    <select-one-field [field]="searchForm.compte"></select-one-field>
-                    <input-date-field [field]="searchForm.dateDebut"></input-date-field>
-                    <input-date-field [field]="searchForm.dateFin"></input-date-field>
                 </div>
                 <div class="text-nowrap">
                     <button mat-raised-button class="me-2" (click)="searchAction()">
@@ -26,13 +22,16 @@
             </section>
         </mat-drawer>
         <mat-drawer-content class="search-result">
-            <section class="p-3">
+            <section class="p-3 pb-0">
                 <mat-toolbar color="secondary">                      
                     <mat-toolbar-row class="search-toolbar" *ngIf="searchForm"> 
                         <div class="me-2"> 
                             <button mat-icon-button (click)="drawer.toggle()">
                                 <mat-icon>tune</mat-icon>
                             </button>                           
+                        </div>
+                        <div class="me-2">
+                            <input-text-field [field]="searchForm.transactionCode"></input-text-field>
                         </div>
                         <div class="me-2">                            
                             <input-date-field [field]="searchForm.dateDebut"></input-date-field>
@@ -75,6 +74,13 @@
                         <td mat-cell *matCellDef="let element">
                             {{element.transactionCode.value}} 
                             <mat-icon *ngIf="element.note.value" class="fs-6" [matTooltip]="element.note.value" fontIcon="info_circle"></mat-icon>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="accompte">
+                        <th mat-header-cell *matHeaderCellDef>Accompte {{partnerLabel}}</th>
+                        <td mat-cell *matCellDef="let element">
+                            <input-checkbox-field [displayLabel]="false" [field]="element.accompte"></input-checkbox-field>
                         </td>
                     </ng-container>
 
@@ -149,7 +155,9 @@
                             <button mat-icon-button color="primary" title="Copier" (click)="copyAction(element)">
                                 <mat-icon>content_copy</mat-icon>
                             </button>                           
-                            <button mat-icon-button color="primary" title="Changer Status"
+                            <button mat-icon-button color="primary"
+                                [disabled]="!element.changeStatusBtn.visible"
+                                title="Changer Status"
                                 (click)="changeStatusAction(element)">
                                 <mat-icon>schema</mat-icon>
                             </button>
@@ -170,6 +178,15 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
                         [class.text-bg-danger]="row.action == 'DELETE'"></tr>
                 </table>
+            </section>
+            <section class="p-3 pt-0">
+                <mat-paginator *ngIf="searchForm" class="pe-2"
+                    (page)="handlePageEvent($event)"
+                    [length]="searchForm.length"
+                    [pageSize]="searchForm.pageSize"
+                    [pageSizeOptions]="searchForm.pageSizeOptions"
+                    aria-label="Selectionner la page">
+                </mat-paginator>
             </section>
         </mat-drawer-content>
     </mat-drawer-container>

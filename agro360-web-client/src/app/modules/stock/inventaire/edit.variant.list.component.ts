@@ -1,6 +1,5 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
-import { VariantBean } from 'src/app/backed/bean.stock';
+import { Component, OnInit } from '@angular/core';
+import { InventaireBean, VariantBean } from 'src/app/backed/bean.stock';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/modules/common/bean.list';
 import { SharedModule } from 'src/app/modules/common/shared.module';
@@ -13,17 +12,14 @@ import { SharedModule } from 'src/app/modules/common/shared.module';
     selector: 'stock-inventaire-edit-variant-list',
     templateUrl: './edit.variant.list.component.html'
 })
-export class EditVariantListComponent extends BeanList<VariantBean> implements OnInit {
-
-    @ViewChild(MatTable)
-    table: MatTable<VariantBean>;
+export class EditVariantListComponent extends BeanList<InventaireBean> implements OnInit {
 
     displayedColumns: string[] = [
         'select',
         'variantCode',
         'alias',
-        'unite.vente',
         'unite.achat',
+        'unite.vente',
         'description',
     ];
 
@@ -31,11 +27,7 @@ export class EditVariantListComponent extends BeanList<VariantBean> implements O
         super()
     }
 
-    override getViewChild(): MatTable<VariantBean> {
-        return this.table;
-    }
-
-    getKeyLabel(bean: VariantBean): string {
+    getKeyLabel(bean: InventaireBean): string {
         return bean.variantCode.value;
     }
 
@@ -43,7 +35,7 @@ export class EditVariantListComponent extends BeanList<VariantBean> implements O
         
     }
 
-    toggleChange(bean:VariantBean){
+    toggleChange(bean:InventaireBean){
         if( this.selection.isSelected(bean) ){
             bean.action = ClientOperationEnumVd.CREATE;
         }else{

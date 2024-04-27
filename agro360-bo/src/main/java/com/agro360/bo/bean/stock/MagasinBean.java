@@ -1,8 +1,5 @@
 package com.agro360.bo.bean.stock;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.metadata.FieldMetadata;
 
@@ -18,6 +15,4 @@ public class MagasinBean extends AbstractBean {
 	private FieldMetadata<String> magasinCode = new FieldMetadata<>("Magasin");
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
-
-	private List<CasierBean> casiers = new ArrayList<>();
 }

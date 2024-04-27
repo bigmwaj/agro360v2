@@ -27,9 +27,6 @@ export class EditConversionListComponent extends BeanList<ConversionBean> implem
     @Input()
     conversions: Array<ConversionBean>;
 
-    @ViewChild(MatTable)
-    table: MatTable<ConversionBean>;
-
     displayedColumns: string[] = [
         'select',
         'unite',
@@ -40,10 +37,6 @@ export class EditConversionListComponent extends BeanList<ConversionBean> implem
     constructor(
         private http: HttpClient) {
         super()
-    }
-
-    override getViewChild(): MatTable<ConversionBean> {
-        return this.table;
     }
 
     ngOnInit(): void {

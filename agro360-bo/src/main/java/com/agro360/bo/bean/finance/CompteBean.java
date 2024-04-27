@@ -16,6 +16,4 @@ public class CompteBean extends AbstractBean{
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 
-	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
-
 }

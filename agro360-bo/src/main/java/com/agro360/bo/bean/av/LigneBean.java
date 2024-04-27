@@ -31,11 +31,11 @@ public class LigneBean extends AbstractBean {
 
 	private FieldMetadata<BigDecimal> prixUnitaire = new FieldMetadata<>("Prix Unitaire");
 
-	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total");
+	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total - Remise + Taxes");
 
 	private FieldMetadata<BigDecimal> prixTotalHT = new FieldMetadata<>("Prix Total(HT)");
 
-	private FieldMetadata<BigDecimal> prixTotalTTC = new FieldMetadata<>("Prix Total(TTC)");
+	private FieldMetadata<BigDecimal> remise = new FieldMetadata<>("Remise");
 
 	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
 
@@ -48,8 +48,6 @@ public class LigneBean extends AbstractBean {
 	private FieldMetadata<BigDecimal> remiseMontant = new FieldMetadata<>("Montant Remise");
 
 	private FieldMetadata<String> remiseRaison = new FieldMetadata<>("Raison Remise");
-
-	private FieldMetadata<String> deleteBtn = new FieldMetadata<>("Supprimer ligne");
 
 	private FieldMetadata<String> receptionBtn = new FieldMetadata<>("Réception ligne");
 

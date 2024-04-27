@@ -38,6 +38,7 @@ create table `fin_tbl_transaction` (
   `partner_code` varchar(16) not null,
   `compte_code` varchar(16) not null,
   `rubrique_code` varchar(16) not null,
+  `accompte` boolean,
   primary key `fin_tbl_transaction_pk`(`transaction_code`),
   key `fin_tbl_transaction_fk_core_tbl_partner` (`partner_code`),
   key `fin_tbl_transaction_fk_fin_tbl_compte` (`compte_code`),

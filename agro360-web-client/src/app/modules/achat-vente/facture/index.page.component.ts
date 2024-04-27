@@ -53,9 +53,7 @@ export class IndexPageComponent extends BeanIndexPage<FactureBean, ListTabCompon
         return this.listTab;
     }
 
-    override ngOnInit(): void {
-
-        super.ngOnInit();
+    ngOnInit(): void {
 
         if( !this.breadcrumb ){
             this.breadcrumb = new BreadcrumbItem('Factures')

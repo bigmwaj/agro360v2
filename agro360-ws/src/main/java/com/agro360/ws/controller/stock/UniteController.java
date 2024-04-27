@@ -25,10 +25,10 @@ import com.agro360.ws.controller.common.AbstractController;
 public class UniteController extends AbstractController {
 
 	@Autowired
-	UniteService service;
+	private UniteService service;
 	
 	@Autowired
-	UniteForm form;
+	private UniteForm form;
 	
 	@GetMapping("/search-form")
 	public ResponseEntity<UniteSearchBean> getSearchFormAction() {
@@ -42,7 +42,13 @@ public class UniteController extends AbstractController {
 
 	@GetMapping()
 	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<UniteSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service.search(getClientContext(), searchBean)));
+		var ctx = getClientContext();
+		var sb = searchBean.orElse(new UniteSearchBean());
+		var list = service.search(ctx, sb);
+		form.initUpdateFormBean(ctx, list);
+		var model = new ModelMap(RECORDS_MODEL_KEY, list);	
+		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());	
+		return ResponseEntity.ok(model);
 	}
 
 	@PostMapping

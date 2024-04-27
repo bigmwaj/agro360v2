@@ -2,7 +2,7 @@ package com.agro360.bo.bean.core;
 
 import java.util.List;
 
-import com.agro360.bo.bean.common.AbstractBean;
+import com.agro360.bo.bean.common.AbstractSearchBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.core.PartnerStatusEnumVd;
 import com.agro360.vd.core.PartnerTypeEnumVd;
@@ -12,7 +12,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class PartnerSearchBean extends AbstractBean{
+public class PartnerSearchBean extends AbstractSearchBean{
 
 	private static final long serialVersionUID = 355487810396906725L;
 

@@ -8,8 +8,9 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-category/selected">
 		<property name="editable">
 			<list>
-				<ref bean="Not_IsRootCategory"/>
+				<ref bean="Not_IsPartnerRootCategory"/>
 			</list>
+			
 		</property>
 	</bean>	
 				

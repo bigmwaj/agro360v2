@@ -17,6 +17,4 @@ public class TaxeBean extends AbstractBean {
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 
 	private FieldMetadata<Double> taux = new FieldMetadata<>("Taux");
-
-	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
 }

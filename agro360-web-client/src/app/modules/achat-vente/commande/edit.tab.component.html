@@ -27,16 +27,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-4">
-                    <input-number-field 
-                        [field]="bean.remiseMontant"
-                        (onChange)="updatePrixEvent()">
-                    </input-number-field>
-                    <button mat-icon-button color="primary" 
-                        class="field-button" title="Paraméter la remise" 
-                        (click)="editRemiseAction(bean)">
-                        <mat-icon>open_in_new</mat-icon>
-                    </button>           
+                <div class="col-4">                          
                 </div>
                 <div class="col-8">      
                     <input-text-field [field]="bean.description"></input-text-field>                  
@@ -55,27 +46,41 @@
                     <input-number-field [field]="bean.remise"></input-number-field>
                 </div> 
             </div>
-            <div class="row">
-                <div class="col-6">   
-                    <input-number-field [field]="bean.prixTotalTTC"></input-number-field>
-                </div>                
+            <div class="row">               
                 <div class="col-6">   
                     <input-number-field [field]="bean.prixTotal"></input-number-field>
                 </div> 
+                <div class="col-6">   
+                    <input-number-field [field]="bean.cumulPaiement"></input-number-field>
+                    <button mat-icon-button color="primary" 
+                        class="field-button"                          
+                        (click)="afficherReglementAction()"
+                        matTooltip="Liste des paiements">
+                        <mat-icon>list_task</mat-icon>
+                    </button> 
+                </div> 
             </div>
             <div class="row">                 
-                <div class="col-6">   
-                    <select-one-field [field]="bean.compte.compteCode"></select-one-field>
-                </div> 
-                <div class="col-6">
+                <div class="col-4">
                     <input-number-field [field]="bean.paiementComptant"></input-number-field>
                     <button mat-icon-button color="primary" 
                         class="field-button"  
-                        title="Synchroniser avec le prix total de la commande" 
+                        matTooltip="Synchroniser avec le prix total de la commande" 
                         (click)="piementComptantTotalAction()">
                         <mat-icon>currency_exchange</mat-icon>
                     </button> 
-                </div>                     
+                </div>  
+                <div class="col-4">
+                    <select-one-field [field]="bean.compte.compteCode"></select-one-field>
+                </div>  
+                <div class="col-4">
+                    <button mat-fab color="warn" 
+                        extended class="ms-3" 
+                        (click)="encaisserAction()"
+                        *ngIf="bean.encaissementBtn.visible">
+                        <mat-icon>currency_exchange</mat-icon> Encaisser
+                    </button>
+                </div>                 
             </div>
         </div>
     </div>    

@@ -1,17 +1,15 @@
 
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatTable } from '@angular/material/table';
-import { map } from 'rxjs';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { ArticleBean, ArticleSearchBean } from 'src/app/backed/bean.stock';
-import { BeanList } from 'src/app/modules/common/bean.list';
-import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
 import { IndexModalComponent } from '../unite/index.modal.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
     standalone: true,
@@ -24,18 +22,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     selector: 'stock-article-list-tab',
     templateUrl: './list.tab.component.html'
 })
-export class ListTabComponent extends BeanList<ArticleBean> implements OnInit {
-
-    @Input({required:true})
-    editingBeans: ArticleBean[] = [];
-
-    @Input({required:true})
-    selectedTab: {index:number}
-
-    @Input({required:true})
-    breadcrumb:BreadcrumbItem
-
-    searchForm: ArticleSearchBean;
+export class ListTabComponent extends BeanPagedListTab<ArticleBean, ArticleSearchBean> implements OnInit {
 
     displayedColumns: string[] = [
         'select',
@@ -46,94 +33,50 @@ export class ListTabComponent extends BeanList<ArticleBean> implements OnInit {
         'actions'
     ];
 
-    @ViewChild(MatTable)
-    table: MatTable<ArticleBean>;
-
     constructor(
-        private http: HttpClient,       
         private dialog: MatDialog,
-        private ui: UIService) {
-        super()
+        public override http: HttpClient,       
+        public override ui: UIService) {
+        super(http, ui)
     }
 
-    override getViewChild(): MatTable<ArticleBean> {
-        return this.table;
+    areBeansEqual(b1:ArticleBean, b2:ArticleBean){
+        return b1 == b2 || b1.articleCode.value == b2.articleCode.value;
     }
 
     getKeyLabel(bean: ArticleBean): string {
         return bean.articleCode.value;
     }
 
-    ngAfterViewInit(): void {
-        this.refreshPageTitle()
-    }
-
-    refreshPageTitle():void{
-        this.ui.setBreadcrumb(this.breadcrumb)
-    }
     ngOnInit(): void {
         this.resetSearchFormAction();
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Liste des articles & services');
     }
 
-    resetSearchFormAction() {
-        this.http        
-            .get(`stock/article/search-form`)  
-            .subscribe(data => {
-                this.searchForm = <ArticleSearchBean>data;
-                this.searchAction();
-            });
-    }
-
-    searchAction() {
-        let objJsonStr = JSON.stringify(this.searchForm);
-        let objJsonB64 = btoa(objJsonStr);
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('q', objJsonB64);
-        this.http
-            .get(`stock/article`, { params: queryParams })  
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                this.setData(data.records);
-            });
-    }
-
     addAction() {        
-        this.http.get(`stock/article/create-form`).subscribe(data => {
-            this.editingBeans.push(<ArticleBean>data); 
-            this.selectedTab.index = this.editingBeans.length;
-        });
+        this.http.get(`stock/article/create-form`)
+        .subscribe(data => this.appendTab(<ArticleBean>data));
     }
 
     copyAction(bean: ArticleBean) {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("copyFrom", bean.articleCode.value);
 
-        this.http.get(`stock/article/create-form`, { params: queryParams }).subscribe(data => {
-            this.editingBeans.push(<ArticleBean>data); 
-            this.selectedTab.index = this.editingBeans.length;
-        });
-    }
-    
-
-    private getEditingIndex(bean:ArticleBean){
-        return this.editingBeans.findIndex(e => bean.articleCode.value == e.articleCode.value)
+        this.http.get(`stock/article/create-form`, { params: queryParams })
+        .subscribe(data => this.appendTab(<ArticleBean>data));
     }
 
     editAction(bean: ArticleBean) {
-        const index = this.getEditingIndex(bean);
-        if( index >= 0 ){
-            this.selectedTab.index = index + 1;
+        if( this.isAlreadLoaded(bean) ){
+            this.displayTab(bean);
             return;
         }
+
         let queryParams = new HttpParams();
         queryParams = queryParams.append("articleCode", bean.articleCode.value);
 
-        this.http.get(`stock/article/edit-form`, { params: queryParams }).subscribe(data => {
-            this.editingBeans.push(<ArticleBean>data); 
-            this.selectedTab.index = this.editingBeans.length;
-        });
+        this.http.get(`stock/article/edit-form`, { params: queryParams })
+        .subscribe(data => this.appendTab(<ArticleBean>data));
     }
 
     deleteAction(bean: ArticleBean) {
@@ -142,5 +85,13 @@ export class ListTabComponent extends BeanList<ArticleBean> implements OnInit {
 
     uniteAction() {
         this.dialog.open(IndexModalComponent);
+    }
+
+    protected override getSearchFormUrl(): string {
+        return `stock/article/search-form`;
+    }
+
+    protected override getSearchUrl(): string {
+        return `stock/article`;
     }
 }

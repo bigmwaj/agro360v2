@@ -59,6 +59,7 @@ public class FinanceMapper {
 		bean.getMontant().setValue(dto.getMontant());
 		bean.getDate().setValue(dto.getDate());
 		bean.getType().setValue(dto.getType());
+		bean.getAccompte().setValue(dto.getAccompte());
 
 		bean.getStatus().setValue(dto.getStatus());
 

@@ -1,5 +1,6 @@
 package com.agro360.ws.controller.finance;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.bean.finance.TransactionSearchBean;
 import com.agro360.bo.bean.finance.TransfertBean;
 import com.agro360.form.finance.TransactionForm;
-import com.agro360.operation.context.ClientContext;
 import com.agro360.service.finance.TransactionService;
 import com.agro360.vd.finance.TransactionTypeEnumVd;
 import com.agro360.ws.controller.common.AbstractController;
@@ -27,17 +27,19 @@ import com.agro360.ws.controller.common.AbstractController;
 public class TransactionController extends AbstractController {
 
 	@Autowired
-	TransactionService service;
+	private TransactionService service;
 	
 	@Autowired
-	TransactionForm form;
+	private TransactionForm form;
 
 	@GetMapping()
 	public ResponseEntity<ModelMap> searchAction(
-			@RequestBody @Validated Optional<TransactionSearchBean> searchForm) {	
-		var ctx = new ClientContext();
-		var records = service.searchAction(ctx, searchForm);
-		var model = new ModelMap(RECORDS_MODEL_KEY, records);	
+			@RequestBody @Validated Optional<TransactionSearchBean> searchBean) {	
+		var ctx = getClientContext();
+		var sb = searchBean.orElse(new TransactionSearchBean());
+		var result = service.search(ctx, sb);
+		var model = new ModelMap(RECORDS_MODEL_KEY, form.initSearchResultBeans(ctx, result));
+		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
 		return ResponseEntity.ok(model);
 	}
 	
@@ -75,8 +77,30 @@ public class TransactionController extends AbstractController {
 	
 	@PostMapping()
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated TransactionBean bean) {
-		service.saveAction(getClientContext(), bean);
-		return ResponseEntity.ok(new ModelMap());
+		var action = bean.getAction();
+		var ctx = getClientContext();
+		var model = new ModelMap();
+		
+		service.save(ctx, bean);
+		switch (action) {
+		case CREATE:
+		case UPDATE:
+			bean = form.initEditFormBean(ctx, bean.getTransactionCode().getValue());	
+			model.addAttribute(RECORD_MODEL_KEY, bean);
+			break;
+			
+		case CHANGE_STATUS:
+			bean = service.findTransaction(ctx, bean.getTransactionCode().getValue());
+			var beans = Collections.singletonList(bean);
+			beans = form.initSearchResultBeans(ctx, beans);
+			model.addAttribute(RECORD_MODEL_KEY, beans.get(0));
+			break;
+
+		default:
+			break;
+		}
+		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
+		return ResponseEntity.ok(model);
 	}
 	
 	@PostMapping("transfert")

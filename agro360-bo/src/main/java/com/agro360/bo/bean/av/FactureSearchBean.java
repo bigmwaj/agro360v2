@@ -3,7 +3,7 @@ package com.agro360.bo.bean.av;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.agro360.bo.bean.common.AbstractBean;
+import com.agro360.bo.bean.common.AbstractSearchBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.av.FactureStatusEnumVd;
 import com.agro360.vd.av.FactureTypeEnumVd;
@@ -13,7 +13,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class FactureSearchBean extends AbstractBean{
+public class FactureSearchBean extends AbstractSearchBean{
 
 	private static final long serialVersionUID = 355487810396906725L;
 

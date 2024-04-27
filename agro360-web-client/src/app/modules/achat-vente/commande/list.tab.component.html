@@ -7,12 +7,9 @@
                 </h4>
                 <div>
                     <input-text-field [field]="searchForm.commandeCode"></input-text-field>
-                    <input-text-field [field]="searchForm.partner"></input-text-field>
+                    <input-text-field [field]="searchForm.partner" [label]="partnerLabel"></input-text-field>
                     <select-one-field [field]="searchForm.type"></select-one-field>
                     <select-multiple-field [field]="searchForm.statusIn"></select-multiple-field>
-                    <select-one-field [field]="searchForm.compte"></select-one-field>
-                    <input-date-field [field]="searchForm.dateDebut"></input-date-field>
-                    <input-date-field [field]="searchForm.dateFin"></input-date-field>
                 </div>
                 <div class="text-nowrap">
                     <button mat-raised-button  class="me-2" (click)="searchAction()">
@@ -25,7 +22,7 @@
             </section>
         </mat-drawer>
         <mat-drawer-content class="search-result">
-            <section class="p-3">
+            <section class="p-3 pb-0">
                 <mat-toolbar color="secondary">                      
                     <mat-toolbar-row class="search-toolbar" *ngIf="searchForm"> 
                         <div class="me-2"> 
@@ -38,9 +35,6 @@
                         </div>
                         <div class="me-2">                            
                             <input-date-field [field]="searchForm.dateFin"></input-date-field>
-                        </div>
-                        <div class="me-2">                            
-                            <select-one-field [field]="searchForm.compte"></select-one-field>
                         </div>
 
                         <button mat-icon-button color="primary" class="me-2" (click)="searchAction()">
@@ -82,14 +76,9 @@
                         <td mat-cell *matCellDef="let element">{{element.status.value}}</td>
                     </ng-container>
 
-                    <ng-container matColumnDef="paiementComptant">
-                        <th mat-header-cell *matHeaderCellDef>Payé Comptant</th>
-                        <td mat-cell *matCellDef="let element">{{element.paiementComptant.value}}</td>
-                    </ng-container>
-                    
-                    <ng-container matColumnDef="compte">
-                        <th mat-header-cell *matHeaderCellDef>Compte</th>
-                        <td mat-cell *matCellDef="let element">{{element.compte.compteCode.value}}</td>
+                    <ng-container matColumnDef="cumulPaiement">
+                        <th mat-header-cell *matHeaderCellDef>Cumul Paiement</th>
+                        <td mat-cell *matCellDef="let element">{{element.cumulPaiement.value}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="date">
@@ -134,7 +123,7 @@
                     <ng-container matColumnDef="actions">
                         <th mat-header-cell *matHeaderCellDef class="text-end">
                             <button mat-mini-fab (click)="addAction()" 
-                                *ngIf="searchForm && searchForm.createCommandeBtn.visible"
+                                *ngIf="searchForm && searchForm.createBtn.visible"
                                 class="me-2" color="primary">
                                 <mat-icon>add</mat-icon>
                             </button>
@@ -154,14 +143,18 @@
                             <button mat-icon-button color="primary" title="Copier" (click)="addAction(element)">
                                 <mat-icon>content_copy</mat-icon>
                             </button>                         
-                            <button mat-icon-button color="primary" title="Changer Status" (click)="changeStatusAction(element)">
+                            <button mat-icon-button color="primary"                                 
+                                [disabled]="!element.changeStatusBtn.visible"
+                                title="Changer Status" (click)="changeStatusAction(element)">
                                 <mat-icon>schema</mat-icon>
                             </button>
                             <button mat-icon-button color="secondary" [matMenuTriggerFor]="menu">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu">                                
-                                <button mat-menu-item color="primary" title="Supprimer" (click)="deleteAction(element)">
+                                <button mat-menu-item color="primary"                                
+                                    *ngIf="element.deleteBtn.visible"
+                                    title="Supprimer" (click)="deleteAction(element)">
                                     <mat-icon>delete</mat-icon> Supprimer
                                 </button> 
                             </mat-menu>
@@ -171,6 +164,16 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
                         [class.text-bg-danger]="row.action == 'DELETE'"></tr>
                 </table>
+            </section>
+            
+            <section class="p-3 pt-0">
+                <mat-paginator *ngIf="searchForm" class="pe-2"
+                    (page)="handlePageEvent($event)"
+                    [length]="searchForm.length"
+                    [pageSize]="searchForm.pageSize"
+                    [pageSizeOptions]="searchForm.pageSizeOptions"
+                    aria-label="Selectionner la page">
+                </mat-paginator>
             </section>
         </mat-drawer-content>
     </mat-drawer-container>

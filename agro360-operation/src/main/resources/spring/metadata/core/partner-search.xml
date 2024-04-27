@@ -91,7 +91,7 @@
 		</property>
 	</bean>				
 	
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search/createPartnerBtn">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search/createBtn">
 		<property name="visible">
 			<list>
 				<ref bean="IsTrue" />
@@ -123,7 +123,7 @@
 				<entry key="email" value-ref="partner-search/email"/>
 				<entry key="city" value-ref="partner-search/city"/>
 				
-				<entry key="createPartnerBtn" value-ref="partner-search/createPartnerBtn"/>
+				<entry key="createBtn" value-ref="partner-search/createBtn"/>
 				<entry key="categoryBtn" value-ref="partner-search/categoryBtn"/>
 			</map>
 		</property>

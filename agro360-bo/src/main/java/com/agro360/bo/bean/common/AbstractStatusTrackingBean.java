@@ -14,6 +14,8 @@ public abstract class AbstractStatusTrackingBean<T> extends AbstractBean{
 	private static final long serialVersionUID = 6878276582025081700L;
 
 	private FieldMetadata<LocalDateTime> statusDate = new FieldMetadata<>("Date Statut");
+	
+	private FieldMetadata<String> changeStatusBtn = new FieldMetadata<>();
 
 	public abstract FieldMetadata<T> getStatus();
 }

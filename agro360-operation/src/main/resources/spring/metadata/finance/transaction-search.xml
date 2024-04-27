@@ -87,7 +87,7 @@
 		</property>		
 	</bean>	
 	
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/createTransactionBtn">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search/createBtn">
 		<property name="visible">
 			<list>
 				<ref bean="IsTrue" />
@@ -116,7 +116,7 @@
 				<entry key="transfertBtn" value-ref="transaction-search/transfertBtn"/>
 				<entry key="taxeBtn" value-ref="transaction-search/taxeBtn"/>
 				<entry key="rubriqueBtn" value-ref="transaction-search/rubriqueBtn"/>
-				<entry key="createTransactionBtn" value-ref="transaction-search/createTransactionBtn"/>
+				<entry key="createBtn" value-ref="transaction-search/createBtn"/>
 			</map>
 		</property>
 	</bean>

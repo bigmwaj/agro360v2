@@ -17,20 +17,21 @@
             [breadcrumb]="breadcrumb">
         </achat-vente-commande-list-tab>
     </mat-tab>
-    <ng-container *ngFor="let editingBean of editingBeans">
+    <ng-container *ngFor="let editingBean of editingBeans; index as i">
         <mat-tab>                          
             <ng-template mat-tab-label>
                 <span class="me-2">
                     {{editingBean.commandeCode.value}}
                 </span>
-                <button mat-icon-button (click)="removeAction(editingBean)">
+                <button mat-icon-button (click)="removeTabAction(i)">
                     <mat-icon>close</mat-icon>
                 </button>
             </ng-template>
             <achat-vente-commande-edit-tab 
                 [module]="module" 
                 [bean]="editingBean"                
-                [breadcrumb]="breadcrumb">
+                [breadcrumb]="breadcrumb"
+                (onBeanSave)="onBeanSaveFronEditTab($event)">
             </achat-vente-commande-edit-tab>
         </mat-tab>
     </ng-container>

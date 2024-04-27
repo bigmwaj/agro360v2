@@ -12,7 +12,6 @@ import com.agro360.bo.bean.stock.MagasinBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.av.CommandeStatusEnumVd;
 import com.agro360.vd.av.CommandeTypeEnumVd;
-import com.agro360.vd.av.RemiseTypeEnumVd;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,31 +33,19 @@ public class CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumV
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 
-	private FieldMetadata<BigDecimal> paiementComptant = new FieldMetadata<>("Paiement Comptant");
-
-	private FieldMetadata<RemiseTypeEnumVd> remiseType = new FieldMetadata<>("Type Remise", RemiseTypeEnumVd.getAsMap());
-
-	private FieldMetadata<Double> remiseTaux = new FieldMetadata<>("Taux Remise");
-
-	private FieldMetadata<BigDecimal> remiseMontant = new FieldMetadata<>("Montant Remise");
-
-	private FieldMetadata<String> remiseRaison = new FieldMetadata<>("Raison Remise");
+	private FieldMetadata<BigDecimal> cumulPaiement = new FieldMetadata<>("Cumul Paiement");
+	
+	private FieldMetadata<BigDecimal> paiementComptant = new FieldMetadata<>("Montant");
 
 	private FieldMetadata<BigDecimal> prixTotalHT = new FieldMetadata<>("Prix Total(HT)");
 
-	private FieldMetadata<BigDecimal> prixTotalTTC = new FieldMetadata<>("Prix Total(TTC)");
-
-	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total");
+	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total + Taxe - Remise)");
 
 	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
 
 	private FieldMetadata<BigDecimal> remise = new FieldMetadata<>("Remise Totale");
 
-	private FieldMetadata<String> saveBtn = new FieldMetadata<>("Créer ligne");
-
 	private FieldMetadata<String> createLigneBtn = new FieldMetadata<>();
-
-	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
 
 	private FieldMetadata<String> encaissementBtn = new FieldMetadata<>();
 

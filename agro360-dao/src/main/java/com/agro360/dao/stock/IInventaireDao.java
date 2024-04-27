@@ -29,4 +29,36 @@ public interface IInventaireDao extends IDao<InventaireDto, InventairePk>{
 	List<VariantDto> findNonStockedArticleVariants(
 			@Param("magasinCode")String magasinCode, 
 			@Param("articleCode")String articleCode);
+	
+	@Query(
+			value = "   select dto from com.agro360.dto.stock.InventaireDto dto"
+					+ " where (:magasin is null or dto.magasin.magasinCode = :magasin)"
+					+ " and (:article is null"
+					+ "		or (dto.article.articleCode like %:article%)"
+					+ "		or (upper(dto.article.description) like %:article%)"
+					+ " ) "
+					+ "order by dto.magasin.magasinCode, dto.article.articleCode "
+					+ "limit :limit offset :offset"
+				
+		)
+	List<InventaireDto> findInventairesByCriteria( 
+		@Param("offset") Integer offset, 
+		@Param("limit") Short limit,
+		@Param("magasin") String magasin, 
+		@Param("article") String article
+	);
+	
+	@Query(
+			value = "   select count(dto) from com.agro360.dto.stock.InventaireDto dto"
+					+ " where (:magasin is null or dto.magasin.magasinCode = :magasin)"
+					+ " and (:article is null"
+					+ "		or (dto.article.articleCode like %:article%)"
+					+ "		or (upper(dto.article.description) like %:article%)"
+					+ " )"
+				
+		)
+	Long countInventairesByCriteria( 
+		@Param("magasin") String magasin, 
+		@Param("article") String article
+	);
 }

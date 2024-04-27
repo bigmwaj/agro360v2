@@ -1,16 +1,22 @@
 import { SelectionModel } from '@angular/cdk/collections';
+import { Component, ViewChild } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { AbstractBean } from 'src/app/backed/bean.common';
 
+@Component({
+    standalone: true,
+    template: ''
+})
 export abstract class BeanList<B extends AbstractBean> extends MatTableDataSource<B>{
 
     constructor(){
         super();
     }
 
-    selection = new SelectionModel<B>(true, []);
+    @ViewChild(MatTable)
+    public table: MatTable<B>;
 
-    abstract getViewChild(): MatTable<B>;
+    selection = new SelectionModel<B>(true, []);
 
     abstract getKeyLabel(bean: B): string | number;
 
@@ -23,38 +29,58 @@ export abstract class BeanList<B extends AbstractBean> extends MatTableDataSourc
      */
     addItem(bean: B) {
         this.data.push(bean);
-        if (this.getViewChild()) {
-            this.getViewChild().renderRows();
+        if (this.table) {
+            this.table.renderRows();
         }
     }
 
     appendItem(bean: B) {
         this.data.push(bean);
         
-        if (this.getViewChild()) {
-            this.getViewChild().renderRows();
+        if (this.table) {
+            this.table.renderRows();
         }
     }
     
     prependItem(bean: B) {        
         this.data.unshift(bean);
         
-        if (this.getViewChild()) {
-            this.getViewChild().renderRows();
+        if (this.table) {
+            this.table.renderRows();
         }
     }
 
     removeItem(bean: B) {
         this.data = this.data.filter(b => b != bean);
-        if (this.getViewChild()) {
-            this.getViewChild().renderRows();
+        if (this.table) {
+            this.table.renderRows();
+        }
+    }
+    
+    replaceItemWith(bean: B, _with: B) {
+        const index = this.data.findIndex(b => b == bean );
+        const tmp:Array<B> = [];
+        if( index > 0 ){
+            tmp.push(...this.data.slice(0, index))
+        }
+
+        tmp.push(_with);
+
+        if( index < this.data.length - 1 ){
+            tmp.push(...this.data.slice(index + 1))
+        }
+        
+        this.data = tmp;
+
+        if (this.table) {
+            this.table.renderRows();
         }
     }
 
     setData(data: B[]) {
         this.data = data
-        if (this.getViewChild()) {
-            this.getViewChild().renderRows();
+        if (this.table) {
+            this.table.renderRows();
         }
     }
 

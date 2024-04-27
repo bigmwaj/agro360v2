@@ -17,26 +17,27 @@
             [breadcrumb]="breadcrumb">
         </finance-transaction-list-tab>
     </mat-tab>
-    <ng-container *ngFor="let editingBean of editingBeans">
+    <ng-container *ngFor="let editingBean of editingBeans; index as i">
         <mat-tab>     
             <ng-template mat-tab-label>
                 <span class="me-2">
                     {{editingBean.transactionCode.value}}
                 </span>
-                <button mat-icon-button (click)="removeAction(editingBean)">
+                <button mat-icon-button (click)="removeTabAction(i)">
                     <mat-icon>close</mat-icon>
                 </button>
             </ng-template> 
             <finance-transaction-edit-tab 
                 [bean]="editingBean" 
                 [module]="module"
-                [breadcrumb]="breadcrumb">
+                [breadcrumb]="breadcrumb"                
+                (onBeanSave)="onBeanSaveFronEditTab($event)">
             </finance-transaction-edit-tab>
         </mat-tab>
     </ng-container>
-  </mat-tab-group>
+</mat-tab-group>
 
-  <div class="d-flex">
+<div class="d-flex">
     <button mat-fab extended cdkFocusInitial  class="ms-3 mb-3"
         (click)="saveAction()" 
         color="primary"

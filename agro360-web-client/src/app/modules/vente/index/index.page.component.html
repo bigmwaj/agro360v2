@@ -1,12 +1,4 @@
 <mat-tab-group preserveContent (selectedTabChange)="selectedTabChange($event)" #vente>
-    <mat-tab label="Recettes" #recettesTab>
-        <ng-template matTabContent>
-            <finance-transaction-index-page #indexPage
-                [module]="module"
-                [breadcrumb]="breadcrumb">
-            </finance-transaction-index-page>
-        </ng-template>
-    </mat-tab>
 
     <mat-tab label="Commandes" #commandesTab>
         <ng-template matTabContent>
@@ -14,6 +6,15 @@
                 [module]="module"
                 [breadcrumb]="breadcrumb">
             </achat-vente-commande-index-page>
+        </ng-template>
+    </mat-tab>
+    
+    <mat-tab label="Recettes" #recettesTab>
+        <ng-template matTabContent>
+            <finance-transaction-index-page #indexPage
+                [module]="module"
+                [breadcrumb]="breadcrumb">
+            </finance-transaction-index-page>
         </ng-template>
     </mat-tab>
     

@@ -30,10 +30,24 @@ import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
 })
 export class IndexPageComponent extends BeanIndexPage<TransactionBean, ListTabComponent, EditTabComponent> implements OnInit {   
 
+
+    /**
+     * Les différents modules qui peuvent faire appelle à cette fonctionnalité
+     * vente
+     * achat
+     * paie
+     */
+    @Input()
+    module:string
+
+    @Input()
+    breadcrumb:BreadcrumbItem;
+
+    
     addOptions:Array<{type:TransactionTypeEnumVd; label:string}> = [
         { type:TransactionTypeEnumVd.DEPENSE, label: 'Dépense'},
         { type:TransactionTypeEnumVd.RECETTE, label: 'Recette'},
-        { type:TransactionTypeEnumVd.DEPOT, label: 'Dépot'},
+        { type:TransactionTypeEnumVd.DEPOT,   label: 'Dépot'},
         { type:TransactionTypeEnumVd.RETRAIT, label: 'Retrait'},
     ]
 
@@ -61,46 +75,43 @@ export class IndexPageComponent extends BeanIndexPage<TransactionBean, ListTabCo
     protected override getListTab(): ListTabComponent {
         return this.listTab;
     }
-
-    /**
-     * Les différents modules qui peuvent faire appelle à cette fonctionnalité
-     * vente
-     * achat
-     * paie
-     */
-    @Input()
-    module:string
-
-    @Input()
-    breadcrumb:BreadcrumbItem;
     
-    override ngOnInit(): void {
+    ngOnInit(): void {
+        this.initAddOptions();
+        this.initBreadcrumb();            
+    }
 
-        super.ngOnInit()
+    private setAddOption(type:TransactionTypeEnumVd, label:string){
+        this.addOptions = [{type:type, label:label}];
+    }
 
+    private initAddOptions(){
+        if( this.module != null ){
+            switch(this.module){
+                case "vente": this.setAddOption(TransactionTypeEnumVd.RECETTE, 'Recette'); break;
+                case "achat": this.setAddOption(TransactionTypeEnumVd.DEPENSE, 'Dépense'); break;
+                case "paie":  this.setAddOption(TransactionTypeEnumVd.DEPENSE, 'Dépense'); break;
+                default: break;
+            }                    
+        }
+    }
+
+    private appendBreadcrumb(item:string){
+        this.breadcrumb = this.breadcrumb.addAndReturnChildItem(item);
+    }
+
+    private initBreadcrumb(){
         if( this.breadcrumb == undefined ){
             this.breadcrumb = new BreadcrumbItem('Finances générales');
         }else{
             if( this.module ){
                 switch(this.module){
-                    case 'vente': 
-                        this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Recettes');
-                        break;
-
-                    case 'achat': 
-                        this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Dépenses');
-                        break;
-
-                    case 'paie': 
-                        this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Salaires');
-                        break;
-
-                    default:                         
-                        this.breadcrumb = this.breadcrumb.addAndReturnChildItem(`Module ${this.module} inconnu!'`);
-                        break;
+                    case 'vente':  this.appendBreadcrumb('Recettes');  break;
+                    case 'achat':  this.appendBreadcrumb('Dépenses');  break;
+                    case 'paie':   this.appendBreadcrumb('Salaires'); break;
+                    default:  this.appendBreadcrumb(`Module ${this.module} inconnu!'`); break;
                 }
             }
-        }        
+        }    
     }
-
 }

@@ -2,7 +2,6 @@ package com.agro360.service.stock;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.InventaireBean;
 import com.agro360.bo.bean.stock.InventaireSearchBean;
-import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.InventaireOperation;
 import com.agro360.service.common.AbstractService;
@@ -27,32 +25,27 @@ public class InventaireService extends AbstractService {
 	@Autowired
 	private InventaireServiceHelper serviceHelper;
 	
-	public List<InventaireBean> search(ClientContext ctx, Optional<InventaireSearchBean> searchBean) {
-		return operation
-				.findInventairesByCriteria(ctx, searchBean.orElse(new InventaireSearchBean()));
+	public List<InventaireBean> search(ClientContext ctx, InventaireSearchBean searchBean) {
+		return operation.findInventairesByCriteria(ctx, searchBean);
 	}
 	
 	public List<ArticleBean> findNonStockedArticles(ClientContext ctx, String magasinCode) {
 		return operation.findNonStockedArticles(ctx, magasinCode);
 	}
 
-	public List<VariantBean> findNonStockedArticleVariants(ClientContext ctx, 
+	public List<InventaireBean> findNonStockedArticleVariants(ClientContext ctx, 
 			String magasinCode, 
 			String articleCode) {
 		return operation.findNonStockedArticleVariants(ctx, magasinCode, articleCode);
 	}
 
-	public void save(ClientContext ctx, String magasinCode, String articleCode, List<VariantBean> variants) {
-		
-		var msgTpl = "Les variantes sélectionnées de l'article %s ont été ajoutées au magasin %s avec succès!";
-		ctx.success(String.format(msgTpl, articleCode, magasinCode));
-		for (var variant : variants) {
-			if( !ClientOperationEnumVd.CREATE.equals(variant.getAction())) {
+	public void save(ClientContext ctx, String magasinCode, String articleCode, List<InventaireBean> beans) {
+		for (var bean : beans) {
+			if( !ClientOperationEnumVd.CREATE.equals(bean.getAction())) {
 				continue;
 			}
-			var variantCode = variant.getVariantCode().getValue();
+			var variantCode = bean.getVariantCode().getValue();
 			
-			var bean = new InventaireBean();
 			bean.getMagasin().getMagasinCode().setValue(magasinCode);
 			bean.getArticle().getArticleCode().setValue(articleCode);
 			bean.getVariantCode().setValue(variantCode);
@@ -62,6 +55,9 @@ public class InventaireService extends AbstractService {
 			bean.getPrixUnitaireVente().setValue(BigDecimal.ZERO);
 			
 			operation.createInventaire(ctx, bean);
+		
+			var msgTpl = "Les variantes sélectionnées de l'article %s ont été ajoutées au magasin %s avec succès!";
+			ctx.success(String.format(msgTpl, articleCode, magasinCode));
 		}		
 	}
 

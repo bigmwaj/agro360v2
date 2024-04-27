@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.bo.bean.stock.InventaireBean;
 import com.agro360.bo.bean.stock.InventaireSearchBean;
-import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.form.stock.InventaireForm;
 import com.agro360.service.stock.InventaireService;
 import com.agro360.ws.controller.common.AbstractController;
@@ -34,15 +33,17 @@ public class InventaireController extends AbstractController {
 	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
 			@RequestBody(required = false) @Validated Optional<InventaireSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service
-				.search(getClientContext(), searchBean)));
+		var sb = searchBean.orElse(new InventaireSearchBean());
+		var model = new ModelMap(RECORDS_MODEL_KEY, service.search(getClientContext(), sb));
+		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
+		return ResponseEntity.ok(model);
 	}
 
 	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(
 			@RequestParam(required = true) String magasinCode,
 			@RequestParam(required = true) String articleCode,
-			@RequestBody @Validated List<VariantBean> beans) {
+			@RequestBody @Validated List<InventaireBean> beans) {
 		
 		var ctx = getClientContext();
 		service.save(ctx, magasinCode, articleCode, beans);
@@ -87,8 +88,9 @@ public class InventaireController extends AbstractController {
 	public ResponseEntity<ModelMap> getNonStockedArticleVariantsAction(
 			@RequestParam(required = true) String magasinCode,
 			@RequestParam(required = true) String articleCode) {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, 
-				service.findNonStockedArticleVariants(getClientContext(), 
-				magasinCode, articleCode)));
+		var ctx = getClientContext();
+		var forms = service.findNonStockedArticleVariants(ctx, magasinCode, articleCode);
+		form.initCreateFormBean(ctx, magasinCode, articleCode, forms);
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, forms));
 	}
 }

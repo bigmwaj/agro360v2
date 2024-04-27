@@ -16,6 +16,10 @@ public class InventaireBean extends AbstractBean {
 	private static final long serialVersionUID = 1647090333349627006L;
 
 	private FieldMetadata<String> variantCode = new FieldMetadata<>("Variant");
+	
+	private FieldMetadata<String> variantDescription = new FieldMetadata<>("Description");
+	
+	private FieldMetadata<String> alias = new FieldMetadata<>("Alias");
 
 	private FieldMetadata<BigDecimal> prixUnitaireAchat = new FieldMetadata<>("Prix Achat");
 
@@ -26,6 +30,10 @@ public class InventaireBean extends AbstractBean {
 	private FieldMetadata<Double> quantite = new FieldMetadata<>("Quantité");
 	
 	private FieldMetadata<Double> quantiteAjust = new FieldMetadata<>("Quantité");
+	
+	private FieldMetadata<String> ajustQteBtn = new FieldMetadata<>();
+	
+	private FieldMetadata<String> defPrixVenteBtn = new FieldMetadata<>();
 
 	@Setter
 	private UniteBean uniteAchat = new UniteBean();

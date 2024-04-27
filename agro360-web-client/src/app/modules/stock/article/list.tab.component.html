@@ -14,17 +14,33 @@
                         <mat-icon>search</mat-icon>Réchercher
                     </button>
                     <button mat-raised-button color="primary" (click)="resetSearchFormAction()">
-                        <mat-icon>reset</mat-icon>Réinitialiser
+                        <mat-icon>restart_alt</mat-icon>Réinitialiser
                     </button>
                 </div>
             </section>
         </mat-drawer>
         <mat-drawer-content class="search-result">
-            <section class="p-3">
+            <section class="p-3 pb-0">
                 <mat-toolbar color="secondary">                      
-                    <mat-toolbar-row>
-                        <button mat-icon-button (click)="drawer.toggle()">
-                            <mat-icon>tune</mat-icon>
+                    <mat-toolbar-row class="search-toolbar" *ngIf="searchForm"> 
+                        <div class="me-2"> 
+                            <button mat-icon-button (click)="drawer.toggle()">
+                                <mat-icon>tune</mat-icon>
+                            </button>                           
+                        </div>
+                        <div class="me-2">                            
+                            <input-text-field [field]="searchForm.articleCode"></input-text-field>
+                        </div>
+                        <div class="me-2">                            
+                            <select-one-field [field]="searchForm.type"></select-one-field>
+                        </div>
+
+                        <button mat-icon-button color="primary" class="me-2" (click)="searchAction()">
+                            <mat-icon>search</mat-icon>
+                        </button>
+
+                        <button mat-icon-button color="primary" (click)="resetSearchFormAction()">
+                            <mat-icon>restart_alt</mat-icon>
                         </button>
                     </mat-toolbar-row>
                 </mat-toolbar>
@@ -75,7 +91,7 @@
                             </button>
                             <mat-menu #menu="matMenu">                                
                                 <button mat-menu-item color="primary" class="me-2" (click)="uniteAction()">
-                                    <mat-icon>dialog</mat-icon>Unités
+                                    <mat-icon>open_in_new</mat-icon>Unités
                                 </button>
                             </mat-menu>
                         </th>
@@ -104,6 +120,15 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
                         [class.text-bg-danger]="row.action == 'DELETE'"></tr>
                 </table>
+            </section>
+            <section class="p-3 pt-0">
+                <mat-paginator *ngIf="searchForm" class="pe-2"
+                    (page)="handlePageEvent($event)"
+                    [length]="searchForm.length"
+                    [pageSize]="searchForm.pageSize"
+                    [pageSizeOptions]="searchForm.pageSizeOptions"
+                    aria-label="Selectionner la page">
+                </mat-paginator>
             </section>
         </mat-drawer-content>
     </mat-drawer-container>

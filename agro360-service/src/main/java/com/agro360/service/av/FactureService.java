@@ -1,7 +1,6 @@
 package com.agro360.service.av;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,25 +17,24 @@ import com.agro360.service.common.AbstractService;
 public class FactureService extends AbstractService {
 
 	@Autowired
-	private FactureOperation service;
+	private FactureOperation operation;
 
-	public List<FactureBean> searchAction(ClientContext ctx, Optional<FactureSearchBean> searchBean) {
-		var q = searchBean.orElse(new FactureSearchBean());
-		return  service.findFacturesByCriteria(ctx, q);
+	public List<FactureBean> search(ClientContext ctx, FactureSearchBean searchBean) {
+		return  operation.findFacturesByCriteria(ctx, searchBean);
 	}
 
 	public void save(ClientContext ctx, FactureBean bean) {
 		
 		switch (bean.getAction()) {
 		case CREATE:
-			service.createFacture(ctx, bean);
+			operation.createFacture(ctx, bean);
 			
 			var msgTpl = "La facture <strong>%s</strong> a été créée avec succès!";
 			ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));
 			break;
 			
 		case UPDATE:
-			service.updateFacture(ctx, bean);
+			operation.updateFacture(ctx, bean);
 			
 			msgTpl = "La facture <strong>%s</strong> a été modifiée avec succès!";
 			ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));
@@ -45,35 +43,35 @@ public class FactureService extends AbstractService {
 		case CHANGE_STATUS:
 			switch (bean.getStatus().getValue()) {
 			case ANNL:
-				service.annulerFacture(ctx, bean);
+				operation.annulerFacture(ctx, bean);
 				
 				msgTpl = "La facture <strong>%s</strong> a été annulée avec succès!";
 				ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));				
 				break;
 				
 			case APPR:
-				service.approuverFacture(ctx, bean);
+				operation.approuverFacture(ctx, bean);
 				
 				msgTpl = "La facture <strong>%s</strong> a été approuvée avec succès!";
 				ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));
 				break;
 				
 			case ATAP:
-				service.demanderApprobationFacture(ctx, bean);
+				operation.demanderApprobationFacture(ctx, bean);
 				
 				msgTpl = "La facture <strong>%s</strong> a été envoyée en approbation avec succès!";
 				ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));
 				break;
 				
 			case CLOT:
-				service.cloturerFacture(ctx, bean);
+				operation.cloturerFacture(ctx, bean);
 				
 				msgTpl = "La facture <strong>%s</strong> a été cloturée avec succès!";
 				ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));
 				break;
 				
 			case REJT:
-				service.rejeterFacture(ctx, bean);
+				operation.rejeterFacture(ctx, bean);
 				
 				msgTpl = "La facture <strong>%s</strong> a été rejetée avec succès!";
 				ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));
@@ -85,7 +83,7 @@ public class FactureService extends AbstractService {
 			break;
 
 		case DELETE:
-			service.deleteFacture(ctx, bean);
+			operation.deleteFacture(ctx, bean);
 			
 			msgTpl = "La facture <strong>%s</strong> a été supprimée avec succès!";
 			ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));
@@ -94,5 +92,9 @@ public class FactureService extends AbstractService {
 		default:
 			
 		}
+	}
+
+	public FactureBean findFacture(ClientContext ctx, String value) {
+		return operation.findFactureByCode(ctx, value);
 	}
 }

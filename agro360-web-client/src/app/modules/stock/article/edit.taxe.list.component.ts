@@ -24,9 +24,6 @@ export class EditTaxeListComponent extends BeanList<ArticleTaxeBean> implements 
     @Input()
     taxes: Array<ArticleTaxeBean>;
 
-    @ViewChild(MatTable)
-    table: MatTable<ArticleTaxeBean>;
-
     displayedColumns: string[] = [
         'select',
         'taxe',
@@ -36,10 +33,6 @@ export class EditTaxeListComponent extends BeanList<ArticleTaxeBean> implements 
 
     constructor() {
         super()
-    }
-
-    override getViewChild(): MatTable<ArticleTaxeBean> {
-        return this.table;
     }
 
     ngOnInit(): void {

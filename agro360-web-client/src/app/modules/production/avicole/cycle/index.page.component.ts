@@ -1,5 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +7,6 @@ import { map } from 'rxjs';
 import { CycleBean, CycleSearchBean } from 'src/app/backed/bean.production.avicole';
 import { BeanList } from 'src/app/modules/common/bean.list';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { ProductionAvicoleService } from '../production.avicole.service';
 
 @Component({
     standalone: true,
@@ -36,19 +35,11 @@ export class IndexPageComponent extends BeanList<CycleBean> implements OnInit {
         'actions'
     ];
 
-    @ViewChild(MatTable)
-    table: MatTable<CycleBean>;
-
     constructor(private router: Router,
         private route: ActivatedRoute,
         private http: HttpClient,
-        public dialog: MatDialog,
-        private service: ProductionAvicoleService) {
+        public dialog: MatDialog) {
         super()
-    }
-
-    override getViewChild(): MatTable<CycleBean> {
-        return this.table;
     }
 
     getKeyLabel(bean: CycleBean): string {

@@ -11,7 +11,7 @@ import com.agro360.operation.rule.common.AbstractRule;
 import com.agro360.operation.rule.exception.RuleException;
 
 @Component
-public class IsMaxOk extends AbstractRule {
+public class IsMaxOk extends AbstractRule<AbstractBean> {
 	
 	private final static String ERROR_MSG = "La valeur doit être %s inférieure à %d!";
 

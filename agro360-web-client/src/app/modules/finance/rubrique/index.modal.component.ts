@@ -24,9 +24,6 @@ export class IndexModalComponent extends BeanList<RubriqueBean> implements OnIni
 
     searchForm: RubriqueSearchBean;
 
-    @ViewChild('rubriquesTable')
-    table: MatTable<RubriqueBean>;
-
     displayedColumns: string[] = [
         'select',
         'rubriqueCode',
@@ -41,10 +38,6 @@ export class IndexModalComponent extends BeanList<RubriqueBean> implements OnIni
         public dialog: MatDialog,
         private ui: UIService) {
         super()
-    }
-
-    override getViewChild(): MatTable<RubriqueBean> {
-        return this.table;
     }
     
     getKeyLabel(bean: RubriqueBean): string {

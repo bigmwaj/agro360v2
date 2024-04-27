@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.stock.UniteBean;
@@ -59,12 +58,14 @@ public class UniteOperation extends AbstractOperation<UniteDto, String> {
 	}
 	
 	public List<UniteBean> findUnitesByCriteria(ClientContext ctx, UniteSearchBean searchBean) {
-		var example = Example.of(new UniteDto());
-		if( searchBean.getUniteCode().getValue() != null ) {
-			example.getProbe().setUniteCode(searchBean.getUniteCode().getValue());
+		var code = searchBean.getUniteCode().getValue();
+		if( code != null ) {
+			code = code.toUpperCase();
 		}
-		return dao.findAll(example).stream()
-				.map(StockMapper::map)
-				.collect(Collectors.toList());
+        var length = dao.countUnitesByCriteria( code);
+        searchBean.setLength(length);
+        return dao.findUnitesByCriteria(searchBean.getOffset(), searchBean.getLimit(), code)
+        		.stream().map(StockMapper::map)
+        		.collect(Collectors.toList());
 	}
 }

@@ -1,8 +1,6 @@
 package com.agro360.service.stock;
 
 import java.util.List;
-
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -38,9 +36,9 @@ public class ArticleService extends AbstractService {
 	@Autowired
 	ArticleTaxeOperation articleTaxeOperation;
 	
-	public List<ArticleBean> search(ClientContext ctx, Optional<ArticleSearchBean> searchBean) {
+	public List<ArticleBean> search(ClientContext ctx, ArticleSearchBean searchBean) {
 		return operation
-				.findArticlesByCriteria(ctx, searchBean.orElse(new ArticleSearchBean()));
+				.findArticlesByCriteria(ctx, searchBean);
 	}
 
 	public void save(ClientContext ctx, ArticleBean bean) {

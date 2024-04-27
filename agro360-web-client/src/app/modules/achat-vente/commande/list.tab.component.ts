@@ -1,24 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { map } from 'rxjs';
 import { CommandeBean, CommandeSearchBean } from 'src/app/backed/bean.av';
 import { CommandeTypeEnumVd } from 'src/app/backed/vd.av';
-import { BeanList } from 'src/app/modules/common/bean.list';
-import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
-import { IBeanListTab } from '../../common/bean.list.tab';
+import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
 
 @Component({
     standalone: true,
@@ -38,23 +36,12 @@ import { IBeanListTab } from '../../common/bean.list.tab';
     selector: 'achat-vente-commande-list-tab',
     templateUrl: './list.tab.component.html'
 })
-export class ListTabComponent extends BeanList<CommandeBean> implements OnInit, IBeanListTab {
-    
-    @Input({required:true})
-    breadcrumb:BreadcrumbItem
-
-    @Input({required:true})
-    editingBeans: CommandeBean[] = [];
-
-    @Input({required:true})
-    selectedTab: {index:number}
-
+export class ListTabComponent extends BeanPagedListTab<CommandeBean, CommandeSearchBean> implements OnInit {
+   
     @Input({required:true})
     module:string;
 
     partnerLabel: string;
-
-    searchForm: CommandeSearchBean;
     
     displayedColumns: string[] = [
         'select',
@@ -64,38 +51,22 @@ export class ListTabComponent extends BeanList<CommandeBean> implements OnInit, 
         'type',
         'magasin',
         'partner',
-        'compte',
         'taxe',
         'remise',
         'prixTotal',
-        'paiementComptant',
+        'cumulPaiement',
         'actions'
     ];
 
-    @ViewChild(MatTable)
-    public table: MatTable<CommandeBean>;
-    
     constructor(
-        private http: HttpClient,
-        public dialog: MatDialog,
-        private ui: UIService) {
-        super()
+        private dialog: MatDialog,
+        public override http: HttpClient,       
+        public override ui: UIService) {
+        super(http, ui)
     }
 
     getKeyLabel(bean: CommandeBean): string | number {
         return bean.commandeCode.value;
-    }
-
-    override getViewChild(): MatTable<CommandeBean> {
-        return this.table;
-    }
-        
-    ngAfterViewInit(): void {
-        this.refreshPageTitle()
-    }
-
-    refreshPageTitle():void{
-        this.ui.setBreadcrumb(this.breadcrumb)
     }
 
     ngOnInit(): void {
@@ -107,29 +78,6 @@ export class ListTabComponent extends BeanList<CommandeBean> implements OnInit, 
             default:
                 throw new Error(`Aucun type de partenaire n'a été configuré pour le module ${this.module}`)
         }
-    }
-
-    resetSearchFormAction() {
-        this.http
-            .get(`achat-vente/commande/search-form`)
-            .subscribe(data => {
-                this.searchForm = <CommandeSearchBean>data;
-                this.searchAction();
-            });
-    }
-
-    searchAction() {
-        let objJsonStr = JSON.stringify(this.searchForm);
-        let objJsonB64 = btoa(objJsonStr);
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('q', objJsonB64);
-        this.http
-            .get(`achat-vente/commande`, { params: queryParams })
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                this.setData(data.records);
-            });
     }
 
     addAction(bean?:CommandeBean) {    
@@ -148,51 +96,45 @@ export class ListTabComponent extends BeanList<CommandeBean> implements OnInit, 
         }
 
         queryParams = queryParams.append("type", type);
-        this.http.get(`achat-vente/commande/create-form`, { params: queryParams }).subscribe(data => {
-            this.editingBeans.push(<CommandeBean>data);
-            this.selectedTab.index = this.editingBeans.length;
-        });
+        this.http.get(`achat-vente/commande/create-form`, { params: queryParams })
+        .subscribe(data => this.appendTab(<CommandeBean>data));
     }
 
-    private getEditingIndex(bean:CommandeBean){
-        return this.editingBeans.findIndex(e => bean.commandeCode.value == e.commandeCode.value)
+    areBeansEqual(b1:CommandeBean, b2:CommandeBean){
+        return b1 == b2 || b1.commandeCode.value == b2.commandeCode.value;
     }
 
     editAction(bean: CommandeBean) {
-        const index = this.getEditingIndex(bean);
-        if( index >= 0 ){
-            this.selectedTab.index = index + 1;
+        if( this.isAlreadLoaded(bean) ){
+            this.displayTab(bean);
             return;
         }
 
         let queryParams = new HttpParams();
         queryParams = queryParams.append("commandeCode", bean.commandeCode.value);
 
-        this.http.get(`achat-vente/commande/edit-form`, { params: queryParams }).subscribe(data => {
-            this.editingBeans.push(<CommandeBean>data); 
-            this.selectedTab.index = this.editingBeans.length;
-        });
+        this.http.get(`achat-vente/commande/edit-form`, { params: queryParams })
+        .subscribe(data => this.appendTab(<CommandeBean>data));
     }
 
     changeStatusAction(bean: CommandeBean) {
         let dialogRef = this.dialog.open(ChangeStatusDialogComponent, { data: bean.commandeCode.value });
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
-            this.searchAction();
         });  
     }
 
     deleteAction(bean: CommandeBean) {
         let dialogRef = this.dialog.open(DeleteDialogComponent, { data: bean.commandeCode.value });
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
-            this.searchAction();
+            this.removeItem(bean);
         });  
+    }   
+
+    protected override getSearchFormUrl(): string {
+        return `achat-vente/commande/search-form`;
     }
 
-    onDelete(bean: CommandeBean) {
-        this.removeItem(bean);
+    protected override getSearchUrl(): string {
+        return `achat-vente/commande`;
     }
 }

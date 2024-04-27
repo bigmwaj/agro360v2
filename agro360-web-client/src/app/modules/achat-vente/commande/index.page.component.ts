@@ -53,9 +53,7 @@ export class IndexPageComponent extends BeanIndexPage<CommandeBean, ListTabCompo
         return this.listTab;
     }
 
-    override ngOnInit(): void {
-        super.ngOnInit();
-
+    ngOnInit(): void {
         if( !this.breadcrumb ){
             this.breadcrumb = new BreadcrumbItem('Achats & Ventes')
         }else{

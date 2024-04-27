@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.ArticleSearchBean;
+import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.mapper.StockMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IArticleDao;
@@ -67,14 +67,22 @@ public class ArticleOperation extends AbstractOperation<ArticleDto, String> {
 		return StockMapper.map(dto);	
 	}
 	
+	public List<UniteBean> findUnitesArticleByCode(ClientContext ctx, String articleCode) {
+		return dao.findUnitesArticleByCode(articleCode).stream()
+				.map(StockMapper::map)
+				.collect(Collectors.toList());
+	}
+	
 	public List<ArticleBean> findArticlesByCriteria(ClientContext ctx, ArticleSearchBean searchBean) {
-		var example = Example.of(new ArticleDto());
-		if( searchBean.getArticleCode().getValue() != null ) {
-			example.getProbe().setArticleCode(searchBean.getArticleCode().getValue());
+		var article = searchBean.getArticleCode().getValue();
+		if( article != null ) {
+			article = article.toUpperCase();
 		}
-		if( searchBean.getType().getValue() != null ) {
-			example.getProbe().setType(searchBean.getType().getValue());
-		}
-		return dao.findAll(example).stream().map(StockMapper::map).collect(Collectors.toList());
+		var type = searchBean.getType().getValue();
+        var length = dao.countArticlesByCriteria(type, article);
+        searchBean.setLength(length);
+        return dao.findArticlesByCriteria(searchBean.getOffset(), searchBean.getLimit(), type, article)
+        		.stream().map(StockMapper::map)
+        		.collect(Collectors.toList());
 	}
 }

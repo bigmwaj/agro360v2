@@ -152,7 +152,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/deleteBtn">
 		<property name="visible">
 			<list>
-				<ref bean="IsCommandeEditableStatus" />
+				<bean class="com.agro360.operation.rule.module.av.ligne.IsCommandeEditableStatus"/>
 			</list>
 		</property>
 	</bean>
@@ -215,7 +215,7 @@
 	<bean name="av/ligne" class="com.agro360.operation.metadata.BeanMetadataConfig">
 		<property name="editable">
 			<list>
-				<ref bean="IsCommandeEditableStatus" />
+				<bean class="com.agro360.operation.rule.module.av.ligne.IsCommandeEditableStatus"/>
 			</list>
 		</property>
 		<property name="fields">

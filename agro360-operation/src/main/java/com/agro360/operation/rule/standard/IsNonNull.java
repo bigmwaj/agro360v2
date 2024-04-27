@@ -11,7 +11,7 @@ import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.rule.common.AbstractRule;
 
 @Component
-public class IsNonNull extends AbstractRule {
+public class IsNonNull extends AbstractRule<AbstractBean> {
 
 	public static final String MESSAGE_KEY = "message";
 

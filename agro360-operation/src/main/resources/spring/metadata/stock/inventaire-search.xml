@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="inventaire-search/magasinCode"/>							
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="inventaire-search/articleCode">
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="16"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>
+	</bean>				
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="inventaire-search/createBtn">
+		<property name="visible">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="inventaire-search/uniteBtn">
+		<property name="visible">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>		
+    
+    <bean name="stock/inventaire-search" class="com.agro360.operation.metadata.BeanMetadataConfig">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+		<property name="fields">
+			<map>
+				<entry key="magasinCode" value-ref="inventaire-search/magasinCode"/>
+				<entry key="articleCode" value-ref="inventaire-search/articleCode"/>
+				
+				<entry key="createBtn" value-ref="inventaire-search/createBtn"/>
+				<entry key="uniteBtn" value-ref="inventaire-search/uniteBtn"/>
+			</map>
+		</property>
+	</bean>
+</beans>

@@ -1,14 +1,14 @@
 
 import { Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { SharedModule } from 'src/app/modules/common/shared.module';
 import { MatIconModule } from '@angular/material/icon';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { EditTabComponent } from './edit.tab.component';
 import { MatTabGroup, MatTabsModule } from '@angular/material/tabs';
-import { ListTabComponent } from './list.tab.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { ArticleBean } from 'src/app/backed/bean.stock';
 import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
-import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanIndexPage } from '../../common/bean.index.page';
+import { EditTabComponent } from './edit.tab.component';
+import { ListTabComponent } from './list.tab.component';
 
 @Component({
     standalone: true,
@@ -23,11 +23,7 @@ import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
     selector: 'stock-article-index-page',
     templateUrl: './index.page.component.html'
 })
-export class IndexPageComponent implements OnInit {
-
-    editingBeans: ArticleBean[] = [];
-
-    selectedTab: {index:number} = {index:0}
+export class IndexPageComponent extends BeanIndexPage<ArticleBean, ListTabComponent, EditTabComponent> implements OnInit {
 
     ngOnInit(): void {
         if( !this.breadcrumb ){
@@ -47,43 +43,21 @@ export class IndexPageComponent implements OnInit {
     editTabs!: QueryList<EditTabComponent>;
     
     @ViewChild(ListTabComponent) 
-    listTab: ListTabComponent;
-    
-    refreshPageTitle():void{
-        var selectedIndex = this.tabGroup.selectedIndex
-        if( selectedIndex == null ){
-            selectedIndex = 0
-        }
-        this._refreshTabTitle(selectedIndex)
+    listTab: ListTabComponent;    
+
+    protected areBeansEqual(b1: ArticleBean, b2: ArticleBean):boolean{
+        return b1 == b2 || b1.articleCode.value == b2.articleCode.value;
     }
 
-    selectedTabChange($event:any):void{
-        this._refreshTabTitle($event.index);
-        this.selectedTab.index = $event.index;
+    protected override getEditTabs(): QueryList<EditTabComponent> {
+        return this.editTabs;
     }
 
-    private _refreshTabTitle(index: number){
-        if( index == 0 ){
-            this.listTab.refreshPageTitle()
-        }else{
-            let editTab = this.editTabs.get(index-1);
-            editTab?.refreshPageTitle()
-        }
+    protected override getTabGroup(): MatTabGroup {
+        return this.tabGroup;
     }
 
-    private getEditingBeanIndex(bean:ArticleBean):number{
-        let filter = (e:ArticleBean) => (ClientOperationEnumVd.CREATE == bean.action && e == bean) 
-            || e.articleCode.value == bean.articleCode.value;
-        return this.editingBeans.findIndex(filter);
+    protected override getListTab(): ListTabComponent {
+        return this.listTab;
     }
-
-    removeAction(bean:ArticleBean){
-        const selectedTabIndex = this.selectedTab.index;
-        const editingBeanIndex = this.getEditingBeanIndex(bean);
-        this.editingBeans = this.editingBeans.filter((e, i)=> i != editingBeanIndex);
-        if( selectedTabIndex == editingBeanIndex + 1 ){
-            this.selectedTab.index = editingBeanIndex //On recule
-        }
-    }
-
 }

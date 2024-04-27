@@ -13,9 +13,7 @@
                 <mat-icon>add_shopping_cart</mat-icon>
             </button>
             <span class="menu-spacer"></span>
-            <button mat-fab color="warn" extended class="ms-3" *ngIf="commande.encaissementBtn.visible">
-                <mat-icon>currency_exchange</mat-icon> Encaissement
-            </button>
+            
         </div>
     </h4>
 
@@ -51,33 +49,47 @@
             <ng-container matColumnDef="remise">
                 <th mat-header-cell *matHeaderCellDef>Remise</th>
                 <td mat-cell *matCellDef="let element">
-                    <input-number-field  
-                        [field]="element.remiseMontant" 
-                        [displayLabel]="false">
-                    </input-number-field>
-                    <button mat-icon-button 
-                        color="primary" 
-                        class="field-button" 
-                        title="Paramétrer la remise" 
-                        (click)="editRemiseAction(element)">
-                        <mat-icon>open_in_new</mat-icon>
-                    </button>
+                    <div class="d-flex">
+                        <div class="">
+                            <input-number-field  
+                                [field]="element.remise" 
+                                [displayLabel]="false">
+                            </input-number-field>
+                        </div>
+                        <div class="">
+                            <div class="field-button pt-1" >
+                                <button mat-icon-button 
+                                    color="primary"  
+                                    title="Paramétrer la remise" 
+                                    (click)="editRemiseAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>
+                                </button> 
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </ng-container>
 
             <ng-container matColumnDef="taxe">
                 <th mat-header-cell *matHeaderCellDef>Montant Taxe</th>
-                <td mat-cell *matCellDef="let element">
-                    <input-number-field 
-                        [field]="element.taxe" 
-                        [displayLabel]="false">
-                    </input-number-field>
-                    <button mat-icon-button color="primary" 
-                        class="field-button" 
-                        title="Liste des taxes appliquée" 
-                        (click)="listerTaxesAction(element)">
-                        <mat-icon>open_in_new</mat-icon>
-                    </button> 
+                <td mat-cell *matCellDef="let element">                    
+                    <div class="d-flex">
+                        <div class="">
+                            <input-number-field 
+                                [field]="element.taxe" 
+                                [displayLabel]="false">
+                            </input-number-field>
+                        </div>
+                        <div class="">
+                            <div class="field-button pt-1" >
+                                <button mat-icon-button color="primary"                             
+                                    title="Liste des taxes appliquée" 
+                                    (click)="listerTaxesAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>
+                                </button> 
+                            </div>
+                        </div>
+                    </div>
                 </td>
             </ng-container>
 

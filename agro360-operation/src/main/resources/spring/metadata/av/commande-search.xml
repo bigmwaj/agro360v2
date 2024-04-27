@@ -21,8 +21,6 @@
 		</property>
 	</bean>
 		
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search/compte"/>	
-
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search/dateDebut"/>
 
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search/dateFin"/>
@@ -63,7 +61,7 @@
 
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search/type"/>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search/createCommandeBtn">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search/createBtn">
 		<property name="visible">
 			<list>
 				<ref bean="IsTrue" />
@@ -85,9 +83,8 @@
 				<entry key="statusIn" value-ref="commande-search/statusIn" />
 				<entry key="type" value-ref="commande-search/type" />
 				<entry key="ville" value-ref="commande-search/ville" />
-				<entry key="compte" value-ref="commande-search/compte" />
 				<entry key="partner" value-ref="commande-search/partner" />
-				<entry key="createCommandeBtn" value-ref="commande-search/createCommandeBtn" />
+				<entry key="createBtn" value-ref="commande-search/createBtn" />
 			</map>
 		</property>
 	</bean>

@@ -12,7 +12,7 @@ import com.agro360.operation.rule.common.AbstractRule;
 import com.agro360.operation.rule.exception.RuleException;
 
 @Component
-public class IsMinOk extends AbstractRule {
+public class IsMinOk extends AbstractRule<AbstractBean> {
 	
 	public static final String REQUIRED_NUMBER = "Nombre requis";
 	

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/changeStatusBtn">
+		<property name="visible">
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusChangeAllowed" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/deleteBtn">
+		<property name="visible">
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsDeleteAllowed" />
+			</list>
+		</property>
+	</bean>
+
+	<bean name="av/commande-search-result"  class="com.agro360.operation.metadata.BeanMetadataConfig">
+		<property name="editable">
+			<list>
+				<ref bean="IsFalse" />
+			</list>
+		</property>
+		<property name="fields">
+			<map>
+				<entry key="changeStatusBtn" value-ref="commande-search-result/changeStatusBtn" />
+				<entry key="deleteBtn" value-ref="commande-search-result/deleteBtn" />
+			</map>
+		</property>
+	</bean>
+</beans>

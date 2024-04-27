@@ -17,13 +17,13 @@
             [breadcrumb]="breadcrumb">
         </stock-inventaire-list-tab>
     </mat-tab>
-    <ng-container *ngFor="let editingBean of editingBeans">
+    <ng-container *ngFor="let editingBean of editingBeans; index as i">
         <mat-tab>                        
             <ng-template mat-tab-label>
                 <span class="me-2">
                     {{editingBean.article.articleCode.value}}
                 </span>
-                <button mat-icon-button (click)="removeAction(editingBean)">
+                <button mat-icon-button (click)="removeTabAction(i)">
                     <mat-icon>close</mat-icon>
                 </button>
             </ng-template> 

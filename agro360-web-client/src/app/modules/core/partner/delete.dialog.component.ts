@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { PartnerBean } from 'src/app/backed/bean.core';
 import { Message } from 'src/app/backed/message';
@@ -23,7 +23,8 @@ export class DeleteDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: {partnerCode: string},
         private http: HttpClient,
         public dialog: MatDialog,
-        private ui: UIService) { }
+        private ui: UIService,
+        public dialogRef: MatDialogRef<DeleteDialogComponent>) { }
 
     ngOnInit(): void {
         let queryParams = new HttpParams();

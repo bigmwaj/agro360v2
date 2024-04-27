@@ -15,12 +15,12 @@
     
     <bean class="com.agro360.operation.rule.module.common.IsBeanCreateOperation" name="IsBeanCreateOperation"/>
     <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsBeanCreateOperation">
-		<constructor-arg ref="IsBeanCreateOperation"></constructor-arg>
+		<constructor-arg ref="IsBeanCreateOperation"/>
     </bean>
     
     <bean class="com.agro360.operation.rule.module.common.IsBeanUpdateOperation" name="IsBeanUpdateOperation"/>
     <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsBeanUpdateOperation">
-		<constructor-arg ref="IsBeanUpdateOperation"></constructor-arg>
+		<constructor-arg ref="IsBeanUpdateOperation"/>
     </bean>
     
     <bean class="com.agro360.operation.rule.common.OrRule" name="IsBeanCreateOrUpdateOperation">
@@ -36,16 +36,22 @@
     
     <bean class="com.agro360.operation.rule.module.common.IsBeanChangeStatusOperation" name="IsBeanChangeStatusOperation"/>
     <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsBeanChangeStatusOperation">
-		<constructor-arg ref="IsBeanChangeStatusOperation"></constructor-arg>
+		<constructor-arg ref="IsBeanChangeStatusOperation"/>
     </bean>
     
-    <bean class="com.agro360.operation.rule.module.core.IsRootCategory" name="IsRootCategory"></bean>
+    <bean class="com.agro360.operation.rule.module.core.IsRootCategory" name="IsRootCategory"/>
     <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsRootCategory">
-		<constructor-arg ref="IsRootCategory"></constructor-arg>
+		<constructor-arg ref="IsRootCategory"/>
+    </bean>
+    <bean class="com.agro360.operation.rule.module.core.IsPartnerRootCategory" name="IsPartnerRootCategory"/>
+    <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsPartnerRootCategory">
+		<constructor-arg ref="IsPartnerRootCategory"/>
     </bean>
     
-    <bean class="com.agro360.operation.rule.module.av.IsCommandeEditableStatus" name="IsCommandeEditableStatus"></bean>
-    <bean class="com.agro360.operation.rule.module.av.IsRetournable" name="IsRetournable"></bean>
-    <bean class="com.agro360.operation.rule.module.av.IsReceptionnable" name="IsReceptionnable"></bean>
+    <bean class="com.agro360.operation.rule.module.av.IsCommandeEditableStatus" name="IsCommandeEditableStatus"/>
+    <bean class="com.agro360.operation.rule.module.av.IsRetournable" name="IsRetournable"/>
+    <bean class="com.agro360.operation.rule.module.av.IsReceptionnable" name="IsReceptionnable"/>
+    <bean class="com.agro360.operation.rule.module.av.commande.IsPaiementCommandeAllowed" 
+    	name="IsPaiementCommandeAllowed"/>
     
 </beans>

@@ -56,9 +56,7 @@ export class IndexPageComponent extends BeanIndexPage<PartnerBean, ListTabCompon
         return this.listTab;
     }
 
-    override ngOnInit(): void {
-
-        super.ngOnInit();
+    ngOnInit(): void {
         if( !this.breadcrumb ){
             this.breadcrumb = new BreadcrumbItem('Partenaires')
         }else{

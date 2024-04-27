@@ -1,7 +1,5 @@
 package com.agro360.bo.bean.av;
 
-import java.math.BigDecimal;
-
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.metadata.FieldMetadata;
@@ -21,8 +19,6 @@ public class ReglementCommandeBean extends AbstractBean {
 	private FieldMetadata<Long> reglementId = new FieldMetadata<>("ID");
 
 	private FieldMetadata<String> commandeCode = new FieldMetadata<>("Commande");
-
-	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
 
 	@Setter
 	private TransactionBean transaction = new TransactionBean();

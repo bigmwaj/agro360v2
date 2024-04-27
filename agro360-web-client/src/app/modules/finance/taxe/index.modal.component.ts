@@ -22,9 +22,6 @@ import { UIService } from 'src/app/modules/common/service/ui.service';
 })
 export class IndexModalComponent extends BeanList<TaxeBean> implements OnInit {
 
-    @ViewChild('taxesTable')
-    table: MatTable<TaxeBean>;
-
     displayedColumns: string[] = [
         'select',
         'taxeCode',
@@ -38,10 +35,6 @@ export class IndexModalComponent extends BeanList<TaxeBean> implements OnInit {
         public dialog: MatDialog,
         private ui: UIService) {
         super()
-    }
-
-    override getViewChild(): MatTable<TaxeBean> {
-        return this.table;
     }
     
     getKeyLabel(bean: TaxeBean): string {

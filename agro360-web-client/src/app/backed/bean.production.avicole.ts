@@ -3,16 +3,16 @@ import { CycleStatusEnumVd, PhaseEnumVd, ProductionCategoryEnumVd, RubriqueEnumV
 import { AbstractBean, AbstractLigneBean, AbstractStatusTrackingBean } from './bean.common';
 import { ArticleBean, MagasinBean, UniteBean, VariantBean } from './bean.stock';
 
-export interface OperationSearchBean extends AbstractBean {
-	phase: FieldMetadata<PhaseEnumVd>;
-	cycleCode: FieldMetadata<string>;
-	rubrique: FieldMetadata<RubriqueEnumVd>;
+export interface JourneeBean extends AbstractBean {
+	journee: FieldMetadata<any>;
+	numeroJournee: FieldMetadata<number>;
+	productions: Array<ProductionBean>;
+	cycle: CycleBean;
 };
 
-export interface OperationBean extends AbstractLigneBean {
-	phase: FieldMetadata<PhaseEnumVd>;
-	numeroJournee: FieldMetadata<number>;
-	rubrique: FieldMetadata<RubriqueEnumVd>;
+export interface JourneeSearchBean extends AbstractBean {
+	journee: FieldMetadata<any>;
+	cycleCode: FieldMetadata<string>;
 };
 
 export interface CycleBean extends AbstractStatusTrackingBean<CycleStatusEnumVd> {
@@ -42,18 +42,6 @@ export interface ProductionBean extends AbstractBean {
 	alveole: FieldMetadata<number>;
 };
 
-export interface JourneeBean extends AbstractBean {
-	journee: FieldMetadata<any>;
-	numeroJournee: FieldMetadata<number>;
-	productions: Array<ProductionBean>;
-	cycle: CycleBean;
-};
-
-export interface JourneeSearchBean extends AbstractBean {
-	journee: FieldMetadata<any>;
-	cycleCode: FieldMetadata<string>;
-};
-
 export interface MetadataBean extends AbstractBean {
 	metadataCode: FieldMetadata<string>;
 	value: FieldMetadata<string>;
@@ -63,12 +51,24 @@ export interface MetadataBean extends AbstractBean {
 	libelle: FieldMetadata<string>;
 };
 
-export interface ProductionSearchBean extends AbstractBean {
-	cycleCode: FieldMetadata<string>;
-};
-
 export interface CycleSearchBean extends AbstractBean {
 	cycleCode: FieldMetadata<string>;
 	magasin: FieldMetadata<string>;
 	status: FieldMetadata<CycleStatusEnumVd>;
+};
+
+export interface OperationBean extends AbstractLigneBean {
+	phase: FieldMetadata<PhaseEnumVd>;
+	numeroJournee: FieldMetadata<number>;
+	rubrique: FieldMetadata<RubriqueEnumVd>;
+};
+
+export interface OperationSearchBean extends AbstractBean {
+	phase: FieldMetadata<PhaseEnumVd>;
+	cycleCode: FieldMetadata<string>;
+	rubrique: FieldMetadata<RubriqueEnumVd>;
+};
+
+export interface ProductionSearchBean extends AbstractBean {
+	cycleCode: FieldMetadata<string>;
 };

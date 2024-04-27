@@ -6,22 +6,17 @@ import org.slf4j.LoggerFactory;
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.operation.context.ClientContext;
 
-public abstract class AbstractAction<T> {
+public abstract class AbstractAction<T, B extends AbstractBean> {
 
-	public abstract T process(ClientContext ctx, AbstractBean bean);
+	public abstract T process(ClientContext ctx, B bean);
 
 	protected Logger getLogger() {
 		return LoggerFactory.getLogger(getClass());
 	}
 
-	public void performAction(ClientContext ctx, AbstractBean bean, String fieldName, String attributeName) {
+	public void performAction(ClientContext ctx, B bean, String fieldName, String attributeName) {
 		var result = this.process(ctx, bean);
 		var field = bean.getField(fieldName);
-		
-		getLogger().debug("Performing action {} on attribute {} with value {}", this.getClass().getName(), attributeName, result);
-		
 		field.setAttribute(attributeName, result);
-		
-		
 	}
 }

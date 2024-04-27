@@ -1,16 +1,11 @@
 
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { IBeanListTab } from './bean.list.tab';
-import { IBeanEditTab } from './bean.edit.tab';
+import { QueryList } from '@angular/core';
+import { BeanEditTab } from './bean.edit.tab';
 import { MatTabGroup } from '@angular/material/tabs';
 import { AbstractBean } from 'src/app/backed/bean.common';
-import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
+import { BeanListTab } from './bean.list.tab';
 
-@Component({
-    standalone: true,
-    template: ''
-})
-export abstract class BeanIndexPage<B extends AbstractBean, L extends IBeanListTab, E extends IBeanEditTab> implements OnInit {
+export abstract class BeanIndexPage<B extends AbstractBean, L extends BeanListTab<B>, E extends BeanEditTab<B>> {
 
     editingBeans: B[] = [];
     
@@ -20,10 +15,6 @@ export abstract class BeanIndexPage<B extends AbstractBean, L extends IBeanListT
 
     selectedTab: {index:number} = {index:0}
 
-    ngOnInit(): void {
-
-    }
-
     protected abstract areBeansEqual(b1: B, b2: B):boolean;
     
     protected abstract getListTab(): L;
@@ -32,11 +23,7 @@ export abstract class BeanIndexPage<B extends AbstractBean, L extends IBeanListT
 
     protected abstract getTabGroup(): MatTabGroup;
 
-    private getEditingBeanIndex(bean:B):number{
-        const filter = (e:B) => (ClientOperationEnumVd.CREATE == bean.action && e == bean) || this.areBeansEqual(e, bean);
-        return this.editingBeans.findIndex(filter);
-    }
-    
+    /*
     private getCurrentEditingBean():B | null{  
         const tabGroup = this.getTabGroup();
         if( tabGroup == null ){
@@ -50,23 +37,18 @@ export abstract class BeanIndexPage<B extends AbstractBean, L extends IBeanListT
         }   
         return null;
     }
-
-    removeAction(bean:B){
-        const selectedTabIndex = this.selectedTab.index;
-        const editingBeanIndex = this.getEditingBeanIndex(bean);
-        this.editingBeans = this.editingBeans.filter((e, i)=> i != editingBeanIndex);
-        if( selectedTabIndex == editingBeanIndex + 1 ){
-            this.selectedTab.index = editingBeanIndex //On recule
+*/
+        
+    removeTabAction(index:number){
+        this.editingBeans = this.editingBeans.filter((e, i)=> i != index);
+        if( index == index + 1 ){
+            this.selectedTab.index = index //On recule
         }
     }
 
     addAction(option?:any){
         const listTab = this.getListTab()
         listTab.addAction(option);
-    }
-
-    private setCurrentEditingBeanSavable(){
-        this.currentEditingBean = this.getCurrentEditingBean();
     }
     
     saveAction(){
@@ -82,20 +64,38 @@ export abstract class BeanIndexPage<B extends AbstractBean, L extends IBeanListT
         this._refreshTabTitle(selectedIndex)
     }
 
-    selectedTabChange($event:any):void{
+    selectedTabChange($event:any):void{        
+        this.currentEditTab = null;
+        this.currentEditingBean = null;
+
+        if( $event.index != 0 ){
+            this.initEditTabContext($event.index);
+        }
+
         this._refreshTabTitle($event.index);
         this.selectedTab.index = $event.index;
-        this.setCurrentEditingBeanSavable()
     }
 
     private _refreshTabTitle(index: number){
         if( index == 0 ){
-            const listTab = this.getListTab();
-            listTab.refreshPageTitle()
+            this.getListTab().ngAfterViewInit()
         }else{
             const editTabs = this.getEditTabs();
-            let editTab = editTabs.get(index-1);
-            editTab?.refreshPageTitle()
+            let editTab = editTabs.get(index - 1);
+            editTab?.ngAfterViewInit()
         }
+    }
+
+    private initEditTabContext(index: number){
+        const editTabs = this.getEditTabs();
+        let editTab = editTabs.get(index - 1);
+        if( editTab ){
+            this.currentEditTab = editTab;             
+            this.currentEditingBean = this.currentEditTab.bean
+        }
+    }
+
+    onBeanSaveFronEditTab($event:any){
+        this.getListTab().prependItemIfNotInList(<B>$event);
     }
 }

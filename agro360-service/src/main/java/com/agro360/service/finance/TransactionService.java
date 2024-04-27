@@ -1,7 +1,6 @@
 package com.agro360.service.finance;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,35 +18,35 @@ import com.agro360.service.common.AbstractService;
 public class TransactionService extends AbstractService {
 
 	@Autowired
-	TransactionOperation service;
+	private TransactionOperation operation;
 
-	public List<TransactionBean> searchAction(ClientContext ctx, Optional<TransactionSearchBean> searchForm) {	
-		return service.findTransactionsByCriteria(ctx, searchForm.orElse(new TransactionSearchBean()));
+	public List<TransactionBean> search(ClientContext ctx, TransactionSearchBean searchForm) {	
+		return operation.findTransactionsByCriteria(ctx, searchForm);
 	}
 	
-	public void saveAction(ClientContext ctx, TransactionBean bean) {
+	public void save(ClientContext ctx, TransactionBean bean) {
 		
 		switch (bean.getAction()) {
 		case CREATE:
-			service.createTransaction(ctx, bean);
+			operation.createTransaction(ctx, bean);
 			break;
 			
 		case UPDATE:
-			service.updateTransaction(ctx, bean);
+			operation.updateTransaction(ctx, bean);
 			break;
 
 		case CHANGE_STATUS:
 			switch (bean.getStatus().getValue()) {
 			case ANNULEE:
-				service.annulerTransaction(ctx, bean);				
+				operation.annulerTransaction(ctx, bean);				
 				break;
 				
 			case APPROUVEE:
-				service.approuverTransaction(ctx, bean);
+				operation.approuverTransaction(ctx, bean);
 				break;
 				
 			case CLOTUREE:
-				service.clotureTransaction(ctx, bean);
+				operation.clotureTransaction(ctx, bean);
 				break;
 
 			default:
@@ -56,16 +55,17 @@ public class TransactionService extends AbstractService {
 			break;
 
 		case DELETE:
-			service.deleteTransaction(ctx, bean);
+			operation.deleteTransaction(ctx, bean);
 			break;
 			
 		default:
 			
 		};
+		
 	}
 
 	public List<TransactionBean> transfert(ClientContext ctx, TransfertBean bean) {
-		var result = service.transfert(ctx, bean);
+		var result = operation.transfert(ctx, bean);
 		var montant = bean.getMontant().getValue();
 		var source = bean.getCompteSource().getCompteCode().getValue();
 		var cible = bean.getCompteCible().getCompteCode().getValue();
@@ -74,6 +74,10 @@ public class TransactionService extends AbstractService {
 		ctx.success(String.format(msgTpl, montant, source, cible,  partner));
 		
 		return result;
+	}
+
+	public TransactionBean findTransaction(ClientContext ctx, String value) {
+		return operation.findTransactionByCode(ctx, value);
 	}
 
 }

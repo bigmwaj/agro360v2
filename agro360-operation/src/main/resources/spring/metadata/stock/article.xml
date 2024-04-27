@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="article/articleCode">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="16"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>
+	</bean>		
+		
+    <bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="article/description">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="32"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>
+	</bean>			
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="article/type">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+	</bean>	
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="article/deleteBtn">
+		<property name="visible">
+			<list>
+				<ref bean="IsBeanCreateOperation" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="article/unite.uniteCode">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />					
+			</list>
+		</property>
+	</bean>				
+					
+    <bean name="stock/article" class="com.agro360.operation.metadata.BeanMetadataConfig">
+		<property name="fields">
+			<map>
+				<entry key="articleCode" value-ref="article/articleCode"/>
+				<entry key="type" value-ref="article/type"/>
+				<entry key="description" value-ref="article/description"/>
+				<entry key="deleteBtn" value-ref="article/deleteBtn"/>
+			</map>
+		</property>
+		<property name="beans">
+			<map>
+				 <entry key="unite">
+					 <bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+					 	<property name="fields">
+							 <map>
+								 <entry key="uniteCode" value-ref="article/unite.uniteCode"/>
+							 </map>
+						 </property>
+					 </bean>
+				 </entry>
+			</map>
+		</property>
+		<property name="beanList">
+			<map>
+				<entry key="taxes" value-ref="stock/taxe" />
+				<entry key="variants" value-ref="stock/variant" />
+				<entry key="conversions" value-ref="stock/conversion" />
+			</map>
+		</property>
+	</bean>
+</beans>

@@ -49,7 +49,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search/type">
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search/createFactureBtn">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search/createBtn">
 		<property name="visible">
 			<list>
 				<ref bean="IsTrue" />
@@ -71,7 +71,7 @@
 				<entry key="statusIn" value-ref="facture-search/statusIn" />
 				<entry key="type" value-ref="facture-search/type" />
 				<entry key="partner" value-ref="facture-search/partner" />
-				<entry key="createFactureBtn" value-ref="facture-search/createFactureBtn" />
+				<entry key="createBtn" value-ref="facture-search/createBtn" />
 			</map>
 		</property>
 	</bean>

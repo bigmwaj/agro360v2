@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 public enum CommandeStatusEnumVd {
 	BRLN("Brouillon"),
+	PAYT("Paiement En cours"),
     ATAP("Att. Appro"),
     APPR("Approuvée"),
     ANNL("Annulée"),

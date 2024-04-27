@@ -7,24 +7,40 @@
                 </h4>
                 <div>
                     <select-one-field [field]="searchForm.magasinCode"></select-one-field>
-                    <select-one-field [field]="searchForm.articleCode"></select-one-field>
+                    <input-text-field [field]="searchForm.articleCode"></input-text-field>
                 </div>
                 <div class="text-nowrap">
                     <button mat-raised-button color="primary" class="me-2" (click)="searchAction()">
                         <mat-icon>search</mat-icon>Réchercher
                     </button>
                     <button mat-raised-button color="primary" (click)="resetSearchFormAction()">
-                        <mat-icon>reset</mat-icon>Réinitialiser
+                        <mat-icon>restart_alt</mat-icon>Réinitialiser
                     </button>
                 </div>
             </section>
         </mat-drawer>
         <mat-drawer-content class="search-result">
-            <section class="p-3">
+            <section class="p-3 pb-0">
                 <mat-toolbar color="secondary">                      
-                    <mat-toolbar-row>
-                        <button mat-icon-button (click)="drawer.toggle()">
-                            <mat-icon>tune</mat-icon>
+                    <mat-toolbar-row class="search-toolbar" *ngIf="searchForm"> 
+                        <div class="me-2"> 
+                            <button mat-icon-button (click)="drawer.toggle()">
+                                <mat-icon>tune</mat-icon>
+                            </button>                           
+                        </div>
+                        <div class="me-2">                            
+                            <select-one-field [field]="searchForm.magasinCode"></select-one-field>
+                        </div>
+                        <div class="me-2">                            
+                            <input-text-field [field]="searchForm.articleCode"></input-text-field>
+                        </div>
+
+                        <button mat-icon-button color="primary" class="me-2" (click)="searchAction()">
+                            <mat-icon>search</mat-icon>
+                        </button>
+
+                        <button mat-icon-button color="primary" (click)="resetSearchFormAction()">
+                            <mat-icon>restart_alt</mat-icon>
                         </button>
                     </mat-toolbar-row>
                 </mat-toolbar>
@@ -95,7 +111,7 @@
                                     <div>
                                         <input type="number" 
                                             class="input-ajust"
-                                            matTooltip="Veuillez indiquer la quantité à ajouter ou à retrancher(valeur négative) à la quantité actuelle"
+                                            [matTooltip]="'Veuillez indiquer la quantité à ajouter ou à retrancher(valeur négative) à la quantité actuelle. Quantité actuelle ' + element.quantite.value"
                                             [(ngModel)]="element.quantiteAjust.value"/>  
                                     </div>
                                     <div class="ms-auto">
@@ -135,7 +151,7 @@
                                 <div class="d-flex ajust-wrapper">
                                     <div>                                        
                                         <input type="number"                                            
-                                            matTooltip="Veuillez indiquer le nouveau prix de vente de la variante" 
+                                            [matTooltip]="'Veuillez indiquer le nouveau prix de vente de la variante. Prix en cours ' + element.prixUnitaireVente.value" 
                                             class="input-ajust" 
                                             [(ngModel)]="element.prixUnitaireVenteAjust.value"/>                                  
                                     </div>
@@ -193,6 +209,15 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
                         [class.text-bg-danger]="row.action == 'DELETE'"></tr>
                 </table>
+            </section>
+            <section class="p-3 pt-0">
+                <mat-paginator *ngIf="searchForm" class="pe-2"
+                    (page)="handlePageEvent($event)"
+                    [length]="searchForm.length"
+                    [pageSize]="searchForm.pageSize"
+                    [pageSizeOptions]="searchForm.pageSizeOptions"
+                    aria-label="Selectionner la page">
+                </mat-paginator>
             </section>
         </mat-drawer-content>
     </mat-drawer-container>

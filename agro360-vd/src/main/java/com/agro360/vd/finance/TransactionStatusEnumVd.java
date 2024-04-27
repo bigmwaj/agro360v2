@@ -10,6 +10,8 @@ public enum TransactionStatusEnumVd {
 
 	ANNULEE("Annulée"),
 	
+	RESERVEE("Reservée"),
+	
 	APPROUVEE("Approuvée"),
 	
 	CLOTUREE("Clôturee");
