@@ -18,6 +18,7 @@ import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.UniteSearchBean;
 import com.agro360.bo.mapper.StockMapper;
 import com.agro360.form.common.AbstractForm;
+import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.finance.TaxeOperation;
 import com.agro360.operation.logic.stock.ArticleOperation;
@@ -34,16 +35,16 @@ public class ArticleForm extends AbstractForm{
 	private ArticleOperation operation;
 	
 	@Autowired
-	private VariantOperation variantService;
+	private VariantOperation variantOperation;
 
 	@Autowired
-	private ConversionOperation conversionService;
+	private ConversionOperation conversionOperation;
 	
 	@Autowired
 	private ConversionForm conversionForm;
 
 	@Autowired
-	private ArticleTaxeOperation articleTaxeService;
+	private ArticleTaxeOperation articleTaxeOperation;
 	
 	@Autowired
 	private UniteOperation uniteService;
@@ -51,14 +52,16 @@ public class ArticleForm extends AbstractForm{
 	@Autowired
 	private TaxeOperation taxeService;
 
+	@MetadataBeanName("stock/article-search")
 	public ArticleSearchBean initSearchFormBean(ClientContext ctx) {
 		var bean = StockMapper.buildArticleSearchBean();
 		return bean;
 	}
 
+	@MetadataBeanName("stock/article")
 	public ArticleBean initUpdateFormBean(ClientContext ctx, String articleCode) {
 		var bean = operation.findArticleByCode(ctx, articleCode);
-
+		bean.setAction(ClientOperationEnumVd.UPDATE);
 		initVariantsForm(ctx, bean);
 		initConversionsForm(ctx, bean);
 		initArticleTaxesForm(ctx, bean);
@@ -72,6 +75,7 @@ public class ArticleForm extends AbstractForm{
 		return operation.findArticleByCode(ctx, articleCode);
 	}
 
+	@MetadataBeanName("stock/article")
 	public ArticleBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
 		
 		var bean = copyFrom.map(e -> operation.findArticleByCode(ctx, e))
@@ -87,7 +91,7 @@ public class ArticleForm extends AbstractForm{
 		bean.setAction(ClientOperationEnumVd.CREATE);
 		bean.getVariants().stream().forEach(AbstractBean.setActionToCreate);
 		bean.getConversions().stream().forEach(AbstractBean.setActionToCreate);
-
+		
 		return bean;
 	}
 	
@@ -106,7 +110,7 @@ public class ArticleForm extends AbstractForm{
 		if( articleCode == null ) {
 			return;
 		}
-		var variants = variantService.findVariantsByArticleCode(ctx, articleCode);
+		var variants = variantOperation.findVariantsByArticleCode(ctx, articleCode);
 		bean.getVariants().addAll(variants);
 	}
 	
@@ -115,7 +119,7 @@ public class ArticleForm extends AbstractForm{
 		if( articleCode == null ) {
 			return;
 		}
-		var conversions = conversionService.findConversionsByArticleCode(ctx, articleCode);
+		var conversions = conversionOperation.findConversionsByArticleCode(ctx, articleCode);
 		for (var conversion : conversions) {
 			conversionForm.initUniteOption(ctx, conversion);
 			bean.getConversions().add(conversion);
@@ -127,7 +131,7 @@ public class ArticleForm extends AbstractForm{
 		
 		var articleCode = bean.getArticleCode().getValue();
 		if( articleCode != null ) {
-			var articleTaxes = articleTaxeService.findArticleTaxesByArticleCode(ctx, articleCode);
+			var articleTaxes = articleTaxeOperation.findArticleTaxesByArticleCode(ctx, articleCode);
 			for (var taxe : articleTaxes) {
 				bean.getTaxes().add(taxe);
 				taxe.getSelected().setValue(true);

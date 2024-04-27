@@ -2,6 +2,9 @@ package com.agro360.form.av;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -9,7 +12,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.av.CommandeBean;
@@ -22,16 +24,15 @@ import com.agro360.bo.bean.stock.MagasinBean;
 import com.agro360.bo.bean.stock.MagasinSearchBean;
 import com.agro360.bo.mapper.AchatVenteMapper;
 import com.agro360.form.common.AbstractForm;
+import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.av.CommandeOperation;
 import com.agro360.operation.logic.av.LigneOperation;
 import com.agro360.operation.logic.core.PartnerOperation;
 import com.agro360.operation.logic.finance.CompteOperation;
 import com.agro360.operation.logic.stock.MagasinOperation;
-import com.agro360.operation.metadata.BeanMetadataConfig;
 import com.agro360.vd.av.CommandeStatusEnumVd;
 import com.agro360.vd.av.CommandeTypeEnumVd;
-import com.agro360.vd.av.RemiseTypeEnumVd;
 import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
@@ -51,40 +52,38 @@ public class CommandeForm extends AbstractForm{
 	
 	@Autowired
 	private PartnerOperation partnerOperation ;	
-	
-	@Qualifier("av/commande")
-	@Autowired
-	private BeanMetadataConfig metadataConfig;
-	
-	@Qualifier("av/commande-search")
-	@Autowired
-	private BeanMetadataConfig searchMetadataConfig;
 
+	@MetadataBeanName("av/commande")
 	public CommandeBean initCreateFormBean(ClientContext ctx, CommandeTypeEnumVd type, Optional<String> copyFrom) {
-		var bean = new CommandeBean();
-		//TODO, appliquer la copy
+		var bean = copyFrom.map(e -> operation.findCommandeByCode(ctx, e))
+				.orElse(new CommandeBean());
+		getLogger().debug("On copy à partir de {}", copyFrom);
 		bean.setAction(ClientOperationEnumVd.CREATE);
 		bean.getCommandeCode().setValue(operation.generateCommandeCode());
 		bean.getStatus().setValue(CommandeStatusEnumVd.BRLN);
 		bean.getType().setValue(type);
-		bean.getRemiseType().setValue(RemiseTypeEnumVd.MONTANT);
-		bean.getRemiseMontant().setValue(BigDecimal.ZERO);
 		bean.getPrixTotal().setValue(BigDecimal.ZERO);
+		bean.getCumulPaiement().setValue(BigDecimal.ZERO);
 		bean.getDate().setValue(LocalDate.now());
 		bean.getRemise().setValue(BigDecimal.ZERO);
 		bean.getTaxe().setValue(BigDecimal.ZERO);
-		bean.getPrixTotalHT().setValue(BigDecimal.ZERO);
-		bean.getPrixTotalTTC().setValue(BigDecimal.ZERO);
 		bean.getPaiementComptant().setValue(BigDecimal.ZERO);
-
+		
+		var lignes = copyFrom.map(e -> ligneOperation.findLignesCommande(ctx, e))
+				.orElse(Collections.emptyList());
+		for (var  ligne : lignes) {
+			ligne.getLigneId().setValue(null);
+			ligne.setAction(ClientOperationEnumVd.CREATE);
+			bean.getLignes().add(ligne);
+		}
 		initPartnerOption(ctx, bean.getPartner().getPartnerCode()::setValueOptions);
 		initCompteOption(ctx, bean.getCompte().getCompteCode()::setValueOptions);
 		initMagasinOption(ctx, bean.getMagasin().getMagasinCode()::setValueOptions);
 		
-		metadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 	
+	@MetadataBeanName("av/commande")
 	public CommandeBean initEditFormBean(ClientContext ctx, String commandeCode) {
 		var bean = operation.findCommandeByCode(ctx, commandeCode);
 		
@@ -106,7 +105,6 @@ public class CommandeForm extends AbstractForm{
 		initCompteOption(ctx, bean.getCompte().getCompteCode()::setValueOptions);
 		initMagasinOption(ctx, bean.getMagasin().getMagasinCode()::setValueOptions);
 
-		metadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 
@@ -117,18 +115,23 @@ public class CommandeForm extends AbstractForm{
 		return bean;
 	}
 
+	@MetadataBeanName("av/commande")
 	public CommandeBean initChangeStatusFormBean(ClientContext ctx, String commandeCode) {
-		var bean = operation.findCommandeByCode(ctx, commandeCode);		
+		var bean = operation.findCommandeByCode(ctx, commandeCode);
 		bean.setAction(ClientOperationEnumVd.CHANGE_STATUS);
+		bean.getStatusDate().setValue(LocalDateTime.now());
 		return bean;
 	}
 
+	@MetadataBeanName("av/commande-search")
 	public CommandeSearchBean initSearchFormBean(ClientContext ctx) {
-		var bean = AchatVenteMapper.buildCommandeSearchBean();
-		initCompteOption(ctx, bean.getCompte()::setValueOptions);
-		
-		searchMetadataConfig.applyMetadata(ctx, bean);
+		var bean = AchatVenteMapper.buildCommandeSearchBean();		
 		return bean;
+	}
+	
+	@MetadataBeanName("av/commande-search-result")
+	public List<CommandeBean> initSearchResultBeans(ClientContext ctx, List<CommandeBean> beans) {
+		return beans;
 	}
 
 	private void initCompteOption(ClientContext ctx, Consumer<Map<Object, String>> valueOptionsSetter) {

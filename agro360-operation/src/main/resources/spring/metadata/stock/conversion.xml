@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="conversion/facteur">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="min">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="0"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>
+	</bean>		
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="conversion/unite.uniteCode">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />					
+			</list>
+		</property>
+	</bean>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="conversion/deleteBtn">
+		<property name="visible">
+			<list>
+				<ref bean="IsBeanCreateOperation" />
+			</list>
+		</property>
+	</bean>				
+					
+    <bean name="stock/conversion" class="com.agro360.operation.metadata.BeanMetadataConfig">
+		<property name="fields">
+			<map>
+				<entry key="facteur" value-ref="conversion/facteur"/>
+				<entry key="deleteBtn" value-ref="conversion/deleteBtn"/>
+			</map>
+		</property>
+		<property name="beans">
+			<map>
+				 <entry key="unite">
+					 <bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+					 	<property name="fields">
+							 <map>
+								 <entry key="uniteCode" value-ref="conversion/unite.uniteCode"/>
+							 </map>
+						 </property>
+					 </bean>
+				 </entry>
+			</map>
+		</property>
+	</bean>
+</beans>

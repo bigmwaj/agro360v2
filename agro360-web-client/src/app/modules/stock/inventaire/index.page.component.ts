@@ -9,6 +9,7 @@ import { ListTabComponent } from './list.tab.component';
 import { InventaireBean } from 'src/app/backed/bean.stock';
 import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
+import { BeanIndexPage } from '../../common/bean.index.page';
 
 @Component({
     standalone: true,
@@ -23,11 +24,7 @@ import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
     selector: 'stock-inventaire-index-page',
     templateUrl: './index.page.component.html'
 })
-export class IndexPageComponent implements OnInit {
-
-    editingBeans: InventaireBean[] = [];
-
-    selectedTab: {index:number} = {index:0}
+export class IndexPageComponent  extends BeanIndexPage<InventaireBean, ListTabComponent, EditTabComponent> implements OnInit {
 
     ngOnInit(): void {
         if( !this.breadcrumb ){
@@ -49,41 +46,24 @@ export class IndexPageComponent implements OnInit {
     @ViewChild(ListTabComponent) 
     listTab: ListTabComponent;
 
-    refreshPageTitle():void{
-        var selectedIndex = this.tabGroup.selectedIndex
-        if( selectedIndex == null ){
-            selectedIndex = 0
-        }
-        this._refreshTabTitle(selectedIndex)
+    protected areBeansEqual(b1: InventaireBean, b2: InventaireBean):boolean{
+        return b1 == b2 || (
+            (   b1.magasin.magasinCode.value == b2.magasin.magasinCode.value)
+            && (b1.article.articleCode.value == b2.article.articleCode.value)
+            && (b1.variantCode.value == b2.variantCode.value)
+        );
     }
 
-    selectedTabChange($event:any):void{
-        this._refreshTabTitle($event.index);
-        this.selectedTab.index = $event.index;
+    protected override getEditTabs(): QueryList<EditTabComponent> {
+        return this.editTabs;
     }
 
-    private _refreshTabTitle(index: number){
-        if( index == 0 ){
-            this.listTab.refreshPageTitle()
-        }else{
-            let editTab = this.editTabs.get(index-1);
-            editTab?.refreshPageTitle()
-        }
+    protected override getTabGroup(): MatTabGroup {
+        return this.tabGroup;
     }
 
-    private getEditingBeanIndex(bean:InventaireBean):number{
-        let filter = (e:InventaireBean) => (ClientOperationEnumVd.CREATE == bean.action && e == bean) 
-            || e.variantCode.value == bean.variantCode.value;
-        return this.editingBeans.findIndex(filter);
-    }
-
-    removeAction(bean:InventaireBean){
-        const selectedTabIndex = this.selectedTab.index;
-        const editingBeanIndex = this.getEditingBeanIndex(bean);
-        this.editingBeans = this.editingBeans.filter((e, i)=> i != editingBeanIndex);
-        if( selectedTabIndex == editingBeanIndex + 1 ){
-            this.selectedTab.index = editingBeanIndex //On recule
-        }
+    protected override getListTab(): ListTabComponent {
+        return this.listTab;
     }
 
 }

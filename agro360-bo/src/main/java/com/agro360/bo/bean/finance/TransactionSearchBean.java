@@ -3,7 +3,7 @@ package com.agro360.bo.bean.finance;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.agro360.bo.bean.common.AbstractBean;
+import com.agro360.bo.bean.common.AbstractSearchBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.finance.TransactionStatusEnumVd;
 import com.agro360.vd.finance.TransactionTypeEnumVd;
@@ -13,7 +13,7 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class TransactionSearchBean extends AbstractBean{
+public class TransactionSearchBean extends AbstractSearchBean{
 
 	private static final long serialVersionUID = -1273209527092665188L;
 
@@ -40,7 +40,5 @@ public class TransactionSearchBean extends AbstractBean{
 	private FieldMetadata<String> compteBtn = new FieldMetadata<>();
 	
 	private FieldMetadata<String> taxeBtn = new FieldMetadata<>();
-	
-	private FieldMetadata<String> createTransactionBtn = new FieldMetadata<>();
 
 }

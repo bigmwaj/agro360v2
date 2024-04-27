@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { FactureBean } from 'src/app/backed/bean.av';
 import { Message } from 'src/app/backed/message';
@@ -22,8 +22,8 @@ export class ChangeStatusDialogComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: string,
         private http: HttpClient,
-        private ui: UIService,
-        public dialog: MatDialog) { }
+        private ui: UIService,   
+        public dialogRef: MatDialogRef<ChangeStatusDialogComponent>) { }
 
     ngOnInit(): void {
         let queryParams = new HttpParams();
@@ -37,7 +37,7 @@ export class ChangeStatusDialogComponent implements OnInit {
         this.http.post(`achat-vente/facture`, this.bean)
         .pipe(map((e: any) => <any>e))
         .subscribe(data => {
-            this.dialog.closeAll();
+            this.dialogRef.close(data.record);
             this.ui.displayFlashMessage(<Array<Message>>data.messages);
         })
     }

@@ -15,7 +15,6 @@ import com.agro360.bo.bean.stock.ArticleTaxeBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.ArticleTaxeOperation;
-import com.agro360.vd.av.RemiseTypeEnumVd;
 
 @Service
 public class LigneServiceHelper {
@@ -34,29 +33,44 @@ public class LigneServiceHelper {
 		if( Objects.isNull(bean.getRemiseMontant().getValue()) ){
             bean.getRemiseMontant().setValue(BigDecimal.ZERO);
         }   
+		if( Objects.isNull(bean.getRemiseTaux().getValue()) ){
+			bean.getRemiseTaux().setValue(Double.valueOf(0));
+		}   
+		
+		bean.getRemise().setValue(BigDecimal.ZERO);
+		
+		switch (bean.getRemiseType().getValue()) {
+		case MONTANT:
+			bean.getRemiseTaux().setValue(Double.valueOf(0));
+			bean.getRemise().setValue(bean.getRemiseMontant().getValue());
+			break;
+			
+		case TAUX:
+			bean.getRemiseMontant().setValue(BigDecimal.ZERO);
+			if( bean.getRemiseTaux().getValue() > 0 ){
+	            var remise = prixTotalHT.multiply(BigDecimal.valueOf(bean.getRemiseTaux().getValue()))
+	            		.divide(BigDecimal.valueOf(100));
+	            bean.getRemise().setValue(remise);
+	        }
+			break;
 
-        if( RemiseTypeEnumVd.TAUX.equals(bean.getRemiseType().getValue()) && bean.getRemiseTaux().getValue() > 0 ){
-            var remiseMontant = prixTotalHT.multiply(BigDecimal.valueOf(bean.getRemiseTaux().getValue()))
-            		.divide(BigDecimal.valueOf(100));
-            
-            bean.getRemiseMontant().setValue(remiseMontant);
-        }else if( Objects.isNull(bean.getRemiseMontant().getValue()) ){
-            bean.getRemiseMontant().setValue(BigDecimal.ZERO);
-        }
+		default:
+			break;
+		}
+        
         var prixTotalHTAvecRemise = prixTotalHT.subtract(bean.getRemiseMontant().getValue());
         var taxe = calculerTaxe(ctx, bean, prixTotalHTAvecRemise);
         
         bean.getTaxe().setValue(taxe); 
         
-        var prixTotalTTC = prixTotalHTAvecRemise.add(bean.getTaxe().getValue());
-        bean.getPrixTotalTTC().setValue(prixTotalTTC);
-        bean.getPrixTotal().setValue(prixTotalTTC);
+        var prixTotal = prixTotalHTAvecRemise.add(bean.getTaxe().getValue());
+        bean.getPrixTotal().setValue(prixTotal);
         
-        bean.getPrixTotalTTC().setValueChanged(true);
-        bean.getPrixTotal().setValueChanged(true);
+        bean.getPrixTotalHT().setValueChanged(true);
+        bean.getRemise().setValueChanged(true);
         bean.getTaxe().setValueChanged(true);
+        bean.getPrixTotal().setValueChanged(true);
         bean.getRemiseMontant().setValueChanged(true);
-        bean.getPrixTotalTTC().setValueChanged(true);
 	}
 	
 	private BigDecimal calculerTaxe(ClientContext ctx, LigneBean bean, BigDecimal prixTotalHTAvecRemise) {

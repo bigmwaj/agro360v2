@@ -22,7 +22,7 @@
                     <input-date-field [field]="bean.date"></input-date-field>
                 </div>
                 <div class="col-6">
-                    <select-one-field [field]="bean.partner.partnerCode"></select-one-field>
+                    <select-one-field [field]="bean.partner.partnerCode" [label]="partnerLabel"></select-one-field>
                 </div>
             </div>
             <div class="row">
@@ -31,6 +31,11 @@
                 </div>
                 <div class="col-6">
                     <select-one-field [field]="bean.compte.compteCode"></select-one-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <input-checkbox-field [label]="'Accompte ' + partnerLabel" [field]="bean.accompte"></input-checkbox-field>
                 </div>
             </div>
             <div class="row">
@@ -43,10 +48,4 @@
             On affiche les imputations ici
         </div>
     </div>        
-</section>
-
-<section class="p-3">
-    <button mat-raised-button cdkFocusInitial (click)="saveAction()">
-        <mat-icon>save</mat-icon>Enregistrer
-    </button>
 </section>

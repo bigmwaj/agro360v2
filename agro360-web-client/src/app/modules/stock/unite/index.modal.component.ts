@@ -1,17 +1,18 @@
 
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { map } from 'rxjs';
 import { UniteBean, UniteSearchBean } from 'src/app/backed/bean.stock';
+import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/modules/common/bean.list';
 import { BeanTools } from 'src/app/modules/common/bean.tools';
-import { SharedModule } from 'src/app/modules/common/shared.module';
 import { UIService } from 'src/app/modules/common/service/ui.service';
-import { MatDialog } from '@angular/material/dialog';
-import { Message } from 'src/app/backed/message';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
+import { BeanPagedList } from '../../common/bean.paged.list';
 
 @Component({
     standalone: true,
@@ -22,12 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     selector: 'stock-unite-index-modal',
     templateUrl: './index.modal.component.html'
 })
-export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
-
-    searchForm: UniteSearchBean;
-
-    @ViewChild('unitesTable')
-    table: MatTable<UniteBean>;
+export class IndexModalComponent extends BeanPagedList<UniteBean, UniteSearchBean> implements OnInit {
 
     displayedColumns: string[] = [
         'select',
@@ -37,14 +33,10 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
     ];
 
     constructor(
-        private http: HttpClient,
-        public dialog: MatDialog,
-        private ui: UIService) {
-        super()
-    }
-
-    override getViewChild(): MatTable<UniteBean> {
-        return this.table;
+        private dialog: MatDialog,       
+        public ui: UIService,
+        public override http: HttpClient) {
+        super(http)
     }
     
     getKeyLabel(bean: UniteBean): string {
@@ -53,29 +45,6 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
 
     ngOnInit(): void {
         this.resetSearchFormAction()
-    }
-
-    resetSearchFormAction() {
-        this.http
-            .get("stock/unite/search-form")
-            .subscribe(data => {
-                this.searchForm = <UniteSearchBean>data;
-                this.searchAction();
-            });
-    }
-
-    searchAction() {
-        let objJsonStr = JSON.stringify(this.searchForm);
-        let objJsonB64 = btoa(objJsonStr);
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('q', objJsonB64);
-        this.http
-            .get("stock/unite", { params: queryParams })
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                this.setData(data.records);
-            });
     }
 
     __add(queryParams: HttpParams) {
@@ -119,5 +88,17 @@ export class IndexModalComponent extends BeanList<UniteBean> implements OnInit {
             this.ui.displayFlashMessage(<Array<Message>>data.messages);
             this.dialog.closeAll();
         })
+    }
+    
+    protected override getSearchFormUrl(): string {
+        return `stock/unite/search-form`;
+    }
+
+    protected override getSearchUrl(): string {
+        return `stock/unite`;
+    }
+    
+    areBeansEqual(b1:UniteBean, b2:UniteBean){
+        return b1 == b2 || b1.uniteCode.value == b2.uniteCode.value;
     }
 }

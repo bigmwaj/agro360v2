@@ -1,5 +1,6 @@
 package com.agro360.ws.controller.av;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,10 @@ public class FactureController extends AbstractController {
 	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
 			@RequestBody(required = false) @Validated Optional<FactureSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service.searchAction(getClientContext(), searchBean)));
+		var sb = searchBean.orElse(new FactureSearchBean());
+		var model = new ModelMap(RECORDS_MODEL_KEY, service.search(getClientContext(), sb));
+		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
+		return ResponseEntity.ok(model);
 	}
 	
 	@GetMapping(SEARCH_FORM_RN)
@@ -62,8 +66,29 @@ public class FactureController extends AbstractController {
 	
 	@PostMapping()
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated FactureBean bean) {
+		var action = bean.getAction();
 		var ctx = getClientContext();
+		var model = new ModelMap();
+		
 		service.save(ctx, bean);
-		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
+		switch (action) {
+		case CREATE:
+		case UPDATE:
+			bean = form.initEditFormBean(ctx, bean.getFactureCode().getValue());	
+			model.addAttribute(RECORD_MODEL_KEY, bean);
+			break;
+			
+		case CHANGE_STATUS:
+			bean = service.findFacture(ctx, bean.getFactureCode().getValue());
+			var beans = Collections.singletonList(bean);
+			beans = form.initSearchResultBeans(ctx, beans);
+			model.addAttribute(RECORD_MODEL_KEY, beans.get(0));
+			break;
+
+		default:
+			break;
+		}
+		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
+		return ResponseEntity.ok(model);
 	}
 }

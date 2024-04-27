@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -8,15 +8,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTable, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { map } from 'rxjs';
 import { FactureBean, FactureSearchBean } from 'src/app/backed/bean.av';
-import { BeanList } from 'src/app/modules/common/bean.list';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanListTab } from '../../common/bean.list.tab';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
-import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { IBeanListTab } from '../../common/bean.list.tab';
+import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
 
 @Component({
     standalone: true,
@@ -35,23 +35,12 @@ import { IBeanListTab } from '../../common/bean.list.tab';
     selector: 'achat-vente-facture-list-tab',
     templateUrl: './list.tab.component.html'
 })
-export class ListTabComponent extends BeanList<FactureBean> implements OnInit, IBeanListTab {
-
-    @Input({required:true})
-    editingBeans: FactureBean[] = [];
-
-    @Input({required:true})
-    selectedTab: {index:number}    
-
-    @Input({required:true})
-    breadcrumb:BreadcrumbItem
+export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearchBean> implements OnInit {
     
     @Input({required:true})
     module:string;
     
     partnerLabel: string;
-
-    searchForm: FactureSearchBean;
     
     displayedColumns: string[] = [
         'select',
@@ -63,31 +52,16 @@ export class ListTabComponent extends BeanList<FactureBean> implements OnInit, I
         'montant',
         'actions'
     ];
-
-    @ViewChild(MatTable)
-    public table: MatTable<FactureBean>;
     
     constructor(
-        private http: HttpClient,
-        public dialog: MatDialog,
-        private ui: UIService) {
-        super()
+        private dialog: MatDialog,
+        public override http: HttpClient,       
+        public override ui: UIService) {
+        super(http, ui)
     }
 
     getKeyLabel(bean: FactureBean): string | number {
         return bean.factureCode.value;
-    }
-
-    override getViewChild(): MatTable<FactureBean> {
-        return this.table;
-    }
-        
-    ngAfterViewInit(): void {
-        this.refreshPageTitle()
-    }
-
-    refreshPageTitle():void{
-        this.ui.setBreadcrumb(this.breadcrumb)
     }
 
     ngOnInit(): void {
@@ -101,31 +75,8 @@ export class ListTabComponent extends BeanList<FactureBean> implements OnInit, I
         }
     }
 
-    resetSearchFormAction() {
-        this.http
-            .get(`achat-vente/facture/search-form`)
-            .subscribe(data => {
-                this.searchForm = <FactureSearchBean>data;
-                this.searchAction();
-            });
-    }
-
-    searchAction() {
-        let objJsonStr = JSON.stringify(this.searchForm);
-        let objJsonB64 = btoa(objJsonStr);
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('q', objJsonB64);
-        this.http
-            .get(`achat-vente/facture`, { params: queryParams })
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                this.setData(data.records);
-            });
-    }
-
-    private getEditingIndex(bean:FactureBean){
-        return this.editingBeans.findIndex(e => bean.factureCode.value == e.factureCode.value)
+    areBeansEqual(b1:FactureBean, b2:FactureBean){
+        return b1 == b2 || b1.factureCode.value == b2.factureCode.value;
     }
 
     addAction(bean?: FactureBean) {   
@@ -134,46 +85,42 @@ export class ListTabComponent extends BeanList<FactureBean> implements OnInit, I
         if( bean ){
             queryParams = queryParams.append("copyFrom", bean.factureCode.value);     
         }
-        this.http.get(`achat-vente/facture/create-form`, { params: queryParams }).subscribe(data => {
-            this.editingBeans.push(<FactureBean>data); 
-            this.selectedTab.index = this.editingBeans.length;
-        });
+        this.http.get(`achat-vente/facture/create-form`, { params: queryParams })
+        .subscribe(data => this.appendTab(<FactureBean>data));
     }
 
     editAction(bean: FactureBean) {
-        const index = this.getEditingIndex(bean);
-        if( index >= 0 ){
-            this.selectedTab.index = index + 1;
+        if( this.isAlreadLoaded(bean) ){
+            this.displayTab(bean);
             return;
         }
+
         let queryParams = new HttpParams();
         queryParams = queryParams.append("factureCode", bean.factureCode.value);
 
-        this.http.get(`achat-vente/facture/edit-form`, { params: queryParams }).subscribe(data => {
-            this.editingBeans.push(<FactureBean>data); 
-            this.selectedTab.index = this.editingBeans.length;
-        });
+        this.http.get(`achat-vente/facture/edit-form`, { params: queryParams })
+        .subscribe(data => this.appendTab(<FactureBean>data));
     }
 
     changeStatusAction(bean: FactureBean) {
         let dialogRef = this.dialog.open(ChangeStatusDialogComponent, { data: bean.factureCode.value });
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
-            this.searchAction();
+
         }); 
     }
 
     deleteAction(bean: FactureBean) {
         let dialogRef = this.dialog.open(DeleteDialogComponent, { data: bean.factureCode.value });
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
-            this.searchAction();
+            this.removeItem(bean);
         }); 
     }
 
-    onDelete(bean: FactureBean) {
-        this.removeItem(bean);
+    protected override getSearchFormUrl(): string {
+        return `achat-vente/facture/search-form`;
+    }
+
+    protected override getSearchUrl(): string {
+        return `achat-vente/facture`;
     }
 }

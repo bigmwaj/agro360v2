@@ -31,6 +31,10 @@ public class AbstractBean implements Serializable {
 
 	private String label;
 
+	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
+
+	private FieldMetadata<String> saveBtn = new FieldMetadata<>("Créer ligne");
+
 	@JsonIgnore
 	private AbstractBean ownerBean;
 

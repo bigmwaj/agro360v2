@@ -71,10 +71,13 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 
 		setDtoValue(dto::setPrixTotal, bean.getPrixTotal());
 		setDtoValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
-		setDtoValue(dto::setPrixTotalTTC, bean.getPrixTotalTTC());
 		setDtoValue(dto::setTaxe, bean.getTaxe());
+		setDtoValue(dto::setRemise, bean.getRemise());
 		
 		super.save(dto);
+
+		var msgTpl = "Ligne %d créée avec succès";
+		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
 	}
 
 	@RuleNamespace("av/commande/ligne/update")
@@ -111,15 +114,20 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 
 		setDtoChangedValue(dto::setPrixTotal, bean.getPrixTotal());
 		setDtoChangedValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
-		setDtoChangedValue(dto::setPrixTotalTTC, bean.getPrixTotalTTC());
 		setDtoChangedValue(dto::setTaxe, bean.getTaxe());
 		
 		super.save(dto);
+		
+
+		var msgTpl = "Ligne %d modifiée avec succès";
+		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
 	}
 
 	@RuleNamespace("av/ligne/delete")
 	public void deleteLigne(ClientContext ctx, CommandeBean commande, LigneBean bean) {
 		var dto = findLigneDto(commande, bean);
+		var msgTpl = "Ligne %d supprimée avec succès";
+		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
 		dao.delete(dto);
 	}
 

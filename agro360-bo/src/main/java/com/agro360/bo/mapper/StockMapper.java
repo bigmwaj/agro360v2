@@ -3,7 +3,6 @@ package com.agro360.bo.mapper;
 import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.ArticleSearchBean;
 import com.agro360.bo.bean.stock.ArticleTaxeBean;
-import com.agro360.bo.bean.stock.CasierBean;
 import com.agro360.bo.bean.stock.ConversionBean;
 import com.agro360.bo.bean.stock.InventaireBean;
 import com.agro360.bo.bean.stock.InventaireSearchBean;
@@ -17,7 +16,6 @@ import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.dto.finance.TaxeDto;
 import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.ArticleTaxeDto;
-import com.agro360.dto.stock.CasierDto;
 import com.agro360.dto.stock.ConversionDto;
 import com.agro360.dto.stock.InventaireDto;
 import com.agro360.dto.stock.MagasinDto;
@@ -53,13 +51,6 @@ public class StockMapper {
 			taxe = new TaxeDto();
 		}
 		bean.setTaxe(FinanceMapper.map(taxe));
-		return bean;
-	}
-
-	public static CasierBean map(CasierDto dto) {
-		var bean = new CasierBean();
-		bean.getCasierCode().setValue(dto.getCasierCode());
-		bean.getDescription().setValue(dto.getDescription());
 		return bean;
 	}
 

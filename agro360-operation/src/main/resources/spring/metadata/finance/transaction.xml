@@ -30,6 +30,13 @@
 			</list>
 		</property>
 	</bean>		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/accompte">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+	</bean>		
 		
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/note">
 		<property name="editable">
@@ -97,6 +104,27 @@
 				<ref bean="IsBeanChangeStatusOperation"/>
 			</list>
 		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="valueOptions">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="rules">
+						<list>
+							<ref bean="IsBeanChangeStatusOperation" />
+						</list>
+					</property>
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.finance.transaction.FilterStatusAction"/>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
 	</bean>				
 		
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/statusDate">
@@ -160,6 +188,7 @@
 				<entry key="statusDate" value-ref="transaction/statusDate"/>
 				<entry key="montant" value-ref="transaction/montant"/>
 				<entry key="note" value-ref="transaction/note"/>
+				<entry key="accompte" value-ref="transaction/accompte"/>
 			</map>
 		</property>
 		<property name="beans">

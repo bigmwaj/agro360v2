@@ -18,7 +18,7 @@ import com.agro360.operation.rule.exception.RuleException;
  * @author bigmwaj
  */
 @Component
-public class IsMaxLengthOk extends AbstractRule {
+public class IsMaxLengthOk extends AbstractRule<AbstractBean> {
 
 	public static final String PARAM_KEY = "length";
 

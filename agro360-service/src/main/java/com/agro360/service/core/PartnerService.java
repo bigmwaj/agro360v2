@@ -3,7 +3,6 @@ package com.agro360.service.core;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,13 @@ import com.agro360.service.common.AbstractService;
 public class PartnerService extends AbstractService {
 
 	@Autowired
-	private PartnerOperation service;
+	private PartnerOperation operation;
 	
 	@Autowired
 	private PartnerCategoryOperation partnerCategoryOperation;
 
-	public List<PartnerBean> searchAction(ClientContext ctx, Optional<PartnerSearchBean> searchForm) {	
-		return service.findPartnersByCriteria(ctx, searchForm.orElse(new PartnerSearchBean()));
+	public List<PartnerBean> search(ClientContext ctx, PartnerSearchBean searchForm) {	
+		return operation.findPartnersByCriteria(ctx, searchForm);
 	}
 	
 	private void retrieveSelectedCategoryCodes(Set<String> categoryCodes, PartnerCategoryBean bean){
@@ -48,17 +47,17 @@ public class PartnerService extends AbstractService {
 		return categoryCodes;
 	}
 	
-	public void saveAction(ClientContext ctx, PartnerBean bean) {
+	public void save(ClientContext ctx, PartnerBean bean) {
 		
 		switch (bean.getAction()) {
 		case CREATE:
-			service.createPartner(ctx, bean);
+			operation.createPartner(ctx, bean);
 			var categoryCodes = retrieveSelectedCategoryCodes(bean.getCategoriesHierarchie());
 			partnerCategoryOperation.syncPartnerCategories(ctx,  bean, categoryCodes);
 			break;
 			
 		case UPDATE:
-			service.updatePartner(ctx, bean);
+			operation.updatePartner(ctx, bean);
 			categoryCodes = retrieveSelectedCategoryCodes(bean.getCategoriesHierarchie());
 			partnerCategoryOperation.syncPartnerCategories(ctx, bean, categoryCodes);
 			break;
@@ -66,11 +65,11 @@ public class PartnerService extends AbstractService {
 		case CHANGE_STATUS:
 			switch (bean.getStatus().getValue()) {
 			case ACTIVE:
-				service.activatePartner(ctx, bean);
+				operation.activatePartner(ctx, bean);
 				
 				break;
 			case INACTIVE:
-				service.deactivatePartner(ctx, bean);
+				operation.deactivatePartner(ctx, bean);
 				
 				break;
 
@@ -81,12 +80,16 @@ public class PartnerService extends AbstractService {
 
 		case DELETE:
 			partnerCategoryOperation.deleteAllPartnerCategories(ctx, bean);
-			service.deletePartner(ctx, bean);
+			operation.deletePartner(ctx, bean);
 			break;
 			
 		default:
 			
 		}
+	}
+
+	public PartnerBean findPartner(ClientContext ctx, String value) {
+		return operation.findPartnerByCode(ctx, value);
 	}
 
 }

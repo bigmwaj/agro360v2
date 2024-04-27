@@ -22,7 +22,6 @@ public interface ICommandeDao extends IDao<CommandeDto, String>{
 				+ " and (:dateDebut is null or dto.date >= :dateDebut) "
 				+ " and (:dateFin is null or dto.date <= :dateFin)"
 				+ " and (:status is null or dto.status in (:status))"
-				+ " and (:compte is null or dto.compte.compteCode = :compte)"
 				+ " and (:ville is null or upper(dto.partner.city) like %:ville%)"
 				+ " and (:partner is null"
 				+ "		or (dto.partner.partnerCode like %:partner%)"
@@ -30,16 +29,45 @@ public interface ICommandeDao extends IDao<CommandeDto, String>{
 				+ "		or (upper(dto.partner.firstName) like %:partner%)"
 				+ "		or (upper(dto.partner.lastName) like %:partner%)"
 				+ ")"
+				+ "order by dto.commandeCode "
+				+ "limit :limit offset :offset"
 			
 	)
 	List<CommandeDto> findCommandesByCriteria(
+		@Param("offset") Integer offset, 
+		@Param("limit") Short limit,
 		@Param("code") String code, 
 		@Param("type") CommandeTypeEnumVd type, 
 		@Param("dateDebut") LocalDate dateDebut, 
 		@Param("dateFin") LocalDate dateFin,
 		@Param("status") List<CommandeStatusEnumVd> status,
 		@Param("partner")String partner, 
-		@Param("compte")String compte,
 		@Param("ville")String ville
 	);
+	
+	@Query(
+			value = "   select count(dto) from com.agro360.dto.av.CommandeDto dto"
+					+ " where (:code is null or dto.commandeCode like %:code%)"
+					+ " and (:type is null or dto.type = :type)"
+					+ " and (:dateDebut is null or dto.date >= :dateDebut) "
+					+ " and (:dateFin is null or dto.date <= :dateFin)"
+					+ " and (:status is null or dto.status in (:status))"
+					+ " and (:ville is null or upper(dto.partner.city) like %:ville%)"
+					+ " and (:partner is null"
+					+ "		or (dto.partner.partnerCode like %:partner%)"
+					+ "		or (upper(dto.partner.name) like %:partner%)"
+					+ "		or (upper(dto.partner.firstName) like %:partner%)"
+					+ "		or (upper(dto.partner.lastName) like %:partner%)"
+					+ ")"
+				
+		)
+		Long countCommandesByCriteria(
+			@Param("code") String code, 
+			@Param("type") CommandeTypeEnumVd type, 
+			@Param("dateDebut") LocalDate dateDebut, 
+			@Param("dateFin") LocalDate dateFin,
+			@Param("status") List<CommandeStatusEnumVd> status,
+			@Param("partner")String partner, 
+			@Param("ville")String ville
+		);
 }

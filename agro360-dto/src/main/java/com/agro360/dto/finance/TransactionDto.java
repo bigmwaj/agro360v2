@@ -57,4 +57,7 @@ public class TransactionDto extends AbstractStatusTrackingDto<TransactionStatusE
 	
 	@Column(name = "MONTANT", nullable = false, precision = 16, scale = 4)
 	private BigDecimal montant;
+	
+	@Column(name = "ACCOMPTE", nullable = false, precision = 16, scale = 4)
+	private Boolean accompte;
 }

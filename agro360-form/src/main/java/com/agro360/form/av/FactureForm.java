@@ -2,6 +2,7 @@ package com.agro360.form.av;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,10 @@ public class FactureForm {
 	public FactureSearchBean initSearchFormBean(ClientContext ctx) {
 		var bean = AchatVenteMapper.buildFactureSearchBean();
 		return bean;
+	}
+
+	public List<FactureBean> initSearchResultBeans(ClientContext ctx, List<FactureBean> beans) {
+		return beans;
 	}
 
 }

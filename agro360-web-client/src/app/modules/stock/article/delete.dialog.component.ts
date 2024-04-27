@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { ArticleBean } from 'src/app/backed/bean.stock';
 import { UIService } from 'src/app/modules/common/service/ui.service';
@@ -21,7 +21,8 @@ export class DeleteDialogComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private http: HttpClient,
-        private ui: UIService) { }
+        private ui: UIService,  
+        public dialogRef: MatDialogRef<DeleteDialogComponent>) { }
 
     ngOnInit(): void {
         let queryParams = new HttpParams();
@@ -34,6 +35,9 @@ export class DeleteDialogComponent implements OnInit {
     deleteAction() {
         this.http.post(`stock/article`, this.bean)   
             .pipe(map((data: any) => data))
-            .subscribe(data => this.ui.displayFlashMessage(data.messages))
+            .subscribe(data => {                 
+                this.dialogRef.close(data.record);
+                this.ui.displayFlashMessage(data.messages);
+            })
     }  
 }

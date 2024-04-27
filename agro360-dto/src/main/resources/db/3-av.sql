@@ -12,18 +12,12 @@ create table `av_tbl_commande` (
   `commande_type` varchar(8) not null,
   `magasin_code` varchar(16) not null,
   `partner_code` varchar(16) not null,
-  `paiement_comptant` decimal(16,4) default null,
+  `cumul_paiement` decimal(16,4) default null,
   `compte_code` varchar(16) default null,  
-  
-  `remise_raison` varchar(256) default null,
-  `remise_type` varchar(8) default null,
-  `remise_taux` double default null,
-  `remise_montant` decimal(16,4) not null,
   
   `taxe` decimal(16,4) not null,
   `remise` decimal(16,4) not null,
   `prix_total_ht` decimal(16,4) not null,
-  `prix_total_ttc` decimal(16,4) not null,
   `prix_total` decimal(16,4) not null,
   
   primary key `av_tbl_commande_pk`(`commande_code`),
@@ -60,8 +54,8 @@ create table `av_tbl_ligne` (
   
   `taxe` decimal(16,4) not null,
   `prix_total_ht` decimal(16,4) not null,
-  `prix_total_ttc` decimal(16,4) not null,
   `prix_total` decimal(16,4) not null,
+  `remise` decimal(16,4) not null,
   
   primary key `av_tbl_ligne_pk`(`ligne_id`),
   key `av_tbl_ligne_fk_stock_tbl_article` (`article_code`),
@@ -118,7 +112,6 @@ create table `av_tbl_reg_cmd` (
   `created_by` varchar(16) not null,
   `updated_at` datetime(6) not null,
   `updated_by` varchar(16) not null,
-  `montant` decimal(16,4) not null,
   `commande_code` varchar(16) not null,
   `transaction_code` varchar(20) default null,
   primary key `av_tbl_reg_cmd_pk`(`reg_id`),

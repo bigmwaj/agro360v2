@@ -43,14 +43,6 @@ export class EditReceptionListComponent extends BeanList<ReceptionLigneBean> {
 
     @Input({required:true})
     public ligne: LigneBean;
-
-    
-    @ViewChild(MatTable)
-    private table: MatTable<ReceptionLigneBean>;
-
-    override getViewChild(): MatTable<ReceptionLigneBean> {
-        return this.table;
-    }
     
     override getKeyLabel(bean: ReceptionLigneBean): string | number {
         return bean.receptionId.value;

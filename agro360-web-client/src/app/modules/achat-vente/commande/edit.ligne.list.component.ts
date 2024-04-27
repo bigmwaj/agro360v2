@@ -1,7 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTable } from '@angular/material/table';
 import { map } from 'rxjs';
 import { CommandeBean, LigneBean } from 'src/app/backed/bean.av';
 import { ArticleBean, ArticleSearchBean, ConversionBean, UniteBean, VariantBean } from 'src/app/backed/bean.stock';
@@ -56,17 +55,10 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     @Output()
     updatePrixCommande = new EventEmitter();
 
-    @ViewChild(MatTable)
-    private table: MatTable<LigneBean>;
-
     public alias:FieldMetadata<string> = {
         label:'Variant ou alias',
         editable:true
     } as FieldMetadata<string>;
-
-    override getViewChild(): MatTable<LigneBean> {
-        return this.table;
-    }
     
     override getKeyLabel(bean: LigneBean): string | number {
         return bean.ligneId.value;
@@ -138,7 +130,7 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     }
     
     updatePrixEvent(bean: LigneBean) {
-        this.updatePrix(bean)
+        this.updatePrix(bean);
         this.updatePrixCommande.emit();
     }
 
@@ -183,10 +175,10 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
                 ligne.action = ClientOperationEnumVd.DELETE;
                 ligne.valueChanged = true;
             }else{                
-                ligne.action = ClientOperationEnumVd.SYNC;
-                ligne.valueChanged = false;
+                ligne.action = ClientOperationEnumVd.UPDATE;
+                ligne.valueChanged = true;
             }
-            this.updatePrixEvent(ligne)
+            this.updatePrixCommande.emit();
         }
     }
     
@@ -240,30 +232,19 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     }
 
     private updatePrix(bean: LigneBean) {
-        bean.prixTotalHT.value = 0;
-        bean.prixTotal.value = 0;
-        bean.taxe.value = 0; 
+        this.http
+            .post(`achat-vente/commande/ligne/refresh-prix`, bean)  
+            .pipe(map((data: any) => data))
+            .subscribe((data: LigneBean) => {
+                bean.prixTotalHT.value = data.prixTotalHT.value;
+                bean.prixTotal.value = data.prixTotal.value;
+                bean.taxe.value = data.taxe.value; 
+                bean.remise.value = data.remise.value;
 
-        if( !bean.prixUnitaire.value ){
-            bean.prixUnitaire.value = 0
-        } 
+                this.updatePrixCommande.emit();
 
-        if( !bean.remiseMontant.value ){
-            bean.remiseMontant.value = 0
-        }   
-
-        if( !bean.quantite.value ){
-            bean.quantite.value = 0
-        }  
-
-        bean.prixTotalHT.value =  bean.prixUnitaire.value * bean.quantite.value;
+            });
         
-        if( RemiseTypeEnumVd.TAUX == bean.remiseType.value && bean.remiseTaux.value > 0 ){
-            bean.remiseMontant.value = bean.prixTotalHT.value * bean.remiseTaux.value / 100
-        }
-
-        //bean.taxe.value = 0 // TODO calculer taxe
-        bean.prixTotal.value = bean.prixTotalHT.value - bean.remiseMontant.value + bean.taxe.value;
     }
 
     private initSelectUniteOptions(bean:LigneBean, uniteBase:UniteBean, conversions: Array<ConversionBean>){

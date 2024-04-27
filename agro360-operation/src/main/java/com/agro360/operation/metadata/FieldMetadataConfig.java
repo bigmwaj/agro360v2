@@ -24,11 +24,11 @@ public class FieldMetadataConfig {
 		return LoggerFactory.getLogger(getClass());
 	}
 
-	private List<AbstractRule> required;
+	private List<AbstractRule<AbstractBean>> required;
 	
-	private List<AbstractRule> visible;
+	private List<AbstractRule<AbstractBean>> visible;
 	
-	private List<AbstractRule> editable;
+	private List<AbstractRule<AbstractBean>> editable;
 
 	private List<ConstraintConfig> maxLength;
 	
@@ -51,20 +51,20 @@ public class FieldMetadataConfig {
 	
 	private void applyMetadataToBooleanAttributes(ClientContext ctx, AbstractBean bean, String fieldName, boolean isOwnerEditable) {
 		
-		var attrMap = new HashMap<String, List<AbstractRule>>();
+		var attrMap = new HashMap<String, List<AbstractRule<AbstractBean>>>();
 		attrMap.put("required", required);
 		attrMap.put("visible", visible);
 		attrMap.put("editable", editable);
 		
-		Predicate<Entry<String, List<AbstractRule>>> isNotNull = e -> e.getValue() != null;
-		Predicate<Entry<String, List<AbstractRule>>> isNull = e -> e.getValue() == null;
+		Predicate<Entry<String, List<AbstractRule<AbstractBean>>>> isNotNull = e -> e.getValue() != null;
+		Predicate<Entry<String, List<AbstractRule<AbstractBean>>>> isNull = e -> e.getValue() == null;
 		
-		Predicate<Entry<String, List<AbstractRule>>> isNotEmpty = e -> !e.getValue().isEmpty();
-		Predicate<Entry<String, List<AbstractRule>>> isEmpty = e -> e.getValue().isEmpty();
-		Predicate<Entry<String, List<AbstractRule>>> isAditableAttr = e -> "editable".equals(e.getKey());
+		Predicate<Entry<String, List<AbstractRule<AbstractBean>>>> isNotEmpty = e -> !e.getValue().isEmpty();
+		Predicate<Entry<String, List<AbstractRule<AbstractBean>>>> isEmpty = e -> e.getValue().isEmpty();
+		Predicate<Entry<String, List<AbstractRule<AbstractBean>>>> isAditableAttr = e -> "editable".equals(e.getKey());
 		
-		Consumer<Entry<String, List<AbstractRule>>> apply;
-		Consumer<Entry<String, List<AbstractRule>>> applyOwnerEditStatus;
+		Consumer<Entry<String, List<AbstractRule<AbstractBean>>>> apply;
+		Consumer<Entry<String, List<AbstractRule<AbstractBean>>>> applyOwnerEditStatus;
 		apply = e -> applyRules(ctx, bean, fieldName, e.getKey(), e.getValue(), isOwnerEditable);
 		applyOwnerEditStatus = e -> applyRules(ctx, bean, fieldName, isOwnerEditable);
 		
@@ -104,11 +104,12 @@ public class FieldMetadataConfig {
 		
 		Predicate<ConstraintConfig> rulesListIsEvalToTrue = e -> evalRules(ctx, bean, e.getRules());
 		
-		Predicate<List<AbstractAction<?>>> actionsListIsNotNull = e -> !Objects.isNull(e);
+		Predicate<List<AbstractAction<?, AbstractBean>>> actionsListIsNotNull = e -> !Objects.isNull(e);
 		
-		Predicate<List<AbstractAction<?>>> actionsListIsNotEmpty = e -> !e.isEmpty();
+		Predicate<List<AbstractAction<?, AbstractBean>>> actionsListIsNotEmpty = e -> !e.isEmpty();
 		
-		Consumer<AbstractAction<?>> performAction = e -> e.performAction(ctx, bean, fieldName, attrName);
+		Consumer<AbstractAction<?, AbstractBean>> performAction;
+		performAction = e -> e.performAction(ctx, bean, fieldName, attrName);
 		constraints.stream()
 			.filter(rulesListIsNull.or(rulesListIsEmpty).or(rulesListIsEvalToTrue))
 			.map(ConstraintConfig::getActions)
@@ -118,9 +119,9 @@ public class FieldMetadataConfig {
 		
 	}
 	
-	private void applyRules(ClientContext ctx, AbstractBean bean, String fieldName, String attrName, List<AbstractRule> constraints, boolean isOwnerEditable) {
+	private void applyRules(ClientContext ctx, AbstractBean bean, String fieldName, String attrName, List<AbstractRule<AbstractBean>> constraints, boolean isOwnerEditable) {
 		
-		Predicate<AbstractRule> evalRule = e -> e.eval(ctx, bean);
+		Predicate<AbstractRule<AbstractBean>> evalRule = e -> e.eval(ctx, bean);
 		var eval = false;
 		if( constraints != null && !constraints.isEmpty() ) {
 			 eval = constraints.stream().allMatch(evalRule);
@@ -139,8 +140,8 @@ public class FieldMetadataConfig {
 		
 	}
 	
-	private boolean evalRules(ClientContext ctx, AbstractBean bean, List<AbstractRule> rules) {
-		Predicate<AbstractRule> evalRule = e -> e.eval(ctx, bean);
+	private boolean evalRules(ClientContext ctx, AbstractBean bean, List<AbstractRule<AbstractBean>> rules) {
+		Predicate<AbstractRule<AbstractBean>> evalRule = e -> e.eval(ctx, bean);
 		return rules.stream().allMatch(evalRule);
 	}
 

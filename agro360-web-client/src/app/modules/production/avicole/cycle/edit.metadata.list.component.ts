@@ -26,9 +26,6 @@ export class EditMetadataListComponent extends BeanList<MetadataBean> implements
     @Input()
     metadatas: Array<MetadataBean>;
 
-    @ViewChild(MatTable)
-    table: MatTable<MetadataBean>;
-
     @ViewChild(MatPaginator) __paginator: MatPaginator;
 
     bean: MetadataBean;
@@ -41,10 +38,6 @@ export class EditMetadataListComponent extends BeanList<MetadataBean> implements
 
     constructor() {
         super()
-    }
-
-    override getViewChild(): MatTable<MetadataBean> {
-        return this.table;
     }
 
     ngOnInit(): void {

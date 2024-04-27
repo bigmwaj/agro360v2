@@ -43,14 +43,6 @@ export class EditRetourListComponent extends BeanList<RetourLigneBean> {
 
     @Input({required:true})
     public ligne: LigneBean;
-
-    
-    @ViewChild(MatTable)
-    private table: MatTable<RetourLigneBean>;
-
-    override getViewChild(): MatTable<RetourLigneBean> {
-        return this.table;
-    }
     
     override getKeyLabel(bean: RetourLigneBean): string | number {
         return bean.retourId.value;

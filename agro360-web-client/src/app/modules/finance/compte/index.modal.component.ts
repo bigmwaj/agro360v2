@@ -24,9 +24,6 @@ export class IndexModalComponent extends BeanList<CompteBean> implements OnInit 
 
     searchForm: CompteSearchBean;
 
-    @ViewChild('comptesTable')
-    table: MatTable<CompteBean>;
-
     displayedColumns: string[] = [
         'select',
         'compteCode',
@@ -39,10 +36,6 @@ export class IndexModalComponent extends BeanList<CompteBean> implements OnInit 
         public dialog: MatDialog,
         private ui: UIService) {
         super()
-    }
-
-    override getViewChild(): MatTable<CompteBean> {
-        return this.table;
     }
     
     getKeyLabel(bean: CompteBean): string {

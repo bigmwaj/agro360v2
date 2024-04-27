@@ -6,11 +6,11 @@ import { PartnerBean } from 'src/app/backed/bean.core';
 import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanTools } from 'src/app/modules/common/bean.tools';
-import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanEditTab } from '../../common/bean.edit.tab';
 import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
 import { CategoryBlockComponent } from './category.block.component';
-import { IBeanEditTab } from '../../common/bean.edit.tab';
 
 @Component({
     standalone: true,
@@ -21,33 +21,20 @@ import { IBeanEditTab } from '../../common/bean.edit.tab';
     selector: 'core-partner-edit-tab',
     templateUrl: './edit.tab.component.html'
 })
-export class EditTabComponent implements OnInit, IBeanEditTab {
+export class EditTabComponent extends BeanEditTab<PartnerBean> implements OnInit {
+
     @Input()
-    module:string
-
-    @Input({required: true})
-    bean: PartnerBean;
-
-    @Input({required:true})
-    breadcrumb:BreadcrumbItem
-
-    pageTitle: string = "Edition";
+    module:string;
 
     constructor(
         private http: HttpClient,
         public dialog: MatDialog,
-        private ui: UIService) { }
+        public override ui: UIService) {
+            super(ui);
+    }
 
     private isCreation(): boolean {
         return ClientOperationEnumVd.CREATE == this.bean.action;
-    }
-        
-    ngAfterViewInit(): void {
-        this.refreshPageTitle()
-    }
-
-    refreshPageTitle():void{
-        this.ui.setBreadcrumb(this.breadcrumb)
     }
 
     ngOnInit(): void {
@@ -97,6 +84,7 @@ export class EditTabComponent implements OnInit, IBeanEditTab {
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.ui.displayFlashMessage(<Array<Message>>data.messages);
+                this.afterSaveAction(data.record)
             });
     }
 

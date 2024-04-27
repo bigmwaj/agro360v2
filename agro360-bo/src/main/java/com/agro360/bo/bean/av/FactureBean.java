@@ -31,8 +31,6 @@ public class FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd>
 
 	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
 
-	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
-
 	@Setter
 	private PartnerBean partner = new PartnerBean();
 

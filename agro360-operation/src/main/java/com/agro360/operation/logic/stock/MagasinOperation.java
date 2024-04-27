@@ -59,6 +59,14 @@ public class MagasinOperation extends AbstractOperation<MagasinDto, String> {
 	}
 	
 	public List<MagasinBean> findMagasinsByCriteria(ClientContext ctx, MagasinSearchBean searchBean) {
-		return dao.findAll().stream().map(StockMapper::map).collect(Collectors.toList());
+		var code = searchBean.getMagasinCode().getValue();
+		if( code != null ) {
+			code = code.toUpperCase();
+		}
+        var length = dao.countMagasinsByCriteria( code);
+        searchBean.setLength(length);
+        return dao.findMagasinsByCriteria(searchBean.getOffset(), searchBean.getLimit(), code)
+        		.stream().map(StockMapper::map)
+        		.collect(Collectors.toList());
 	}
 }

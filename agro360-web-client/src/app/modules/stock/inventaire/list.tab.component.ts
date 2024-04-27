@@ -1,22 +1,22 @@
 
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTable } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { map } from 'rxjs';
 import { InventaireBean, InventaireSearchBean } from 'src/app/backed/bean.stock';
-import { BeanList } from 'src/app/modules/common/bean.list';
-import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { Message } from 'src/app/backed/message';
+import { FieldMetadata } from 'src/app/backed/metadata';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
 import { IndexModalComponent } from '../unite/index.modal.component';
 import { AjustPrixDialogComponent } from './ajust.prix.dialog.component';
 import { AjustQteDialogComponent } from './ajust.qte.dialog.component';
 import { CreateDialogComponent } from './create.dialog.component';
-import { FieldMetadata } from 'src/app/backed/metadata';
-import { FormsModule } from '@angular/forms';
-import { Message } from 'src/app/backed/message';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     standalone: true,
@@ -25,23 +25,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         SharedModule,      
         MatToolbarModule,
         FormsModule,        
-        MatTooltipModule
+        MatTooltipModule,
+        MatPaginatorModule
     ],
     selector: 'stock-inventaire-list-tab',
     templateUrl: './list.tab.component.html'
 })
-export class ListTabComponent extends BeanList<InventaireBean> implements OnInit {
-
-    @Input({required:true})
-    editingBeans: InventaireBean[] = [];
-
-    @Input({required:true})
-    selectedTab: {index:number}
-
-    @Input({required:true})
-    breadcrumb:BreadcrumbItem
-
-    searchForm: InventaireSearchBean;
+export class ListTabComponent extends BeanPagedListTab<InventaireBean, InventaireSearchBean> implements OnInit {
 
     displayedColumns: string[] = [
         'select',
@@ -56,18 +46,11 @@ export class ListTabComponent extends BeanList<InventaireBean> implements OnInit
         'actions'
     ];
 
-    @ViewChild(MatTable)
-    table: MatTable<InventaireBean>;
-
     constructor(
-        private http: HttpClient,       
         private dialog: MatDialog,
-        private ui: UIService) {
-        super()
-    }
-
-    override getViewChild(): MatTable<InventaireBean> {
-        return this.table;
+        public override http: HttpClient,       
+        public override ui: UIService) {
+        super(http, ui)
     }
 
     getKeyLabel(bean: InventaireBean): string {
@@ -78,38 +61,15 @@ export class ListTabComponent extends BeanList<InventaireBean> implements OnInit
         this.resetSearchFormAction();
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Listes des inventaires');
     }
-
-    ngAfterViewInit(): void {
-        this.refreshPageTitle()
+    
+    protected areBeansEqual(b1: InventaireBean, b2: InventaireBean):boolean{
+        return b1 == b2 || (
+            b1.magasin.magasinCode.value == b2.magasin.magasinCode.value
+            && b1.article.articleCode.value == b2.article.articleCode.value
+            && b1.variantCode.value == b2.variantCode.value
+        );
     }
-
-    refreshPageTitle():void{
-        this.ui.setBreadcrumb(this.breadcrumb)
-    }
-
-    resetSearchFormAction() {
-        this.http        
-            .get(`stock/inventaire/search-form`)  
-            .subscribe(data => {
-                this.searchForm = <InventaireSearchBean>data;
-                this.searchAction();
-            });
-    }
-
-    searchAction() {
-        let objJsonStr = JSON.stringify(this.searchForm);
-        let objJsonB64 = btoa(objJsonStr);
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('q', objJsonB64);
-        this.http
-            .get(`stock/inventaire`, { params: queryParams })  
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                this.setData(data.records);
-            });
-    }
-
+    
     ajusterQuantiteStockAction(bean: InventaireBean) {
         this.dialog.open(AjustQteDialogComponent, { data: bean });
     }
@@ -151,5 +111,13 @@ export class ListTabComponent extends BeanList<InventaireBean> implements OnInit
 
     toggleAjustFieldAction(field:FieldMetadata<any>) {        
         field.editable = !field.editable;
+    }
+
+    protected override getSearchFormUrl(): string {
+        return `stock/inventaire/search-form`;
+    }
+
+    protected override getSearchUrl(): string {
+        return `stock/inventaire`;
     }
 }

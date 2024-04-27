@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs';
 import { InventaireBean } from 'src/app/backed/bean.stock';
 import { Message } from 'src/app/backed/message';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
-import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
-import { SharedModule } from 'src/app/modules/common/shared.module';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanEditTab } from '../../common/bean.edit.tab';
 
 @Component({
     standalone: true,
@@ -16,40 +17,23 @@ import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
     selector: 'stock-inventaire-edit-tab',
     templateUrl: './edit.tab.component.html'
 })
-export class EditTabComponent implements OnInit {
-
-    @Input({required:true})
-    bean: InventaireBean;
-
-    @Input({required:true})
-    breadcrumb:BreadcrumbItem;
+export class EditTabComponent extends BeanEditTab<InventaireBean> implements OnInit {
 
     constructor(
         private http: HttpClient,
-        private ui: UIService) { }
+        public override ui: UIService) {
+        super(ui);
+    }
 
     isCreation(): boolean {
         return ClientOperationEnumVd.CREATE == this.bean.action;
     }
 
-    ngAfterViewInit(): void {
-        this.refreshPageTitle()
-    }
-
-    refreshPageTitle():void{
-        this.ui.setBreadcrumb(this.breadcrumb)
-    }
-
     ngOnInit(): void {
-        if (this.isCreation()) {
-            this.ui.setTitle(`Création d'un inventaire`)
-        } else {
-            this.ui.setTitle(`Édition de l'inventaire ${this.bean.article.articleCode.value}`)
-        }
+       
     }
 
     saveAction() {
-        console.log(this.bean)
         this.http.post(`stock/inventaire`, BeanTools.reviewBeanAction(this.bean))   
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {

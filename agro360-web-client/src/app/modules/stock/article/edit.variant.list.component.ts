@@ -25,9 +25,6 @@ export class EditVariantListComponent extends BeanList<VariantBean> implements O
     @Input()
     variants: Array<VariantBean>;
 
-    @ViewChild(MatTable)
-    table: MatTable<VariantBean>;
-
     displayedColumns: string[] = [
         'select',
         'variantCode',
@@ -41,10 +38,6 @@ export class EditVariantListComponent extends BeanList<VariantBean> implements O
         private service: StockService,
         private ui: UIService) {
         super()
-    }
-
-    override getViewChild(): MatTable<VariantBean> {
-        return this.table;
     }
 
     getKeyLabel(bean: VariantBean): string {

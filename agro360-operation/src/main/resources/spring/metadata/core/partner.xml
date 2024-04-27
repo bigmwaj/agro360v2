@@ -8,7 +8,7 @@
     <bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner/partnerCode">
 		<property name="editable">
 			<list>
-				<ref bean="IsBeanCreateOrUpdateOperation"/>
+				<ref bean="IsBeanCreateOperation"/>
 			</list>
 		</property>
 		<property name="required">
@@ -29,12 +29,17 @@
 				</bean>							
 			</list>
 		</property>
-	</bean>			
+	</bean>		
 		
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner/type">
 		<property name="editable">
 			<list>
-				<ref bean="IsBeanCreateOrUpdateOperation"/>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
 			</list>
 		</property>
 	</bean>							
@@ -69,12 +74,22 @@
 				<ref bean="IsTrue" />
 			</list>
 		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
 	</bean>				
 		
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner/lastName">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />					
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
 			</list>
 		</property>
 	</bean>				
@@ -85,10 +100,20 @@
 				<ref bean="IsTrue" />				
 			</list>
 		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
 	</bean>				
 		
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner/phone">
 		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+		<property name="required">
 			<list>
 				<ref bean="IsTrue" />						
 			</list>
@@ -101,12 +126,35 @@
 				<ref bean="IsTrue" />				
 			</list>
 		</property>
-	</bean>				
-		
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner/address">
-		<property name="editable">
+		<property name="required">
 			<list>
 				<ref bean="IsTrue" />						
+			</list>
+		</property>
+	</bean>				
+    
+    <bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner/address">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="255"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
 			</list>
 		</property>
 	</bean>				
@@ -142,6 +190,12 @@
 				<entry key="email" value-ref="partner/email"/>
 				<entry key="city" value-ref="partner/city"/>
 				<entry key="country" value-ref="partner/country"/>
+				<entry key="address" value-ref="partner/address"/>
+			</map>
+		</property>
+		<property name="hierarchie">
+			<map>
+				<entry key="categoriesHierarchie" value-ref="core/partner-category" />
 			</map>
 		</property>
 	</bean>

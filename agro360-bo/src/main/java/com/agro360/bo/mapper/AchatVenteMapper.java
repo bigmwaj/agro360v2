@@ -9,6 +9,7 @@ import com.agro360.bo.bean.av.FactureSearchBean;
 import com.agro360.bo.bean.av.LigneBean;
 import com.agro360.bo.bean.av.LigneTaxeBean;
 import com.agro360.bo.bean.av.ReceptionLigneBean;
+import com.agro360.bo.bean.av.ReglementCommandeBean;
 import com.agro360.bo.bean.av.RetourLigneBean;
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.utils.Constants;
@@ -17,6 +18,7 @@ import com.agro360.dto.av.FactureDto;
 import com.agro360.dto.av.LigneDto;
 import com.agro360.dto.av.LigneTaxeDto;
 import com.agro360.dto.av.ReceptionLigneDto;
+import com.agro360.dto.av.ReglementCommandeDto;
 import com.agro360.dto.av.RetourLigneDto;
 
 public class AchatVenteMapper {
@@ -34,16 +36,10 @@ public class AchatVenteMapper {
 		bean.getStatus().setValue(dto.getStatus());
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getType().setValue(dto.getType());
-		bean.getPaiementComptant().setValue(dto.getPaiementComptant());
-
-		bean.getRemiseType().setValue(dto.getRemiseType());
-		bean.getRemiseTaux().setValue(dto.getRemiseTaux());
-		bean.getRemiseMontant().setValue(dto.getRemiseMontant());
-		bean.getRemiseRaison().setValue(dto.getRemiseRaison());
+		bean.getCumulPaiement().setValue(dto.getCumulPaiement());
 
 		bean.getPrixTotal().setValue(dto.getPrixTotal());
 		bean.getPrixTotalHT().setValue(dto.getPrixTotalHT());
-		bean.getPrixTotalTTC().setValue(dto.getPrixTotalTTC());
 		bean.getTaxe().setValue(dto.getTaxe());
 		bean.getRemise().setValue(dto.getRemise());
 
@@ -55,10 +51,17 @@ public class AchatVenteMapper {
 			bean.setMagasin(StockMapper.map(dto.getMagasin()));
 		}
 
-		if( dto.getCompte() != null ) {
-			bean.setCompte(FinanceMapper.map(dto.getCompte()));
+		return bean;
+	}
+	
+	public static ReglementCommandeBean map(ReglementCommandeDto dto) {
+		var bean = new ReglementCommandeBean();
+		
+		bean.getCommandeCode().setValue(dto.getCommandeCode());
+		bean.getReglementId().setValue(dto.getReglementId());
+		if (dto.getTransaction() != null) {
+			bean.setTransaction(FinanceMapper.map(dto.getTransaction()));
 		}
-
 		return bean;
 	}
 
@@ -107,8 +110,8 @@ public class AchatVenteMapper {
 
 		bean.getPrixTotal().setValue(dto.getPrixTotal());
 		bean.getPrixTotalHT().setValue(dto.getPrixTotalHT());
-		bean.getPrixTotalTTC().setValue(dto.getPrixTotalTTC());
 		bean.getTaxe().setValue(dto.getTaxe());
+		bean.getRemise().setValue(dto.getRemise());
 
 		if( dto.getArticle() != null ) {
 			bean.setArticle(StockMapper.map(dto.getArticle()));

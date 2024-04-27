@@ -1,7 +1,5 @@
 package com.agro360.dto.av;
 
-import java.math.BigDecimal;
-
 import com.agro360.dto.common.AbstractDto;
 import com.agro360.dto.finance.TransactionDto;
 
@@ -32,8 +30,5 @@ public class ReglementCommandeDto extends AbstractDto {
 	
 	@Column(name = "COMMANDE_CODE", nullable = false, updatable = false)
 	private String commandeCode;
-
-	@Column(name = "MONTANT", nullable = false, precision = 16, scale = 4)
-	private BigDecimal montant;
 
 }

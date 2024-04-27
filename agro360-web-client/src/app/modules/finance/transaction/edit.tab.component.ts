@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { TransactionBean } from 'src/app/backed/bean.finance';
-import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
-import { Message } from 'src/app/backed/message';
-import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
 import { map } from 'rxjs';
-import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
+import { TransactionBean } from 'src/app/backed/bean.finance';
+import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { IBeanEditTab } from '../../common/bean.edit.tab';
+import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { UIService } from 'src/app/modules/common/service/ui.service';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanEditTab } from '../../common/bean.edit.tab';
 
 @Component({
     standalone: true,
@@ -18,22 +18,18 @@ import { IBeanEditTab } from '../../common/bean.edit.tab';
     selector: 'finance-transaction-edit-tab',
     templateUrl: './edit.tab.component.html'
 })
-export class EditTabComponent implements OnInit, IBeanEditTab {
-    @Input({required:true})
-    breadcrumb:BreadcrumbItem
+export class EditTabComponent extends BeanEditTab<TransactionBean> implements OnInit {
     
     @Input({required:true})
-    bean: TransactionBean;
-    
-    @Input({required:true})
-    module: string;
-    
+    module: string;    
 
     partnerLabel: string = "Partenaire";
 
     constructor( 
         private http: HttpClient,
-        private ui: UIService) { }
+        public override ui: UIService) {             
+        super(ui);        
+    }
 
     private initModule(): void{
 
@@ -97,20 +93,13 @@ export class EditTabComponent implements OnInit, IBeanEditTab {
     ngOnInit(): void {
         this.initModule()
     }
-
-    ngAfterViewInit(): void {
-        this.refreshPageTitle()
-    }
-
-    refreshPageTitle():void{
-        this.ui.setBreadcrumb(this.breadcrumb)
-    }
     
     saveAction() {
         this.http.post(`finance/transaction`, BeanTools.reviewBeanAction(this.bean))   
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.ui.displayFlashMessage(<Array<Message>>data.messages);
+                this.afterSaveAction(data.record)
             });
     }
 

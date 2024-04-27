@@ -1,25 +1,24 @@
 package com.agro360.operation.logic.stock;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.InventaireBean;
 import com.agro360.bo.bean.stock.InventaireSearchBean;
-import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.bo.mapper.StockMapper;
 import com.agro360.dao.common.IDao;
 import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dao.stock.IInventaireDao;
 import com.agro360.dao.stock.IMagasinDao;
-import com.agro360.dto.stock.ArticleDto;
+import com.agro360.dao.stock.IUniteDao;
 import com.agro360.dto.stock.InventaireDto;
 import com.agro360.dto.stock.InventairePk;
-import com.agro360.dto.stock.MagasinDto;
+import com.agro360.dto.stock.VariantDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.common.AbstractOperation;
 import com.agro360.operation.utils.RuleNamespace;
@@ -35,6 +34,9 @@ public class InventaireOperation extends AbstractOperation<InventaireDto, Invent
 	
 	@Autowired
 	private IArticleDao articleDao;
+	
+	@Autowired
+	private IUniteDao uniteDao;
 
 	@Override
 	protected IDao<InventaireDto, InventairePk> getDao() {
@@ -52,6 +54,14 @@ public class InventaireOperation extends AbstractOperation<InventaireDto, Invent
 		var articleCode = bean.getArticle().getArticleCode().getValue();
 		var article = articleDao.getReferenceById(articleCode);
 		dto.setArticle(article);
+		
+		var uniteAchatCode = bean.getUniteAchat().getUniteCode().getValue();
+		var uniteAchat = uniteDao.getReferenceById(uniteAchatCode);
+		dto.setUniteAchat(uniteAchat);
+		
+		var uniteVenteCode = bean.getUniteVente().getUniteCode().getValue();
+		var uniteVente = uniteDao.getReferenceById(uniteVenteCode);
+		dto.setUniteVente(uniteVente);
 		
 		setDtoValue(dto::setVariantCode, bean.getVariantCode());
 		setDtoValue(dto::setQuantite, bean.getQuantite());
@@ -83,20 +93,22 @@ public class InventaireOperation extends AbstractOperation<InventaireDto, Invent
 		var dto = dao.getReferenceById(buildPK(magasinCode, articleCode, variantCode));
 		return StockMapper.map(dto);	
 	}
-	
+		
 	public List<InventaireBean> findInventairesByCriteria(ClientContext ctx, InventaireSearchBean searchBean) {
-		var example = Example.of(new InventaireDto());
-		
-		if( searchBean.getMagasinCode().getValue() != null ) {
-			example.getProbe().setMagasin(new MagasinDto());
-			example.getProbe().getMagasin().setMagasinCode(searchBean.getMagasinCode().getValue());
+		var article = searchBean.getArticleCode().getValue();
+		if( article != null ) {
+			article = article.toUpperCase();
 		}
 		
-		if( searchBean.getArticleCode().getValue() != null ) {
-			example.getProbe().setArticle(new ArticleDto());
-			example.getProbe().getArticle().setArticleCode(searchBean.getArticleCode().getValue());
+		var magasin = searchBean.getMagasinCode().getValue();
+		if( magasin != null ) {
+			magasin = magasin.toUpperCase();
 		}
-		return dao.findAll(example).stream().map(StockMapper::map).collect(Collectors.toList());
+        var length = dao.countInventairesByCriteria(magasin, article);
+        searchBean.setLength(length);
+        return dao.findInventairesByCriteria(searchBean.getOffset(), searchBean.getLimit(), magasin, article)
+        		.stream().map(StockMapper::map)
+        		.collect(Collectors.toList());
 	}
 	
 	private InventairePk buildPK(String magasinCode, String articleCode, String variantCode) {
@@ -117,12 +129,22 @@ public class InventaireOperation extends AbstractOperation<InventaireDto, Invent
 				.map(StockMapper::map)
 				.collect(Collectors.toList());
 	}
+	
+	private InventaireBean mapFromVariant(ClientContext ctx, String magasinCode, VariantDto dto) {
+		var bean = new InventaireBean();
+		bean.getMagasin().getMagasinCode().setValue(magasinCode);
+		bean.getArticle().getArticleCode().setValue(dto.getArticleCode());
+		bean.getVariantCode().setValue(dto.getVariantCode());
+		bean.getAlias().setValue(dto.getAlias());
+		bean.getVariantDescription().setValue(dto.getDescription());
+		return bean;
+	}
 
-	public List<VariantBean> findNonStockedArticleVariants(ClientContext ctx, 
-			String magasinCode, String articleCode) {
+	public List<InventaireBean> findNonStockedArticleVariants(ClientContext ctx, String magasinCode, String articleCode) {
+		Function<VariantDto, InventaireBean> map = e -> mapFromVariant(ctx, magasinCode, e);
 		return dao.findNonStockedArticleVariants(magasinCode, articleCode)
 				.stream()
-				.map(StockMapper::map)
+				.map(map)
 				.collect(Collectors.toList());
 	}
 }

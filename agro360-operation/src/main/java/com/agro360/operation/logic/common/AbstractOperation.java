@@ -2,6 +2,7 @@ package com.agro360.operation.logic.common;
 
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,5 +45,17 @@ public abstract class AbstractOperation<E extends AbstractDto, K> {
 
 	public void delete(E dto) {
 		getDao().delete(dto);
+	}
+	
+	protected String getNullOrUpperCase(String value) {
+		if( value != null && !value.isBlank() ) {
+			return value.toUpperCase();
+		}
+		
+		return null;
+	}
+	
+	protected String getNullOrUpperCase(Supplier<FieldMetadata<String>> valueFunction) {
+		return getNullOrUpperCase(valueFunction.get().getValue());
 	}
 }

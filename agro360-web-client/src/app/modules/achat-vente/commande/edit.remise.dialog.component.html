@@ -3,14 +3,22 @@
     <div class="container-fluid mt-3">
         <div *ngIf="bean">
             <div class="row">
-                <div class="col-4">
-                    <input-text-field [field]="bean.remiseMontant"></input-text-field>
-                </div>
-                <div class="col-4">
+                <div class="col-6">
                     <select-one-field [field]="bean.remiseType"></select-one-field>
                 </div>
-                <div class="col-4">
+                <div class="col-6" *ngIf="isMontant()">
+                    <input-text-field [field]="bean.remiseMontant"></input-text-field>
+                </div>
+                <div class="col-6" *ngIf="isTaux()">
                     <input-text-field [field]="bean.remiseTaux"></input-text-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <input-text-field [field]="bean.prixTotalHT"></input-text-field>
+                </div>
+                <div class="col-6">
+                    <input-text-field [field]="bean.remise"></input-text-field>
                 </div>
             </div>
             <div class="row">

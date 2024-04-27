@@ -2,6 +2,7 @@ package com.agro360.form.finance;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -9,7 +10,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.core.PartnerBean;
@@ -23,12 +23,12 @@ import com.agro360.bo.bean.finance.TransactionSearchBean;
 import com.agro360.bo.bean.finance.TransfertBean;
 import com.agro360.bo.mapper.FinanceMapper;
 import com.agro360.bo.utils.Constants;
+import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.core.PartnerOperation;
 import com.agro360.operation.logic.finance.CompteOperation;
 import com.agro360.operation.logic.finance.RubriqueOperation;
 import com.agro360.operation.logic.finance.TransactionOperation;
-import com.agro360.operation.metadata.BeanMetadataConfig;
 import com.agro360.vd.common.ClientOperationEnumVd;
 import com.agro360.vd.finance.TransactionStatusEnumVd;
 import com.agro360.vd.finance.TransactionTypeEnumVd;
@@ -48,18 +48,7 @@ public class TransactionForm {
 	@Autowired
 	CompteOperation compteOperation;
 	
-	@Qualifier("finance/transaction")
-	@Autowired
-	private BeanMetadataConfig metadataConfig;
-	
-	@Qualifier("finance/transaction/transfert")
-	@Autowired
-	private BeanMetadataConfig metadataConfig2;
-	
-	@Qualifier("finance/transaction-search")
-	@Autowired
-	private BeanMetadataConfig searchMetadataConfig;
-	
+	@MetadataBeanName("finance/transaction")
 	public TransactionBean initCreateFormBean(ClientContext ctx, TransactionTypeEnumVd type, Optional<String> copyFrom) {
 		var bean = copyFrom.map(e -> operation.findTransactionByCode(ctx, e))
 				.orElse(new TransactionBean());
@@ -76,10 +65,10 @@ public class TransactionForm {
 		
 		initCompteOption(ctx, bean.getCompte().getCompteCode()::setValueOptions);
 		
-		metadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 	
+	@MetadataBeanName("finance/transaction")
 	public TransactionBean initEditFormBean(ClientContext ctx, String partnerCode) {
 		var bean = operation.findTransactionByCode(ctx, partnerCode);
 		
@@ -90,19 +79,18 @@ public class TransactionForm {
 		initRubriqueOption(ctx, type, bean.getRubrique().getRubriqueCode()::setValueOptions);
 		initCompteOption(ctx, bean.getCompte().getCompteCode()::setValueOptions);
 		
-		metadataConfig.applyMetadata(ctx, bean);
-		
 		return bean;
 	}
 
+	@MetadataBeanName("finance/transaction")
 	public TransactionBean initDeleteFormBean(ClientContext ctx, String partnerCode) {
 		var bean = operation.findTransactionByCode(ctx, partnerCode);
 		
 		bean.setAction(ClientOperationEnumVd.DELETE);
-		metadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 
+	@MetadataBeanName("finance/transaction")
 	public TransactionBean initChangeStatusFormBean(ClientContext ctx, String partnerCode) {
 		var bean = operation.findTransactionByCode(ctx, partnerCode);
 		
@@ -111,20 +99,25 @@ public class TransactionForm {
 		bean.getStatusDate().setValue(LocalDateTime.now());
 		bean.getStatusDate().setRequired(true);
 		
-		metadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 
+	@MetadataBeanName("finance/transaction-search")
 	public TransactionSearchBean initSearchFormBean(ClientContext ctx, Optional<TransactionTypeEnumVd> type) {
 		var bean = FinanceMapper.buildTransactionSearchBean();
 
 		initCompteOption(ctx, bean.getCompte()::setValueOptions);
 		initRubriqueOption(ctx, type.orElse(null), bean.getRubrique()::setValueOptions);
 		
-		searchMetadataConfig.applyMetadata(ctx, bean);
 		return bean;
 	}
 	
+	@MetadataBeanName("finance/transaction-search-result")
+	public List<TransactionBean> initSearchResultBeans(ClientContext ctx, List<TransactionBean> beans) {
+		return beans;
+	}
+	
+	@MetadataBeanName("finance/transaction/transfert")
 	public TransfertBean initTransfertFormBean(ClientContext ctx) {
 		var bean = new TransfertBean();
 		
@@ -137,8 +130,6 @@ public class TransactionForm {
 		initCompteOption(ctx, bean.getCompteSource().getCompteCode()::setValueOptions);
 		
 		initCompteOption(ctx, bean.getCompteCible().getCompteCode()::setValueOptions);
-		
-		metadataConfig2.applyMetadata(ctx, bean);
 		
 		return bean;
 	}

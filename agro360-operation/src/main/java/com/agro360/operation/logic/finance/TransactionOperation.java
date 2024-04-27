@@ -50,7 +50,6 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 	protected IDao<TransactionDto, String> getDao() {
 		return dao;
 	}
-	
 
 	@RuleNamespace("finance/transaction/create")
 	public void createTransaction(ClientContext ctx, TransactionBean bean) {
@@ -74,8 +73,11 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		setDtoValue(dto::setNote, bean.getNote());
 		setDtoValue(dto::setDate, bean.getDate());
 		setDtoValue(dto::setMontant, bean.getMontant());
+		setDtoValue(dto::setAccompte, bean.getAccompte());
 		
-		dto = super.save(dto);	
+		super.save(dto);	
+		var msgTpl = "Transaction %s créée avec succès";
+		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
 	}
 
 	@RuleNamespace("finance/transaction/update")
@@ -86,13 +88,20 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		setDtoChangedValue(dto::setMontant, bean.getMontant());
 		setDtoChangedValue(dto::setDate, bean.getDate());
 		
-		dto = super.save(dto);		
+		dto.setNote(dto.getNote() + " Juste pour voir");
+		
+		super.save(dto);
+
+		var msgTpl = "Transaction %s modifiée avec succès";
+		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
 	}
 	
 	@RuleNamespace("finance/transaction/delete")
 	public void deleteTransaction(ClientContext ctx, TransactionBean bean) {
 		var dto = dao.getReferenceById(bean.getTransactionCode().getValue());
 		dao.delete(dto);
+		var msgTpl = "Transaction %s supprimée avec succès";
+		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
 	}
 	
 	private void changeTransactionStatus(ClientContext ctx, TransactionBean bean) {
@@ -105,16 +114,25 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 	@RuleNamespace("finance/transaction/cloturer")
 	public void clotureTransaction(ClientContext ctx, TransactionBean bean) {
 		changeTransactionStatus(ctx, bean);	
+		
+		var msgTpl = "Transaction %s cloturée avec succès";
+		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
 	}
 
 	@RuleNamespace("finance/transaction/annuler")
 	public void annulerTransaction(ClientContext ctx, TransactionBean bean) {
 		changeTransactionStatus(ctx, bean);	
+		
+		var msgTpl = "Transaction %s annulée avec succès";
+		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
 	}
 
 	@RuleNamespace("finance/transaction/approuver")
 	public void approuverTransaction(ClientContext ctx, TransactionBean bean) {
 		changeTransactionStatus(ctx, bean);	
+		
+		var msgTpl = "Transaction %s approuvée avec succès";
+		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
 	}
 
 	public TransactionBean findTransactionByCode(ClientContext ctx, String transactionCode) {
@@ -144,8 +162,10 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		if( status != null && status.isEmpty() ) {
 			status = null;
 		}
-		
-        return dao.findTransactionsByCriteria(code, type, debut, fin, status, partner, compte, rubrique)
+		var length = dao.countTransactionsByCriteria(code, type, debut, fin, status, partner, compte, rubrique);
+        searchBean.setLength(length);
+        return dao.findTransactionsByCriteria(searchBean.getOffset(), searchBean.getLimit(), 
+        		code, type, debut, fin, status, partner, compte, rubrique)
         		.stream().map(FinanceMapper::map)
         		.collect(Collectors.toList());
 	}

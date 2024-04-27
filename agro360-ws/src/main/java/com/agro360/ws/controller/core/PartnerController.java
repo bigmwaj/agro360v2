@@ -1,11 +1,11 @@
 package com.agro360.ws.controller.core;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerSearchBean;
 import com.agro360.form.core.PartnerForm;
-import com.agro360.operation.context.ClientContext;
 import com.agro360.service.core.PartnerService;
 import com.agro360.ws.controller.common.AbstractController;
 
@@ -34,11 +33,10 @@ public class PartnerController extends AbstractController {
 	@GetMapping()
 	public ResponseEntity<ModelMap> searchAction(
 			@RequestBody 
-			@Validated Optional<PartnerSearchBean> searchForm, 
-			BindingResult br) {	
-		var ctx = new ClientContext();
-		var records = service.searchAction(ctx, searchForm);
-		var model = new ModelMap(RECORDS_MODEL_KEY, records);	
+			@Validated Optional<PartnerSearchBean> searchBean) {	
+		var sb = searchBean.orElse(new PartnerSearchBean());
+		var model = new ModelMap(RECORDS_MODEL_KEY, service.search(getClientContext(), sb));
+		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
 		return ResponseEntity.ok(model);
 	}
 	
@@ -69,9 +67,31 @@ public class PartnerController extends AbstractController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated PartnerBean bean, BindingResult br) {
-		service.saveAction(getClientContext(), bean);
-		return ResponseEntity.ok(new ModelMap());
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated PartnerBean bean) {
+		var action = bean.getAction();
+		var ctx = getClientContext();
+		var model = new ModelMap();
+		
+		service.save(ctx, bean);
+		switch (action) {
+		case CREATE:
+		case UPDATE:
+			bean = form.initEditFormBean(ctx, bean.getPartnerCode().getValue());	
+			model.addAttribute(RECORD_MODEL_KEY, bean);
+			break;
+			
+		case CHANGE_STATUS:
+			bean = service.findPartner(ctx, bean.getPartnerCode().getValue());
+			var beans = Collections.singletonList(bean);
+			beans = form.initSearchResultBeans(ctx, beans);
+			model.addAttribute(RECORD_MODEL_KEY, beans.get(0));
+			break;
+
+		default:
+			break;
+		}
+		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
+		return ResponseEntity.ok(model);
 	}
 
 }

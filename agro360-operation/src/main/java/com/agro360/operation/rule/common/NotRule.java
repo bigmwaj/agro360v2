@@ -3,11 +3,11 @@ package com.agro360.operation.rule.common;
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.operation.context.ClientContext;
 
-public class NotRule extends AbstractRule{
+public class NotRule extends AbstractRule<AbstractBean>{
 	
-	private final AbstractRule rule;
+	private final AbstractRule<AbstractBean> rule;
 	
-	public NotRule(AbstractRule rule) {
+	public NotRule(AbstractRule<AbstractBean> rule) {
 		this.rule = rule;
 	}
 

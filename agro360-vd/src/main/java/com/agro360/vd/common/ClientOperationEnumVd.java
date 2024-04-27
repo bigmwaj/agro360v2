@@ -25,6 +25,17 @@ public enum ClientOperationEnumVd {
 	/**
 	 * Change the underlined bean status in the DB
 	 */
-	CHANGE_STATUS;
-	
+	CHANGE_STATUS,
+	/** Free to us */ACT01,
+	/** Free to us */ACT02,
+	/** Free to us */ACT03,
+	/** Free to us */ACT04,
+	/** Free to us */ACT05,
+	/** Free to us */ACT06,
+	/** Free to us */ACT07,
+	/** Free to us */ACT08,
+	/** Free to us */ACT09,
+	/** Free to us */ACT10,
+
+	;
 }

@@ -29,7 +29,7 @@
             </section>
         </mat-drawer>
         <mat-drawer-content class="search-result">
-            <section class="p-3">
+            <section class="p-3 pb-0">
                 <mat-toolbar color="secondary">                      
                     <mat-toolbar-row>
                         <button mat-icon-button (click)="drawer.toggle()">
@@ -115,17 +115,18 @@
                             <button mat-icon-button color="primary" title="Copier" (click)="addAction(element)">
                                 <mat-icon>content_copy</mat-icon>
                             </button>                         
-                            <button mat-icon-button color="primary" title="Changer Status" (click)="changeStatusAction(element)">
+                            <button mat-icon-button color="primary"
+                                [disabled]="!element.changeStatusBtn.visible" 
+                                title="Changer Status" (click)="changeStatusAction(element)">
                                 <mat-icon>schema</mat-icon>
                             </button>
                             <button mat-icon-button color="secondary" [matMenuTriggerFor]="menu">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
-                            <mat-menu #menu="matMenu">                                
-                                <button mat-menu-item color="primary" class="me-2">
-                                    <mat-icon>sync-alt</mat-icon>TODO
-                                </button>
-                                <button mat-menu-item color="primary" title="Supprimer" (click)="deleteAction(element)">
+                            <mat-menu #menu="matMenu"> 
+                                <button mat-menu-item color="primary"                                    
+                                    *ngIf="element.deleteBtn.visible" 
+                                    title="Supprimer" (click)="deleteAction(element)">
                                     <mat-icon>delete</mat-icon> Supprimer
                                 </button> 
                             </mat-menu>
@@ -135,6 +136,15 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
                         [class.text-bg-danger]="row.action == 'DELETE'"></tr>
                 </table>
+            </section>            
+            <section class="p-3 pt-0">
+                <mat-paginator *ngIf="searchForm" class="pe-2"
+                    (page)="handlePageEvent($event)"
+                    [length]="searchForm.length"
+                    [pageSize]="searchForm.pageSize"
+                    [pageSizeOptions]="searchForm.pageSizeOptions"
+                    aria-label="Selectionner la page">
+                </mat-paginator>
             </section>
         </mat-drawer-content>
     </mat-drawer-container>

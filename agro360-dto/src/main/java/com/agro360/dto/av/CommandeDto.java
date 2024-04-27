@@ -5,11 +5,9 @@ import java.time.LocalDate;
 
 import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.dto.core.PartnerDto;
-import com.agro360.dto.finance.CompteDto;
 import com.agro360.dto.stock.MagasinDto;
 import com.agro360.vd.av.CommandeStatusEnumVd;
 import com.agro360.vd.av.CommandeTypeEnumVd;
-import com.agro360.vd.av.RemiseTypeEnumVd;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,30 +49,10 @@ public class CommandeDto extends AbstractStatusTrackingDto<CommandeStatusEnumVd>
 
 	@Column(name = "DESCRIPTION", length = 256)
 	private String description;
-	
-	@ManyToOne()
-	@JoinColumn(name = "COMPTE_CODE")
-	private CompteDto compte;
 
-	@Column(name = "PAIEMENT_COMPTANT", precision = 16, scale = 4)
-	private BigDecimal paiementComptant;
+	@Column(name = "CUMUL_PAIEMENT", precision = 16, scale = 4)
+	private BigDecimal cumulPaiement;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "REMISE_TYPE", length = RemiseTypeEnumVd.COLUMN_LENGTH)
-	private RemiseTypeEnumVd remiseType;
-
-	@Column(name = "REMISE_TAUX")
-	private Double remiseTaux;
-	
-	@Column(name = "REMISE_MONTANT", precision = 16, scale = 4, nullable = false)
-	private BigDecimal remiseMontant;
-
-	@Column(name = "REMISE_RAISON", length = 256)
-	private String remiseRaison;
-	
-	/**
-	 * Liste des valeurs calculées
-	 */
 	@Column(name = "TAXE", precision = 16, scale = 4, nullable = false)
 	private BigDecimal taxe;
 
@@ -83,9 +61,6 @@ public class CommandeDto extends AbstractStatusTrackingDto<CommandeStatusEnumVd>
 	
 	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4, nullable = false)
 	private BigDecimal prixTotalHT;
-	
-	@Column(name = "PRIX_TOTAL_TTC", precision = 16, scale = 4, nullable = false)
-	private BigDecimal prixTotalTTC;
 	
 	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4, nullable = false)
 	private BigDecimal prixTotal;

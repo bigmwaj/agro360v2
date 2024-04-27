@@ -17,9 +17,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 })
 export class IndexProducitonListComponent extends BeanList<ProductionBean> implements OnInit {
 
-    @ViewChild('productionsTable')
-    table: MatTable<ProductionBean>;
-
     @Input()
     productions: Array<ProductionBean>;
 
@@ -29,10 +26,6 @@ export class IndexProducitonListComponent extends BeanList<ProductionBean> imple
         'quantite',
         'commentaire',
     ];
-
-    override getViewChild(): MatTable<ProductionBean> {
-        return this.table;
-    }
 
     getKeyLabel(bean: ProductionBean): number {
         return bean.productionId.value;

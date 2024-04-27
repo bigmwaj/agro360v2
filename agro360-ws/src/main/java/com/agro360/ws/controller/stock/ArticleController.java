@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,15 +42,31 @@ public class ArticleController extends AbstractController {
 	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
 			@RequestBody(required = false) @Validated Optional<ArticleSearchBean> searchBean) {
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service
-				.search(getClientContext(), searchBean)));
+		var sb = searchBean.orElse(new ArticleSearchBean());
+		var model = new ModelMap(RECORDS_MODEL_KEY, service.search(getClientContext(), sb));
+		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
+		return ResponseEntity.ok(model);
 	}
 
 	@PostMapping
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated ArticleBean bean, BindingResult br) {
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated ArticleBean bean) {
+		var action = bean.getAction();
+		var model = new ModelMap();
 		var ctx = getClientContext();
+		
 		service.save(ctx, bean);
-		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
+		switch (action) {
+		case CREATE:
+		case UPDATE:
+			bean = form.initUpdateFormBean(ctx, bean.getArticleCode().getValue());	
+			model.addAttribute(RECORD_MODEL_KEY, bean);
+			break;
+
+		default:
+			break;
+		}
+		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
+		return ResponseEntity.ok(model);
 	}
 	
 	@GetMapping(SEARCH_FORM_RN)
