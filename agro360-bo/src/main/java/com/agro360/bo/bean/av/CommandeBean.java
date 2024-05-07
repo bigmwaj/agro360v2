@@ -7,7 +7,6 @@ import java.util.List;
 
 import com.agro360.bo.bean.common.AbstractStatusTrackingBean;
 import com.agro360.bo.bean.core.PartnerBean;
-import com.agro360.bo.bean.finance.CompteBean;
 import com.agro360.bo.bean.stock.MagasinBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.av.CommandeStatusEnumVd;
@@ -34,12 +33,10 @@ public class CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumV
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 
 	private FieldMetadata<BigDecimal> cumulPaiement = new FieldMetadata<>("Cumul Paiement");
-	
-	private FieldMetadata<BigDecimal> paiementComptant = new FieldMetadata<>("Montant");
 
 	private FieldMetadata<BigDecimal> prixTotalHT = new FieldMetadata<>("Prix Total(HT)");
 
-	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total + Taxe - Remise)");
+	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total + Taxe - Remise");
 
 	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
 
@@ -47,16 +44,21 @@ public class CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumV
 
 	private FieldMetadata<String> createLigneBtn = new FieldMetadata<>();
 
-	private FieldMetadata<String> encaissementBtn = new FieldMetadata<>();
+	private FieldMetadata<String> reglerBtn = new FieldMetadata<>();
+	
+	private FieldMetadata<String> terminerBtn = new FieldMetadata<>();
+	
+	private FieldMetadata<String> annulerBtn = new FieldMetadata<>();
+
+	private FieldMetadata<String> receptionBtn = new FieldMetadata<>("Réception ligne");
+
+	private FieldMetadata<String> retourBtn = new FieldMetadata<>("Retour ligne");
 
 	private List<LigneBean> lignes = new ArrayList<>();
-
+	
 	@Setter
 	private MagasinBean magasin = new MagasinBean();
 
 	@Setter
 	private PartnerBean partner = new PartnerBean();
-
-	@Setter
-	private CompteBean compte = new CompteBean();
 }

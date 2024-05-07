@@ -27,30 +27,30 @@ public class LigneServiceHelper {
 	}
 	
 	public void initPrix(ClientContext ctx, LigneBean bean) {
-		var prixTotalHT = bean.getPrixUnitaire().getValue()
-				.multiply(BigDecimal.valueOf(bean.getQuantite().getValue()));
+		var qte = BigDecimal.valueOf(bean.getQuantite().getValue());
+		var pu = bean.getPrixUnitaire().getValue();
+		var prixTotalHT = pu.multiply(qte);
 		
 		if( Objects.isNull(bean.getRemiseMontant().getValue()) ){
             bean.getRemiseMontant().setValue(BigDecimal.ZERO);
-        }   
+        } 
 		if( Objects.isNull(bean.getRemiseTaux().getValue()) ){
 			bean.getRemiseTaux().setValue(Double.valueOf(0));
-		}   
-		
-		bean.getRemise().setValue(BigDecimal.ZERO);
+		}  
+		var remise = BigDecimal.ZERO;
 		
 		switch (bean.getRemiseType().getValue()) {
 		case MONTANT:
 			bean.getRemiseTaux().setValue(Double.valueOf(0));
-			bean.getRemise().setValue(bean.getRemiseMontant().getValue());
+			remise = bean.getRemiseMontant().getValue();
 			break;
 			
 		case TAUX:
 			bean.getRemiseMontant().setValue(BigDecimal.ZERO);
 			if( bean.getRemiseTaux().getValue() > 0 ){
-	            var remise = prixTotalHT.multiply(BigDecimal.valueOf(bean.getRemiseTaux().getValue()))
-	            		.divide(BigDecimal.valueOf(100));
-	            bean.getRemise().setValue(remise);
+				var taux = BigDecimal.valueOf(bean.getRemiseTaux().getValue());
+				var hundred = BigDecimal.valueOf(100);
+	            remise = prixTotalHT.multiply(taux).divide(hundred);
 	        }
 			break;
 
@@ -58,18 +58,21 @@ public class LigneServiceHelper {
 			break;
 		}
         
-        var prixTotalHTAvecRemise = prixTotalHT.subtract(bean.getRemiseMontant().getValue());
+        var prixTotalHTAvecRemise = prixTotalHT.subtract(remise);
         var taxe = calculerTaxe(ctx, bean, prixTotalHTAvecRemise);
+        var prixTotal = prixTotalHTAvecRemise.add(taxe);
         
+        bean.getPrixTotalHT().setValue(prixTotalHT);
+        bean.getRemise().setValue(remise);
         bean.getTaxe().setValue(taxe); 
-        
-        var prixTotal = prixTotalHTAvecRemise.add(bean.getTaxe().getValue());
         bean.getPrixTotal().setValue(prixTotal);
         
         bean.getPrixTotalHT().setValueChanged(true);
         bean.getRemise().setValueChanged(true);
         bean.getTaxe().setValueChanged(true);
         bean.getPrixTotal().setValueChanged(true);
+        
+        bean.getRemiseTaux().setValueChanged(true);
         bean.getRemiseMontant().setValueChanged(true);
 	}
 	

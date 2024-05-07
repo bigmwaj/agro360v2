@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>Retourde la commande</h2>
+<mat-dialog-content>
+    <div class="container-fluid mt-3">
+        <div *ngIf="bean">
+            <div class="row">
+                <div class="col-3">
+                    <input-text-field [field]="bean.type"></input-text-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.commandeCode"></input-text-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.status"></input-text-field>
+                </div>
+                <div class="col-3">
+                    <input-text-field [field]="bean.partner.partnerCode"></input-text-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <achat-vente-retour-list [bean]="bean"></achat-vente-retour-list>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3">
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button (click)="saveAction()">Enregistrer</button>
+</mat-dialog-actions>

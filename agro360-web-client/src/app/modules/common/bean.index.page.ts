@@ -22,22 +22,6 @@ export abstract class BeanIndexPage<B extends AbstractBean, L extends BeanListTa
     protected abstract getEditTabs(): QueryList<E>;
 
     protected abstract getTabGroup(): MatTabGroup;
-
-    /*
-    private getCurrentEditingBean():B | null{  
-        const tabGroup = this.getTabGroup();
-        if( tabGroup == null ){
-            return null;
-        }  
-
-        const selectedIndex = tabGroup.selectedIndex;
-
-        if( selectedIndex != null && selectedIndex > 0 ){
-            return this.editingBeans.filter((e, i)=> i == (selectedIndex - 1))[0];
-        }   
-        return null;
-    }
-*/
         
     removeTabAction(index:number){
         this.editingBeans = this.editingBeans.filter((e, i)=> i != index);
@@ -97,5 +81,12 @@ export abstract class BeanIndexPage<B extends AbstractBean, L extends BeanListTa
 
     onBeanSaveFronEditTab($event:any){
         this.getListTab().prependItemIfNotInList(<B>$event);
+
+        // On doit mettre à jour le bean dans le editingBean list TODO
+        if( this.currentEditTab ){
+            console.log( 'on synch le bean')
+            this.currentEditTab.bean = <B>$event
+            this.currentEditingBean = <B>$event
+        }
     }
 }

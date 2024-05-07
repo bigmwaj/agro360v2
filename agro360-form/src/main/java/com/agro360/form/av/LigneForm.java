@@ -34,6 +34,7 @@ public class LigneForm extends AbstractForm{
 
 	@MetadataBeanName("av/ligne")
 	public LigneBean initCreateFormBean(ClientContext ctx, 
+			CommandeTypeEnumVd type,
 			String commandeCode, 
 			Optional<String> magasinCode, 
 			Optional<String> alias) {
@@ -79,9 +80,11 @@ public class LigneForm extends AbstractForm{
 	private void initFromInventaire(ClientContext ctx, LigneBean bean, String magasinCode) {
 		var variantCode = bean.getVariantCode().getValue();
 		var articleCode = bean.getArticle().getArticleCode().getValue();
+		
 		var inv = inventaireOperation.findInventaireByCode(ctx, magasinCode, articleCode, variantCode);				
 		if( inv != null ) {
 			var pu = inv.getPrixUnitaireVente().getValue();
+			bean.getUnite().getUniteCode().setValue(inv.getUniteVente().getUniteCode().getValue());
 			if( !BigDecimal.ZERO.equals(pu) ) {
 				bean.getPrixUnitaire().setValue(pu);
 			}else {

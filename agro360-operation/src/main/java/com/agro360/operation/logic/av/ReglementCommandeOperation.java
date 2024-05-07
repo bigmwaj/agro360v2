@@ -44,7 +44,9 @@ public class ReglementCommandeOperation extends AbstractOperation<ReglementComma
 	}
 
 	public List<ReglementCommandeBean> findReglementsByCommandeCode(ClientContext ctx, String commandeCode) {
-		return dao.findAllByCommandeCode(commandeCode).stream().map(AchatVenteMapper::map).collect(Collectors.toList());
+		return dao.findAllByCommandeCode(commandeCode).stream()
+				.map(AchatVenteMapper::map)
+				.collect(Collectors.toList());
 	}
 
 

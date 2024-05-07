@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     standalone: true,
@@ -18,15 +19,17 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
         MatInputModule,
         MatNativeDateModule,
         MatDatepickerModule,
+        MatTooltipModule
     ],
     selector: 'input-date-field',
     template: `
         <mat-form-field [appearance]="appearance" [class]="getCssClass()">
             <mat-label *ngIf="displayLabel">{{label}}</mat-label>
-            <input matInput 
+            <input matInput  [class]="inputCssClass"
                 [matDatepicker]="picker" 
                 [(ngModel)]="field.value" 
-                (change)="_onChange()" 
+                [matTooltip]="field.tooltip"
+                (change)="_onChange($event)" 
                 [disabled]="!field.editable"
                 [required]="field.required"/>
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

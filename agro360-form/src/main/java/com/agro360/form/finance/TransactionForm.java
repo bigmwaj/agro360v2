@@ -37,16 +37,16 @@ import com.agro360.vd.finance.TransactionTypeEnumVd;
 public class TransactionForm {
 
 	@Autowired
-	TransactionOperation operation;	
+	private TransactionOperation operation;	
 	
 	@Autowired
-	PartnerOperation partnerOperation;
+	private PartnerOperation partnerOperation;
 	
 	@Autowired
-	RubriqueOperation rubriqueOperation;
+	private RubriqueOperation rubriqueOperation;
 	
 	@Autowired
-	CompteOperation compteOperation;
+	private CompteOperation compteOperation;
 	
 	@MetadataBeanName("finance/transaction")
 	public TransactionBean initCreateFormBean(ClientContext ctx, TransactionTypeEnumVd type, Optional<String> copyFrom) {
@@ -147,7 +147,7 @@ public class TransactionForm {
 	private void initRubriqueOption(ClientContext ctx, TransactionTypeEnumVd type, Consumer<Map<Object, String>> valueOptionsSetter) {
 		
 		Function<RubriqueBean, Object> codeFn = e -> e.getRubriqueCode().getValue();
-		Function<RubriqueBean, String> libelleFn = e -> e.getNom().getValue();
+		Function<RubriqueBean, String> libelleFn = e -> e.getLibelle().getValue();
 		var criteria = new RubriqueSearchBean();
 		criteria.getType().setValue(type);
 		
@@ -158,7 +158,7 @@ public class TransactionForm {
 	
 	private void initCompteOption(ClientContext ctx, Consumer<Map<Object, String>> valueOptionsSetter) {
 		Function<CompteBean, Object> codeFn = e -> e.getCompteCode().getValue();
-		Function<CompteBean, String> libelleFn = e -> e.getDescription().getValue();
+		Function<CompteBean, String> libelleFn = e -> e.getLibelle().getValue();
 		
 		var options = compteOperation.findComptesByCriteria(ctx, new CompteSearchBean())
 				.stream().collect(Collectors.toMap(codeFn, libelleFn));

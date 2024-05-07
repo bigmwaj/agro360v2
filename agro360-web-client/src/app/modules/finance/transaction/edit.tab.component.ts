@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { map } from 'rxjs';
 import { TransactionBean } from 'src/app/backed/bean.finance';
-import { Message } from 'src/app/backed/message';
-import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanEditTab } from '../../common/bean.edit.tab';
@@ -26,9 +22,9 @@ export class EditTabComponent extends BeanEditTab<TransactionBean> implements On
     partnerLabel: string = "Partenaire";
 
     constructor( 
-        private http: HttpClient,
+        public override http: HttpClient,
         public override ui: UIService) {             
-        super(ui);        
+        super(ui, http);        
     }
 
     private initModule(): void{
@@ -94,17 +90,8 @@ export class EditTabComponent extends BeanEditTab<TransactionBean> implements On
         this.initModule()
     }
     
-    saveAction() {
-        this.http.post(`finance/transaction`, BeanTools.reviewBeanAction(this.bean))   
-            .pipe(map((e: any) => <any>e))
-            .subscribe(data => {
-                this.ui.displayFlashMessage(<Array<Message>>data.messages);
-                this.afterSaveAction(data.record)
-            });
-    }
-
-    private isCreation(): boolean {
-        return ClientOperationEnumVd.CREATE == this.bean.action;
+    saveUrl():string {
+        return `finance/transaction`;
     }
 
 }

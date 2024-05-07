@@ -16,16 +16,16 @@ public interface IPartnerDao extends IDao<PartnerDto, String>{
 
 	@Query(
 		value = "   select dto from com.agro360.dto.core.PartnerDto dto"
-				+ " where (:code is null or dto.partnerCode like %:code%)"
+				+ " where (:status is null or dto.status = :status)"
 				+ " and (:type is null or dto.type = :type)"
-				+ " and (:status is null or dto.status in (:status))"
-				+ " and (:city is null or dto.city = :city)"
-				+ " and (:phone is null or dto.phone = :phone)"
-				+ " and (:email is null or dto.email = :email)"
-				+ " and (:name is null"
-				+ "		or (upper(dto.name) like %:name%)"
-				+ "		or (upper(dto.firstName) like %:name%)"
-				+ "		or (upper(dto.lastName) like %:name%)"
+				+ " and (:phone is null or dto.phone like :phone)"
+				+ " and (:email is null or dto.email like :email)"
+				+ " and (:city is null or dto.city like :city)"
+				+ " and (:code is null "
+				+ "     or upper(dto.partnerCode) like :code"
+				+ "		or upper(dto.name) like :code"
+				+ "		or upper(dto.firstName) like :code"
+				+ "		or upper(dto.lastName) like :code"
 				+ ")"
 				+ "order by dto.partnerCode asc "
 				+ "limit :limit offset :offset"
@@ -36,36 +36,33 @@ public interface IPartnerDao extends IDao<PartnerDto, String>{
 			@Param("limit") Short limit,
 			@Param("code") String code, 
 			@Param("type") PartnerTypeEnumVd type, 
-			@Param("city") String city, 
-			@Param("phone") String phone,
+			@Param("status") PartnerStatusEnumVd status,
+			@Param("phone") String phone, 
 			@Param("email") String email,
-			@Param("status") List<PartnerStatusEnumVd> status,
-			@Param("name")String name
+			@Param("city")  String city
 	);
-	
 
 	@Query(
 		value = "   select count(dto) from com.agro360.dto.core.PartnerDto dto"
-				+ " where (:code is null or upper(dto.partnerCode) like %:code%)"
+				+ " where (:status is null or dto.status = :status)"
 				+ " and (:type is null or dto.type = :type)"
-				+ " and (:status is null or dto.status in (:status))"
-				+ " and (:city is null or dto.city = :city)"
-				+ " and (:phone is null or dto.phone = :phone)"
-				+ " and (:email is null or dto.email = :email)"
-				+ " and (:name is null"
-				+ "		or (upper(dto.name) like %:name%)"
-				+ "		or (upper(dto.firstName) like %:name%)"
-				+ "		or (upper(dto.lastName) like %:name%)"
+				+ " and (:phone is null or dto.phone like :phone)"
+				+ " and (:email is null or dto.email like :email)"
+				+ " and (:city is null or dto.city like :city)"
+				+ " and (:code is null"
+				+ "     or upper(dto.partnerCode) like :code"
+				+ "		or upper(dto.name) like :code"
+				+ "		or upper(dto.firstName) like :code"
+				+ "		or upper(dto.lastName) like :code"
 				+ ")"
 			
 	)
 	Long countPartnersByCriteria(
 		@Param("code") String code, 
-		@Param("type") PartnerTypeEnumVd type, 
-		@Param("city") String city, 
-		@Param("phone") String phone,
+		@Param("type") PartnerTypeEnumVd type,
+		@Param("status") PartnerStatusEnumVd status,
+		@Param("phone") String phone, 
 		@Param("email") String email,
-		@Param("status") List<PartnerStatusEnumVd> status,
-		@Param("name")String name
+		@Param("city")  String city
 	);
 }

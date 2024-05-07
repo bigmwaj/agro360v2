@@ -21,36 +21,36 @@ public class InventaireDto extends AbstractDto {
 
 	@Id
 	@ManyToOne()
-	@JoinColumn(name = "MAGASIN_CODE", updatable = false, nullable = false)
+	@JoinColumn(name = "MAGASIN_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private MagasinDto magasin;
 	
 	@Id
 	@ManyToOne()
-	@JoinColumn(name = "ARTICLE_CODE", updatable = false, nullable = false)
+	@JoinColumn(name = "ARTICLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private ArticleDto article;	
 
 	@ManyToOne()
-	@JoinColumn(name = "UNITE_ACHAT_CODE", nullable = false)
+	@JoinColumn(name = "UNITE_ACHAT_CODE")
 	private UniteDto uniteAchat;
 
 	@ManyToOne()
-	@JoinColumn(name = "UNITE_VENTE_CODE", nullable = false)
+	@JoinColumn(name = "UNITE_VENTE_CODE")
 	private UniteDto uniteVente;
 	
 	@Id
-	@Column(name = "VARIANT_CODE", updatable = false, nullable = false)
+	@Column(name = "VARIANT_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String variantCode;
 
-	@Column(name = "QUANTITE", nullable = false)
+	@Column(name = "QUANTITE")
 	private Double quantite;
 	
 	@Column(name = "PRIX_UNITAIRE_ACHAT", precision = 16, scale = 4)
 	private BigDecimal prixUnitaireAchat;
 	
-	@Column(name = "PRIX_UNITAIRE_VENTE", nullable = false, precision = 16, scale = 4)
+	@Column(name = "PRIX_UNITAIRE_VENTE", precision = 16, scale = 4)
 	private BigDecimal prixUnitaireVente;
 
 }

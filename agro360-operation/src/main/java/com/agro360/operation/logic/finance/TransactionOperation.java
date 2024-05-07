@@ -63,9 +63,9 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		var rubrique = rubriqueDao.getReferenceById(rubriqueCode);
 		dto.setRubrique(rubrique);
 		
-		var PartnerCode = bean.getPartner().getPartnerCode().getValue();
-		var Partner = partnerDao.getReferenceById(PartnerCode);
-		dto.setPartner(Partner);
+		var partnerCode = bean.getPartner().getPartnerCode().getValue();
+		var partner = partnerDao.getReferenceById(partnerCode);
+		dto.setPartner(partner);
 		
 		setDtoValue(dto::setTransactionCode, bean.getTransactionCode());
 		setDtoValue(dto::setType, bean.getType());
@@ -73,7 +73,6 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		setDtoValue(dto::setNote, bean.getNote());
 		setDtoValue(dto::setDate, bean.getDate());
 		setDtoValue(dto::setMontant, bean.getMontant());
-		setDtoValue(dto::setAccompte, bean.getAccompte());
 		
 		super.save(dto);	
 		var msgTpl = "Transaction %s créée avec succès";
@@ -85,22 +84,10 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		var dto = dao.getReferenceById(bean.getTransactionCode().getValue());
 
 		setDtoChangedValue(dto::setNote, bean.getNote());
-		setDtoChangedValue(dto::setMontant, bean.getMontant());
-		setDtoChangedValue(dto::setDate, bean.getDate());
-		
-		dto.setNote(dto.getNote() + " Juste pour voir");
 		
 		super.save(dto);
 
 		var msgTpl = "Transaction %s modifiée avec succès";
-		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
-	}
-	
-	@RuleNamespace("finance/transaction/delete")
-	public void deleteTransaction(ClientContext ctx, TransactionBean bean) {
-		var dto = dao.getReferenceById(bean.getTransactionCode().getValue());
-		dao.delete(dto);
-		var msgTpl = "Transaction %s supprimée avec succès";
 		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
 	}
 	

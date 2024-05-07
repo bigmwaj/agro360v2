@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import com.agro360.bo.bean.common.AbstractStatusTrackingBean;
 import com.agro360.bo.bean.core.PartnerBean;
+import com.agro360.bo.bean.finance.CompteBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.av.FactureStatusEnumVd;
 import com.agro360.vd.av.FactureTypeEnumVd;
@@ -29,13 +30,29 @@ public class FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd>
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 
-	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
+	private FieldMetadata<BigDecimal> cumulPaiement = new FieldMetadata<>("Cumul Paiement");
+
+	private FieldMetadata<BigDecimal> prixTotalHT = new FieldMetadata<>("Prix Total(HT)");
+
+	private FieldMetadata<BigDecimal> remise = new FieldMetadata<>("Remise Totale");
+
+	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total + Taxe - Remise");
+
+	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
+
+	private FieldMetadata<String> reglerBtn = new FieldMetadata<>();
+	
+	@Setter
+	private PaiementBean paiement = new PaiementBean();
 
 	@Setter
 	private PartnerBean partner = new PartnerBean();
 
 	@Setter
 	private CommandeBean commande = new CommandeBean();
+
+	@Setter
+	private CompteBean compte = new CompteBean();
 
 
 }

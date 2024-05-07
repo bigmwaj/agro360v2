@@ -1,41 +1,46 @@
 
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { map } from 'rxjs';
 import { CompteBean, CompteSearchBean } from 'src/app/backed/bean.finance';
+import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/modules/common/bean.list';
 import { BeanTools } from 'src/app/modules/common/bean.tools';
-import { SharedModule } from 'src/app/modules/common/shared.module';
 import { UIService } from 'src/app/modules/common/service/ui.service';
-import { MatDialog } from '@angular/material/dialog';
-import { Message } from 'src/app/backed/message';
+import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanPagedList } from '../../common/bean.paged.list';
 
 @Component({
     standalone: true,
     imports: [
-        SharedModule
+        SharedModule,
+        MatTooltipModule,   
+        MatToolbarModule, 
     ],
     selector: 'finance-compte-index-modal',
     templateUrl: './index.modal.component.html'
 })
-export class IndexModalComponent extends BeanList<CompteBean> implements OnInit {
-
-    searchForm: CompteSearchBean;
+export class IndexModalComponent extends BeanPagedList<CompteBean, CompteSearchBean> implements OnInit {
 
     displayedColumns: string[] = [
         'select',
+        'type',
         'compteCode',
+        'partner',
+        'libelle',
         'description',
         'actions'
     ];
 
     constructor(
-        private http: HttpClient,
-        public dialog: MatDialog,
-        private ui: UIService) {
-        super()
+        private dialog: MatDialog,
+        public override http: HttpClient,       
+        public ui: UIService) {
+        super(http)
     }
     
     getKeyLabel(bean: CompteBean): string {
@@ -44,29 +49,6 @@ export class IndexModalComponent extends BeanList<CompteBean> implements OnInit 
 
     ngOnInit(): void {
         this.resetSearchFormAction()
-    }
-
-    resetSearchFormAction() {
-        this.http
-            .get("finance/compte/search-form")
-            .subscribe(data => {
-                this.searchForm = <CompteSearchBean>data;
-                this.searchAction();
-            });
-    }
-
-    searchAction() {
-        let objJsonStr = JSON.stringify(this.searchForm);
-        let objJsonB64 = btoa(objJsonStr);
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('q', objJsonB64);
-        this.http
-            .get("finance/compte", { params: queryParams })
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                this.setData(data.records);
-            });
     }
 
     __add(queryParams: HttpParams) {
@@ -110,5 +92,13 @@ export class IndexModalComponent extends BeanList<CompteBean> implements OnInit 
             this.dialog.closeAll();
             this.ui.displayFlashMessage(<Array<Message>>data.messages);
         })
+    }
+    
+    protected override getSearchFormUrl(): string {
+        return `finance/compte/search-form`;
+    }
+
+    protected override getSearchUrl(): string {
+        return `finance/compte`;
     }
 }

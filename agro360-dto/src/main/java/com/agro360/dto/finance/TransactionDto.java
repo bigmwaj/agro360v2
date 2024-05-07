@@ -48,16 +48,13 @@ public class TransactionDto extends AbstractStatusTrackingDto<TransactionStatusE
 	@JoinColumn(name = "RUBRIQUE_CODE", updatable = false, nullable = false)
 	private RubriqueDto rubrique;
 
-	@Column(name = "TRANSACTION_DATE",  nullable = false)
+	@Column(name = "TRANSACTION_DATE", updatable = false,  nullable = false)
 	@EqualsAndHashCode.Include()
 	private LocalDate date;
 
 	@Column(name = "NOTE", length = 128)
 	private String note;
 	
-	@Column(name = "MONTANT", nullable = false, precision = 16, scale = 4)
+	@Column(name = "MONTANT", updatable = false, nullable = false, precision = 16, scale = 4)
 	private BigDecimal montant;
-	
-	@Column(name = "ACCOMPTE", nullable = false, precision = 16, scale = 4)
-	private Boolean accompte;
 }

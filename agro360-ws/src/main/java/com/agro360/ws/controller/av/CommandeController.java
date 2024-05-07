@@ -1,9 +1,7 @@
 package com.agro360.ws.controller.av;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,19 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.CommandeSearchBean;
-import com.agro360.bo.bean.av.LigneBean;
-import com.agro360.bo.bean.av.LigneTaxeBean;
-import com.agro360.bo.bean.av.ReceptionLigneBean;
-import com.agro360.bo.bean.av.ReglementCommandeBean;
-import com.agro360.bo.bean.av.RetourLigneBean;
+import com.agro360.bo.bean.av.PaiementBean;
+import com.agro360.bo.bean.av.ReglementBean;
+import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.form.av.CommandeForm;
-import com.agro360.form.av.LigneForm;
-import com.agro360.form.av.ReceptionLigneForm;
-import com.agro360.form.av.RetourLigneForm;
+import com.agro360.operation.context.ClientContext;
 import com.agro360.service.av.CommandeService;
-import com.agro360.service.av.ReceptionLigneService;
-import com.agro360.service.av.RetourLigneService;
+import com.agro360.service.stock.ArticleService;
 import com.agro360.vd.av.CommandeTypeEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 import com.agro360.ws.controller.common.AbstractController;
 
 @RestController()
@@ -44,19 +38,7 @@ public class CommandeController extends AbstractController {
 	private CommandeForm form;
 	
 	@Autowired
-	private RetourLigneForm retourLigneForm;
-	
-	@Autowired
-	private RetourLigneService retourLigneService;
-	
-	@Autowired
-	private ReceptionLigneForm receptionLigneForm;
-	
-	@Autowired
-	private ReceptionLigneService receptionLigneService;
-	
-	@Autowired
-	private LigneForm ligneForm;
+	private ArticleService articleService;
 
 	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
@@ -80,7 +62,8 @@ public class CommandeController extends AbstractController {
 	}
 
 	@GetMapping(CREATE_FORM_RN)
-	public ResponseEntity<CommandeBean> getCreateFormAction(@RequestParam CommandeTypeEnumVd type, @RequestParam Optional<String> copyFrom) {
+	public ResponseEntity<CommandeBean> getCreateFormAction(@RequestParam CommandeTypeEnumVd type, 
+			@RequestParam Optional<String> copyFrom) {
 		return ResponseEntity.ok(form.initCreateFormBean(getClientContext(), type, copyFrom));
 	}
 
@@ -95,169 +78,82 @@ public class CommandeController extends AbstractController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CommandeBean bean) {
-		var action = bean.getAction();
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CommandeBean bean, @RequestParam Optional<Boolean> processPaiement) {
 		var ctx = getClientContext();
-		var model = new ModelMap();
 		
 		service.save(ctx, bean);
 		
-		switch (action) {
-		case CREATE:
-		case UPDATE:
+		var commandeCode = bean.getCommandeCode().getValue();
+		if( processPaiement.isPresent() && processPaiement.get() ) {
+			return initPaiementAction(ctx, commandeCode);
+		}
+		
+		var action = bean.getAction();
+		var model = new ModelMap();
+		if( !ClientOperationEnumVd.DELETE.equals(action)) {
 			bean = form.initEditFormBean(ctx, bean.getCommandeCode().getValue());	
 			model.addAttribute(RECORD_MODEL_KEY, bean);
-			break;
-			
-		case CHANGE_STATUS:
-			bean = service.findCommande(ctx, bean.getCommandeCode().getValue());
-			var beans = Collections.singletonList(bean);
-			beans = form.initSearchResultBeans(ctx, beans);
-			model.addAttribute(RECORD_MODEL_KEY, beans.get(0));
-			break;
-
-		default:
-			break;
 		}
+		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
+		return ResponseEntity.ok(model);
+	}
+	
+	@GetMapping("/init-paiement")
+	public ResponseEntity<ModelMap> initPaiementAction(
+			@RequestParam(required = true) String commandeCode) {
+		return initPaiementAction(getClientContext(), commandeCode);
+	}
+	
+	private ResponseEntity<ModelMap> initPaiementAction( ClientContext ctx, String commandeCode) {
+		var model = new ModelMap();
+		var paiements = form.initPaiementsFormBean(ctx, commandeCode);
+		var bean = form.initEditFormBean(ctx, commandeCode);	
+		model.addAttribute(RECORD_MODEL_KEY, bean);
+		model.addAttribute(RECORDS_MODEL_KEY, paiements);
+		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
+		return ResponseEntity.ok(model);
+	}
+	
+	@PostMapping("change-status")
+	public ResponseEntity<ModelMap> changeStatusAction(@RequestBody @Validated CommandeBean bean) {
+		var ctx = getClientContext();
+		var model = new ModelMap();
+		service.save(ctx, bean);
+		bean = service.findCommande(ctx, bean.getCommandeCode().getValue());
+		bean = form.initEditFormBean(ctx, bean.getCommandeCode().getValue());	
+		model.addAttribute(RECORD_MODEL_KEY, bean);
 		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
 		return ResponseEntity.ok(model);
 	}
 	
 	@PostMapping("/encaisser")
-	public ResponseEntity<ModelMap> encaisserAction(@RequestBody @Validated CommandeBean bean) {
-		var action = bean.getAction();
+	public ResponseEntity<ModelMap> encaisserAction(
+			@RequestParam(required = true) String commandeCode,
+			@RequestBody @Validated List<PaiementBean> paiements) {
 		var ctx = getClientContext();
 		var model = new ModelMap();
 		
-		service.encaisser(ctx, bean);
-		
-		switch (action) {
-		case CREATE:
-		case UPDATE:
-			bean = form.initEditFormBean(ctx, bean.getCommandeCode().getValue());	
-			model.addAttribute(RECORD_MODEL_KEY, bean);
-			break;
-			
-		default:
-			break;
-		}
+		service.reglerCommande(ctx, commandeCode, paiements);
+		var commande = form.initEditFormBean(ctx, commandeCode);	
+		model.addAttribute(RECORD_MODEL_KEY, commande);
 		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
 		return ResponseEntity.ok(model);
 	}
 	
 	@GetMapping("/reglement")
-	public ResponseEntity<List<ReglementCommandeBean>> getReglementsAction(
-			@RequestParam(required = false) String commandeCode) {		
+	public ResponseEntity<List<ReglementBean>> getReglementsAction(
+			@RequestParam(required = true) String commandeCode) {		
 		var ctx = getClientContext();
-		var reglements = service.findReglementsCommande(ctx, commandeCode);
+		var reglements = service.findReglements(ctx, commandeCode);
 		return ResponseEntity.ok(reglements);
 	}
 	
-	@GetMapping("/ligne/taxe")
-	public ResponseEntity<List<LigneTaxeBean>> getLigneTaxesAction(
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam() Optional<Long> ligneId,
-			@RequestParam() String articleCode) {		
+	@GetMapping("/variants")
+	public ResponseEntity<List<VariantBean>> getLigneVariantsAction(
+			@RequestParam(required = true) String query) {		
 		var ctx = getClientContext();
-		var taxes = service.findLigneTaxes(ctx, commandeCode, ligneId, articleCode);
-		return ResponseEntity.ok(taxes);
+		var options = articleService.getVariantsByQuery(ctx, query);
+		return ResponseEntity.ok(options);
 	}
 	
-	@PostMapping("/ligne/refresh-prix")
-	public ResponseEntity<LigneBean> refreshLignePrixAction(
-			@RequestBody(required = true) LigneBean ligne) {		
-		var ctx = getClientContext();
-		ligne = service.refreshLignePrix(ctx, ligne);
-		return ResponseEntity.ok(ligne);
-	}	
-	
-	@GetMapping("/ligne/" + CREATE_FORM_RN)
-	public ResponseEntity<ModelMap> getLigneCreateFormAction(
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam() Optional<String> magasinCode,
-			@RequestParam() Optional<String> alias) {		
-		var ctx = getClientContext();
-		var form = ligneForm.initCreateFormBean(ctx, commandeCode, magasinCode, alias);
-		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
-		model.addAttribute(RECORD_MODEL_KEY, form);
-		return ResponseEntity.ok(model);
-	}
-	
-	@GetMapping("/ligne/retour/" + CREATE_FORM_RN)
-	public ResponseEntity<ModelMap> getRetourLigneCreateFormAction(
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam(required = false) Long ligneId) {		
-		var ctx = getClientContext();
-		var form = retourLigneForm.initCreateFormBean(ctx, commandeCode, ligneId);
-
-		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
-		model.addAttribute(RECORD_MODEL_KEY, form);
-		return ResponseEntity.ok(model);
-	}
-	
-	@GetMapping("/ligne/retour")
-	public ResponseEntity<ModelMap> getRetourLignesAction(
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam(required = false) Long ligneId) {		
-		var ctx = getClientContext();
-		final Function<RetourLigneBean, RetourLigneBean> map = e -> retourLigneForm
-				.initUpdateFormBean(ctx, commandeCode, ligneId, e);
-		var records = retourLigneService.findCommandeLigneRetours(ctx, commandeCode, ligneId)
-				.stream()
-				.map(map);
-
-		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
-		model.addAttribute(RECORDS_MODEL_KEY, records);
-		return ResponseEntity.ok(model);
-	}
-
-	@PostMapping("/ligne/retour")
-	public ResponseEntity<ModelMap> saveRetoursLigneAction(
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam(required = false) Long ligneId,
-			@RequestBody @Validated List<RetourLigneBean> beans
-			) {
-		var ctx = getClientContext();
-		retourLigneService.save(ctx, commandeCode, ligneId, beans);
-		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
-	}
-	
-	@GetMapping("/ligne/reception/" + CREATE_FORM_RN)
-	public ResponseEntity<ModelMap> getReceptionLigneCreateFormAction(
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam(required = false) Long ligneId) {		
-		var ctx = getClientContext();
-		var form = receptionLigneForm.initCreateFormBean(ctx, commandeCode, ligneId);
-
-		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
-		model.addAttribute(RECORD_MODEL_KEY, form);
-		return ResponseEntity.ok(model);
-	}
-	
-	@GetMapping("/ligne/reception")
-	public ResponseEntity<ModelMap> getReceptionLignesAction(
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam(required = false) Long ligneId) {		
-		var ctx = getClientContext();
-		final Function<ReceptionLigneBean, ReceptionLigneBean> map = e -> receptionLigneForm
-				.initUpdateFormBean(ctx, commandeCode, ligneId, e);
-		var records = receptionLigneService.findCommandeLigneReceptions(ctx, commandeCode, ligneId)
-				.stream()
-				.map(map);
-
-		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
-		model.addAttribute(RECORDS_MODEL_KEY, records);
-		return ResponseEntity.ok(model);
-	}
-
-	@PostMapping("/ligne/reception")
-	public ResponseEntity<ModelMap> saveReceptionsLigneAction(
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam(required = false) Long ligneId,
-			@RequestBody @Validated List<ReceptionLigneBean> beans
-			) {
-		var ctx = getClientContext();
-		receptionLigneService.save(ctx, commandeCode, ligneId, beans);
-		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
-	}
 }

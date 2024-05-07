@@ -22,16 +22,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "AV_TBL_FACTURE")
 public class FactureDto extends AbstractStatusTrackingDto<FactureStatusEnumVd> {
+	
 	@Id
-	@Column(name = "FACTURE_CODE", updatable = false, length = 16)
+	@Column(name = "FACTURE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String factureCode;
 
-	@Column(name = "FACTURE_DATE", nullable = false)
+	@Column(name = "FACTURE_DATE")
 	private LocalDate date;
 
 	@ManyToOne()
-	@JoinColumn(name = "PARTNER_CODE", nullable = false, updatable = false)
+	@JoinColumn(name = "PARTNER_CODE", updatable = false)
 	private PartnerDto partner;
 	
 	@ManyToOne()
@@ -39,17 +40,29 @@ public class FactureDto extends AbstractStatusTrackingDto<FactureStatusEnumVd> {
 	private CommandeDto commande;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "FACTURE_TYPE", nullable = false, updatable = false, length = FactureTypeEnumVd.COLUMN_LENGTH)
+	@Column(name = "FACTURE_TYPE", updatable = false)
 	private FactureTypeEnumVd type;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = FactureStatusEnumVd.COLUMN_LENGTH)
+	@Column(name = "STATUS")
 	private FactureStatusEnumVd status;
 
-	@Column(name = "DESCRIPTION", length = 256)
+	@Column(name = "DESCRIPTION")
 	private String description;
+
+	@Column(name = "CUMUL_PAIEMENT", precision = 16, scale = 4)
+	private BigDecimal cumulPaiement;
 	
-	@Column(name = "MONTANT", nullable = false, precision = 16, scale = 4)
-	private BigDecimal montant;
+	@Column(name = "TAXE", precision = 16, scale = 4)
+	private BigDecimal taxe;
+	
+	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4)
+	private BigDecimal prixTotalHT;
+	
+	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4)
+	private BigDecimal prixTotal;
+	
+	@Column(name = "REMISE", precision = 16, scale = 4)
+	private BigDecimal remise;
 
 }

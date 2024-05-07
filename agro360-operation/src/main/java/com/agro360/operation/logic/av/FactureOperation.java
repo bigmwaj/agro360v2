@@ -1,6 +1,5 @@
 package com.agro360.operation.logic.av;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,13 +15,9 @@ import com.agro360.dao.common.IDao;
 import com.agro360.dao.core.ICodeGeneratorDao;
 import com.agro360.dao.core.IPartnerDao;
 import com.agro360.dto.av.FactureDto;
-import com.agro360.dto.core.PartnerDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.common.AbstractOperation;
 import com.agro360.operation.utils.RuleNamespace;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.Predicate;
 
 @Service("av/FactureService")
 public class FactureOperation extends AbstractOperation<FactureDto, String> {
@@ -37,9 +32,6 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 	private ICommandeDao commandeDao;
 	
 	@Autowired
-	private EntityManager entityManager;
-	
-	@Autowired
 	private ICodeGeneratorDao codeGeneratorDao;
 	
 	public String generateFactureCode() {
@@ -52,56 +44,23 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 	}
 
 	public List<FactureBean> findFacturesByCriteria(ClientContext ctx, FactureSearchBean searchBean) {
-		var criteriaBuilder = entityManager.getCriteriaBuilder();
-		
-		var rootQuery = criteriaBuilder.createQuery(FactureDto.class);
-		var from = rootQuery.from(FactureDto.class);
-		
-		List<Predicate> wherePredicates = new ArrayList<>();
-		
-		var code = searchBean.getFactureCode().getValue();
-		if( code != null && !code.isBlank() ) {
-			code = '%' + code.toUpperCase() + '%';
-			wherePredicates.add(criteriaBuilder.like(from.get("FactureCode"), code));	
-		}
-		var status = searchBean.getStatusIn().getValue();
-		if( status != null && !status.isEmpty() ) {
-			wherePredicates.add(from.get("status").in(status));
-		}
-
+		var code = getNullOrUpperCase(searchBean::getFactureCode);
+		var type = searchBean.getType().getValue();
 		var debut = searchBean.getDateDebut().getValue();
-		if( debut != null ) {
-			wherePredicates.add(criteriaBuilder.greaterThanOrEqualTo(from.get("date"), debut));	
-		}
-
 		var fin = searchBean.getDateFin().getValue();
-		if( fin != null ) {
-			wherePredicates.add(criteriaBuilder.lessThanOrEqualTo(from.get("date"), fin));	
-		}
-
-		var partner = searchBean.getPartner().getValue();
-		if( partner != null && !partner.isBlank() ) {			
-			partner = '%' + partner.toUpperCase() + '%';
-			
-			var subQuery = criteriaBuilder.createQuery(PartnerDto.class);
-			var subQueryFrom = subQuery.from(PartnerDto.class);
-			
-			
-			
-			subQuery.select(subQueryFrom)
-			  .distinct(true)
-			  .where(criteriaBuilder.like(subQueryFrom.get("name"), partner));
-			
-			//wherePredicates.add(criteriaBuilder.in(from.get("partner")).value(subQuery.));
-		}
+		var partner = getNullOrUpperCase(searchBean::getPartner);
 		
-		if( !wherePredicates.isEmpty() ) {
-			rootQuery.where(wherePredicates.toArray(new Predicate[0]));
+		var status = searchBean.getStatusIn().getValue();
+		if( status != null && status.isEmpty() ) {
+			status = null;
 		}
-		
-		var query = entityManager.createQuery(rootQuery);
-		System.out.println("FactureService.search() La requette est " + query);
-        return query.getResultList().stream().map(AchatVenteMapper::map).collect(Collectors.toList());
+				
+		var length = dao.countFacturesByCriteria(code, type, debut, fin, status, partner);
+        searchBean.setLength(length);
+        return dao.findFacturesByCriteria(searchBean.getOffset(), searchBean.getLimit(), 
+        		code, type, debut, fin, status, partner)
+        		.stream().map(AchatVenteMapper::map)
+        		.collect(Collectors.toList());
 		
 	}
 
@@ -124,7 +83,11 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setDate, bean.getDate());
 		setDtoValue(dto::setDescription, bean.getDescription());
-		setDtoValue(dto::setMontant, bean.getMontant());
+		setDtoValue(dto::setPrixTotal, bean.getPrixTotal());
+		setDtoValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
+		setDtoValue(dto::setTaxe, bean.getTaxe());
+		setDtoValue(dto::setCumulPaiement, bean.getCumulPaiement());
+		setDtoValue(dto::setRemise, bean.getRemise());
 		
 		super.save(dto);	
 	}
@@ -135,7 +98,11 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 		
 		setDtoChangedValue(dto::setDate, bean.getDate());
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
-		setDtoChangedValue(dto::setMontant, bean.getMontant());
+		setDtoChangedValue(dto::setPrixTotal, bean.getPrixTotal());
+		setDtoChangedValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
+		setDtoChangedValue(dto::setTaxe, bean.getTaxe());
+		setDtoChangedValue(dto::setCumulPaiement, bean.getCumulPaiement());
+		setDtoChangedValue(dto::setRemise, bean.getRemise());
 	}
 
 	@RuleNamespace("av/facture/delete")
@@ -179,6 +146,17 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 	@RuleNamespace("av/facture/approuver")
 	public void approuverFacture(ClientContext ctx, FactureBean bean) {
 		changeFactureStatus(ctx, bean);	
+	}
+	
+	@RuleNamespace("av/facture/solder")
+	public void solderFacture(ClientContext ctx, FactureBean bean) {
+		changeFactureStatus(ctx, bean);	
+	}
+
+	public List<FactureBean> findFacturesByCommandeCode(ClientContext ctx, String commandeCode) {
+		return dao.findAllByCommandeCommandeCode(commandeCode).stream()
+				.map(AchatVenteMapper::map)
+				.collect(Collectors.toList());
 	}
 
 }

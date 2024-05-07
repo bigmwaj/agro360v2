@@ -12,6 +12,13 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.main-content{
+    width: 1200px;
+    margin: auto;
+}
+
+
+
 table {
     width: 100%;
 }
@@ -164,3 +171,88 @@ table.cycle-metadatas td.mat-column-value .mat-mdc-form-field-infix  input{
 }
 
 .search-toolbar .mat-mdc-form-field-bottom-align{ display: none;}
+
+td .input-checkbox.input-field{
+    margin-bottom: 0 !important;
+}
+
+table.commande-ligne .mat-column-article,
+table.commande-ligne .mat-column-article .mat-mdc-form-field{
+    width: 120px;
+}
+
+table.commande-ligne .mat-column-variantCode,
+table.commande-ligne .mat-column-variantCode .mat-mdc-form-field{
+    width: 120px;
+}
+
+table.commande-ligne .mat-column-unite,
+table.commande-ligne .mat-column-unite .mat-mdc-form-field{
+    width: 120px;
+}
+
+table.commande-ligne .mat-column-quantite,
+table.commande-ligne .mat-column-quantite .mat-mdc-form-field{
+    width: 80px;
+}
+
+table.commande-ligne .mat-column-prixUnitaire,
+table.commande-ligne .mat-column-prixUnitaire .mat-mdc-form-field{
+    width: 120px;
+}
+
+table.commande-ligne .mat-column-prixTotal,
+table.commande-ligne .mat-column-prixTotal .mat-mdc-form-field{
+    width: 120px;
+}
+
+table.commande-ligne .mat-column-type,
+table.commande-ligne .mat-column-type .mat-mdc-form-field{
+    width: 120px;
+}
+
+table.commande-ligne .mat-column-remise,
+table.commande-ligne .mat-column-remise .mat-mdc-form-field{
+    width: 90px;
+}
+
+table.commande-ligne .mat-column-taxe,
+table.commande-ligne .mat-column-taxe .mat-mdc-form-field{
+    width: 90px;
+}
+
+table.post-commande .mat-column-status,
+table.post-commande .mat-column-status .mat-mdc-form-field{
+    width: 100px;
+}
+
+table.post-commande .mat-column-date,
+table.post-commande .mat-column-date .mat-mdc-form-field{
+    width: 150px;
+}
+
+table.post-commande .mat-column-quantite-commande,
+table.post-commande .mat-column-quantite-commande .mat-mdc-form-field,
+table.post-commande .mat-column-quantite,
+table.post-commande .mat-column-quantite .mat-mdc-form-field{
+    width: 70px;
+}
+
+table.post-commande .mat-column-prixUnitaire-commande,
+table.post-commande .mat-column-prixUnitaire-commande .mat-mdc-form-field,
+table.post-commande .mat-column-prixUnitaire,
+table.post-commande .mat-column-prixUnitaire .mat-mdc-form-field{
+    width: 70px;
+}
+
+table.post-commande .mat-column-unite-commande,
+table.post-commande .mat-column-unite-commande .mat-mdc-form-field,
+table.post-commande .mat-column-unite,
+table.post-commande .mat-column-unite .mat-mdc-form-field{
+    width: 100px;
+}
+
+table.post-commande .mat-column-raison,
+table.post-commande .mat-column-raison .mat-mdc-form-field{
+    width: 100px;
+}

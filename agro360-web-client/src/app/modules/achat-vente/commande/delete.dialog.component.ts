@@ -37,7 +37,7 @@ export class DeleteDialogComponent implements OnInit {
         this.http.post(`achat-vente/commande`, this.bean)
         .pipe(map((e: any) => <any>e))
         .subscribe(data => {
-            this.dialogRef.close(data.record);
+            this.dialogRef.close(true);
             this.ui.displayFlashMessage(<Array<Message>>data.messages);
         })
     }

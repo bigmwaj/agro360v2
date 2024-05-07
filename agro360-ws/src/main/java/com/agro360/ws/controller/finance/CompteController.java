@@ -55,8 +55,11 @@ public class CompteController extends AbstractController {
 	@GetMapping()
 	public ResponseEntity<ModelMap> searchAction(@RequestBody(required = false) @Validated Optional<CompteSearchBean> searchBean) {
 		var ctx = getClientContext();
-		var list = service.searchAction(ctx, searchBean);
-		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, form.initUpdateFormBean(ctx, list)));
+		var sb = searchBean.orElse(new CompteSearchBean());
+		var result = service.search(ctx, sb);
+		var model = new ModelMap(RECORDS_MODEL_KEY, form.initUpdateFormBean(ctx, result));
+		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
+		return ResponseEntity.ok(model);
 	}
 
 	@PostMapping

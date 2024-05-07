@@ -22,7 +22,6 @@ public interface ICommandeDao extends IDao<CommandeDto, String>{
 				+ " and (:dateDebut is null or dto.date >= :dateDebut) "
 				+ " and (:dateFin is null or dto.date <= :dateFin)"
 				+ " and (:status is null or dto.status in (:status))"
-				+ " and (:ville is null or upper(dto.partner.city) like %:ville%)"
 				+ " and (:partner is null"
 				+ "		or (dto.partner.partnerCode like %:partner%)"
 				+ "		or (upper(dto.partner.name) like %:partner%)"
@@ -41,33 +40,30 @@ public interface ICommandeDao extends IDao<CommandeDto, String>{
 		@Param("dateDebut") LocalDate dateDebut, 
 		@Param("dateFin") LocalDate dateFin,
 		@Param("status") List<CommandeStatusEnumVd> status,
-		@Param("partner")String partner, 
-		@Param("ville")String ville
+		@Param("partner")String partner
 	);
 	
 	@Query(
-			value = "   select count(dto) from com.agro360.dto.av.CommandeDto dto"
-					+ " where (:code is null or dto.commandeCode like %:code%)"
-					+ " and (:type is null or dto.type = :type)"
-					+ " and (:dateDebut is null or dto.date >= :dateDebut) "
-					+ " and (:dateFin is null or dto.date <= :dateFin)"
-					+ " and (:status is null or dto.status in (:status))"
-					+ " and (:ville is null or upper(dto.partner.city) like %:ville%)"
-					+ " and (:partner is null"
-					+ "		or (dto.partner.partnerCode like %:partner%)"
-					+ "		or (upper(dto.partner.name) like %:partner%)"
-					+ "		or (upper(dto.partner.firstName) like %:partner%)"
-					+ "		or (upper(dto.partner.lastName) like %:partner%)"
-					+ ")"
-				
-		)
-		Long countCommandesByCriteria(
-			@Param("code") String code, 
-			@Param("type") CommandeTypeEnumVd type, 
-			@Param("dateDebut") LocalDate dateDebut, 
-			@Param("dateFin") LocalDate dateFin,
-			@Param("status") List<CommandeStatusEnumVd> status,
-			@Param("partner")String partner, 
-			@Param("ville")String ville
-		);
+		value = "   select count(dto) from com.agro360.dto.av.CommandeDto dto"
+				+ " where (:code is null or dto.commandeCode like %:code%)"
+				+ " and (:type is null or dto.type = :type)"
+				+ " and (:dateDebut is null or dto.date >= :dateDebut) "
+				+ " and (:dateFin is null or dto.date <= :dateFin)"
+				+ " and (:status is null or dto.status in (:status))"
+				+ " and (:partner is null"
+				+ "		or (dto.partner.partnerCode like %:partner%)"
+				+ "		or (upper(dto.partner.name) like %:partner%)"
+				+ "		or (upper(dto.partner.firstName) like %:partner%)"
+				+ "		or (upper(dto.partner.lastName) like %:partner%)"
+				+ ")"
+			
+	)
+	Long countCommandesByCriteria(
+		@Param("code") String code, 
+		@Param("type") CommandeTypeEnumVd type, 
+		@Param("dateDebut") LocalDate dateDebut, 
+		@Param("dateFin") LocalDate dateFin,
+		@Param("status") List<CommandeStatusEnumVd> status,
+		@Param("partner")String partner
+	);
 }

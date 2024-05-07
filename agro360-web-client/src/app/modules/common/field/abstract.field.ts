@@ -20,6 +20,9 @@ export abstract class AbstractFieldComponent implements OnInit {
     label?: string;
 
     @Input()
+    inputCssClass?: string;
+
+    @Input()
     appearance: MatFormFieldAppearance = 'fill';
 
     @Input()
@@ -53,8 +56,8 @@ export abstract class AbstractFieldComponent implements OnInit {
         return this.getMessage(MessageTypeEnumVd.ERROR)
     }
 
-    _onChange(){
-        this.onChange.emit()
+    _onChange($event:any){
+        this.onChange.emit($event)
         this.field.valueChanged = true;
         if( this.owner && this.owner.action == ClientOperationEnumVd.SYNC){
             this.owner.action = ClientOperationEnumVd.UPDATE

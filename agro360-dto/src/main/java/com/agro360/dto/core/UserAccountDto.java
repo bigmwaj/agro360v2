@@ -15,19 +15,17 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "CORE_TBL_USER_ACCOUNT")
 public class UserAccountDto extends AbstractStatusTrackingDto<UserAccountStatusEnumVd> {
-	
-	public static final int PARTNER_CODE_LENGTH = 16;
 
 	@Id
-	@Column(name = "PARTNER_CODE", updatable = false, length = PARTNER_CODE_LENGTH)
+	@Column(name = "PARTNER_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String partnerCode;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = UserAccountStatusEnumVd.COLUMN_LENGTH)
+	@Column(name = "STATUS")
 	private UserAccountStatusEnumVd status;
 
-	@Column(name = "PASSWORD", length = 255)
+	@Column(name = "PASSWORD")
 	private String password;
 	
 }

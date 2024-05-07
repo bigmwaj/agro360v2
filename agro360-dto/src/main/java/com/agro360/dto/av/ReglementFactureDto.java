@@ -1,7 +1,5 @@
 package com.agro360.dto.av;
 
-import java.math.BigDecimal;
-
 import com.agro360.dto.common.AbstractDto;
 import com.agro360.dto.finance.TransactionDto;
 
@@ -22,18 +20,15 @@ public class ReglementFactureDto extends AbstractDto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "REG_ID", nullable = false, updatable = false)
+	@Column(name = "REG_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long reglementId;
 	
-	@Column(name = "FACTURE_CODE", nullable = false, updatable = false)
+	@Column(name = "FACTURE_CODE", updatable = false)
 	private String factureCode;
 	
 	@ManyToOne()
-	@JoinColumn(name = "TRANSACTION_CODE", nullable = false, updatable = false)
+	@JoinColumn(name = "TRANSACTION_CODE", updatable = false)
 	private TransactionDto transaction;
-
-	@Column(name = "MONTANT", nullable = false, precision = 16, scale = 4)
-	private BigDecimal montant;
 
 }

@@ -32,13 +32,14 @@ public class ReceptionLigneOperation extends AbstractOperation<ReceptionLigneDto
 	protected IDao<ReceptionLigneDto, Long> getDao() {
 		return dao;
 	}
-
-	public List<ReceptionLigneBean> findCommandeReceptionLignes(ClientContext ctx, String commandeCode, Long ligneId) {
-		return dao.findAllByCommandeCodeAndLigneLigneId(commandeCode, ligneId).stream()
-			.map(AchatVenteMapper::map).collect(Collectors.toList());
+	
+	public List<ReceptionLigneBean> findCommandeReceptions(ClientContext ctx, String commandeCode) {
+		return dao.findAllByCommandeCode(commandeCode).stream()
+				.map(AchatVenteMapper::map).collect(Collectors.toList());
 	}
 
-	public void createReceptionLigne(ClientContext ctx, String commandeCode, Long ligneId, ReceptionLigneBean bean) {
+	public void createReceptionLigne(ClientContext ctx, String commandeCode, ReceptionLigneBean bean) {
+		var ligneId = bean.getLigne().getLigneId().getValue();
 		var dto = new ReceptionLigneDto();
 		setDtoValue(dto::setDescription, bean.getDescription());
 		setDtoValue(dto::setQuantite, bean.getQuantite());
@@ -57,7 +58,8 @@ public class ReceptionLigneOperation extends AbstractOperation<ReceptionLigneDto
 		
 	}
 
-	public void updateReceptionLigne(ClientContext ctx, String commandeCode, Long ligneId, ReceptionLigneBean bean) {
+	public void updateReceptionLigne(ClientContext ctx, String commandeCode, ReceptionLigneBean bean) {
+		var ligneId = bean.getLigne().getLigneId().getValue();
 		var receptionId = bean.getReceptionId().getValue();
 		var dto = dao.findOndByCommandeCodeAndLigneLigneIdAndReceptionId(commandeCode, ligneId, receptionId).orElseThrow();
 		
@@ -72,7 +74,8 @@ public class ReceptionLigneOperation extends AbstractOperation<ReceptionLigneDto
 		super.save(dto);
 	}
 
-	public void deleteReceptionLigne(ClientContext ctx, String commandeCode, Long ligneId, ReceptionLigneBean bean) {
+	public void deleteReceptionLigne(ClientContext ctx, String commandeCode, ReceptionLigneBean bean) {
+		var ligneId = bean.getLigne().getLigneId().getValue();
 		var receptionId = bean.getReceptionId().getValue();
 		var dto = dao.findOndByCommandeCodeAndLigneLigneIdAndReceptionId(commandeCode, ligneId, receptionId).orElseThrow();
 		

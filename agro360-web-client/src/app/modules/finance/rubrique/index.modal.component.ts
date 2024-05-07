@@ -1,43 +1,46 @@
 
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTable } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { map } from 'rxjs';
 import { RubriqueBean, RubriqueSearchBean } from 'src/app/backed/bean.finance';
 import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
 import { BeanList } from 'src/app/modules/common/bean.list';
+import { BeanTools } from 'src/app/modules/common/bean.tools';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
+import { BeanPagedList } from '../../common/bean.paged.list';
 
 @Component({
     standalone: true,
     imports: [
-        SharedModule
+        SharedModule,
+        MatTooltipModule,   
+        MatToolbarModule, 
     ],
     selector: 'finance-rubrique-index-modal',
     templateUrl: './index.modal.component.html'
 })
-export class IndexModalComponent extends BeanList<RubriqueBean> implements OnInit {
-
-    searchForm: RubriqueSearchBean;
+export class IndexModalComponent extends BeanPagedList<RubriqueBean, RubriqueSearchBean> implements OnInit {
+  
 
     displayedColumns: string[] = [
         'select',
-        'rubriqueCode',
         'type',
-        'nom',
+        'rubriqueCode',
+        'libelle',
         'description',
         'actions'
     ];
 
     constructor(
-        private http: HttpClient,
-        public dialog: MatDialog,
-        private ui: UIService) {
-        super()
+        private dialog: MatDialog,
+        public override http: HttpClient,       
+        public ui: UIService) {
+        super(http)
     }
     
     getKeyLabel(bean: RubriqueBean): string {
@@ -46,29 +49,6 @@ export class IndexModalComponent extends BeanList<RubriqueBean> implements OnIni
 
     ngOnInit(): void {
         this.resetSearchFormAction()
-    }
-
-    resetSearchFormAction() {
-        this.http
-            .get("finance/rubrique/search-form")
-            .subscribe(data => {
-                this.searchForm = <RubriqueSearchBean>data;
-                this.searchAction();
-            });
-    }
-
-    searchAction() {
-        let objJsonStr = JSON.stringify(this.searchForm);
-        let objJsonB64 = btoa(objJsonStr);
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('q', objJsonB64);
-        this.http
-            .get("finance/rubrique", { params: queryParams })
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                this.setData(data.records);
-            });
     }
 
     __add(queryParams: HttpParams) {
@@ -112,5 +92,13 @@ export class IndexModalComponent extends BeanList<RubriqueBean> implements OnIni
             this.dialog.closeAll();
             this.ui.displayFlashMessage(<Array<Message>>data.messages);
         })
+    }
+
+    protected override getSearchFormUrl(): string {
+        return `finance/rubrique/search-form`;
+    }
+
+    protected override getSearchUrl(): string {
+        return `finance/rubrique`;
     }
 }

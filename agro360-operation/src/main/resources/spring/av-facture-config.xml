@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="facture.isModifiable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.facture.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>BRLN</value>
+							<value>REJT</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+	
+	<bean class="com.agro360.operation.rule.common.NotRule" name="facture.isChangeStatusAuth">
+		<constructor-arg>
+			<bean class="com.agro360.operation.rule.module.av.facture.IsStatusIn">
+				<constructor-arg>
+					<list>
+						<value>CLOT</value>
+						<value>ANNL</value>
+					</list>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="facture.isDeletable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.facture.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>BRLN</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.OrRule" name="facture.isCloturable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.common.AndRule">
+					<constructor-arg>
+						<list>
+							<bean class="com.agro360.operation.rule.module.av.facture.IsTypeEquals">
+								<constructor-arg value="VENTE"/>
+							</bean>
+							<bean class="com.agro360.operation.rule.module.av.facture.IsStatusIn">
+								<constructor-arg>
+									<list>
+										<value>APPR</value>
+									</list>
+								</constructor-arg>
+							</bean>
+						</list>
+					</constructor-arg>		
+				</bean>
+				<bean class="com.agro360.operation.rule.common.AndRule">
+					<constructor-arg>
+						<list>
+							<bean class="com.agro360.operation.rule.module.av.facture.IsTypeEquals">
+								<constructor-arg value="ACHAT"/>
+							</bean>
+							<bean class="com.agro360.operation.rule.module.av.facture.IsStatusIn">
+								<constructor-arg>
+									<list>
+										<value>APPR</value>
+									</list>
+								</constructor-arg>
+							</bean>
+						</list>
+					</constructor-arg>		
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+</beans>

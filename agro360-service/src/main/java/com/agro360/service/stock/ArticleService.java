@@ -1,6 +1,7 @@
 package com.agro360.service.stock;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,8 @@ import com.agro360.bo.bean.finance.TaxeBean;
 import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.ArticleSearchBean;
 import com.agro360.bo.bean.stock.ArticleTaxeBean;
+import com.agro360.bo.bean.stock.VariantBean;
+import com.agro360.bo.mapper.StockMapper;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.ArticleOperation;
@@ -181,6 +184,31 @@ public class ArticleService extends AbstractService {
 				break;
 			}
 		}
+	}
+
+	public Map<Object, String> searchAsOptions(ClientContext ctx, ArticleSearchBean searchBean) {
+		return operation.findArticlesByCriteria(ctx, searchBean)
+				.stream()
+				.map(StockMapper::asOption)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+	}
+
+	public Map<Object, String> getVariantArticleAsOption(ClientContext ctx, String articleCode) {
+		return variantOperation.findVariantsByArticleCode(ctx, articleCode)
+				.stream()
+				.map(StockMapper::asOption)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+	}
+
+	public Map<Object, String> getUniteArticleAsOption(ClientContext ctx, String articleCode) {
+		return operation.findUnitesArticleByCode(ctx, articleCode)
+				.stream()
+				.map(StockMapper::asOption)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+	}
+
+	public List<VariantBean> getVariantsByQuery(ClientContext ctx, String query) {
+		return variantOperation.findVariantsByQuery(ctx, query);
 	}
 	
 }

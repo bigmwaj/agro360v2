@@ -2,6 +2,7 @@ package com.agro360.bo.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import com.agro360.bo.bean.core.PartnerBean;
@@ -36,6 +37,9 @@ public class CoreMapper {
 		bean.getLastName().setValue(dto.getLastName());
 
 		bean.getStatus().setValue(dto.getStatus());
+		if( dto.getStatus() != null ) {
+			bean.getStatus().setValueI18n(dto.getStatus().getLibelle());
+		}
 
 		bean.getName().setValue(dto.getName());
 
@@ -50,6 +54,17 @@ public class CoreMapper {
 		}
 
 		return bean;
+	}
+
+	public static Map.Entry<Object, String> asOption(PartnerBean bean) {
+		var value = bean.getPartnerCode().getValue();
+		var label = bean.getPartnerName().getValue();
+		if( label == null ) {
+			label = value;
+		}
+		return Map.of(Object.class.cast(value), label)
+				.entrySet().stream()
+				.findFirst().get();
 	}
 
 	public static UserAccountBean map(UserAccountDto dto) {

@@ -3,7 +3,6 @@ package com.agro360.service.finance;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,8 @@ public class CompteService extends AbstractService {
 	@Autowired
 	CompteOperation service;
 	
-	public List<CompteBean> searchAction(ClientContext ctx, Optional<CompteSearchBean> searchBean) {
-		return service.findComptesByCriteria(ctx, searchBean.orElse(new CompteSearchBean()));
+	public List<CompteBean> search(ClientContext ctx, CompteSearchBean searchBean) {
+		return service.findComptesByCriteria(ctx, searchBean);
 	}
 
 	public void saveAction(ClientContext ctx, List<CompteBean> beans) {

@@ -6,11 +6,13 @@ import java.util.stream.Collectors;
 
 public enum CommandeStatusEnumVd {
 	BRLN("Brouillon"),
-	PAYT("Paiement En cours"),
-    ATAP("Att. Appro"),
+	RGLM("Règlement En cours"),
+    TERM("Terminée"),
+    ATAP("Att. Approbation"),
     APPR("Approuvée"),
+    AANN("Att. Annulation"),
     ANNL("Annulée"),
-    REJT("Rejetée"),
+    CLOT("Clôturée"),
     RECP("Recep. Partielle"),
     RECT("Recep. Totale");
 	
@@ -27,6 +29,6 @@ public enum CommandeStatusEnumVd {
 	}
 	
 	public static Map<Object, String> getAsMap() {
-		return Arrays.stream(values()).collect(Collectors.toMap(e->e.name(), e->e.libelle));
+		return Arrays.stream(values()).collect(Collectors.toMap(e -> e.name(), e -> e.libelle));
 	}
 }

@@ -11,7 +11,7 @@ import com.agro360.dto.av.ReceptionLigneDto;
 @Repository
 public interface IReceptionLigneDao extends IDao<ReceptionLigneDto, Long>{
 	
-	List<ReceptionLigneDto> findAllByCommandeCodeAndLigneLigneId(String commandeCode, Long ligneId);
+	List<ReceptionLigneDto> findAllByCommandeCode(String commandeCode);
 
 	Optional<ReceptionLigneDto> findOndByCommandeCodeAndLigneLigneIdAndReceptionId(String commandeCode, Long ligneId, Long receptionId);
 

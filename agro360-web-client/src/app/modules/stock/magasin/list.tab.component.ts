@@ -42,35 +42,13 @@ export class ListTabComponent extends BeanPagedListTab<MagasinBean, MagasinSearc
         return b1 == b2 || b1.magasinCode.value == b2.magasinCode.value;
     }
 
-    ngOnInit(): void {
-        this.resetSearchFormAction();
+    override ngOnInit(): void {
+        super.ngOnInit();
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Liste des magasins');
     }
 
-    addAction(bean?: MagasinBean) { 
-        let queryParams = new HttpParams();
-        if( bean ){
-            queryParams = queryParams.append("copyFrom", bean.magasinCode.value);       
-        }
-        this.http.get(`stock/magasin/create-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<MagasinBean>data));
-    }
-
-    editAction(bean: MagasinBean) {
-        if( this.isAlreadLoaded(bean) ){
-            this.displayTab(bean);
-            return;
-        }
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append("magasinCode", bean.magasinCode.value);
-
-        this.http.get(`stock/magasin/edit-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<MagasinBean>data));
-    }
-
     deleteAction(bean: MagasinBean) {
-        // Open Dialog
+        throw Error('Not implemented!');
     }
 
     uniteAction() {
@@ -84,4 +62,27 @@ export class ListTabComponent extends BeanPagedListTab<MagasinBean, MagasinSearc
     protected override getSearchUrl(): string {
         return `stock/magasin`;
     }
+
+    protected override getEditFormUrl(): string {
+        return `stock/magasin/edit-form`;
+    }
+
+    protected override getCreateFormUrl(): string {
+        return `stock/magasin/create-form`;
+    }
+
+    protected override getEditQueryParam(bean: MagasinBean): HttpParams {
+        let queryParams = new HttpParams();
+        return queryParams.append("magasinCode", bean.magasinCode.value);
+    }
+    
+    protected override getCreateQueryParam(option?: any): HttpParams {
+        let queryParams = new HttpParams();
+        if( option?.bean) {
+            queryParams = queryParams.append("copyFrom", option?.bean.magasinCode.value);    
+        }
+
+        return queryParams;
+    }
+
 }

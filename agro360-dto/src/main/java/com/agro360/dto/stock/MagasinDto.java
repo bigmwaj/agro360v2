@@ -14,11 +14,11 @@ import lombok.EqualsAndHashCode;
 public class MagasinDto extends AbstractDto {
 
 	@Id
-	@Column(name = "MAGASIN_CODE", updatable = false, length = 16)
+	@Column(name = "MAGASIN_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String magasinCode;
 
-	@Column(name = "DESCRIPTION", length = 64)
+	@Column(name = "DESCRIPTION")
 	private String description;
 
 }

@@ -53,10 +53,6 @@ public class TransactionService extends AbstractService {
 				break;
 			}
 			break;
-
-		case DELETE:
-			operation.deleteTransaction(ctx, bean);
-			break;
 			
 		default:
 			

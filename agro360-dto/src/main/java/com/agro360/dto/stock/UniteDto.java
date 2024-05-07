@@ -14,11 +14,11 @@ import lombok.EqualsAndHashCode;
 public class UniteDto extends AbstractDto {
 
 	@Id
-	@Column(name = "UNITE_CODE", updatable = false, length = 16)
+	@Column(name = "UNITE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String uniteCode;
 
-	@Column(name = "DESCRIPTION", length = 64)
+	@Column(name = "DESCRIPTION")
 	private String description;
 
 }

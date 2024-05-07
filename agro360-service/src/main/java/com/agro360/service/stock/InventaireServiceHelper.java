@@ -39,7 +39,7 @@ public class InventaireServiceHelper {
 		var articleCode = bean.getArticle().getArticleCode().getValue();
 		var variantCode = bean.getVariantCode().getValue();
 
-		createOperation(ctx, magasinCode, articleCode, variantCode, bean.getQuantiteAjust().getValue(), OperationTypeEnumVd.ADJT);
+		createOperation(ctx, magasinCode, articleCode, variantCode, bean.getQuantite().getValue(), OperationTypeEnumVd.ADJT);
 		
 	}
 	

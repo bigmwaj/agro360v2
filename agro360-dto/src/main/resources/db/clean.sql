@@ -1,0 +1,9 @@
+drop table `av_tbl_retour`;
+drop table `av_tbl_reception`;
+drop table `av_tbl_ligne_taxe`;
+drop table `av_tbl_reg_cmd`;
+drop table `av_tbl_reg_fact`;
+drop table `av_tbl_facture`;
+drop table `av_tbl_ligne`;
+drop table `av_tbl_commande`;
+drop table `fin_tbl_transaction`;

@@ -83,4 +83,9 @@ public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
 		Supplier<RuntimeException> exSplr= () -> new RuntimeException(String.format(msgFormat, alias));
 		return dao.findOneByAliasIgnoreCase(alias).map(StockMapper::map).orElseThrow(exSplr);
 	}
+	
+	public List<VariantBean> findVariantsByQuery(ClientContext ctx, String query) {
+		query = getNullOrUpperCase(query, "%");
+		return dao.findByQuery(query).stream().map(StockMapper::map).collect(Collectors.toList());
+	}
 }

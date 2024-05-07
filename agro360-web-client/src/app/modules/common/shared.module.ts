@@ -20,6 +20,7 @@ import { InputTextFieldComponent } from './field/input.text';
 import { InputTextareaFieldComponent } from './field/input.textarea';
 import { SelectMultipleFieldComponent } from './field/select.multiple';
 import { SelectOneFieldComponent } from './field/select.one';
+import { AutocompleteFieldComponent } from './field/autocomplete';
 
 @NgModule({
     imports: [ 
@@ -34,6 +35,7 @@ import { SelectOneFieldComponent } from './field/select.one';
         InputTextFieldComponent,
         SelectMultipleFieldComponent,
         SelectOneFieldComponent,
+        AutocompleteFieldComponent,
         MatSnackBarModule,        
         CommonModule,    
         MatDialogModule,
@@ -55,6 +57,7 @@ import { SelectOneFieldComponent } from './field/select.one';
         InputTelFieldComponent,
         InputTextareaFieldComponent,
         InputTextFieldComponent,
+        AutocompleteFieldComponent,
         SelectMultipleFieldComponent,
         SelectOneFieldComponent, 
         MatButtonModule, 
@@ -65,7 +68,8 @@ import { SelectOneFieldComponent } from './field/select.one';
         MatTableModule,              
         MatSidenavModule,
         MatPaginatorModule,
-        MatMenuModule
+        MatMenuModule,
+        
         
     ],
     providers:[

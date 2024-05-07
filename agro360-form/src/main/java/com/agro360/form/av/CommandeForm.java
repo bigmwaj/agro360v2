@@ -1,6 +1,5 @@
 package com.agro360.form.av;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -16,9 +15,9 @@ import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.CommandeSearchBean;
+import com.agro360.bo.bean.av.PaiementBean;
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerSearchBean;
-import com.agro360.bo.bean.finance.CompteBean;
 import com.agro360.bo.bean.finance.CompteSearchBean;
 import com.agro360.bo.bean.stock.MagasinBean;
 import com.agro360.bo.bean.stock.MagasinSearchBean;
@@ -57,17 +56,11 @@ public class CommandeForm extends AbstractForm{
 	public CommandeBean initCreateFormBean(ClientContext ctx, CommandeTypeEnumVd type, Optional<String> copyFrom) {
 		var bean = copyFrom.map(e -> operation.findCommandeByCode(ctx, e))
 				.orElse(new CommandeBean());
-		getLogger().debug("On copy à partir de {}", copyFrom);
 		bean.setAction(ClientOperationEnumVd.CREATE);
 		bean.getCommandeCode().setValue(operation.generateCommandeCode());
 		bean.getStatus().setValue(CommandeStatusEnumVd.BRLN);
 		bean.getType().setValue(type);
-		bean.getPrixTotal().setValue(BigDecimal.ZERO);
-		bean.getCumulPaiement().setValue(BigDecimal.ZERO);
 		bean.getDate().setValue(LocalDate.now());
-		bean.getRemise().setValue(BigDecimal.ZERO);
-		bean.getTaxe().setValue(BigDecimal.ZERO);
-		bean.getPaiementComptant().setValue(BigDecimal.ZERO);
 		
 		var lignes = copyFrom.map(e -> ligneOperation.findLignesCommande(ctx, e))
 				.orElse(Collections.emptyList());
@@ -77,7 +70,6 @@ public class CommandeForm extends AbstractForm{
 			bean.getLignes().add(ligne);
 		}
 		initPartnerOption(ctx, bean.getPartner().getPartnerCode()::setValueOptions);
-		initCompteOption(ctx, bean.getCompte().getCompteCode()::setValueOptions);
 		initMagasinOption(ctx, bean.getMagasin().getMagasinCode()::setValueOptions);
 		
 		return bean;
@@ -102,7 +94,6 @@ public class CommandeForm extends AbstractForm{
 		}
 
 		initPartnerOption(ctx, bean.getPartner().getPartnerCode()::setValueOptions);
-		initCompteOption(ctx, bean.getCompte().getCompteCode()::setValueOptions);
 		initMagasinOption(ctx, bean.getMagasin().getMagasinCode()::setValueOptions);
 
 		return bean;
@@ -122,6 +113,13 @@ public class CommandeForm extends AbstractForm{
 		bean.getStatusDate().setValue(LocalDateTime.now());
 		return bean;
 	}
+	
+	@MetadataBeanName("av/commande-init-paiement")
+	public List<PaiementBean> initPaiementsFormBean(ClientContext ctx, String commandeCode) {
+		return compteOperation.findComptesByCriteria(ctx, new CompteSearchBean())
+			.stream().map(PaiementBean::new)
+			.collect(Collectors.toList());
+	}
 
 	@MetadataBeanName("av/commande-search")
 	public CommandeSearchBean initSearchFormBean(ClientContext ctx) {
@@ -132,16 +130,6 @@ public class CommandeForm extends AbstractForm{
 	@MetadataBeanName("av/commande-search-result")
 	public List<CommandeBean> initSearchResultBeans(ClientContext ctx, List<CommandeBean> beans) {
 		return beans;
-	}
-
-	private void initCompteOption(ClientContext ctx, Consumer<Map<Object, String>> valueOptionsSetter) {
-		Function<CompteBean, Object> codeFn = e -> e.getCompteCode().getValue();
-		Function<CompteBean, String> libelleFn = e -> e.getDescription().getValue();
-		
-		var options = compteOperation.findComptesByCriteria(ctx, new CompteSearchBean())
-				.stream().collect(Collectors.toMap(codeFn, libelleFn));
-
-		valueOptionsSetter.accept(options);
 	}
 	
 	private void initMagasinOption(ClientContext ctx, Consumer<Map<Object, String>> valueOptionsSetter) {

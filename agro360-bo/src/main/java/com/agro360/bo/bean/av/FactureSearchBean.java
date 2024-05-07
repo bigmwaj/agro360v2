@@ -29,6 +29,6 @@ public class FactureSearchBean extends AbstractSearchBean{
 
 	private FieldMetadata<LocalDate> dateFin = new FieldMetadata<>("Date(fin)");
 	
-	private FieldMetadata<String> createFactureBtn = new FieldMetadata<>();
+	private FieldMetadata<String> ville = new FieldMetadata<>("Ville");
 
 }

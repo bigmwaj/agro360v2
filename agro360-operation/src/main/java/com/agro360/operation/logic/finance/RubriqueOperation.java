@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.finance.RubriqueBean;
@@ -33,7 +32,7 @@ public class RubriqueOperation extends AbstractOperation<RubriqueDto, String> {
 		var dto = new RubriqueDto();
 		
 		setDtoValue(dto::setRubriqueCode, bean.getRubriqueCode());
-		setDtoValue(dto::setNom, bean.getNom());
+		setDtoValue(dto::setLibelle, bean.getLibelle());
 		setDtoValue(dto::setType, bean.getType());
 		setDtoValue(dto::setDescription, bean.getDescription());
 		
@@ -45,7 +44,7 @@ public class RubriqueOperation extends AbstractOperation<RubriqueDto, String> {
 		var dto = dao.getReferenceById(bean.getRubriqueCode().getValue());
 		
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
-		setDtoChangedValue(dto::setNom, bean.getNom());
+		setDtoChangedValue(dto::setLibelle, bean.getLibelle());
 		
 		dto = super.save(dto);	
 	}
@@ -62,13 +61,18 @@ public class RubriqueOperation extends AbstractOperation<RubriqueDto, String> {
 	}
 	
 	public List<RubriqueBean> findRubriquesByCriteria(ClientContext ctx, RubriqueSearchBean searchBean) {
-		var example = Example.of(new RubriqueDto());
-		if( searchBean.getRubriqueCode().getValue() != null ) {
-			example.getProbe().setRubriqueCode(searchBean.getRubriqueCode().getValue());
-		}
-		if( searchBean.getType().getValue() != null ) {
-			example.getProbe().setType(searchBean.getType().getValue());
-		}
-		return dao.findAll(example).stream().map(FinanceMapper::map).collect(Collectors.toList());
+			var rubrique = searchBean.getRubrique().getValue();
+			if( rubrique != null ) {
+				rubrique = rubrique.toUpperCase();
+			}
+			
+			var type = searchBean.getType().getValue();
+			
+			var length = dao.countRubriquesByCriteria(rubrique, type);
+	        searchBean.setLength(length);
+	        return dao.findRubriquesByCriteria(searchBean.getOffset(), searchBean.getLimit(), 
+	        		rubrique, type)
+	        		.stream().map(FinanceMapper::map)
+	        		.collect(Collectors.toList());
 	}
 }

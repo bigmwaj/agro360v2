@@ -1,5 +1,5 @@
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,9 +14,9 @@ import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
 import { IndexModalComponent } from '../unite/index.modal.component';
-import { AjustPrixDialogComponent } from './ajust.prix.dialog.component';
-import { AjustQteDialogComponent } from './ajust.qte.dialog.component';
+import { EditDialogComponent } from './edit.dialog.component';
 import { CreateDialogComponent } from './create.dialog.component';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 
 @Component({
     standalone: true,
@@ -57,8 +57,8 @@ export class ListTabComponent extends BeanPagedListTab<InventaireBean, Inventair
         return bean.article.articleCode.value;
     }
 
-    ngOnInit(): void {
-        this.resetSearchFormAction();
+    override ngOnInit(): void {
+        super.ngOnInit();
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Listes des inventaires');
     }
     
@@ -70,42 +70,57 @@ export class ListTabComponent extends BeanPagedListTab<InventaireBean, Inventair
         );
     }
     
-    ajusterQuantiteStockAction(bean: InventaireBean) {
-        this.dialog.open(AjustQteDialogComponent, { data: bean });
+    private ajusterAction(bean: InventaireBean, operation: ClientOperationEnumVd) {
+        const dialogRef = this.dialog.open(EditDialogComponent, { data: {bean:bean, operation:operation} });
+        dialogRef.afterClosed().subscribe(result => {
+            if( result ){
+                this.replaceItemWith(bean, result);
+            }
+        });  
+    }
+    
+    ajusterQuantiteAction(bean: InventaireBean) {
+        this.ajusterAction(bean, ClientOperationEnumVd.ACT01);
+    }
+    
+    ajusterPrixVenteAction(bean: InventaireBean) {
+        this.ajusterAction(bean, ClientOperationEnumVd.ACT02);
+    }
+
+    ajusterUniteVenteAction(bean: InventaireBean) {
+        this.ajusterAction(bean, ClientOperationEnumVd.ACT03);
+    }
+
+    ajusterUniteAchatAction(bean: InventaireBean) {
+        this.ajusterAction(bean, ClientOperationEnumVd.ACT04);
+    }
+
+    private ajusterInline(bean: InventaireBean) {
+        this.http.post(`stock/inventaire/ajuster`, bean)   
+            .pipe(map((e: any) => <any>e))
+            .subscribe(data => {
+                this.ui.displayFlashMessage(<Array<Message>>data.messages);
+                this.replaceItemWith(bean, data.record);
+            });
     }
 
     ajusterQuantiteStockInlineAction(bean: InventaireBean) {
-        console.log(bean)
-        this.http.post(`stock/inventaire/ajuster-quantite`, bean)   
-            .pipe(map((e: any) => <any>e))
-            .subscribe(data => {
-                this.ui.displayFlashMessage(<Array<Message>>data.messages);
-                bean.quantiteAjust.editable = false;
-                bean.quantite.value = data.record.quantite.value;
-                bean.quantiteAjust.value = 0;
-            });
-    }
-
-    definirPrixVenteAction(bean: InventaireBean) {
-        this.dialog.open(AjustPrixDialogComponent, { data: bean });
+        bean.action = ClientOperationEnumVd.ACT01;
+        bean.quantite.value = bean.quantiteAjust.value;
+        this.ajusterInline(bean)
     }
     
     definirPrixVenteInlineAction(bean: InventaireBean) {
-        this.http.post(`stock/inventaire/ajuster-prix`, bean)   
-            .pipe(map((e: any) => <any>e))
-            .subscribe(data => {
-                this.ui.displayFlashMessage(<Array<Message>>data.messages);
-                bean.prixUnitaireVenteAjust.editable = false;
-                bean.prixUnitaireVente.value = data.record.prixUnitaireVente.value;
-                bean.prixUnitaireVenteAjust.value = 0;
-            });
+        bean.action = ClientOperationEnumVd.ACT02;
+        bean.prixUnitaireVente.value = bean.prixUnitaireVenteAjust.value
+        this.ajusterInline(bean)
     }
 
     uniteAction() {
         this.dialog.open(IndexModalComponent);
     }
 
-    addAction() {        
+    override addAction(option?:any) {        
         this.dialog.open(CreateDialogComponent);
     }
 
@@ -119,5 +134,21 @@ export class ListTabComponent extends BeanPagedListTab<InventaireBean, Inventair
 
     protected override getSearchUrl(): string {
         return `stock/inventaire`;
+    }
+
+    protected override getEditFormUrl(): string {
+        return `stock/inventaire/edit-form`;
+    }
+
+    protected override getCreateFormUrl(): string {
+        return `stock/inventaire/create-form`;
+    }
+
+    protected override getEditQueryParam(bean: InventaireBean): HttpParams {
+        throw Error('Not implemented!');
+    }
+    
+    protected override getCreateQueryParam(bean: InventaireBean): HttpParams {
+        throw Error('Not implemented!');
     }
 }

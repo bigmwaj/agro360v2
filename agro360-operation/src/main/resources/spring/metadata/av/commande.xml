@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
+<beans xmlns="http://www.springframework.org/schema/beans" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -8,8 +8,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/commandeCode">
 		<property name="editable">
 			<list>
-				<ref bean="IsBeanCreateOrUpdateOperation" />
-				<ref bean="IsCommandeEditableStatus" />
+				<ref bean="IsFalse" />
 			</list>
 		</property>
 		<property name="required">
@@ -17,17 +16,17 @@
 				<ref bean="IsTrue" />
 			</list>
 		</property>
-		<property name="maxLength">
+	</bean>
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/type">
+		<property name="editable">
 			<list>
-				<bean class="com.agro360.operation.metadata.ConstraintConfig">
-					<property name="actions">
-						<list>
-							<bean class="com.agro360.operation.action.common.SetValueAction">
-								<constructor-arg value="16" />
-							</bean>
-						</list>
-					</property>
-				</bean>
+				<ref bean="IsFalse" />
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
 			</list>
 		</property>
 	</bean>
@@ -36,7 +35,7 @@
 		<property name="editable">
 			<list>
 				<ref bean="IsBeanCreateOrUpdateOperation" />
-				<ref bean="IsCommandeEditableStatus" />
+				<ref bean="commande.isModifiable" />
 			</list>
 		</property>
 		<property name="required">
@@ -91,19 +90,12 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/description">
 		<property name="editable">
 			<list>
-				<ref bean="IsBeanCreateOrUpdateOperation" />
-				<ref bean="IsCommandeEditableStatus" />
+				<ref bean="commande.isModifiable" />
 			</list>
 		</property>
 		<property name="maxLength">
 			<list>
 				<bean class="com.agro360.operation.metadata.ConstraintConfig">
-					<property name="rules">
-						<list>
-							<ref bean="IsBeanCreateOrUpdateOperation" />
-							<ref bean="IsCommandeEditableStatus" />
-						</list>
-					</property>
 					<property name="actions">
 						<list>
 							<bean class="com.agro360.operation.action.common.SetValueAction">
@@ -112,52 +104,6 @@
 						</list>
 					</property>
 				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean  class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/paiementComptant">
-		<property name="editable">
-			<list>
-				<ref bean="IsPaiementCommandeAllowed" />
-			</list>
-		</property>
-		<property name="min">
-			<list>
-				<bean class="com.agro360.operation.metadata.ConstraintConfig">
-					<property name="actions">
-						<list>
-							<bean class="com.agro360.operation.action.common.SetValueAction">
-								<constructor-arg value="0" />
-							</bean>
-						</list>
-					</property>
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/saveBtn">
-		<property name="visible">
-			<list>
-				<ref bean="IsBeanCreateOrUpdateOperation" />
-				<ref bean="IsCommandeEditableStatus" />
-			</list>
-		</property>
-	</bean>
-
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/createLigneBtn">
-		<property name="visible">
-			<list>
-				<ref bean="IsPaiementCommandeAllowed" />
-			</list>
-		</property>
-	</bean>
-
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/encaissementBtn">
-		<property name="visible">
-			<list>
-				<ref bean="IsPaiementCommandeAllowed" />
 			</list>
 		</property>
 	</bean>
@@ -198,37 +144,19 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/compte.compteCode">
-		<property name="editable">
-			<list>				
-				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
-					<constructor-arg ref="IsPaiementCommandeAllowed"/>
-				</bean>
-			</list>
-		</property>
-		<property name="required">
-			<list>
-				<ref bean="IsTrue" />
-			</list>
-		</property>
-	</bean>
-
-	<bean name="av/commande"  class="com.agro360.operation.metadata.BeanMetadataConfig">
+	<bean name="av/commande" class="com.agro360.operation.metadata.BeanMetadataConfig" parent="av/commande-search-result">
 		<property name="editable">
 			<list>
 			</list>
 		</property>
 		<property name="fields">
-			<map>
+			<map merge="true">
 				<entry key="commandeCode" value-ref="commande/commandeCode" />
+				<entry key="type" value-ref="commande/type" />
 				<entry key="date" value-ref="commande/date" />
 				<entry key="status" value-ref="commande/status" />
 				<entry key="statusDate" value-ref="commande/statusDate" />
 				<entry key="description" value-ref="commande/description" />
-				<entry key="paiementComptant" value-ref="commande/paiementComptant" />
-				<entry key="createLigneBtn" value-ref="commande/createLigneBtn" />
-				<entry key="encaissementBtn" value-ref="commande/encaissementBtn" />
-				<entry key="saveBtn" value-ref="commande/saveBtn" />
 			</map>
 		</property>
 		<property name="beans">
@@ -247,15 +175,6 @@
 						<property name="fields">
 							<map>
 								<entry key="magasinCode" value-ref="commande/magasin.magasinCode" />
-							</map>
-						</property>
-					</bean>
-				</entry>
-				<entry key="compte">
-					<bean class="com.agro360.operation.metadata.BeanMetadataConfig">
-						<property name="fields">
-							<map>
-								<entry key="compteCode" value-ref="commande/compte.compteCode" />
 							</map>
 						</property>
 					</bean>

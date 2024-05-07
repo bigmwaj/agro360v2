@@ -36,7 +36,9 @@
                         <div class="me-2">                            
                             <input-date-field [field]="searchForm.dateFin"></input-date-field>
                         </div>
-
+                        <div class="me-2"> 
+                            <input-text-field [field]="searchForm.partner" [label]="partnerLabel"></input-text-field>
+                        </div>
                         <button mat-icon-button color="primary" class="me-2" (click)="searchAction()">
                             <mat-icon>search</mat-icon>
                         </button>
@@ -73,11 +75,15 @@
 
                     <ng-container matColumnDef="status">
                         <th mat-header-cell *matHeaderCellDef>Status</th>
-                        <td mat-cell *matCellDef="let element">{{element.status.value}}</td>
+                        <td mat-cell *matCellDef="let element">
+                            <span class="d-inline-block text-truncate" style="max-width: 80px;" [title]="element.status.valueI18n">
+                                {{element.status.valueI18n}}
+                            </span>
+                        </td>
                     </ng-container>
 
                     <ng-container matColumnDef="cumulPaiement">
-                        <th mat-header-cell *matHeaderCellDef>Cumul Paiement</th>
+                        <th mat-header-cell *matHeaderCellDef>Paiement</th>
                         <td mat-cell *matCellDef="let element">{{element.cumulPaiement.value}}</td>
                     </ng-container>
 
@@ -88,17 +94,14 @@
 
                     <ng-container matColumnDef="type">
                         <th mat-header-cell *matHeaderCellDef>Type</th>
-                        <td mat-cell *matCellDef="let element">{{element.type.value}}</td>
-                    </ng-container>
-
-                    <ng-container matColumnDef="magasin">
-                        <th mat-header-cell *matHeaderCellDef>Magasin</th>
-                        <td mat-cell *matCellDef="let element">{{element.magasin.magasinCode.value}}</td>
+                        <td mat-cell *matCellDef="let element">{{element.type.valueI18n}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="partner">
                         <th mat-header-cell *matHeaderCellDef>{{partnerLabel}}</th>
-                        <td mat-cell *matCellDef="let element">{{element.partner.partnerCode.value}}</td>
+                        <td mat-cell *matCellDef="let element">
+                            {{element.partner.partnerCode.value}}
+                        </td>
                     </ng-container>
 
                     <ng-container matColumnDef="prixTotal">
@@ -131,7 +134,7 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu">                                
-                                <button mat-menu-item color="primary" class="me-2">
+                                <button mat-menu-item color="primary">
                                     <mat-icon>sync-alt</mat-icon>TODO
                                 </button>
                             </mat-menu>
@@ -139,10 +142,10 @@
                         <td mat-cell *matCellDef="let element" class="text-end">
                             <button mat-icon-button color="primary" title="Afficher" (click)="editAction(element)">
                                 <mat-icon>preview</mat-icon>
-                            </button>
+                            </button>     
                             <button mat-icon-button color="primary" title="Copier" (click)="addAction(element)">
                                 <mat-icon>content_copy</mat-icon>
-                            </button>                         
+                            </button>                  
                             <button mat-icon-button color="primary"                                 
                                 [disabled]="!element.changeStatusBtn.visible"
                                 title="Changer Status" (click)="changeStatusAction(element)">
@@ -151,11 +154,34 @@
                             <button mat-icon-button color="secondary" [matMenuTriggerFor]="menu">
                                 <mat-icon>more_vert</mat-icon>
                             </button>
-                            <mat-menu #menu="matMenu">                                
+                            <mat-menu #menu="matMenu"> 
+                                
+                                <button mat-menu-item color="primary" 
+                                    (click)="initPaiementAction(element)"
+                                    *ngIf="element.reglerBtn.visible">
+                                    <mat-icon>open_in_new</mat-icon>Payer
+                                </button>
+                                <button mat-menu-item color="primary" (click)="afficherReglementAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Règlements
+                                </button>     
+                                <mat-divider></mat-divider>   
+                                <button mat-menu-item color="primary" *ngIf="element.retourBtn.visible" (click)="retourAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Retours
+                                </button>    
+                                <button mat-menu-item color="primary" *ngIf="element.receptionBtn.visible" (click)="receptionAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Réceptions
+                                </button>     
+                                <mat-divider></mat-divider> 
+                                <button mat-menu-item color="primary" title="Afficher" (click)="editAction(element)">
+                                    <mat-icon>preview</mat-icon>Consulter
+                                </button>   
+                                <button mat-menu-item color="primary" title="Copier" (click)="addAction({bean:element})">
+                                    <mat-icon>content_copy</mat-icon>Copier
+                                </button>                      
                                 <button mat-menu-item color="primary"                                
                                     *ngIf="element.deleteBtn.visible"
                                     title="Supprimer" (click)="deleteAction(element)">
-                                    <mat-icon>delete</mat-icon> Supprimer
+                                    <mat-icon>delete</mat-icon>Supprimer
                                 </button> 
                             </mat-menu>
                         </td>

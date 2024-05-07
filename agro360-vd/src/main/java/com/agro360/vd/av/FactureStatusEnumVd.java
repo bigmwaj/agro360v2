@@ -8,6 +8,7 @@ public enum FactureStatusEnumVd {
 	BRLN("Brouillon"),
     ATAP("Att. Appro"),
     APPR("Approuvée"),
+    SOLD("Soldée"),
     ANNL("Annulée"),
     REJT("Rejetée"),
     CLOT("Cloturée");

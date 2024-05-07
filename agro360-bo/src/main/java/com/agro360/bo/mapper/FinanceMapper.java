@@ -1,5 +1,7 @@
 package com.agro360.bo.mapper;
 
+import java.util.Map;
+
 import com.agro360.bo.bean.finance.CompteBean;
 import com.agro360.bo.bean.finance.CompteSearchBean;
 import com.agro360.bo.bean.finance.RubriqueBean;
@@ -22,10 +24,25 @@ public class FinanceMapper {
 	public static CompteBean map(CompteDto dto) {
 		var bean = new CompteBean();
 		bean.getCompteCode().setValue(dto.getCompteCode());
-
+		bean.getType().setValue(dto.getType());
+		bean.getLibelle().setValue(dto.getLibelle());
 		bean.getDescription().setValue(dto.getDescription());
+		if( dto.getPartner() != null ) {
+			bean.setPartner(CoreMapper.map(dto.getPartner()));
+		}
 
 		return bean;
+	}
+
+	public static Map.Entry<Object, String> asOption(CompteBean bean) {
+		var value = bean.getCompteCode().getValue();
+		var label = bean.getLibelle().getValue();
+		if( label == null ) {
+			label = value;
+		}
+		return Map.of(Object.class.cast(value), label)
+				.entrySet().stream()
+				.findFirst().get();
 	}
 
 	public static RubriqueSearchBean buildRubriqueSearchBean() {
@@ -41,9 +58,20 @@ public class FinanceMapper {
 
 		bean.getType().setValue(dto.getType());
 		bean.getDescription().setValue(dto.getDescription());
-		bean.getNom().setValue(dto.getNom());
+		bean.getLibelle().setValue(dto.getLibelle());
 
 		return bean;
+	}
+
+	public static Map.Entry<Object, String> asOption(RubriqueBean bean) {
+		var value = bean.getRubriqueCode().getValue();
+		var label = bean.getDescription().getValue();
+		if( label == null ) {
+			label = value;
+		}
+		return Map.of(Object.class.cast(value), label)
+				.entrySet().stream()
+				.findFirst().get();
 	}
 
 	public static TransactionSearchBean buildTransactionSearchBean() {
@@ -59,10 +87,13 @@ public class FinanceMapper {
 		bean.getMontant().setValue(dto.getMontant());
 		bean.getDate().setValue(dto.getDate());
 		bean.getType().setValue(dto.getType());
-		bean.getAccompte().setValue(dto.getAccompte());
-
+		if( bean.getType().getValue() != null ) {
+			bean.getType().setValueI18n(bean.getType().getValue().getLibelle());
+		}
 		bean.getStatus().setValue(dto.getStatus());
-
+		if( bean.getStatus().getValue() != null ) {
+			bean.getStatus().setValueI18n(bean.getStatus().getValue().getLibelle());
+		}
 		if( dto.getPartner() != null ) {
 			bean.setPartner(CoreMapper.map(dto.getPartner()));
 		}

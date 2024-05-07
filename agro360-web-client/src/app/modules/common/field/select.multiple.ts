@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     standalone: true,
@@ -11,18 +12,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         CommonModule,     
         FormsModule,
         MatSelectModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatTooltipModule
     ],
     selector: 'select-multiple-field',
     template: `    
     <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
-        <mat-select multiple [(ngModel)]="field.value" (change)="_onChange()"
-            [disabled]="!field.editable"
+        <mat-select multiple 
+            [(ngModel)]="field.value" 
+            (change)="_onChange($event)"
+            [disabled]="!field.editable" 
+            [matTooltip]="field.tooltip"
+            [class]="inputCssClass"
             [required]="field.required">
-            <ng-container *ngFor="let o of keys(field.valueOptions)">
-                <mat-option [value]="o">{{ field.valueOptions[o] }}</mat-option>
-            </ng-container>
+                <mat-option *ngFor="let o of keys(field.valueOptions)" [value]="o">{{ field.valueOptions[o] }}</mat-option>
         </mat-select>
     </mat-form-field>`
 })

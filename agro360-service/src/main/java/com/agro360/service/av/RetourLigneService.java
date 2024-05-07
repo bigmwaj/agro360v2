@@ -18,24 +18,24 @@ public class RetourLigneService extends AbstractService {
 	@Autowired
 	private RetourLigneOperation operation;
 	
-	public List<RetourLigneBean> findCommandeLigneRetours(ClientContext ctx, 
-			String commandeCode, Long ligneId) {
-		return operation.findCommandeRetourLignes(ctx, commandeCode, ligneId);
+	public List<RetourLigneBean> findCommandeRetours(ClientContext ctx, 
+			String commandeCode) {
+		return operation.findCommandeRetours(ctx, commandeCode);
 	}
 
 	public void save(ClientContext ctx, 
-			String commandeCode, Long ligneId, List<RetourLigneBean> beans) {
+			String commandeCode, List<RetourLigneBean> beans) {
 		
 		for (var bean : beans) {
 			switch (bean.getAction()) {
 				case CREATE:
-					operation.createRetourLigne(ctx, commandeCode, ligneId, bean);
+					operation.createRetourLigne(ctx, commandeCode, bean);
 					break;
 				case UPDATE:
-					operation.updateRetourLigne(ctx, commandeCode, ligneId,bean);
+					operation.updateRetourLigne(ctx, commandeCode,bean);
 					break;
 				case DELETE:
-					operation.deleteRetourLigne(ctx, commandeCode, ligneId,bean);
+					operation.deleteRetourLigne(ctx, commandeCode,bean);
 					break;
 				case CHANGE_STATUS:
 					break;

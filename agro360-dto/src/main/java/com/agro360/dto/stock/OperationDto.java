@@ -23,30 +23,30 @@ public class OperationDto extends AbstractDto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "OPERATION_ID", nullable = false, updatable = false)
+	@Column(name = "OPERATION_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long operationId;
 	
-	@Column(name = "MAGASIN_CODE", updatable = false, nullable = false)
+	@Column(name = "MAGASIN_CODE", updatable = false)
 	private String magasinCode;
 	
-	@Column(name = "ARTICLE_CODE", updatable = false, nullable = false)
+	@Column(name = "ARTICLE_CODE", updatable = false)
 	private String articleCode;
 	
-	@Column(name = "VARIANT_CODE", updatable = false, nullable = false)
+	@Column(name = "VARIANT_CODE", updatable = false)
 	private String variantCode;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "OPERATION_TYPE", nullable = false, updatable = false, length = OperationTypeEnumVd.COLUMN_LENGTH)
+	@Column(name = "OPERATION_TYPE", updatable = false)
 	private OperationTypeEnumVd type;
 	
-	@Column(name = "OPERATION_DATE", updatable = false, nullable = false)
+	@Column(name = "OPERATION_DATE", updatable = false)
 	private LocalDateTime date;
 
-	@Column(name = "INVENTAIRE_AVANT", nullable = false)
+	@Column(name = "INVENTAIRE_AVANT")
 	private Double inventaireAvant;
 	
-	@Column(name = "QUANTITE", nullable = false)
+	@Column(name = "QUANTITE")
 	private Double quantite;
 	
 	@Column(name = "PRIX_UNITAIRE", precision = 16, scale = 4)

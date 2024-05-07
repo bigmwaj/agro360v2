@@ -51,7 +51,11 @@ export abstract class BeanList<B extends AbstractBean> extends MatTableDataSourc
     }
 
     removeItem(bean: B) {
-        this.data = this.data.filter(b => b != bean);
+        const tmp = this.data.filter(b => b != bean);
+        this.data.length = 0
+
+        this.data.push(... tmp)
+
         if (this.table) {
             this.table.renderRows();
         }
@@ -70,8 +74,8 @@ export abstract class BeanList<B extends AbstractBean> extends MatTableDataSourc
             tmp.push(...this.data.slice(index + 1))
         }
         
-        this.data = tmp;
-
+        this.data.length = 0;
+        this.data.push(... tmp)
         if (this.table) {
             this.table.renderRows();
         }

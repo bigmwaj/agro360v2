@@ -6,17 +6,20 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { map } from 'rxjs';
-import { FactureBean, FactureSearchBean } from 'src/app/backed/bean.av';
+import { FactureBean, FactureSearchBean, PaiementBean } from 'src/app/backed/bean.av';
+import { FactureTypeEnumVd } from 'src/app/backed/vd.av';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanListTab } from '../../common/bean.list.tab';
+import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
-import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
+import { ReglementDialogComponent } from '../common/reglement.dialog.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { map } from 'rxjs';
+import { PaiementDialogComponent } from '../common/paiement.dialog.component';
 
 @Component({
     standalone: true,
@@ -30,7 +33,8 @@ import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
         MatSidenavModule,        
         MatToolbarModule, 
         MatIconModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatDividerModule
     ],
     selector: 'achat-vente-facture-list-tab',
     templateUrl: './list.tab.component.html'
@@ -49,7 +53,7 @@ export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearc
         'date',
         'type',
         'partner',
-        'montant',
+        'prixTotal',
         'actions'
     ];
     
@@ -64,8 +68,25 @@ export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearc
         return bean.factureCode.value;
     }
 
-    ngOnInit(): void {
-        this.resetSearchFormAction()
+    protected override initSearchForm(sf: FactureSearchBean) : FactureSearchBean{
+        if( this.module != null ){            
+            sf.type.editable = false;
+            switch(this.module){
+                case "vente": 
+                sf.type.value = FactureTypeEnumVd.VENTE;
+                break;
+
+                case "achat": 
+                sf.type.value = FactureTypeEnumVd.ACHAT;
+                break;
+            }                    
+        }
+
+        return sf;
+    }
+
+    override ngOnInit(): void {
+        super.ngOnInit();
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Liste des factures');
         switch(this.module){
             case 'vente': this.partnerLabel = 'Client'; break;
@@ -77,29 +98,6 @@ export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearc
 
     areBeansEqual(b1:FactureBean, b2:FactureBean){
         return b1 == b2 || b1.factureCode.value == b2.factureCode.value;
-    }
-
-    addAction(bean?: FactureBean) {   
-        
-        let queryParams = new HttpParams();
-        if( bean ){
-            queryParams = queryParams.append("copyFrom", bean.factureCode.value);     
-        }
-        this.http.get(`achat-vente/facture/create-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<FactureBean>data));
-    }
-
-    editAction(bean: FactureBean) {
-        if( this.isAlreadLoaded(bean) ){
-            this.displayTab(bean);
-            return;
-        }
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append("factureCode", bean.factureCode.value);
-
-        this.http.get(`achat-vente/facture/edit-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<FactureBean>data));
     }
 
     changeStatusAction(bean: FactureBean) {
@@ -116,11 +114,76 @@ export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearc
         }); 
     }
 
+    afficherReglementAction(bean: FactureBean) {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("factureCode", bean.factureCode.value);
+        this.dialog.open(ReglementDialogComponent, { data: {queryParams:queryParams, url: `achat-vente/facture/reglement`} });
+    }
+
+    initPaiementAction(bean: FactureBean) {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("factureCode", bean.factureCode.value);
+
+        this.http.get(`achat-vente/facture/init-paiement`, {params:queryParams}) 
+        .pipe(map((e: any) => <any>e))
+        .subscribe(data => {
+            this.initPaiement(bean, data.records);
+        })
+    }
+
+    private initPaiement(bean: FactureBean, paiements:Array<PaiementBean>) {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("factureCode", bean.factureCode.value);
+        let dialogRef = this.dialog.open(PaiementDialogComponent, { data: {
+                    bean:bean, 
+                    paiements: paiements, 
+                    saveUrl: `achat-vente/facture/encaisser`,
+                    saveParams:queryParams
+                } 
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                if( result ){
+                    this.replaceItemWith(bean, result);
+                }
+        }); 
+    } 
+
     protected override getSearchFormUrl(): string {
         return `achat-vente/facture/search-form`;
     }
 
     protected override getSearchUrl(): string {
         return `achat-vente/facture`;
+    }
+
+    protected override getEditFormUrl(): string {
+        return `achat-vente/facture/edit-form`;
+    }
+
+    protected override getCreateFormUrl(): string {
+        return `achat-vente/facture/create-form`;
+    }
+    
+    protected override getEditQueryParam(bean: FactureBean): HttpParams {
+        let queryParams = new HttpParams();
+        return queryParams.append("factureCode", bean.factureCode.value);
+    }
+
+    protected override getCreateQueryParam(option?: any): HttpParams {
+        let queryParams = new HttpParams();  
+        let type : FactureTypeEnumVd;
+        if( option?.bean ){
+            queryParams = queryParams.append("copyFrom", option.bean.factureCode.value);
+            type = option.bean.type.value
+        }else{
+            switch(this.module){
+                case 'vente': type = FactureTypeEnumVd.VENTE; break;
+                case 'achat': type = FactureTypeEnumVd.ACHAT; break;
+                default:
+                    throw new Error(`Aucun type de facture n'a été configuré pour le module ${this.module}`)
+            }
+        }
+
+        return queryParams.append("type", type);
     }
 }

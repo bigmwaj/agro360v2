@@ -21,28 +21,46 @@ export class ChangeStatusDialogComponent implements OnInit {
 
     bean: CommandeBean;
 
+    message:string;
+
+    status: CommandeStatusEnumVd;
+
     currentStatus: FieldMetadata<CommandeStatusEnumVd>
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: string,
+        @Inject(MAT_DIALOG_DATA) public data: {
+            commandeCode:string, 
+            status: CommandeStatusEnumVd,
+            message: string
+        },
         private http: HttpClient,
         private ui: UIService,  
         public dialogRef: MatDialogRef<ChangeStatusDialogComponent>) { }
 
     ngOnInit(): void {
         let queryParams = new HttpParams();
-        queryParams = queryParams.append('commandeCode', this.data);
+        queryParams = queryParams.append('commandeCode', this.data.commandeCode);
+        if( this.data.message ){
+            this.message = this.data.message;
+        }
+        if( this.data.status ){
+            this.status = this.data.status;
+        }
         this.http
             .get(`achat-vente/commande/change-status-form`, { params: queryParams })
             .subscribe(data => {
                 this.bean = <CommandeBean>data;
                 this.currentStatus = JSON.parse(JSON.stringify(this.bean.status));
                 this.currentStatus.editable = false
+                if( this.data.status ){
+                    this.bean.status.value = this.data.status
+                    
+                }
             });
     }
 
     changeStatusAction() {
-        this.http.post(`achat-vente/commande`, this.bean) 
+        this.http.post(`achat-vente/commande/change-status`, this.bean) 
         .pipe(map((e: any) => <any>e))
         .subscribe(data => {
             this.dialogRef.close(data.record);

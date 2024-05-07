@@ -12,6 +12,6 @@ public class IsCommandeEditableStatus extends AbstractRule<LigneBean> {
 	public boolean eval(ClientContext ctx, LigneBean bean) {
 		var commande = (CommandeBean) bean.getOwnerBean();
 		var status = commande.getStatus().getValue();		
-		return CommandeStatusEnumVd.BRLN.equals(status) || CommandeStatusEnumVd.REJT.equals(status);
+		return CommandeStatusEnumVd.BRLN.equals(status) || CommandeStatusEnumVd.CLOT.equals(status);
 	}
 }

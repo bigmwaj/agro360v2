@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.dao.common.IDao;
@@ -48,14 +49,22 @@ public abstract class AbstractOperation<E extends AbstractDto, K> {
 	}
 	
 	protected String getNullOrUpperCase(String value) {
+		return getNullOrUpperCase(value, "");
+	}
+	
+	protected String getNullOrUpperCase(String value, @NonNull String wrapper) {
 		if( value != null && !value.isBlank() ) {
-			return value.toUpperCase();
+			return wrapper + value.toUpperCase() + wrapper;
 		}
 		
 		return null;
 	}
 	
 	protected String getNullOrUpperCase(Supplier<FieldMetadata<String>> valueFunction) {
-		return getNullOrUpperCase(valueFunction.get().getValue());
+		return getNullOrUpperCase(valueFunction, "");
+	}
+	
+	protected String getNullOrUpperCase(Supplier<FieldMetadata<String>> valueFunction, String wrapper) {
+		return getNullOrUpperCase(valueFunction.get().getValue(), wrapper);
 	}
 }

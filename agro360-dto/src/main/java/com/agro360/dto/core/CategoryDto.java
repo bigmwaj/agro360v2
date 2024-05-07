@@ -16,11 +16,11 @@ import lombok.EqualsAndHashCode;
 public class CategoryDto extends AbstractDto{
 
 	@Id
-	@Column(name = "CATEGORY_CODE", updatable = false, length = 16)
+	@Column(name = "CATEGORY_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String categoryCode;
 
-	@Column(name = "DESCRIPTION", length = 64)
+	@Column(name = "DESCRIPTION")
 	private String description;
 	
 	@ManyToOne()

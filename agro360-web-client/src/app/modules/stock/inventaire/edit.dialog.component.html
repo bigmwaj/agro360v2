@@ -1,0 +1,94 @@
+<h2 mat-dialog-title>
+    <ng-container *ngIf="bean">
+        <ng-container *ngIf="bean.action == 'ACT01'">
+            Ajustement de la quantité en stock
+        </ng-container>
+        <ng-container *ngIf="bean.action == 'ACT02'">
+            Modification du prix de vente
+        </ng-container>
+        <ng-container *ngIf="bean.action == 'ACT03'">
+            Modification de l'unité de vente
+        </ng-container>
+        <ng-container *ngIf="bean.action == 'ACT04'">
+            Modification de l'unité d'achat
+        </ng-container>
+    </ng-container>
+</h2>
+<mat-dialog-content>
+    <div *ngIf="bean">
+        <div class="row">
+            <div class="col-12">
+                <div class="bg-info p-3 mb-2" *ngIf="bean.action == 'ACT01'">
+                    Ajustement de la quantité en stock
+                </div>
+                <div class="bg-info p-3 mb-2" *ngIf="bean.action == 'ACT02'">
+                    Modification du prix de vente
+                </div>
+                <div class="bg-info p-3 mb-2" *ngIf="bean.action == 'ACT03'">
+                    Modification de l'unité de vente
+                </div>
+                <div class="bg-info p-3 mb-2" *ngIf="bean.action == 'ACT04'">
+                    Modification de l'unité d'achat
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4">
+                <input-text-field [field]="bean.magasin.magasinCode"></input-text-field>
+            </div>
+            <div class="col-4">
+                <input-text-field [field]="bean.article.articleCode"></input-text-field>
+            </div>
+            <div class="col-4">
+                <input-text-field [field]="bean.variantCode"></input-text-field>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="bean.quantite.visible">
+            <div class="col-4">
+                <input-number-field [field]="data.bean.quantite" label="Quantité actuelle"></input-number-field>
+            </div>
+            <div class="col-4">
+                <input-number-field [field]="bean.quantite" label="Quantité à ajouter/retrancher"></input-number-field>
+            </div>               
+            <div class="col-4">
+                <select-one-field [field]="bean.uniteAchat.uniteCode" label="Unité d'ajustement"></select-one-field>
+            </div>         
+        </div>
+
+        <div class="row" *ngIf="bean.prixUnitaireVente.visible">
+            <div class="col-4">
+                <input-number-field [field]="data.bean.prixUnitaireVente" label="Ancien prix de vente"></input-number-field>
+            </div>
+            <div class="col-4">
+                <input-number-field [field]="bean.prixUnitaireVente" label="Nouveau prix de vente"></input-number-field>
+            </div>
+            <div class="col-4">
+                <select-one-field [field]="bean.uniteVente.uniteCode" label="Unité du prix vente"></select-one-field>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="bean.uniteAchat.uniteCode.visible && !bean.quantite.visible">
+            <div class="col-6">
+                <select-one-field [field]="data.bean.uniteAchat.uniteCode" label="Ancien unité d'achat"></select-one-field>
+            </div>
+            <div class="col-6">
+                <select-one-field [field]="bean.uniteAchat.uniteCode" label="Nouvelle unité d'achat"></select-one-field>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="bean.uniteVente.uniteCode.visible">
+            <div class="col-6">
+                <select-one-field [field]="data.bean.uniteVente.uniteCode" label="Ancien unité de vente"></select-one-field>
+            </div>
+            <div class="col-6">
+                <select-one-field [field]="bean.uniteVente.uniteCode" label="Nouvelle unité de vente"></select-one-field>
+            </div>
+        </div>
+    </div>    
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3 mt-0">
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button cdkFocusInitial (click)="saveAction()">Modifier</button>
+</mat-dialog-actions>

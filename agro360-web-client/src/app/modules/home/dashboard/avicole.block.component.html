@@ -1,6 +1,15 @@
 <div class="card mb-4">
-    <div class="card-header">
-        Production avicole
+    <div class="card-header m-0 p-0 ps-3 d-flex flex-row align-items-center justify-content-between">
+        <span>États des comptes</span>
+
+        <button mat-icon-button color="secondary" class="m-0 p-1" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">                                
+            <button mat-menu-item color="primary">
+                <mat-icon>open_in_new</mat-icon>Cycle ABC
+            </button>
+        </mat-menu>
     </div>
     <div class="card-body">
       <div class="row">

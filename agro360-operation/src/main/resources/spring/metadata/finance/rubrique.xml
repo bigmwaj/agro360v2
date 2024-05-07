@@ -52,7 +52,7 @@
 		</property>
 	</bean>	
 		
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="rubrique/nom">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="rubrique/libelle">
 		<property name="editable">
 			<list>
 				<ref bean="IsBeanCreateOrUpdateOperation" />						
@@ -108,7 +108,7 @@
 		<property name="fields">
 			<map>
 				<entry key="rubriqueCode" value-ref="rubrique/rubriqueCode"/>
-				<entry key="nom" value-ref="rubrique/nom"/>
+				<entry key="libelle" value-ref="rubrique/libelle"/>
 				<entry key="type" value-ref="rubrique/type"/>
 				<entry key="description" value-ref="rubrique/description"/>
 				<entry key="deleteBtn" value-ref="rubrique/deleteBtn"/>

@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode;
 @Entity(name = "STOCK_TBL_CONVERSION")
 @IdClass(ConversionPk.class)
 public class ConversionDto extends AbstractDto {
+	
 	@Id
 	@Column(name = "ARTICLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
@@ -29,7 +30,7 @@ public class ConversionDto extends AbstractDto {
 	@EqualsAndHashCode.Include()
 	private UniteDto unite;
 
-	@Column(name = "FACTEUR", nullable = false, updatable = false)
+	@Column(name = "FACTEUR", updatable = false)
 	private Double facteur;
 
 	@Override

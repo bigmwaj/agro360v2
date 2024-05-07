@@ -29,9 +29,6 @@
                         [label]="partnerLabel">
                     </select-one-field>
                 </div>
-                <div class="col-6">
-                    <input-number-field [field]="bean.montant"></input-number-field>                
-                </div>
             </div>
             <div class="row">
                 <div class="col-12">
@@ -40,12 +37,43 @@
             </div>
         </div>
         <div class="col-6">
-            <h4>
-                Informations de paiement ici
-            </h4>
             <div class="row">
-                <div class="col-12">
-                    Transaction | Statut | Date | Montant | Solde | Règlement 
+                <div class="row">
+                    <div class="col-4">   
+                        <input-number-field [field]="bean.prixTotalHT"></input-number-field>
+                    </div> 
+                    <div class="col-4">   
+                        <input-number-field [field]="bean.taxe"></input-number-field>
+                    </div> 
+                    <div class="col-4">   
+                        <input-number-field [field]="bean.remise"></input-number-field>
+                    </div> 
+                </div>
+                <div class="row">               
+                    <div class="col-6">   
+                        <input-number-field [field]="bean.prixTotal"></input-number-field>
+                    </div> 
+                    <div class="col-6">   
+                        <input-number-field [field]="bean.cumulPaiement"></input-number-field>
+                        <button mat-icon-button color="primary" 
+                            class="field-button"                          
+                            (click)="afficherReglementAction()"
+                            matTooltip="Liste des paiements">
+                            <mat-icon>list_task</mat-icon>
+                        </button> 
+                    </div> 
+                </div>
+                <div class="row">        
+                    <div class="col-12">
+                        <div class="d-flex">                            
+                            <button mat-fab color="primary" 
+                                extended 
+                                (click)="saveAction({processPaiement:true})"
+                                *ngIf="bean.reglerBtn.visible">
+                                <mat-icon>currency_exchange</mat-icon> Régler
+                            </button>
+                        </div>
+                    </div>                 
                 </div>
             </div>
         </div>
@@ -53,7 +81,7 @@
 </section>
 
 <section class="p-3">
-    <button mat-raised-button cdkFocusInitial (click)="saveAction()">
+    <button mat-raised-button cdkFocusInitial (click)="saveAction()" *ngIf="bean.saveBtn.visible">
         <mat-icon>save</mat-icon>Enregistrer
     </button>
 </section>

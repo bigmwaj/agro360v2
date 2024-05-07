@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { AbstractBean, AbstractSearchBean } from "src/app/backed/bean.common";
 import { UIService } from "./service/ui.service";
 import { BeanListTab } from "./bean.list.tab";
@@ -10,7 +10,7 @@ import { PageEvent } from "@angular/material/paginator";
     standalone: true,
     template: ''
 })
-export abstract class BeanPagedListTab<B extends AbstractBean, SF extends AbstractSearchBean> extends BeanListTab<B> implements AfterViewInit{
+export abstract class BeanPagedListTab<B extends AbstractBean, SF extends AbstractSearchBean> extends BeanListTab<B> implements OnInit, AfterViewInit{
    
     searchForm: SF;
 
@@ -22,7 +22,19 @@ export abstract class BeanPagedListTab<B extends AbstractBean, SF extends Abstra
 
     protected abstract getSearchFormUrl(): string
 
-    protected abstract getSearchUrl(): string
+    protected abstract getSearchUrl(): string;  
+
+    protected abstract getEditFormUrl(): string;
+
+    protected abstract getCreateFormUrl(): string;
+    
+    protected abstract getEditQueryParam(bean: B): HttpParams;
+    
+    protected abstract getCreateQueryParam(option?:any): HttpParams
+
+    ngOnInit(): void {
+        this.resetSearchFormAction();
+    }
 
     resetSearchFormAction() {
         let currentPageSize: number | null;
@@ -60,6 +72,23 @@ export abstract class BeanPagedListTab<B extends AbstractBean, SF extends Abstra
                 this.setData(data.records);
                 this.searchForm.length = data.total;
             });
+    }
+
+    addAction(option?:any) {  
+        let queryParams = this.getCreateQueryParam(option);
+        this.http.get(this.getCreateFormUrl(), { params: queryParams })
+        .subscribe(data => this.appendTab(<B>data));
+    }
+    
+    editAction(bean: B) {
+        if( this.isAlreadLoaded(bean) ){
+            this.displayTab(bean);
+            return;
+        }
+        let queryParams = this.getEditQueryParam(bean);
+
+        this.http.get(this.getEditFormUrl(), { params: queryParams })
+        .subscribe(data => this.appendTab(<B>data));
     }
 
     protected initSearchForm(sf: SF):SF{
