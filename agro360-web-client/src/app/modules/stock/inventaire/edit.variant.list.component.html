@@ -1,4 +1,4 @@
-<table mat-table [dataSource]="this" class="table-borderless">
+<table mat-table [dataSource]="this" class="beans-table editable table-borderless">
     <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
             <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"

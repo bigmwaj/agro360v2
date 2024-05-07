@@ -20,7 +20,7 @@ public class ReglementCommandeDto extends AbstractDto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "REG_ID", nullable = false, updatable = false)
+	@Column(name = "REG_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long reglementId;
 	
@@ -28,7 +28,7 @@ public class ReglementCommandeDto extends AbstractDto {
 	@JoinColumn(name = "TRANSACTION_CODE")
 	private TransactionDto transaction;
 	
-	@Column(name = "COMMANDE_CODE", nullable = false, updatable = false)
+	@Column(name = "COMMANDE_CODE", updatable = false)
 	private String commandeCode;
 
 }

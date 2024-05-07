@@ -175,9 +175,9 @@
 		</property>
 	</bean>		
     
-    <bean name="core/partner" class="com.agro360.operation.metadata.BeanMetadataConfig">
+    <bean name="core/partner" class="com.agro360.operation.metadata.BeanMetadataConfig" parent="core/partner-search-result">
 		<property name="fields">
-			<map>
+			<map merge="true">
 				<entry key="partnerCode" value-ref="partner/partnerCode"/>
 				<entry key="type" value-ref="partner/type"/>
 				<entry key="name" value-ref="partner/name"/>

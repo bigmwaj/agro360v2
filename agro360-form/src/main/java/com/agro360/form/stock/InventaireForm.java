@@ -19,10 +19,15 @@ import com.agro360.form.common.AbstractForm;
 import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.ArticleOperation;
+import com.agro360.operation.logic.stock.InventaireOperation;
 import com.agro360.operation.logic.stock.MagasinOperation;
+import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
 public class InventaireForm extends AbstractForm{
+	
+	@Autowired
+	private InventaireOperation operation;
 	
 	@Autowired
 	private MagasinOperation magasinOperation;
@@ -44,6 +49,16 @@ public class InventaireForm extends AbstractForm{
 		return initCreateFormBean(ctx, bean);
 	}
 	
+	@MetadataBeanName("stock/inventaire")
+	public InventaireBean initEditFormBean(ClientContext ctx, ClientOperationEnumVd operation, String magasinCode, String articleCode, String variantCode) {
+		var bean = this.operation.findInventaireByCode(ctx, magasinCode, articleCode, variantCode);
+		var options = buildUniteOptions(ctx, articleCode);	
+		bean.getUniteVente().getUniteCode().setValueOptions(options);
+		bean.getUniteAchat().getUniteCode().setValueOptions(options);
+		bean.setAction(operation);
+		return bean;
+	}
+	
 	private InventaireBean initCreateFormBean(ClientContext ctx, InventaireBean bean) {
 		bean.getMagasin().getMagasinCode().setEditable(true);
 		bean.getArticle().getArticleCode().setEditable(true);
@@ -59,7 +74,7 @@ public class InventaireForm extends AbstractForm{
 		beans.stream().map(setUniteOptions).forEach(init);
 	}
 	
-	private InventaireBean setUniteOption( InventaireBean bean, Map<Object, String> options) {
+	private InventaireBean setUniteOption(InventaireBean bean, Map<Object, String> options) {
 		var def = options.entrySet().stream()
 				.findFirst()
 				.map(Map.Entry::getKey)

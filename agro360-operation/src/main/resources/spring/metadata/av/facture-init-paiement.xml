@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean  class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-init-paiement/montant">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="min">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="0" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-init-paiement/saveBtn"/>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-init-paiement/compte.compteCode">
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>
+
+	<bean name="av/facture-init-paiement"  class="com.agro360.operation.metadata.BeanMetadataConfig">
+		<property name="editable">
+			<list>
+			</list>
+		</property>
+		<property name="fields">
+			<map>
+				<entry key="montant" value-ref="facture-init-paiement/montant" />
+				<entry key="saveBtn" value-ref="facture-init-paiement/saveBtn" />
+			</map>
+		</property>
+		<property name="beans">
+			<map>
+				<entry key="compte">
+					<bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+						<property name="fields">
+							<map>
+								<entry key="compteCode" value-ref="facture-init-paiement/compte.compteCode" />
+							</map>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>

@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Ajout d'article en inventaire</h2>
 <mat-dialog-content>
-    <div *ngIf="bean">
+    <section *ngIf="bean">
         <div class="row">
             <div class="col-6">
                 <select-one-field 
@@ -15,12 +15,10 @@
                 </select-one-field>
             </div>
         </div>
-        <div class="row">
-        </div>
         <div>
             <stock-inventaire-edit-variant-list></stock-inventaire-edit-variant-list>
         </div>
-    </div>    
+    </section>    
 </mat-dialog-content>
 <mat-dialog-actions align="end" class="m-3">
     <button mat-raised-button mat-dialog-close>Fermer</button>

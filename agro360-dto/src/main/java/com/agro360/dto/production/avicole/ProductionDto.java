@@ -3,7 +3,6 @@ package com.agro360.dto.production.avicole;
 import com.agro360.dto.common.AbstractDto;
 import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.UniteDto;
-import com.agro360.dto.stock.VariantDto;
 import com.agro360.vd.production.avicole.ProductionCategoryEnumVd;
 
 import jakarta.persistence.Column;
@@ -44,7 +43,7 @@ public class ProductionDto extends AbstractDto {
 	@JoinColumn(name = "ARTICLE_CODE", nullable = false)
 	private ArticleDto article;
 
-	@Column(name = "VARIANT_CODE", length = VariantDto.VARIANT_CODE_LENGTH)
+	@Column(name = "VARIANT_CODE")
 	private String variantCode;
 
 	@Column(name = "COMMENTAIRE", length = 128)

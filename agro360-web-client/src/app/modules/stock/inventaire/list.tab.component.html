@@ -95,11 +95,11 @@
                             <ng-container *ngIf="!element.quantiteAjust.editable">
                                 <div class="d-flex ajust-wrapper">
                                     <div>
-                                        {{element.quantite.value}} {{element.uniteVente.uniteCode.value}}
+                                        {{element.quantite.value}} {{element.uniteAchat.uniteCode.value}}
                                     </div>
                                     <div class="ms-auto">
                                         <mat-icon 
-                                            matTooltip="Ajuster la quanité"
+                                            matTooltip="Ajuster la quanité. Unité de base: {{element.uniteAchat.uniteCode.value}}"
                                             (click)="toggleAjustFieldAction(element.quantiteAjust)">
                                             edit
                                         </mat-icon>
@@ -111,7 +111,7 @@
                                     <div>
                                         <input type="number" 
                                             class="input-ajust"
-                                            [matTooltip]="'Veuillez indiquer la quantité à ajouter ou à retrancher(valeur négative) à la quantité actuelle. Quantité actuelle ' + element.quantite.value"
+                                            [matTooltip]="'Veuillez indiquer la quantité à ajouter ou à retrancher(valeur négative) à la quantité actuelle. Quantité actuelle ' + element.quantite.value + ' Unité de base: ' + element.uniteAchat.uniteCode.value"
                                             [(ngModel)]="element.quantiteAjust.value"/>  
                                     </div>
                                     <div class="ms-auto">
@@ -140,7 +140,7 @@
                                         {{element.prixUnitaireVente.value}}
                                     </div>
                                     <div class="ms-auto">
-                                        <mat-icon matTooltip="Définir le nouveau prix de vente" 
+                                        <mat-icon matTooltip="Définir le nouveau prix de vente. Unité de base: {{element.uniteVente.uniteCode.value}}" 
                                             (click)="toggleAjustFieldAction(element.prixUnitaireVenteAjust)">
                                             edit
                                         </mat-icon>
@@ -151,7 +151,7 @@
                                 <div class="d-flex ajust-wrapper">
                                     <div>                                        
                                         <input type="number"                                            
-                                            [matTooltip]="'Veuillez indiquer le nouveau prix de vente de la variante. Prix en cours ' + element.prixUnitaireVente.value" 
+                                            [matTooltip]="'Veuillez indiquer le nouveau prix de vente de la variante. Prix en cours ' + element.prixUnitaireVente.value + '. Unité de base: ' + element.uniteVente.uniteCode.value" 
                                             class="input-ajust" 
                                             [(ngModel)]="element.prixUnitaireVenteAjust.value"/>                                  
                                     </div>
@@ -196,11 +196,17 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu">                                
-                                <button mat-menu-item color="primary" class="me-2" (click)="ajusterQuantiteStockAction(element)">
-                                    <mat-icon>open_in_new</mat-icon>Ajuster Quantité
+                                <button mat-menu-item color="primary" class="me-2" (click)="ajusterQuantiteAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Ajuster la Quantité 
                                 </button>                         
-                                <button mat-menu-item color="primary" class="me-2" (click)="definirPrixVenteAction(element)">
-                                    <mat-icon>open_in_new</mat-icon>Ajuster Prix
+                                <button mat-menu-item color="primary" class="me-2" (click)="ajusterPrixVenteAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Modifier le prix de vente
+                                </button>                       
+                                <button mat-menu-item color="primary" class="me-2" (click)="ajusterUniteVenteAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Modifier l'unité de vente
+                                </button>                       
+                                <button mat-menu-item color="primary" class="me-2" (click)="ajusterUniteAchatAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Modifier l'unité d'achat
                                 </button>
                             </mat-menu>
                         </td>

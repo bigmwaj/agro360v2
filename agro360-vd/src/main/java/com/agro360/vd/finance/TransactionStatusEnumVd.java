@@ -10,11 +10,11 @@ public enum TransactionStatusEnumVd {
 
 	ANNULEE("Annulée"),
 	
-	RESERVEE("Reservée"),
+	RESERVEE("Réservée"),
 	
 	APPROUVEE("Approuvée"),
 	
-	CLOTUREE("Clôturee");
+	CLOTUREE("Clôturée");
 	
 	public static final int COLUMN_LENGTH = 12;
 	
@@ -29,6 +29,6 @@ public enum TransactionStatusEnumVd {
 	}
 	
 	public static Map<Object, String> getAsMap() {
-		return Arrays.stream(values()).collect(Collectors.toMap(e->e.name(), e->e.libelle));
+		return Arrays.stream(values()).collect(Collectors.toMap(e -> e.name(), e -> e.libelle));
 	}
 }

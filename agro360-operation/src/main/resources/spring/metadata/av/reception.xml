@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="reception/quantite">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="min">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="0" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="reception/prixUnitaire">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="min">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="0" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="reception/date">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="reception/description">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="255" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="reception/deleteBtn"/>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="reception/unite.uniteCode">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation" />
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="reception/ligne.ligneId">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation" />
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>
+
+	<bean name="av/reception" class="com.agro360.operation.metadata.BeanMetadataConfig">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue"/>
+			</list>
+		</property>
+		<property name="fields">
+			<map>
+				<entry key="prixUnitaire" value-ref="reception/prixUnitaire" />
+				<entry key="date" value-ref="reception/date" />
+				<entry key="description" value-ref="reception/description" />
+				<entry key="quantite" value-ref="reception/quantite" />
+				<entry key="deleteBtn" value-ref="reception/deleteBtn" />
+			</map>
+		</property>
+		<property name="beans">
+			<map>
+				<entry key="unite">
+					<bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+						<property name="fields">
+							<map>
+								<entry key="uniteCode" value-ref="reception/unite.uniteCode" />
+							</map>
+						</property>
+					</bean>
+				</entry>
+				<entry key="ligne">
+					<bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+						<property name="fields">
+							<map>
+								<entry key="ligneId" value-ref="reception/ligne.ligneId" />
+							</map>
+						</property>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+</beans>

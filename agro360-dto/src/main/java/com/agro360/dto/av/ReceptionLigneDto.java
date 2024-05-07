@@ -22,35 +22,36 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "AV_TBL_RECEPTION")
 public class ReceptionLigneDto extends AbstractStatusTrackingDto<ReceptionStatusEnumVd> {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "RECEPTION_ID", nullable = false, updatable = false)
+	@Column(name = "RECEPTION_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long receptionId;
 	
-	@Column(name = "COMMANDE_CODE", updatable = false, length = 16)
+	@Column(name = "COMMANDE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String commandeCode;
 
 	@ManyToOne()
-	@JoinColumn(name = "LIGNE_ID", nullable = false, updatable = false)
+	@JoinColumn(name = "LIGNE_ID", updatable = false)
 	private LigneDto ligne;
 
-	@Column(name = "DESCRIPTION", length = 128)
+	@Column(name = "DESCRIPTION")
 	private String description;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = ReceptionStatusEnumVd.COLUMN_LENGTH)
+	@Column(name = "STATUS")
 	private ReceptionStatusEnumVd status;
 	
 	@ManyToOne()
-	@JoinColumn(name = "UNITE_CODE", nullable = false)
+	@JoinColumn(name = "UNITE_CODE")
 	private UniteDto unite;
 
-	@Column(name = "QUANTITE", nullable = false)
+	@Column(name = "QUANTITE")
 	private Double quantite;
 
-	@Column(name = "RECEPTION_DATE", nullable = false)
+	@Column(name = "RECEPTION_DATE")
 	private LocalDateTime date;
 
 }

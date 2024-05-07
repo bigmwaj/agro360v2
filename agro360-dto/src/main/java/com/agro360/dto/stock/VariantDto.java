@@ -14,22 +14,21 @@ import lombok.EqualsAndHashCode;
 @Entity(name = "STOCK_TBL_VARIANT")
 @IdClass(VariantPk.class)
 public class VariantDto extends AbstractDto {
-	public static final int VARIANT_CODE_LENGTH = 16;
 
 	@Id
-	@Column(name = "ARTICLE_CODE", updatable = false, nullable = false)
+	@Column(name = "ARTICLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String articleCode;
 
 	@Id
-	@Column(name = "VARIANT_CODE", updatable = false, nullable = false, length = VARIANT_CODE_LENGTH)
+	@Column(name = "VARIANT_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String variantCode;
 	
-	@Column(name = "ALIAS", nullable = false, length = 16)
+	@Column(name = "ALIAS")
 	private String alias;
 
-	@Column(name = "DESCRIPTION", length = 64)
+	@Column(name = "DESCRIPTION")
 	private String description;
 
 }

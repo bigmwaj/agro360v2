@@ -48,10 +48,9 @@
 		<constructor-arg ref="IsPartnerRootCategory"/>
     </bean>
     
-    <bean class="com.agro360.operation.rule.module.av.IsCommandeEditableStatus" name="IsCommandeEditableStatus"/>
-    <bean class="com.agro360.operation.rule.module.av.IsRetournable" name="IsRetournable"/>
-    <bean class="com.agro360.operation.rule.module.av.IsReceptionnable" name="IsReceptionnable"/>
-    <bean class="com.agro360.operation.rule.module.av.commande.IsPaiementCommandeAllowed" 
-    	name="IsPaiementCommandeAllowed"/>
+    <bean class="com.agro360.operation.rule.module.stock.inventaire.IsAjusterQuantiteRule" name="inventaire/IsAjusterQuantite"/>
+    <bean class="com.agro360.operation.rule.module.stock.inventaire.IsModifierPrixVenteRule" name="inventaire/IsModifierPrixVente"/>
+    <bean class="com.agro360.operation.rule.module.stock.inventaire.IsModifierUniteAchatRule" name="inventaire/IsModifierUniteAchat"/>
+    <bean class="com.agro360.operation.rule.module.stock.inventaire.IsModifierUniteVenteRule" name="inventaire/IsModifierUniteVente"/>
     
 </beans>

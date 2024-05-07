@@ -21,6 +21,7 @@ public class RubriqueForm {
 	@Autowired
 	RubriqueOperation operation;
 	
+	@MetadataBeanName("finance/rubrique-search")
 	public RubriqueSearchBean initSearchFormBean(ClientContext ctx) {
 		var bean = FinanceMapper.buildRubriqueSearchBean();
 		return bean;

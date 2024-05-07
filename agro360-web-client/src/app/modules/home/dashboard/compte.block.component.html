@@ -1,13 +1,13 @@
 <div class="card mb-4">
-    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+    <div class="card-header m-0 p-0 ps-3 d-flex flex-row align-items-center justify-content-between">
         <span>États des comptes</span>
 
-        <button mat-mini-fab color="secondary" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <button mat-icon-button color="secondary" class="m-0 p-1" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
             <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">                                
-            <button mat-menu-item color="primary" class="me-2" (click)="compteAction()">
-                <mat-icon>dialog</mat-icon>Comptes
+            <button mat-menu-item color="primary" (click)="compteAction()">
+                <mat-icon>open_in_new</mat-icon>Comptes
             </button>
         </mat-menu>
     </div>

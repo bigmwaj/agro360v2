@@ -2,16 +2,15 @@ package com.agro360.form.av;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.av.RetourLigneBean;
-import com.agro360.bo.bean.stock.ConversionBean;
-import com.agro360.bo.bean.stock.UniteBean;
-import com.agro360.form.common.AbstractForm;
+import com.agro360.bo.mapper.StockMapper;
+import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.av.LigneOperation;
 import com.agro360.operation.logic.stock.ConversionOperation;
@@ -19,82 +18,55 @@ import com.agro360.vd.av.RetourStatusEnumVd;
 import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
-public class RetourLigneForm extends AbstractForm{
-	
+public class RetourLigneForm extends AbstractPostCommandeEntityForm{
+
 	@Autowired
 	private LigneOperation ligneOperation;
 	
 	@Autowired
 	private ConversionOperation conversionOperation;
+	
+	@Override
+	protected ConversionOperation getConversionOperation() {
+		return conversionOperation;
+	}
+	
+	@Override
+	protected LigneOperation getLigneOperation() {
+		return ligneOperation;
+	}
+	
+	@MetadataBeanName("av/retour")
+	public RetourLigneBean initCreateFormBean(ClientContext ctx, String commandeCode) {
 
-	public RetourLigneBean initCreateFormBean(ClientContext ctx, 
-			String commandeCode, 
-			Long ligneId) {
-		
+		var ligneOption = getLigneOptions(ctx, commandeCode);
 		var bean = new RetourLigneBean();
-		var ligne = ligneOperation.findLigneByCode(ctx, commandeCode, ligneId);
-
-		bean.setLigne(ligne);
 		bean.getPrixUnitaire().setValue(BigDecimal.ZERO);
+		bean.getLigne().getLigneId().setValueOptions(ligneOption);
 		
 		bean.setAction(ClientOperationEnumVd.CREATE);
 		
-		bean.getQuantite().setRequired(true);
-		bean.getQuantite().setValue(1.0);
-		
-		bean.setUnite(ligne.getUnite());
-		bean.getUnite().getUniteCode().setRequired(true);
-		
-		bean.getPrixUnitaire().setValue(ligne.getPrixUnitaire().getValue());
-		bean.getPrixUnitaire().setEditable(false);
-		
+		bean.getQuantite().setValue(Double.valueOf(1));
 		bean.getStatus().setValue(RetourStatusEnumVd.BRLN);
-		bean.getStatus().setEditable(false);
-		
 		bean.getDate().setValue(LocalDateTime.now());
-		bean.getDate().setEditable(false);
-		
-		initUniteOption(ctx, bean);
 		
 		return bean;
 	}
 	
-	private void initUniteOption(ClientContext ctx, RetourLigneBean bean) {
-		var articleCode = bean.getLigne().getArticle().getArticleCode().getValue();
-		Function<UniteBean, String> label = e -> e.getUniteCode().getValue() + " " + e.getDescription().getValue();
-		Function<UniteBean, Object> key = e -> e.getUniteCode().getValue();
-		var options = conversionOperation.findConversionsByArticleCode(ctx, articleCode)
-				.stream()
-				.map(ConversionBean::getUnite)
-				.collect(Collectors.toMap(key, label));
+	@MetadataBeanName("av/retour")
+	public List<RetourLigneBean> initUpdateFormBean(ClientContext ctx, String commandeCode, List<RetourLigneBean> beans) {
+		var ligneOptions = getLigneOptions(ctx, commandeCode);
 		
-		options.put(key.apply(bean.getLigne().getArticle().getUnite()), 
-				label.apply(bean.getLigne().getArticle().getUnite()));
+		for (var bean : beans) {
+			var unite = bean.getLigne().getUnite();
+			var option = Map.ofEntries(StockMapper.asOption(unite));
+			bean.getUnite().getUniteCode().setValueOptions(option);
+			bean.getLigne().getUnite().getUniteCode().setValueOptions(option);
+			bean.setAction(ClientOperationEnumVd.UPDATE);
+			bean.getLigne().getLigneId().setValueOptions(ligneOptions);
+		}
 		
-		bean.getUnite().getUniteCode().setValueOptions(options);
-	}
-	
-	public RetourLigneBean initUpdateFormBean(ClientContext ctx, 
-			String commandeCode, 
-			Long ligneId,
-			RetourLigneBean bean) {
-		
-		bean.setAction(ClientOperationEnumVd.SYNC);
-		
-		bean.getQuantite().setRequired(true);
-		
-		bean.getUnite().getUniteCode().setRequired(true);
-		
-		bean.getPrixUnitaire().setEditable(false);
-		
-		bean.getStatus().setEditable(false);
-		
-		bean.getDate().setValue(LocalDateTime.now());
-		bean.getDate().setEditable(false);
-		
-		initUniteOption(ctx, bean);
-		
-		return bean;
+		return beans;
 	}
 
 }

@@ -17,7 +17,7 @@ public class RubriqueBean extends AbstractBean{
 
 	private FieldMetadata<TransactionTypeEnumVd> type = new FieldMetadata<>("Type", TransactionTypeEnumVd.getAsMap());
 
-	private FieldMetadata<String> nom = new FieldMetadata<>("Nom");
+	private FieldMetadata<String> libelle = new FieldMetadata<>("Nom");
 
 	private FieldMetadata<String> description = new FieldMetadata<>("Description");
 

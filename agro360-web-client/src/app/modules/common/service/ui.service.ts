@@ -94,7 +94,7 @@ export class UIService {
 
     displayFlashMessage(messages: Array<Message>) {
         this._snackBar.openFromComponent(FlashMessageComponent, {
-            duration: 20 * 1000,
+            duration: 100 * 1000,
             data: messages,
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,

@@ -25,34 +25,34 @@ public class RetourLigneDto extends AbstractStatusTrackingDto<RetourStatusEnumVd
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "RETOUR_ID", nullable = false, updatable = false)
+	@Column(name = "RETOUR_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long retourId;
 	
-	@Column(name = "COMMANDE_CODE", updatable = false, length = 16)
+	@Column(name = "COMMANDE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String commandeCode;
 	
 	@EqualsAndHashCode.Include()
 	@ManyToOne()
-	@JoinColumn(name = "LIGNE_ID", nullable = false, updatable = false)
+	@JoinColumn(name = "LIGNE_ID", updatable = false)
 	private LigneDto ligne;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = RetourStatusEnumVd.COLUMN_LENGTH)
+	@Column(name = "STATUS")
 	private RetourStatusEnumVd status;
 	
 	@ManyToOne()
-	@JoinColumn(name = "UNITE_CODE", nullable = false)
+	@JoinColumn(name = "UNITE_CODE")
 	private UniteDto unite;
 
-	@Column(name = "QUANTITE", nullable = false)
+	@Column(name = "QUANTITE")
 	private Double quantite;
 
-	@Column(name = "RETOUR_DATE", nullable = false)
+	@Column(name = "RETOUR_DATE")
 	private LocalDateTime date;
 
-	@Column(name = "DESCRIPTION", length = 256)
+	@Column(name = "DESCRIPTION")
 	private String description;
 	
 

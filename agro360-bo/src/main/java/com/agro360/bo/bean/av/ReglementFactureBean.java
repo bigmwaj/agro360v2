@@ -1,7 +1,5 @@
 package com.agro360.bo.bean.av;
 
-import java.math.BigDecimal;
-
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.metadata.FieldMetadata;
@@ -20,10 +18,18 @@ public class ReglementFactureBean extends AbstractBean {
 
 	private FieldMetadata<Long> reglementId = new FieldMetadata<>("ID");
 
-	private FieldMetadata<String> factureCode = new FieldMetadata<>("Code Facture");
-
-	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
-
+	private FieldMetadata<String> factureCode = new FieldMetadata<>("Facture");
+	
 	@Setter
 	private TransactionBean transaction = new TransactionBean();
+	
+	public ReglementFactureBean() {
+	}
+	
+	public ReglementFactureBean(TransactionBean transaction, String factureCode) {
+		this.transaction = transaction;
+		this.factureCode.setValue(factureCode);
+	}
+	
+	
 }

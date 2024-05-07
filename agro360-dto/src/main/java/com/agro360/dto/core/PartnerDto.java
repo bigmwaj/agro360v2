@@ -20,43 +20,43 @@ public class PartnerDto extends AbstractStatusTrackingDto<PartnerStatusEnumVd> {
 	public static final int PARTNER_CODE_LENGTH = 16;
 
 	@Id
-	@Column(name = "PARTNER_CODE", updatable = false, length = PARTNER_CODE_LENGTH)
+	@Column(name = "PARTNER_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String partnerCode;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "PARTNER_TYPE", updatable = false, length = 8)
+	@Column(name = "PARTNER_TYPE", updatable = false)
 	private PartnerTypeEnumVd type;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = PartnerStatusEnumVd.COLUMN_LENGTH)
+	@Column(name = "STATUS")
 	private PartnerStatusEnumVd status;
 
-	@Column(name = "NAME", length = 32)
-	private String name; // Company name
+	@Column(name = "NAME")
+	private String name;
 
-	@Column(name = "FIRST_NAME", length = 32)
+	@Column(name = "FIRST_NAME")
 	private String firstName;
 
-	@Column(name = "LAST_NAME", length = 32)
+	@Column(name = "LAST_NAME")
 	private String lastName;
 
-	@Column(name = "TITLE", length = 8)
+	@Column(name = "TITLE")
 	private String title;
 
-	@Column(name = "PHONE", nullable = false, length = 16)
+	@Column(name = "PHONE")
 	private String phone;
 
-	@Column(name = "EMAIL", nullable = false, length = 32)
+	@Column(name = "EMAIL")
 	private String email;
 
-	@Column(name = "ADDRESS", length = 64)
+	@Column(name = "ADDRESS")
 	private String address;
 
-	@Column(name = "CITY", length = 16)
+	@Column(name = "CITY")
 	private String city;
 
-	@Column(name = "COUNTRY", length = 16)
+	@Column(name = "COUNTRY")
 	private String country;
 	
 }

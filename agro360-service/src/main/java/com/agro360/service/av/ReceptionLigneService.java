@@ -18,24 +18,24 @@ public class ReceptionLigneService extends AbstractService {
 	@Autowired
 	private ReceptionLigneOperation operation;
 	
-	public List<ReceptionLigneBean> findCommandeLigneReceptions(ClientContext ctx, 
-			String commandeCode, Long ligneId) {
-		return operation.findCommandeReceptionLignes(ctx, commandeCode, ligneId);
+	public List<ReceptionLigneBean> findCommandeReceptions(ClientContext ctx, 
+			String commandeCode) {
+		return operation.findCommandeReceptions(ctx, commandeCode);
 	}
 
 	public void save(ClientContext ctx, 
-			String commandeCode, Long ligneId, List<ReceptionLigneBean> beans) {
+			String commandeCode, List<ReceptionLigneBean> beans) {
 		
 		for (var bean : beans) {
 			switch (bean.getAction()) {
 				case CREATE:
-					operation.createReceptionLigne(ctx, commandeCode, ligneId, bean);
+					operation.createReceptionLigne(ctx, commandeCode, bean);
 					break;
 				case UPDATE:
-					operation.updateReceptionLigne(ctx, commandeCode, ligneId,bean);
+					operation.updateReceptionLigne(ctx, commandeCode, bean);
 					break;
 				case DELETE:
-					operation.deleteReceptionLigne(ctx, commandeCode, ligneId,bean);
+					operation.deleteReceptionLigne(ctx, commandeCode, bean);
 					break;
 				case CHANGE_STATUS:
 					break;

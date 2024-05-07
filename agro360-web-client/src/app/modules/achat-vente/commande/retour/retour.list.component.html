@@ -1,0 +1,155 @@
+<section class="p-3">
+    <div class="table-wrapper">
+        <table mat-table [dataSource]="this" class="beans-table editable table-borderless post-commande">
+            <ng-container matColumnDef="select">
+                <th mat-header-cell *matHeaderCellDef class="text-start">
+                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()" 
+                        [aria-label]="checkboxLabel()">
+                    </mat-checkbox>
+                </th>
+                <td mat-cell *matCellDef="let row" class="text-start">
+                    <mat-checkbox (click)="$event.stopPropagation()" 
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)" 
+                        [aria-label]="checkboxLabel(row)">
+                    </mat-checkbox>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="raison">
+                <th mat-header-cell *matHeaderCellDef>Raison</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-text-field 
+                        [field]="element.description" 
+                        [displayLabel]="false">
+                    </input-text-field>
+                </td>
+            </ng-container>    
+            
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-text-field 
+                        [field]="element.status" 
+                        [displayLabel]="false">
+                    </input-text-field>
+                </td>
+            </ng-container>      
+            
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-datetime-field 
+                        [field]="element.date" 
+                        [displayLabel]="false">
+                    </input-datetime-field>
+                </td>
+            </ng-container>           
+
+            <ng-container matColumnDef="unite">
+                <th mat-header-cell *matHeaderCellDef>Unité</th>
+                <td mat-cell *matCellDef="let element">
+                    <select-one-field 
+                        [field]="element.unite.uniteCode"
+                        [displayLabel]="false">
+                    </select-one-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="prixUnitaire">
+                <th mat-header-cell *matHeaderCellDef>PU</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field
+                        [field]="element.prixUnitaire"
+                        [displayLabel]="false">
+                    </input-number-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="quantite">
+                <th mat-header-cell *matHeaderCellDef>Quantité</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field 
+                        [field]="element.quantite"
+                        [displayLabel]="false">
+                    </input-number-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="unite.commande">
+                <th mat-header-cell *matHeaderCellDef>Unité(cmd)</th>
+                <td mat-cell *matCellDef="let element">
+                    <select-one-field 
+                        [field]="element.ligne.unite.uniteCode"
+                        [displayLabel]="false">
+                    </select-one-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="prixUnitaire.commande">
+                <th mat-header-cell *matHeaderCellDef>PU(cmd)</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field
+                        [field]="element.ligne.prixUnitaire"
+                        [displayLabel]="false">
+                    </input-number-field>
+                </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="article">
+                <th mat-header-cell *matHeaderCellDef>Article & Variant</th>
+                <td mat-cell *matCellDef="let element">
+                    <select-one-field  (onChange)="onLigneSelectedEvent(element)" 
+                        [field]="element.ligne.ligneId"
+                        [displayLabel]="false">
+                    </select-one-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="quantite.commande">
+                <th mat-header-cell *matHeaderCellDef>Qté(cmd)</th>
+                <td mat-cell *matCellDef="let element">
+                    <input-number-field 
+                        [field]="element.ligne.quantite"
+                        [displayLabel]="false">
+                    </input-number-field>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions" stickyEnd>
+                <th mat-header-cell *matHeaderCellDef class="text-end">
+                    <button mat-mini-fab color="primary" title="Ajouter" (click)="addAction()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </th>
+                <td mat-cell *matCellDef="let element" class="text-end">
+                    <div class="text-nowrap">                        
+                        <button mat-icon-button color="secondary" [matMenuTriggerFor]="menu">
+                            <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu"> 
+                            <button mat-menu-item color="primary">
+                                <mat-icon>open_in_new</mat-icon>Approuver
+                            </button>
+                            <button mat-menu-item color="primary">
+                                <mat-icon>open_in_new</mat-icon>Replacer en stock
+                            </button>
+                            <button mat-menu-item color="primary" title="Copier" >
+                                <mat-icon>content_copy</mat-icon>
+                            </button>
+                            <button mat-menu-item color="primary" title="Supprimer">
+                                <mat-icon>delete</mat-icon> Supprimer
+                            </button>
+                        </mat-menu>
+                    </div>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
+                [class.text-bg-danger]="row.action == 'DELETE'">
+            </tr>
+        </table>
+    </div>
+</section>

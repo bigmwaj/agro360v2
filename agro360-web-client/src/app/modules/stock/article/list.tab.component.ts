@@ -48,35 +48,9 @@ export class ListTabComponent extends BeanPagedListTab<ArticleBean, ArticleSearc
         return bean.articleCode.value;
     }
 
-    ngOnInit(): void {
-        this.resetSearchFormAction();
+    override ngOnInit(): void {
+        super.ngOnInit();
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem('Liste des articles & services');
-    }
-
-    addAction() {        
-        this.http.get(`stock/article/create-form`)
-        .subscribe(data => this.appendTab(<ArticleBean>data));
-    }
-
-    copyAction(bean: ArticleBean) {
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append("copyFrom", bean.articleCode.value);
-
-        this.http.get(`stock/article/create-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<ArticleBean>data));
-    }
-
-    editAction(bean: ArticleBean) {
-        if( this.isAlreadLoaded(bean) ){
-            this.displayTab(bean);
-            return;
-        }
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append("articleCode", bean.articleCode.value);
-
-        this.http.get(`stock/article/edit-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<ArticleBean>data));
     }
 
     deleteAction(bean: ArticleBean) {
@@ -93,5 +67,27 @@ export class ListTabComponent extends BeanPagedListTab<ArticleBean, ArticleSearc
 
     protected override getSearchUrl(): string {
         return `stock/article`;
+    }
+
+    protected override getEditFormUrl(): string {
+        return `stock/article/edit-form`;
+    }
+
+    protected override getCreateFormUrl(): string {
+        return `stock/article/create-form`;
+    }
+
+    protected override getEditQueryParam(bean: ArticleBean): HttpParams {
+        let queryParams = new HttpParams();
+        return queryParams.append("articleCode", bean.articleCode.value);
+    }
+    
+    protected override getCreateQueryParam(option?: any): HttpParams {
+        let queryParams = new HttpParams();
+        if( option?.bean) {
+            queryParams = queryParams.append("copyFrom", option.bean.articleCode.value);    
+        }
+
+        return queryParams;
     }
 }

@@ -60,26 +60,29 @@
                     </button> 
                 </div> 
             </div>
-            <div class="row">                 
-                <div class="col-4">
-                    <input-number-field [field]="bean.paiementComptant"></input-number-field>
-                    <button mat-icon-button color="primary" 
-                        class="field-button"  
-                        matTooltip="Synchroniser avec le prix total de la commande" 
-                        (click)="piementComptantTotalAction()">
-                        <mat-icon>currency_exchange</mat-icon>
-                    </button> 
-                </div>  
-                <div class="col-4">
-                    <select-one-field [field]="bean.compte.compteCode"></select-one-field>
-                </div>  
-                <div class="col-4">
-                    <button mat-fab color="warn" 
-                        extended class="ms-3" 
-                        (click)="encaisserAction()"
-                        *ngIf="bean.encaissementBtn.visible">
-                        <mat-icon>currency_exchange</mat-icon> Encaisser
-                    </button>
+            <div class="row">        
+                <div class="col-12">
+                    <div class="d-flex">
+                        <button mat-fab color="primary" 
+                            extended 
+                            (click)="saveAction({processPaiement:true})"
+                            *ngIf="bean.reglerBtn.visible">
+                            <mat-icon>currency_exchange</mat-icon> Régler
+                        </button>
+                        <div class="ms-auto flex-fill"></div>
+                        <button mat-fab color="basic" 
+                            extended class="ms-1" 
+                            (click)="saveAction({terminer:true})"
+                            *ngIf="bean.terminerBtn.visible">
+                            <mat-icon>currency_exchange</mat-icon> Terminer
+                        </button>
+                        <button mat-fab color="basic" 
+                            extended class="ms-1" 
+                            (click)="annulerAction()"
+                            *ngIf="bean.annulerBtn.visible">
+                            <mat-icon>currency_exchange</mat-icon> Annuler
+                        </button>
+                    </div>
                 </div>                 
             </div>
         </div>

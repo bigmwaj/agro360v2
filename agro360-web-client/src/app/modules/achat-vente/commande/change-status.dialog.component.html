@@ -1,7 +1,12 @@
 <h2 mat-dialog-title>Confirmation changement de status</h2>
-<mat-dialog-content>
-    <div class="container-fluid mt-3">
+<mat-dialog-content class="mb-0 pb-0">
+    <div class="container-fluid m-0 p-0">
         <div *ngIf="bean">
+            <div class="row" *ngIf="message">
+                <div class="col-12">
+                    <div class="text-info mb-3 p-1 border border-danger" innerHTML={{message}}></div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-6">
                     <input-text-field [field]="bean.commandeCode" [label]="'Ref Commande'"></input-text-field>
@@ -15,7 +20,8 @@
                     <input-datetime-field [field]="bean.statusDate"></input-datetime-field>
                 </div>
                 <div class="col-6">
-                    <select-one-field [field]="bean.status"></select-one-field>
+                    <select-one-field *ngIf="!status" [field]="bean.status"></select-one-field>
+                    <input-text-field *ngIf="status" [field]="bean.status"></input-text-field>
                 </div>
             </div>
         </div>

@@ -10,6 +10,7 @@ import com.agro360.bo.bean.av.LigneBean;
 import com.agro360.bo.bean.av.LigneTaxeBean;
 import com.agro360.bo.bean.av.ReceptionLigneBean;
 import com.agro360.bo.bean.av.ReglementCommandeBean;
+import com.agro360.bo.bean.av.ReglementFactureBean;
 import com.agro360.bo.bean.av.RetourLigneBean;
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.utils.Constants;
@@ -19,6 +20,7 @@ import com.agro360.dto.av.LigneDto;
 import com.agro360.dto.av.LigneTaxeDto;
 import com.agro360.dto.av.ReceptionLigneDto;
 import com.agro360.dto.av.ReglementCommandeDto;
+import com.agro360.dto.av.ReglementFactureDto;
 import com.agro360.dto.av.RetourLigneDto;
 
 public class AchatVenteMapper {
@@ -34,10 +36,15 @@ public class AchatVenteMapper {
 		bean.getCommandeCode().setValue(dto.getCommandeCode());
 		bean.getDate().setValue(dto.getDate());
 		bean.getStatus().setValue(dto.getStatus());
+		if( bean.getStatus().getValue() != null ) {
+			bean.getStatus().setValueI18n(bean.getStatus().getValue().getLibelle());
+		}
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getType().setValue(dto.getType());
+		if( bean.getType().getValue() != null ) {
+			bean.getType().setValueI18n(bean.getType().getValue().getLibelle());
+		}
 		bean.getCumulPaiement().setValue(dto.getCumulPaiement());
-
 		bean.getPrixTotal().setValue(dto.getPrixTotal());
 		bean.getPrixTotalHT().setValue(dto.getPrixTotalHT());
 		bean.getTaxe().setValue(dto.getTaxe());
@@ -64,6 +71,17 @@ public class AchatVenteMapper {
 		}
 		return bean;
 	}
+	
+	public static ReglementFactureBean map(ReglementFactureDto dto) {
+		var bean = new ReglementFactureBean();
+		
+		bean.getFactureCode().setValue(dto.getFactureCode());
+		bean.getReglementId().setValue(dto.getReglementId());
+		if (dto.getTransaction() != null) {
+			bean.setTransaction(FinanceMapper.map(dto.getTransaction()));
+		}
+		return bean;
+	}
 
 	public static FactureSearchBean buildFactureSearchBean() {
 		var bean = new FactureSearchBean();
@@ -77,8 +95,12 @@ public class AchatVenteMapper {
 		bean.getDate().setValue(dto.getDate());
 		bean.getStatus().setValue(dto.getStatus());
 		bean.getDescription().setValue(dto.getDescription());
-		bean.getMontant().setValue(dto.getMontant());
+		bean.getCumulPaiement().setValue(dto.getCumulPaiement());
+		bean.getPrixTotal().setValue(dto.getPrixTotal());
+		bean.getPrixTotalHT().setValue(dto.getPrixTotalHT());
+		bean.getTaxe().setValue(dto.getTaxe());
 		bean.getType().setValue(dto.getType());
+		bean.getRemise().setValue(dto.getRemise());
 
 		if (null != dto.getPartner()) {
 			var partner = new PartnerBean();

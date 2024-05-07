@@ -19,12 +19,12 @@ import lombok.EqualsAndHashCode;
 public class LigneTaxeDto extends AbstractDto {
 	
 	@Id
-	@Column(name = "COMMANDE_CODE", updatable = false, length = 16)
+	@Column(name = "COMMANDE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String commandeCode;
 	
 	@Id
-	@Column(name = "LIGNE_ID", nullable = false, updatable = false)
+	@Column(name = "LIGNE_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long ligneId;
 	
@@ -37,7 +37,7 @@ public class LigneTaxeDto extends AbstractDto {
 	/**
 	 * Pour permettre qu'on modifie le taux de la taxe source sans impacté la valeur d'usage actuelle
 	 */
-	@Column(name = "TAUX", nullable = false)
+	@Column(name = "TAUX")
 	private Double taux; 
 	
 }

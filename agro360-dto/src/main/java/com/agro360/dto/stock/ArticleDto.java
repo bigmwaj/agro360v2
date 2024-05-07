@@ -17,20 +17,21 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "STOCK_TBL_ARTICLE")
 public class ArticleDto extends AbstractDto {
+	
 	@Id
-	@Column(name = "ARTICLE_CODE", updatable = false, length = 16)
+	@Column(name = "ARTICLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String articleCode;
 
-	@Column(name = "DESCRIPTION", length = 64)
+	@Column(name = "DESCRIPTION")
 	private String description;
 
 	@ManyToOne()
-	@JoinColumn(name = "UNITE_CODE", nullable = false, updatable = false)
+	@JoinColumn(name = "UNITE_CODE", updatable = false)
 	private UniteDto unite;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "ARTICLE_TYPE", nullable = false, updatable = false, length = ArticleTypeEnumVd.COLUMN_LENGTH)
+	@Column(name = "ARTICLE_TYPE", updatable = false)
 	private ArticleTypeEnumVd type;
 
 }

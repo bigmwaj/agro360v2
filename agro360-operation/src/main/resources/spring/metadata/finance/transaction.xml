@@ -30,13 +30,6 @@
 			</list>
 		</property>
 	</bean>		
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/accompte">
-		<property name="editable">
-			<list>
-				<ref bean="IsBeanCreateOperation"/>
-			</list>
-		</property>
-	</bean>		
 		
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/note">
 		<property name="editable">
@@ -188,7 +181,6 @@
 				<entry key="statusDate" value-ref="transaction/statusDate"/>
 				<entry key="montant" value-ref="transaction/montant"/>
 				<entry key="note" value-ref="transaction/note"/>
-				<entry key="accompte" value-ref="transaction/accompte"/>
 			</map>
 		</property>
 		<property name="beans">

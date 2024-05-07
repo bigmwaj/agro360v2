@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+     <!-- Règles applicable à une commande -->
+    <bean class="com.agro360.operation.rule.module.av.IsCommandeEditableStatus" name="IsCommandeEditableStatus"/>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isModifiable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>BRLN</value>
+							<value>RGLM</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+	
+	<bean class="com.agro360.operation.rule.common.NotRule" name="commande.isChangeStatusAuth">
+		<constructor-arg>
+			<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+				<constructor-arg>
+					<list>
+						<value>CLOT</value>
+						<value>ANNL</value>
+					</list>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isDeletable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>BRLN</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isAnnulable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>RGLM</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isAnnulableOK">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>AANN</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isApprouvable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>RGLM</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isApprouvableOK">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>ATAP</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+	
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isRetournable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsTypeEquals">
+					<constructor-arg value="VENTE"/>
+				</bean>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>TERM</value>
+							<value>ATAP</value>
+							<value>APPR</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isReceptionnable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsTypeEquals">
+					<constructor-arg value="ACHAT"/>
+				</bean>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>TERM</value>
+							<value>ATAP</value>
+							<value>APPR</value>
+							<value>RECP</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isReglable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>BRLN</value>
+							<value>RGLM</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.AndRule" name="commande.isTerminable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+					<constructor-arg>
+						<list>
+							<value>BRLN</value>
+							<value>RGLM</value>
+						</list>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+    
+    <bean class="com.agro360.operation.rule.common.OrRule" name="commande.isCloturable">
+		<constructor-arg>
+			<list>
+				<bean class="com.agro360.operation.rule.common.AndRule">
+					<constructor-arg>
+						<list>
+							<bean class="com.agro360.operation.rule.module.av.commande.IsTypeEquals">
+								<constructor-arg value="VENTE"/>
+							</bean>
+							<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+								<constructor-arg>
+									<list>
+										<value>TERM</value>
+										<value>APPR</value>
+									</list>
+								</constructor-arg>
+							</bean>
+						</list>
+					</constructor-arg>		
+				</bean>
+				<bean class="com.agro360.operation.rule.common.AndRule">
+					<constructor-arg>
+						<list>
+							<bean class="com.agro360.operation.rule.module.av.commande.IsTypeEquals">
+								<constructor-arg value="ACHAT"/>
+							</bean>
+							<bean class="com.agro360.operation.rule.module.av.commande.IsStatusIn">
+								<constructor-arg>
+									<list>
+										<value>TERM</value>
+										<value>APPR</value>
+										<value>RECP</value>
+										<value>RECT</value>
+									</list>
+								</constructor-arg>
+							</bean>
+						</list>
+					</constructor-arg>		
+				</bean>
+			</list>
+		</constructor-arg>		
+	</bean>
+</beans>

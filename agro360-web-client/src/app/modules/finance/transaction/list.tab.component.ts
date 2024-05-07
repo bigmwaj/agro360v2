@@ -47,7 +47,6 @@ export class ListTabComponent extends BeanPagedListTab<TransactionBean, Transact
         'compte',
         'montant',
         'partner',
-        'accompte',
         'actions'
     ];
 
@@ -62,8 +61,9 @@ export class ListTabComponent extends BeanPagedListTab<TransactionBean, Transact
         return bean.transactionCode.value;
     }
 
-    ngOnInit(): void {
-        this.resetSearchFormAction()
+    override ngOnInit(): void {
+        super.ngOnInit();
+        
         let title:string
         if( this.module != null ){
             switch(this.module){
@@ -74,10 +74,12 @@ export class ListTabComponent extends BeanPagedListTab<TransactionBean, Transact
 
                 case "achat": 
                     title = "Paiements";
+                    this.partnerLabel = "Fournisseur";
                 break;
 
                 case "paie": 
                     title = "Salaires réglés";
+                    this.partnerLabel = "Employé";
                 break;
                 default:
                     title = `Transaction module ${this.module}`
@@ -132,39 +134,8 @@ export class ListTabComponent extends BeanPagedListTab<TransactionBean, Transact
         return sf;
     }
 
-    private _addAction(type:TransactionTypeEnumVd, bean?: TransactionBean) {   
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append("type", type);
-        if( bean ){
-            queryParams = queryParams.append("copyFrom", bean.transactionCode.value);
-        }
-
-        this.http.get(`finance/transaction/create-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<TransactionBean>data));
-    }
-    
-    addAction(type:TransactionTypeEnumVd) {   
-        this._addAction(type)
-    }
-    
-    copyAction(bean: TransactionBean) {   
-        this._addAction(bean.type.value, bean)
-    }
-
     areBeansEqual(b1:TransactionBean, b2:TransactionBean){
         return b1 == b2 || b1.transactionCode.value == b2.transactionCode.value;
-    }
-
-    editAction(bean: TransactionBean) {
-        if( this.isAlreadLoaded(bean) ){
-            this.displayTab(bean);
-            return;
-        }
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append("transactionCode", bean.transactionCode.value);
-
-        this.http.get(`finance/transaction/edit-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<TransactionBean>data));
     }
 
     deleteAction(bean: TransactionBean) {
@@ -219,5 +190,30 @@ export class ListTabComponent extends BeanPagedListTab<TransactionBean, Transact
 
     protected override getSearchUrl(): string {
         return `finance/transaction`;
+    }
+
+    protected override getEditFormUrl(): string {
+        return `finance/transaction/edit-form`;
+    }
+
+    protected override getCreateFormUrl(): string {
+        return `finance/transaction/create-form`;
+    }
+    
+    protected override getEditQueryParam(bean: TransactionBean): HttpParams {
+        let queryParams = new HttpParams();
+        return queryParams.append("transactionCode", bean.transactionCode.value);
+    }
+    
+    protected override getCreateQueryParam(option?: any): HttpParams {        
+        let queryParams = new HttpParams();
+        if( option?.bean) {
+            queryParams = queryParams.append("copyFrom", option.bean.transactionCode.value);  
+            queryParams = queryParams.append("type", option.bean.type.value);   
+        }
+        if( option?.type) {
+            queryParams = queryParams.append("type", option.type);   
+        }
+        return queryParams;
     }
 }

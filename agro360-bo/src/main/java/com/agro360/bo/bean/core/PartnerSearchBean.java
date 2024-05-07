@@ -1,7 +1,5 @@
 package com.agro360.bo.bean.core;
 
-import java.util.List;
-
 import com.agro360.bo.bean.common.AbstractSearchBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.core.PartnerStatusEnumVd;
@@ -20,9 +18,7 @@ public class PartnerSearchBean extends AbstractSearchBean{
 
 	private FieldMetadata<PartnerTypeEnumVd> type = new FieldMetadata<>("Type", PartnerTypeEnumVd.getAsMap());
 
-	private FieldMetadata<List<PartnerStatusEnumVd>> statusIn = new FieldMetadata<>("Statut", PartnerStatusEnumVd.getAsMap());
-
-	private FieldMetadata<String> partnerName = new FieldMetadata<>("Nom du Partner");
+	private FieldMetadata<PartnerStatusEnumVd> statusIn = new FieldMetadata<>("Statut", PartnerStatusEnumVd.getAsMap());
 
 	private FieldMetadata<String> phone = new FieldMetadata<>("Téléphone");
 

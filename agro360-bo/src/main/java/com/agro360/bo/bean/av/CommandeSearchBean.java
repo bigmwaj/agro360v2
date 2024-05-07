@@ -31,4 +31,8 @@ public class CommandeSearchBean extends AbstractSearchBean{
 
 	private FieldMetadata<LocalDate> dateFin = new FieldMetadata<>("Date(fin)");
 
+	private FieldMetadata<String> receptionBtn = new FieldMetadata<>("Réception ligne");
+
+	private FieldMetadata<String> retourBtn = new FieldMetadata<>("Retour ligne");
+
 }

@@ -23,46 +23,47 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "AV_TBL_COMMANDE")
 public class CommandeDto extends AbstractStatusTrackingDto<CommandeStatusEnumVd> {
+	
 	@Id
 	@Column(name = "COMMANDE_CODE", updatable = false, length = 16)
 	@EqualsAndHashCode.Include()
 	private String commandeCode;
 
-	@Column(name = "COMMANDE_DATE", nullable = false)
+	@Column(name = "COMMANDE_DATE")
 	private LocalDate date;
 
 	@ManyToOne()
-	@JoinColumn(name = "PARTNER_CODE", nullable = false, updatable = false)
+	@JoinColumn(name = "PARTNER_CODE", updatable = false)
 	private PartnerDto partner;
 	
 	@ManyToOne()
-	@JoinColumn(name = "MAGASIN_CODE", nullable = false, updatable = false)
+	@JoinColumn(name = "MAGASIN_CODE", updatable = false)
 	private MagasinDto magasin;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "COMMANDE_TYPE", nullable = false, updatable = false, length = CommandeTypeEnumVd.COLUMN_LENGTH)
+	@Column(name = "COMMANDE_TYPE", updatable = false)
 	private CommandeTypeEnumVd type;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = CommandeStatusEnumVd.COLUMN_LENGTH)
+	@Column(name = "STATUS")
 	private CommandeStatusEnumVd status;
 
-	@Column(name = "DESCRIPTION", length = 256)
+	@Column(name = "DESCRIPTION")
 	private String description;
 
 	@Column(name = "CUMUL_PAIEMENT", precision = 16, scale = 4)
 	private BigDecimal cumulPaiement;
 	
-	@Column(name = "TAXE", precision = 16, scale = 4, nullable = false)
+	@Column(name = "TAXE", precision = 16, scale = 4)
 	private BigDecimal taxe;
 
-	@Column(name = "REMISE", precision = 16, scale = 4, nullable = false)
+	@Column(name = "REMISE", precision = 16, scale = 4)
 	private BigDecimal remise;
 	
-	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4, nullable = false)
+	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4)
 	private BigDecimal prixTotalHT;
 	
-	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4, nullable = false)
+	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4)
 	private BigDecimal prixTotal;
 
 }

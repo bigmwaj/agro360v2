@@ -17,17 +17,17 @@ import lombok.EqualsAndHashCode;
 public class RubriqueDto extends AbstractDto{
 
 	@Id
-	@Column(name = "RUBRIQUE_CODE", updatable = false, length = 16)
+	@Column(name = "RUBRIQUE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String rubriqueCode;
 
-	@Column(name = "NOM", length = 32)
-	private String nom;
+	@Column(name = "LIBELLE")
+	private String libelle;
 
-	@Column(name = "DESCRIPTION", length = 128)
+	@Column(name = "DESCRIPTION")
 	private String description;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TRANSACTION_TYPE", nullable = false, updatable = false, length = TransactionTypeEnumVd.COLUMN_LENGTH)
+	@Column(name = "TRANSACTION_TYPE", updatable = false)
 	private TransactionTypeEnumVd type;
 }

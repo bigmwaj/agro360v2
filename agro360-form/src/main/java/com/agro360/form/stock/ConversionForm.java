@@ -10,20 +10,24 @@ import org.springframework.stereotype.Component;
 import com.agro360.bo.bean.stock.ConversionBean;
 import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.UniteSearchBean;
+import com.agro360.form.common.AbstractForm;
+import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.stock.UniteOperation;
 import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
-public class ConversionForm {
+public class ConversionForm extends AbstractForm{
 
 	@Autowired
 	UniteOperation uniteService;
 
+	@MetadataBeanName("stock/conversion")
 	public ConversionBean initCreateFormBean(ClientContext ctx, String articleCode, Optional<String> copyFrom) {
 		var bean = new ConversionBean();
 		bean.setAction(ClientOperationEnumVd.CREATE);
 		initUniteOption(ctx, bean);
+		getLogger().debug("On test ...");
 		return bean;
 	}
 	

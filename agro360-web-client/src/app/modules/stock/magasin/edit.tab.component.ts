@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { MagasinBean } from 'src/app/backed/bean.stock';
-import { Message } from 'src/app/backed/message';
-import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
-import { BreadcrumbItem, UIService } from 'src/app/modules/common/service/ui.service';
+import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanEditTab } from '../../common/bean.edit.tab';
 
@@ -20,13 +16,9 @@ import { BeanEditTab } from '../../common/bean.edit.tab';
 export class EditTabComponent extends BeanEditTab<MagasinBean> implements OnInit {
 
     constructor(
-        private http: HttpClient,
+        public override http: HttpClient,
         public override ui: UIService) {
-        super(ui);
-    }
-
-    isCreation(): boolean {
-        return ClientOperationEnumVd.CREATE == this.bean.action;
+        super(ui, http);
     }
     
     ngOnInit(): void {
@@ -37,11 +29,7 @@ export class EditTabComponent extends BeanEditTab<MagasinBean> implements OnInit
         }
     }
 
-    saveAction() {
-        this.http.post(`stock/magasin`, BeanTools.reviewBeanAction(this.bean))
-            .pipe(map((e: any) => <any>e))
-            .subscribe(data => {
-                this.ui.displayFlashMessage(<Array<Message>>data.messages);
-            });
+    saveUrl():string {
+        return `stock/magasin`;
     }
 }

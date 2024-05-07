@@ -1,6 +1,6 @@
 package com.agro360.ws.controller.av;
 
-import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
+import com.agro360.bo.bean.av.PaiementBean;
+import com.agro360.bo.bean.av.ReglementBean;
 import com.agro360.form.av.FactureForm;
+import com.agro360.operation.context.ClientContext;
 import com.agro360.service.av.FactureService;
+import com.agro360.vd.av.FactureTypeEnumVd;
+import com.agro360.vd.common.ClientOperationEnumVd;
 import com.agro360.ws.controller.common.AbstractController;
 
 @RestController()
@@ -50,8 +55,8 @@ public class FactureController extends AbstractController {
 	}
 
 	@GetMapping(CREATE_FORM_RN)
-	public ResponseEntity<FactureBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
-		return ResponseEntity.ok(form.initCreateFormBean(getClientContext(), copyFrom));
+	public ResponseEntity<FactureBean> getCreateFormAction(@RequestParam FactureTypeEnumVd type, @RequestParam Optional<String> copyFrom) {
+		return ResponseEntity.ok(form.initCreateFormBean(getClientContext(), type, copyFrom));
 	}
 
 	@GetMapping(DELETE_FORM_RN)
@@ -65,30 +70,61 @@ public class FactureController extends AbstractController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated FactureBean bean) {
-		var action = bean.getAction();
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated FactureBean bean, @RequestParam Optional<Boolean> processPaiement) {
 		var ctx = getClientContext();
-		var model = new ModelMap();
 		
 		service.save(ctx, bean);
-		switch (action) {
-		case CREATE:
-		case UPDATE:
+		
+		var commandeCode = bean.getFactureCode().getValue();
+		if( processPaiement.isPresent() && processPaiement.get() ) {
+			return initPaiementAction(ctx, commandeCode);
+		}
+		
+		var action = bean.getAction();
+		var model = new ModelMap();
+		if( !ClientOperationEnumVd.DELETE.equals(action)) {
 			bean = form.initEditFormBean(ctx, bean.getFactureCode().getValue());	
 			model.addAttribute(RECORD_MODEL_KEY, bean);
-			break;
-			
-		case CHANGE_STATUS:
-			bean = service.findFacture(ctx, bean.getFactureCode().getValue());
-			var beans = Collections.singletonList(bean);
-			beans = form.initSearchResultBeans(ctx, beans);
-			model.addAttribute(RECORD_MODEL_KEY, beans.get(0));
-			break;
-
-		default:
-			break;
 		}
 		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
 		return ResponseEntity.ok(model);
+	}
+	
+	@GetMapping("/init-paiement")
+	public ResponseEntity<ModelMap> initPaiementAction(
+			@RequestParam(required = true) String factureCode) {
+		return initPaiementAction(getClientContext(), factureCode);
+	}
+
+	private ResponseEntity<ModelMap> initPaiementAction( ClientContext ctx, String factureCode) {
+		var model = new ModelMap();
+		var paiements = form.initPaiementsFormBean(ctx, factureCode);
+		var bean = form.initEditFormBean(ctx, factureCode);	
+		model.addAttribute(RECORD_MODEL_KEY, bean);
+		model.addAttribute(RECORDS_MODEL_KEY, paiements);
+		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
+		return ResponseEntity.ok(model);
+	}
+	
+	@PostMapping("/encaisser")
+	public ResponseEntity<ModelMap> encaisserAction(
+			@RequestParam(required = true) String factureCode,
+			@RequestBody @Validated List<PaiementBean> paiements) {
+		var ctx = getClientContext();
+		var model = new ModelMap();
+		
+		service.reglerFacture(ctx, factureCode, paiements);
+		var facture = form.initEditFormBean(ctx, factureCode);	
+		model.addAttribute(RECORD_MODEL_KEY, facture);
+		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
+		return ResponseEntity.ok(model);
+	}
+	
+	@GetMapping("/reglement")
+	public ResponseEntity<List<ReglementBean>> getReglementsAction(
+			@RequestParam(required = true) String factureCode) {		
+		var ctx = getClientContext();
+		var reglements = service.findReglements(ctx, factureCode);
+		return ResponseEntity.ok(reglements);
 	}
 }

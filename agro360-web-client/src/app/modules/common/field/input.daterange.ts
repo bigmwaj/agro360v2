@@ -7,6 +7,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldAppearance } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     standalone: true,
@@ -17,6 +18,7 @@ import { MatFormFieldAppearance } from '@angular/material/form-field';
         MatNativeDateModule,
         MatDatepickerModule,
         MatInputModule, 
+        MatTooltipModule
     ],
     selector: 'input-daterange-field',
     template: `
@@ -28,10 +30,12 @@ import { MatFormFieldAppearance } from '@angular/material/form-field';
             [comparisonEnd]="endField.value">
             <input matStartDate placeholder="Start date"  [(ngModel)]="startField.value"
                 [disabled]="!startField.editable"
+                [matTooltip]="startField.tooltip"
                 [required]="startField.required"/>
                 
             <input matEndDate placeholder="End date" [(ngModel)]="endField.value"
                 [disabled]="!endField.editable"
+                [matTooltip]="endField.tooltip"
                 [required]="endField.required"/>
         </mat-date-range-input>
         <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>

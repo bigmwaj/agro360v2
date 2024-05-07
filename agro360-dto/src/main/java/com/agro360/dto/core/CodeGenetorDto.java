@@ -14,14 +14,14 @@ import lombok.EqualsAndHashCode;
 public class CodeGenetorDto extends AbstractDto {
 	
 	@Id
-	@Column(name = "CODE_GEN_CODE", nullable = false, updatable = false, length = 16)
+	@Column(name = "CODE_GEN_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String codeGenCode;
 	
-	@Column(name = "PREF", nullable = false, updatable = false, length = 4)
+	@Column(name = "PREF", updatable = false)
 	private String prefix;
 
-	@Column(name = "SEQ", nullable = false)
+	@Column(name = "SEQ")
 	private Long sequence;
 
 }

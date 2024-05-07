@@ -2,8 +2,6 @@ package com.agro360.dto.common;
 
 import java.time.LocalDateTime;
 
-import com.agro360.dto.core.PartnerDto;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
@@ -17,15 +15,15 @@ import lombok.EqualsAndHashCode;
 @MappedSuperclass
 public abstract class AbstractDto {
 
-	@Column(name = "CREATED_BY", nullable = false, updatable = false, length = PartnerDto.PARTNER_CODE_LENGTH)
+	@Column(name = "CREATED_BY", updatable = false)
 	private String createBy;
 
-	@Column(name = "CREATED_AT", nullable = false, updatable = false)
+	@Column(name = "CREATED_AT", updatable = false)
 	private LocalDateTime createAt;
 
-	@Column(name = "UPDATED_BY", nullable = false, updatable = true, length = PartnerDto.PARTNER_CODE_LENGTH)
+	@Column(name = "UPDATED_BY")
 	private String updateBy;
 
-	@Column(name = "UPDATED_AT", nullable = false, updatable = true)
+	@Column(name = "UPDATED_AT")
 	private LocalDateTime updateAt;
 }

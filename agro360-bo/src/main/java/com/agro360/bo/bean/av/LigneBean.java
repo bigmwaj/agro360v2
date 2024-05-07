@@ -49,10 +49,6 @@ public class LigneBean extends AbstractBean {
 
 	private FieldMetadata<String> remiseRaison = new FieldMetadata<>("Raison Remise");
 
-	private FieldMetadata<String> receptionBtn = new FieldMetadata<>("Réception ligne");
-
-	private FieldMetadata<String> retourBtn = new FieldMetadata<>("Retour ligne");
-
 	@Setter
 	private UniteBean unite = new UniteBean();
 

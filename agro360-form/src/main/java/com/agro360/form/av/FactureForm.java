@@ -1,86 +1,110 @@
 package com.agro360.form.av;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
+import com.agro360.bo.bean.av.PaiementBean;
+import com.agro360.bo.bean.core.PartnerBean;
+import com.agro360.bo.bean.core.PartnerSearchBean;
+import com.agro360.bo.bean.finance.CompteSearchBean;
 import com.agro360.bo.mapper.AchatVenteMapper;
+import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.av.FactureOperation;
+import com.agro360.operation.logic.core.PartnerOperation;
+import com.agro360.operation.logic.finance.CompteOperation;
 import com.agro360.vd.av.FactureStatusEnumVd;
+import com.agro360.vd.av.FactureTypeEnumVd;
 import com.agro360.vd.common.ClientOperationEnumVd;
 
 @Component
 public class FactureForm {
 
 	@Autowired
-	private FactureOperation operation;	
+	private FactureOperation operation;
+	
+	@Autowired
+	private PartnerOperation partnerOperation;
+	@Autowired
+	private CompteOperation compteOperation;	
 
-	public FactureBean initCreateFormBean(ClientContext ctx, Optional<String> copyFrom) {
-		var bean = new FactureBean();
-		
+	@MetadataBeanName("av/facture")
+	public FactureBean initCreateFormBean(ClientContext ctx, FactureTypeEnumVd type, Optional<String> copyFrom) {
+		var bean = copyFrom.map(e -> operation.findFactureByCode(ctx, e))
+				.orElse(new FactureBean());
 		bean.setAction(ClientOperationEnumVd.CREATE);
-		
+		bean.getType().setValue(type);
 		bean.getStatus().setValue(FactureStatusEnumVd.BRLN);
-		bean.getStatus().setEditable(false);
-		
-		bean.getFactureCode().setRequired(true);
 		bean.getFactureCode().setValue(operation.generateFactureCode());
-		
-		bean.getType().setRequired(true);
-		
-		bean.getDate().setRequired(true);
 		bean.getDate().setValue(LocalDate.now());
-		
-		bean.getMontant().setRequired(true);
-		
+		bean.getCumulPaiement().setValue(BigDecimal.ZERO);
+		initPartnerOption(ctx, bean.getPartner().getPartnerCode()::setValueOptions);
 		return bean;
 	}
+
+	@MetadataBeanName("av/facture-init-paiement")
+	public List<PaiementBean> initPaiementsFormBean(ClientContext ctx, String factureCode) {
+		return compteOperation.findComptesByCriteria(ctx, new CompteSearchBean())
+			.stream().map(PaiementBean::new)
+			.collect(Collectors.toList());
+	}
 	
+	@MetadataBeanName("av/facture")
 	public FactureBean initEditFormBean(ClientContext ctx, String factureCode) {
 		var bean = operation.findFactureByCode(ctx, factureCode);
 		
 		bean.setAction(ClientOperationEnumVd.UPDATE);
-		
-		bean.getFactureCode().setRequired(true);
-		bean.getStatus().setEditable(false);
 		return bean;
 	}
 
+	@MetadataBeanName("av/facture")
 	public FactureBean initDeleteFormBean(ClientContext ctx, String factureCode) {
 		var bean = operation.findFactureByCode(ctx, factureCode);
-		
 		bean.setAction(ClientOperationEnumVd.DELETE);
-		
-		bean.getFactureCode().setRequired(true);
 		return bean;
 	}
 
+	@MetadataBeanName("av/facture")
 	public FactureBean initChangeStatusFormBean(ClientContext ctx, String factureCode) {
 		var bean = operation.findFactureByCode(ctx, factureCode);
 		
 		bean.setAction(ClientOperationEnumVd.CHANGE_STATUS);
-		
-		bean.getFactureCode().setRequired(true);
-		bean.getStatus().setRequired(true);
-		
 		bean.getStatusDate().setValue(LocalDateTime.now());
 		return bean;
 	}
 
+	@MetadataBeanName("av/facture-search")
 	public FactureSearchBean initSearchFormBean(ClientContext ctx) {
 		var bean = AchatVenteMapper.buildFactureSearchBean();
 		return bean;
 	}
-
+	
+	@MetadataBeanName("av/facture-search-result")
 	public List<FactureBean> initSearchResultBeans(ClientContext ctx, List<FactureBean> beans) {
 		return beans;
 	}
+
+	private void initPartnerOption(ClientContext ctx, Consumer<Map<Object, String>> valueOptionsSetter) {
+		Function<PartnerBean, Object> codeFn = e -> e.getPartnerCode().getValue();
+		Function<PartnerBean, String> libelleFn = e -> e.getPartnerName().getValue();
+		
+		var options = partnerOperation.findPartnersByCriteria(ctx, new PartnerSearchBean())
+				.stream().collect(Collectors.toMap(codeFn, libelleFn));
+		
+		valueOptionsSetter.accept(options);
+	}
+	
 
 }

@@ -32,13 +32,14 @@ public class RetourLigneOperation extends AbstractOperation<RetourLigneDto, Long
 	protected IDao<RetourLigneDto, Long> getDao() {
 		return dao;
 	}
-
-	public List<RetourLigneBean> findCommandeRetourLignes(ClientContext ctx, String commandeCode, Long ligneId) {
-		return dao.findAllByCommandeCodeAndLigneLigneId(commandeCode, ligneId).stream()
-			.map(AchatVenteMapper::map).collect(Collectors.toList());
+	
+	public List<RetourLigneBean> findCommandeRetours(ClientContext ctx, String commandeCode) {
+		return dao.findAllByCommandeCode(commandeCode).stream()
+				.map(AchatVenteMapper::map).collect(Collectors.toList());
 	}
 
-	public void createRetourLigne(ClientContext ctx, String commandeCode, Long ligneId, RetourLigneBean bean) {
+	public void createRetourLigne(ClientContext ctx, String commandeCode, RetourLigneBean bean) {
+		var ligneId = bean.getLigne().getLigneId().getValue();
 		var dto = new RetourLigneDto();
 		setDtoValue(dto::setDescription, bean.getDescription());
 		setDtoValue(dto::setQuantite, bean.getQuantite());
@@ -57,7 +58,8 @@ public class RetourLigneOperation extends AbstractOperation<RetourLigneDto, Long
 		
 	}
 
-	public void updateRetourLigne(ClientContext ctx, String commandeCode, Long ligneId, RetourLigneBean bean) {
+	public void updateRetourLigne(ClientContext ctx, String commandeCode, RetourLigneBean bean) {
+		var ligneId = bean.getLigne().getLigneId().getValue();
 		var retourId = bean.getRetourId().getValue();
 		var dto = dao.findOndByCommandeCodeAndLigneLigneIdAndRetourId(commandeCode, ligneId, retourId).orElseThrow();
 		
@@ -72,7 +74,8 @@ public class RetourLigneOperation extends AbstractOperation<RetourLigneDto, Long
 		super.save(dto);
 	}
 
-	public void deleteRetourLigne(ClientContext ctx, String commandeCode, Long ligneId, RetourLigneBean bean) {
+	public void deleteRetourLigne(ClientContext ctx, String commandeCode, RetourLigneBean bean) {
+		var ligneId = bean.getLigne().getLigneId().getValue();
 		var retourId = bean.getRetourId().getValue();
 		var dto = dao.findOndByCommandeCodeAndLigneLigneIdAndRetourId(commandeCode, ligneId, retourId).orElseThrow();
 		

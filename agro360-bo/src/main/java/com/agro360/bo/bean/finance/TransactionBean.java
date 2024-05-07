@@ -30,12 +30,6 @@ public class TransactionBean extends AbstractStatusTrackingBean<TransactionStatu
 	private FieldMetadata<String> note = new FieldMetadata<>("Note");
 
 	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
-	
-	private FieldMetadata<Boolean> accompte = new FieldMetadata<>("Accompte");
-
-	private FieldMetadata<String> deleteBtn = new FieldMetadata<>();
-	
-	private FieldMetadata<String> saveBtn = new FieldMetadata<>();
 
 	@Setter
 	private PartnerBean partner = new PartnerBean();

@@ -105,21 +105,19 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 	
 	@RuleNamespace("core/partner/search")
 	public List<PartnerBean> findPartnersByCriteria(ClientContext ctx, PartnerSearchBean searchBean) {
-		var code = getNullOrUpperCase(searchBean::getPartnerCode);
+		var code = getNullOrUpperCase(searchBean::getPartnerCode, "%");
+		var phone = getNullOrUpperCase(searchBean::getPhone, "%");
+		var email = getNullOrUpperCase(searchBean::getEmail, "%");
+		var city = getNullOrUpperCase(searchBean::getCity, "%");
 		var type = searchBean.getType().getValue();
-		var email = getNullOrUpperCase(searchBean::getEmail);
-		var phone = getNullOrUpperCase(searchBean::getPhone);
-		var name = getNullOrUpperCase(searchBean::getPartnerName);
-		var city = getNullOrUpperCase(searchBean::getCity);
 		
 		var status = searchBean.getStatusIn().getValue();
-		if( status != null && status.isEmpty() ) {
-			status = null;
-		}
-		var length = dao.countPartnersByCriteria(code, type, city, phone, email, status, name);
+		
+		var length = dao.countPartnersByCriteria(code, type, status, phone, email, city);
         searchBean.setLength(length);
-        return dao.findPartnersByCriteria(searchBean.getOffset(), searchBean.getLimit(), 
-        		code, type, city, phone, email, status, name)
+        var offset = searchBean.getOffset();
+        var limit = searchBean.getLimit();
+        return dao.findPartnersByCriteria(offset, limit, code, type, status, phone, email, city)
         		.stream().map(CoreMapper::map)
         		.collect(Collectors.toList());
 	}

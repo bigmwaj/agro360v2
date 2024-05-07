@@ -123,12 +123,18 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
 	}
 
-	@RuleNamespace("av/ligne/delete")
 	public void deleteLigne(ClientContext ctx, CommandeBean commande, LigneBean bean) {
 		var dto = findLigneDto(commande, bean);
 		var msgTpl = "Ligne %d supprimée avec succès";
 		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
 		dao.delete(dto);
+	}
+	
+	public void deleteLignesCommande(ClientContext ctx, CommandeBean bean) {
+		var lignes = findLignesCommande(ctx, bean.getCommandeCode().getValue());
+		for (LigneBean ligne : lignes) {
+			deleteLigne(ctx, bean, ligne);
+		}
 	}
 
 	public LigneBean findLigneByCode(ClientContext ctx, String commandeCode, Long ligneId) {

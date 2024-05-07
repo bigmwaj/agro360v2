@@ -24,22 +24,6 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search/type">
 	</bean>							
 		
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search/partnerName">
-		<property name="maxLength">
-			<list>
-				<bean class="com.agro360.operation.metadata.ConstraintConfig">
-					<property name="actions">
-						<list>
-							<bean class="com.agro360.operation.action.common.SetValueAction">
-								<constructor-arg value="16"/>											
-							</bean>
-						</list>
-					</property>
-				</bean>							
-			</list>
-		</property>
-	</bean>				
-		
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search/statusIn">
 	</bean>				
 		
@@ -117,7 +101,6 @@
 			<map>
 				<entry key="partnerCode" value-ref="partner-search/partnerCode"/>
 				<entry key="type" value-ref="partner-search/type"/>
-				<entry key="partnerName" value-ref="partner-search/partnerName"/>
 				<entry key="statusIn" value-ref="partner-search/statusIn"/>
 				<entry key="phone" value-ref="partner-search/phone"/>
 				<entry key="email" value-ref="partner-search/email"/>

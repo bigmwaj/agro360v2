@@ -21,7 +21,7 @@
 				</bean>							
 			</list>
 		</property>
-	</bean>				
+	</bean>	
 	
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="inventaire-search/createBtn">
 		<property name="visible">

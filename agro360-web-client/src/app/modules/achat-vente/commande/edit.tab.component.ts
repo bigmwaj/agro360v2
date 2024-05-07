@@ -1,18 +1,17 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { map } from 'rxjs';
-import { CommandeBean, LigneBean } from 'src/app/backed/bean.av';
-import { Message } from 'src/app/backed/message';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommandeBean, LigneBean, PaiementBean } from 'src/app/backed/bean.av';
+import { CommandeStatusEnumVd } from 'src/app/backed/vd.av';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { EditLigneListComponent } from './edit.ligne.list.component';
-import { EditRemiseDialogComponent } from './edit.remise.dialog.component';
 import { BeanEditTab } from '../../common/bean.edit.tab';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { DisplayReglementDialogComponent } from './display.reglement.dialog.component';
+import { PaiementDialogComponent } from '../common/paiement.dialog.component';
+import { ChangeStatusDialogComponent } from './change-status.dialog.component';
+import { EditLigneListComponent } from './ligne/edit.ligne.list.component';
+import { ReglementDialogComponent } from '../common/reglement.dialog.component';
 
 @Component({
     standalone: true,
@@ -35,10 +34,10 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
     partnerLabel: string
 
     constructor(
-        private http: HttpClient,
+        public override http: HttpClient,
         public override ui: UIService,
         public dialog: MatDialog) { 
-        super(ui);
+        super(ui, http);
     }
     
     ngOnInit(): void {
@@ -82,49 +81,76 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
      * Liste des actions que peut exécuter un utilisateur *
      * ****************************************************
      */
+     override getSaveQueryParam(option?:any){
+        let queryParams = super.getSaveQueryParam();
+        if( option?.processPaiement ){
+            queryParams = queryParams.append('processPaiement', option.processPaiement);
+        }
+        return queryParams;
+     }
 
-    piementComptantTotalAction() {
-        this.bean.paiementComptant.value = this.bean.prixTotal.value - this.bean.cumulPaiement.value;
-        this.bean.paiementComptant.valueChanged = true
-    }
-     
-    saveAction() {
-        this.http.post(`achat-vente/commande`, BeanTools.reviewBeanAction(this.bean))
-            .pipe(map((e: any) => <any>e))
-            .subscribe(data => {
-                this.ui.displayFlashMessage(<Array<Message>>data.messages);
-                this.afterSaveAction(data.record)
-            });
-    }
+     override saveUrl(): string {
+         return `achat-vente/commande`;
+     }
 
-    encaisserAction() {
-        this.http.post(`achat-vente/commande/encaisser`, BeanTools.reviewBeanAction(this.bean))
-            .pipe(map((e: any) => <any>e))
-            .subscribe(data => {
-                this.ui.displayFlashMessage(<Array<Message>>data.messages);
-                this.afterSaveAction(data.record)
-            });
-    } 
-    
-    protected override afterSaveAction(bean: CommandeBean): void {
-        super.afterSaveAction(bean);
+    protected override afterSaveAction(bean: CommandeBean, option?:any): void {
+        super.afterSaveAction(bean, option);
+
         this.ligneList.commande = bean
-        this.ligneList.setData(bean.lignes)
+        this.ligneList.setData(bean.lignes);
+        if( option?.processPaiement && option?.data ){
+            this.initPaiement(bean, option?.data.records)
+        }
+
+        if( option?.terminer ){
+            this.changerStatus(CommandeStatusEnumVd.ATAP, `Etes vous sûr de vouloir terminer la commande? <br/>La commande sera placée en attente approbation.`)
+        }
     }
+
+    private changerStatus(status: CommandeStatusEnumVd, message:string){
+        let dialogRef = this.dialog.open(ChangeStatusDialogComponent, { data: {
+                commandeCode: this.bean.commandeCode.value,
+                status:status,
+                message:message
+            } 
+        });
+        dialogRef.afterClosed().subscribe(result => {
+            if( result ){
+                super.afterSaveAction(result);
+            }
+        });  
+    }
+    
+    annulerAction(){
+        this.changerStatus(CommandeStatusEnumVd.AANN, `Etes vous sur de vouloir annuler la commande? <br/>La commande sera placée en attente annulation.`)
+    }
+
+    private initPaiement(bean: CommandeBean, paiements:Array<PaiementBean>) {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("commandeCode", this.bean.commandeCode.value);
+
+        let dialogRef = this.dialog.open(PaiementDialogComponent, { data: {
+                    bean:bean, 
+                    paiements: paiements, 
+                    saveUrl: `achat-vente/commande/encaisser`,
+                    saveParams:queryParams
+                } 
+            });
+            dialogRef.afterClosed().subscribe(result => {
+                if( result ){
+                    this.afterSaveAction(result);
+                }
+        }); 
+    } 
 
     afficherReglementAction() {
-        this.dialog.open(DisplayReglementDialogComponent, { data: this.bean });
-    }
-
-    /* *****************
-     * Fin des actions *
-     * *****************
-     */
-    private isCreation(): boolean {
-        return ClientOperationEnumVd.CREATE == this.bean.action;
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("commandeCode", this.bean.commandeCode.value);
+        this.dialog.open(ReglementDialogComponent, { data: {queryParams:queryParams, url: `achat-vente/commande/reglement`} });
     }
 
     private noDeleted = (e: LigneBean) => e.action != ClientOperationEnumVd.DELETE;
+
     private cumuler(lignes:Array<LigneBean>, mappeur:(e:LigneBean)=>number):number{
         return lignes
             .filter(this.noDeleted)
@@ -133,10 +159,9 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
     }
 
     private initPrix() {
-        this.bean.prixTotal.value = this.cumuler(this.bean.lignes, e => e.prixTotalHT.value);
-        this.bean.taxe.value = this.cumuler(this.bean.lignes, e => e.taxe.value);
-        this.bean.remise.value = this.cumuler(this.bean.lignes, e => e.remise.value);
         this.bean.prixTotalHT.value = this.cumuler(this.bean.lignes, e => e.prixTotalHT.value);
+        this.bean.remise.value = this.cumuler(this.bean.lignes, e => e.remise.value);
+        this.bean.taxe.value = this.cumuler(this.bean.lignes, e => e.taxe.value);
+        this.bean.prixTotal.value = this.cumuler(this.bean.lignes, e => e.prixTotalHT.value);
     }
-
 }

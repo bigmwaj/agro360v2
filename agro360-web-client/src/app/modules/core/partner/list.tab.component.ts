@@ -29,13 +29,11 @@ export class ListTabComponent extends BeanPagedListTab<PartnerBean, PartnerSearc
     displayedColumns: string[] = [
         'select',
         'partnerCode',
-        'type',
         'status',
         'partnerName',
         'phone',
         'email',
         'city',
-        'address',
         'actions'
     ];
 
@@ -50,8 +48,8 @@ export class ListTabComponent extends BeanPagedListTab<PartnerBean, PartnerSearc
         return bean.partnerCode.value;
     }
 
-    ngOnInit(): void {
-        this.resetSearchFormAction();
+    override ngOnInit(): void {
+        super.ngOnInit();
         let title;
         if( !this.module ){
             title ='Liste des partenaires'
@@ -79,28 +77,6 @@ export class ListTabComponent extends BeanPagedListTab<PartnerBean, PartnerSearc
 
     areBeansEqual(b1:PartnerBean, b2:PartnerBean){
         return b1 == b2 || b1.partnerCode.value == b2.partnerCode.value;
-    }
-
-    addAction(bean?: PartnerBean) {   
-        let queryParams = new HttpParams();
-        if( bean) {
-            queryParams = queryParams.append("copyFrom", bean.partnerCode.value);    
-        }
-        this.http.get(`core/partner/create-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<PartnerBean>data));
-    }
-
-    editAction(bean: PartnerBean) {
-        if( this.isAlreadLoaded(bean) ){
-            this.displayTab(bean);
-            return;
-        }
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append("partnerCode", bean.partnerCode.value);
-
-        this.http.get(`core/partner/edit-form`, { params: queryParams })
-        .subscribe(data => this.appendTab(<PartnerBean>data));
     }
 
     changeStatusAction(bean: PartnerBean) {
@@ -132,5 +108,27 @@ export class ListTabComponent extends BeanPagedListTab<PartnerBean, PartnerSearc
 
     protected override getSearchUrl(): string {
         return `core/partner`;
+    }
+
+    protected override getEditFormUrl(): string {
+        return `core/partner/edit-form`;
+    }
+
+    protected override getCreateFormUrl(): string {
+        return `core/partner/create-form`;
+    }
+    
+    protected override getEditQueryParam(bean: PartnerBean): HttpParams {
+        let queryParams = new HttpParams();
+        return queryParams.append("partnerCode", bean.partnerCode.value);
+    } 
+    
+    protected override getCreateQueryParam(option?: any): HttpParams {
+        let queryParams = new HttpParams();
+        if( option?.bean) {
+            queryParams = queryParams.append("copyFrom", option?.bean.partnerCode.value);    
+        }
+
+        return queryParams;
     }
 }

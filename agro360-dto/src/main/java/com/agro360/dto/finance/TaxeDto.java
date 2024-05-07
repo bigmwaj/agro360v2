@@ -14,14 +14,14 @@ import lombok.EqualsAndHashCode;
 public class TaxeDto extends AbstractDto {
 	
 	@Id
-	@Column(name = "TAXE_CODE", updatable = false, length = 16)
+	@Column(name = "TAXE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String taxeCode;
 	
-	@Column(name = "TAUX", nullable = false)
+	@Column(name = "TAUX")
 	private Double taux;
 
-	@Column(name = "DESCRIPTION", length = 256)
+	@Column(name = "DESCRIPTION")
 	private String description;
 
 }

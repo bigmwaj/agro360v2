@@ -12,7 +12,11 @@ public enum TransactionTypeEnumVd {
 	
 	RETRAIT("Retrait"),
 	
-	RECETTE("Recette");
+	RECETTE("Recette"),
+	
+	DEBIT("Débit"),
+	
+	CREDIT("Crédit");
 	
 	public static final int COLUMN_LENGTH = 8;
 	

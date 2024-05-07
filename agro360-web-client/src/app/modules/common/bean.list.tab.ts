@@ -62,13 +62,16 @@ export abstract class BeanListTab<B extends AbstractBean> extends BeanList<B> im
         }
     }
 
-    private isInDataSource(bean:B):boolean{
-        return this.getData().findIndex(b => this.areBeansEqual(bean, b)) >= 0;
+    private findRefFromDataSource(bean:B):B | undefined{
+        return this.getData().filter(b => this.areBeansEqual(bean, b)).pop();
     }
 
     prependItemIfNotInList(bean: B){
-        if( !this.isInDataSource(bean) ){
+        const ref = this.findRefFromDataSource(bean);
+        if( !ref ){
             this.prependItem(bean);
+        }else{
+            this.replaceItemWith(ref, bean)
         }
     }
 }

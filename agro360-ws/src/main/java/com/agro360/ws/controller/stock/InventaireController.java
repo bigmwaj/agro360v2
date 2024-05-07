@@ -18,6 +18,7 @@ import com.agro360.bo.bean.stock.InventaireBean;
 import com.agro360.bo.bean.stock.InventaireSearchBean;
 import com.agro360.form.stock.InventaireForm;
 import com.agro360.service.stock.InventaireService;
+import com.agro360.vd.common.ClientOperationEnumVd;
 import com.agro360.ws.controller.common.AbstractController;
 
 @RestController
@@ -38,6 +39,17 @@ public class InventaireController extends AbstractController {
 		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
 		return ResponseEntity.ok(model);
 	}
+	
+	@GetMapping(EDIT_FORM_RN)
+	public ResponseEntity<InventaireBean> getEditFormAction(
+			@RequestParam(required = true) ClientOperationEnumVd operation,
+			@RequestParam(required = true) String magasinCode,
+			@RequestParam(required = true) String articleCode,
+			@RequestParam(required = true) String variantCode) {
+		
+		var ctx = getClientContext();
+		return ResponseEntity.ok(form.initEditFormBean(ctx, operation, magasinCode, articleCode, variantCode));
+	}
 
 	@PostMapping
 	public ResponseEntity<ModelMap> saveAction(
@@ -50,19 +62,10 @@ public class InventaireController extends AbstractController {
 		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));
 	}
 	
-	@PostMapping("ajuster-quantite")
-	public ResponseEntity<ModelMap> ajusterQuantiteAction(@RequestBody @Validated InventaireBean bean) {
+	@PostMapping("ajuster")
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated InventaireBean bean) {
 		var ctx = getClientContext();
-		var record = service.ajusterQuantite(ctx, bean);
-		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
-		model.addAttribute(RECORD_MODEL_KEY, record);
-		return ResponseEntity.ok(model);
-	}
-	
-	@PostMapping("ajuster-prix")
-	public ResponseEntity<ModelMap> ajusterPrixAction(@RequestBody @Validated InventaireBean bean) {
-		var ctx = getClientContext();
-		var record = service.ajusterPrix(ctx, bean);
+		var record = service.save(ctx, bean);
 		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
 		model.addAttribute(RECORD_MODEL_KEY, record);
 		return ResponseEntity.ok(model);

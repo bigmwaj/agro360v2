@@ -10,6 +10,6 @@ public class IsCommandeEditableStatus extends AbstractRule<CommandeBean> {
 	@Override
 	public boolean eval(ClientContext ctx, CommandeBean bean) {
 		var status = bean.getStatus().getValue();		
-		return CommandeStatusEnumVd.BRLN.equals(status) || CommandeStatusEnumVd.REJT.equals(status);
+		return CommandeStatusEnumVd.BRLN.equals(status) || CommandeStatusEnumVd.CLOT.equals(status);
 	}
 }

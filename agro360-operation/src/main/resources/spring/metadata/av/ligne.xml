@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/variantCode">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/variantCode">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -31,7 +31,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/quantite">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/quantite">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -57,7 +57,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/prixUnitaire">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/prixUnitaire">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -83,7 +83,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/type">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/type">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -96,7 +96,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/remiseType">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/remiseType">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -104,7 +104,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/remiseMontant">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/remiseMontant">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -112,7 +112,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/remiseTaux">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/remiseTaux">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -120,7 +120,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/remiseRaison">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/remiseRaison">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -128,7 +128,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/description">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/description">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -149,7 +149,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/deleteBtn">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/deleteBtn">
 		<property name="visible">
 			<list>
 				<bean class="com.agro360.operation.rule.module.av.ligne.IsCommandeEditableStatus"/>
@@ -157,23 +157,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/retourBtn">
-		<property name="visible">
-			<list>
-				<ref bean="IsRetournable" />
-			</list>
-		</property>
-	</bean>
-
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/receptionBtn">
-		<property name="visible">
-			<list>
-				<ref bean="IsReceptionnable" />
-			</list>
-		</property>
-	</bean>
-
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/article.articleCode">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/article.articleCode">
 		<property name="editable">
 			<list>
 				<ref bean="IsBeanCreateOrUpdateOperation" />
@@ -186,7 +170,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/unite.uniteCode">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/unite.uniteCode">
 		<property name="editable">
 			<list>
 				<ref bean="IsBeanCreateOrUpdateOperation" />
@@ -199,7 +183,7 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/ligne/compte.compteCode">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="ligne/compte.compteCode">
 		<property name="editable">
 			<list>
 				<ref bean="IsBeanCreateOrUpdateOperation" />
@@ -220,18 +204,16 @@
 		</property>
 		<property name="fields">
 			<map>
-				<entry key="prixUnitaire" value-ref="commande/ligne/prixUnitaire" />
-				<entry key="remiseType" value-ref="commande/ligne/remiseType" />
-				<entry key="remiseTaux" value-ref="commande/ligne/remiseTaux" />
-				<entry key="remiseMontant" value-ref="commande/ligne/remiseMontant" />
-				<entry key="remiseRaison" value-ref="commande/ligne/remiseRaison" />
-				<entry key="description" value-ref="commande/ligne/description" />
-				<entry key="variantCode" value-ref="commande/ligne/variantCode" />
-				<entry key="type" value-ref="commande/ligne/type" />
-				<entry key="quantite" value-ref="commande/ligne/quantite" />
-				<entry key="deleteBtn" value-ref="commande/ligne/deleteBtn" />
-				<entry key="receptionBtn" value-ref="commande/ligne/receptionBtn" />
-				<entry key="retourBtn" value-ref="commande/ligne/retourBtn" />
+				<entry key="prixUnitaire" value-ref="ligne/prixUnitaire" />
+				<entry key="remiseType" value-ref="ligne/remiseType" />
+				<entry key="remiseTaux" value-ref="ligne/remiseTaux" />
+				<entry key="remiseMontant" value-ref="ligne/remiseMontant" />
+				<entry key="remiseRaison" value-ref="ligne/remiseRaison" />
+				<entry key="description" value-ref="ligne/description" />
+				<entry key="variantCode" value-ref="ligne/variantCode" />
+				<entry key="type" value-ref="ligne/type" />
+				<entry key="quantite" value-ref="ligne/quantite" />
+				<entry key="deleteBtn" value-ref="ligne/deleteBtn" />
 			</map>
 		</property>
 		<property name="beans">
@@ -240,7 +222,7 @@
 					<bean class="com.agro360.operation.metadata.BeanMetadataConfig">
 						<property name="fields">
 							<map>
-								<entry key="articleCode" value-ref="commande/ligne/article.articleCode" />
+								<entry key="articleCode" value-ref="ligne/article.articleCode" />
 							</map>
 						</property>
 					</bean>
@@ -249,7 +231,7 @@
 					<bean class="com.agro360.operation.metadata.BeanMetadataConfig">
 						<property name="fields">
 							<map>
-								<entry key="uniteCode" value-ref="commande/ligne/unite.uniteCode" />
+								<entry key="uniteCode" value-ref="ligne/unite.uniteCode" />
 							</map>
 						</property>
 					</bean>

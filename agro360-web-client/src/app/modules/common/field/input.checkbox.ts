@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AbstractFieldComponent } from './abstract.field';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     standalone: true,
@@ -13,14 +14,16 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
         FormsModule,
         MatCheckboxModule,
         ReactiveFormsModule,
-        MatInputModule,        
+        MatInputModule,
+        MatTooltipModule 
     ],
     selector: 'input-checkbox-field',
     template: `
         <div class="mb-3" style="line-height:4" [class]="getCssClass()">
-            <mat-checkbox type="checkbox" 
+            <mat-checkbox type="checkbox"  [class]="inputCssClass"
                 [(ngModel)]="field.value" 
-                (change)="_onChange()"
+                [matTooltip]="field.tooltip"
+                (change)="_onChange($event)"
                 [disabled]="!field.editable"
                 [required]="field.required">
                 <label *ngIf="displayLabel">{{label}}</label>

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 
 import { MatDatetimepickerModule , MatNativeDatetimeModule } from '@mat-datetimepicker/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
@@ -15,14 +16,17 @@ import { MatDatetimepickerModule , MatNativeDatetimeModule } from '@mat-datetime
         CommonModule,
         MatInputModule,        
         FormsModule,
+        MatTooltipModule
     ],
     selector: 'input-email-field',
     template: `
     <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
-        <input matInput type="email" 
+        <input matInput type="email"  [class]="inputCssClass"
             [(ngModel)]="field.value" 
-            (change)="_onChange()"        
+            [maxLength]="field.maxLength && field.maxLength > 0 ? field.maxLength : 256"
+            (change)="_onChange($event)"   
+            [matTooltip]="field.tooltip"     
             [disabled]="!field.editable"
             [required]="field.required"/>
     </mat-form-field>

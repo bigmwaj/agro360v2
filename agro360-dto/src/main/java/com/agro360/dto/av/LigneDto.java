@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import com.agro360.dto.common.AbstractDto;
 import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.UniteDto;
-import com.agro360.dto.stock.VariantDto;
 import com.agro360.vd.av.LigneTypeEnumVd;
 import com.agro360.vd.av.RemiseTypeEnumVd;
 
@@ -28,39 +27,39 @@ public class LigneDto extends AbstractDto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "LIGNE_ID", nullable = false, updatable = false)
+	@Column(name = "LIGNE_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long ligneId;
 	
-	@Column(name = "COMMANDE_CODE", nullable = false, updatable = false)
+	@Column(name = "COMMANDE_CODE", updatable = false)
 	private String commandeCode;
 
 	@ManyToOne()
-	@JoinColumn(name = "UNITE_CODE", nullable = false)
+	@JoinColumn(name = "UNITE_CODE")
 	private UniteDto unite;
 
 	@ManyToOne()
 	@JoinColumn(name = "ARTICLE_CODE")
 	private ArticleDto article;
 
-	@Column(name = "VARIANT_CODE", length = VariantDto.VARIANT_CODE_LENGTH)
+	@Column(name = "VARIANT_CODE")
 	private String variantCode;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "LIGNE_TYPE", nullable = false, updatable = false, length = LigneTypeEnumVd.COLUMN_LENGTH)
+	@Column(name = "LIGNE_TYPE", updatable = false, length = LigneTypeEnumVd.COLUMN_LENGTH)
 	private LigneTypeEnumVd type;
 
-	@Column(name = "DESCRIPTION", length = 128)
+	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "QUANTITE", nullable = false)
+	@Column(name = "QUANTITE")
 	private Double quantite;
 
-	@Column(name = "PRIX_UNITAIRE", nullable = false, precision = 16, scale = 4)
+	@Column(name = "PRIX_UNITAIRE", precision = 16, scale = 4)
 	private BigDecimal prixUnitaire;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "REMISE_TYPE", length = RemiseTypeEnumVd.COLUMN_LENGTH)
+	@Column(name = "REMISE_TYPE")
 	private RemiseTypeEnumVd remiseType;
 
 	@Column(name = "REMISE_TAUX")
@@ -72,17 +71,17 @@ public class LigneDto extends AbstractDto {
 	@Column(name = "REMISE_RAISON", length = 256)
 	private String remiseRaison;
 	
-	@Column(name = "TAXE", precision = 16, scale = 4, nullable = false)
+	@Column(name = "TAXE", precision = 16, scale = 4)
 	private BigDecimal taxe;
 	
-	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4, nullable = false)
+	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4)
 	private BigDecimal prixTotalHT;
 	
 	// prixTotalHT - remise + taxes
-	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4, nullable = false)
+	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4)
 	private BigDecimal prixTotal;
 	
-	@Column(name = "REMISE", precision = 16, scale = 4, nullable = false)
+	@Column(name = "REMISE", precision = 16, scale = 4)
 	private BigDecimal remise;
 
 }

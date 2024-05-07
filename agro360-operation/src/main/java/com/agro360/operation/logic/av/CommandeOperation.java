@@ -1,5 +1,6 @@
 package com.agro360.operation.logic.av;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,16 +50,16 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		var debut = searchBean.getDateDebut().getValue();
 		var fin = searchBean.getDateFin().getValue();
 		var partner = getNullOrUpperCase(searchBean::getPartner);
-		var ville = getNullOrUpperCase(searchBean::getVille);
 		
 		var status = searchBean.getStatusIn().getValue();
 		if( status != null && status.isEmpty() ) {
 			status = null;
 		}
-		var length = dao.countCommandesByCriteria(code, type, debut, fin, status, partner, ville);
+				
+		var length = dao.countCommandesByCriteria(code, type, debut, fin, status, partner);
         searchBean.setLength(length);
         return dao.findCommandesByCriteria(searchBean.getOffset(), searchBean.getLimit(), 
-        		code, type, debut, fin, status, partner, ville)
+        		code, type, debut, fin, status, partner)
         		.stream().map(AchatVenteMapper::map)
         		.collect(Collectors.toList());
 		
@@ -75,13 +76,13 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		var magasinCode = bean.getMagasin().getMagasinCode().getValue();
 		var magasin = magasinDao.getReferenceById(magasinCode);
 		dto.setMagasin(magasin);
+		dto.setCumulPaiement(BigDecimal.ZERO);
 		
 		setDtoValue(dto::setCommandeCode, bean.getCommandeCode());
 		setDtoValue(dto::setType, bean.getType());
 		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setDate, bean.getDate());
 		setDtoValue(dto::setDescription, bean.getDescription());
-		setDtoValue(dto::setCumulPaiement, bean.getCumulPaiement());
 		setDtoValue(dto::setPrixTotal, bean.getPrixTotal());
 		setDtoValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
 		setDtoValue(dto::setTaxe, bean.getTaxe());
@@ -100,7 +101,6 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		setDtoChangedValue(dto::setDate, bean.getDate());
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		setDtoChangedValue(dto::setCumulPaiement, bean.getCumulPaiement());
-
 		setDtoChangedValue(dto::setPrixTotal, bean.getPrixTotal());
 		setDtoChangedValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
 		setDtoChangedValue(dto::setTaxe, bean.getTaxe());
@@ -140,6 +140,20 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		ctx.success(String.format(msgTpl, bean.getCommandeCode().getValue()));
 	}
 	
+	@RuleNamespace("av/commande/terminer")
+	public void terminerCommande(ClientContext ctx, CommandeBean bean) {
+		changeCommandeStatus(ctx, bean);	
+		var msgTpl = "Commande %s terminée avec succès";
+		ctx.success(String.format(msgTpl, bean.getCommandeCode().getValue()));
+	}
+	
+	@RuleNamespace("av/commande/demander-annulation")
+	public void demanderAnnulationCommande(ClientContext ctx, CommandeBean bean) {
+		changeCommandeStatus(ctx, bean);	
+		var msgTpl = "Demande d'annulation de la commande %s envoyée avec succès";
+		ctx.success(String.format(msgTpl, bean.getCommandeCode().getValue()));
+	}
+	
 	@RuleNamespace("av/commande/annuler")
 	public void annulerCommande(ClientContext ctx, CommandeBean bean) {
 		changeCommandeStatus(ctx, bean);	
@@ -147,10 +161,10 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		ctx.success(String.format(msgTpl, bean.getCommandeCode().getValue()));
 	}
 	
-	@RuleNamespace("av/commande/rejeter")
-	public void rejeterCommande(ClientContext ctx, CommandeBean bean) {
+	@RuleNamespace("av/commande/cloturer")
+	public void cloturerCommande(ClientContext ctx, CommandeBean bean) {
 		changeCommandeStatus(ctx, bean);	
-		var msgTpl = "Commande %s rejetée avec succès";
+		var msgTpl = "Commande %s clôturée avec succès";
 		ctx.success(String.format(msgTpl, bean.getCommandeCode().getValue()));
 	}
 	

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 
 import { MatDatetimepickerModule , MatNativeDatetimeModule } from '@mat-datetimepicker/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     standalone: true,
@@ -14,14 +15,16 @@ import { MatDatetimepickerModule , MatNativeDatetimeModule } from '@mat-datetime
         CommonModule,
         MatInputModule,        
         FormsModule,
+        MatTooltipModule
     ],
     selector: 'input-datetime-field',
     template: `
         <mat-form-field [appearance]="appearance" [class]="getCssClass()">
             <mat-label *ngIf="displayLabel">{{label}}</mat-label>
-            <input matInput [matDatetimepicker]="datetimePicker" 
+            <input matInput [matDatetimepicker]="datetimePicker" [class]="inputCssClass"
                 [(ngModel)]="field.value" 
-                (change)="_onChange()"                
+                (change)="_onChange($event)" 
+                [matTooltip]="field.tooltip"               
                 [disabled]="!field.editable"
                 [required]="field.required"/>
             <mat-datetimepicker-toggle matIconSuffix [for]="datetimePicker"></mat-datetimepicker-toggle>

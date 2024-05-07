@@ -20,23 +20,32 @@ public class FilterStatusAction extends AbstractAction<Map<Object, String>, Comm
 	public Map<Object, String> process(ClientContext ctx, CommandeBean bean) {
 		var dto = dao.getReferenceById(bean.getCommandeCode().getValue());
 		var currentStatus = dto.getStatus();
+		
 		Map<Object, String> valueOptions = new HashMap<>();
 		
 		switch (currentStatus) {
 		case BRLN:
-		case REJT:
 			valueOptions.put(CommandeStatusEnumVd.ATAP, CommandeStatusEnumVd.ATAP.getLibelle());
 			break;
+			
 		case ATAP:
 			valueOptions.put(CommandeStatusEnumVd.APPR, CommandeStatusEnumVd.APPR.getLibelle());
-			valueOptions.put(CommandeStatusEnumVd.REJT, CommandeStatusEnumVd.REJT.getLibelle());
 			break;
+			
+		case AANN:
+			valueOptions.put(CommandeStatusEnumVd.ANNL, CommandeStatusEnumVd.ANNL.getLibelle());
+			break;
+			
+		case RGLM:
+			valueOptions.put(CommandeStatusEnumVd.ATAP, CommandeStatusEnumVd.ATAP.getLibelle());
+			valueOptions.put(CommandeStatusEnumVd.AANN, CommandeStatusEnumVd.AANN.getLibelle());
+			break;
+			
+		case TERM:
 		case APPR:
-			valueOptions.put(CommandeStatusEnumVd.RECP, CommandeStatusEnumVd.RECP.getLibelle());
-			valueOptions.put(CommandeStatusEnumVd.RECT, CommandeStatusEnumVd.RECT.getLibelle());
-			break;
 		case RECP:
-			valueOptions.put(CommandeStatusEnumVd.RECT, CommandeStatusEnumVd.RECT.getLibelle());
+		case RECT:
+			valueOptions.put(CommandeStatusEnumVd.CLOT, CommandeStatusEnumVd.CLOT.getLibelle());
 			break;
 
 		default:

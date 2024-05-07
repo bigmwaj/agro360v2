@@ -45,10 +45,8 @@
         <mat-icon>save</mat-icon>Enregistrer
     </button>
 
-    <span class="menu-spacer"></span>
-
     <button mat-fab extended class="me-3 mb-3" color="warn" *ngIf="addOptions.length == 1"
-        (click)="addAction(addOptions[0].type)">
+        (click)="addAction({type:addOptions[0].type})">
         <mat-icon>add</mat-icon> Ajouter une nouvelle Transaction
     </button>
 
@@ -59,7 +57,7 @@
 
     <mat-menu #addMenu="matMenu"> 
         <ng-container *ngFor="let o of addOptions">
-            <button mat-menu-item color="primary" (click)="addAction(o.type)">
+            <button mat-menu-item color="primary" (click)="addAction({type:o.type})">
                 <mat-icon>open_in_new</mat-icon>{{ o.label }}
             </button>
         </ng-container>

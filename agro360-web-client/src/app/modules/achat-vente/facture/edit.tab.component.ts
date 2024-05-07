@@ -1,13 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { map } from 'rxjs';
-import { FactureBean } from 'src/app/backed/bean.av';
-import { Message } from 'src/app/backed/message';
-import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { FactureBean, PaiementBean } from 'src/app/backed/bean.av';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanEditTab } from '../../common/bean.edit.tab';
+import { ReglementDialogComponent } from '../common/reglement.dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { PaiementDialogComponent } from '../common/paiement.dialog.component';
+import { map } from 'rxjs';
 
 @Component({
     standalone: true,
@@ -25,9 +25,10 @@ export class EditTabComponent extends BeanEditTab<FactureBean> implements OnInit
     partnerLabel: string;
 
     constructor(
-        private http: HttpClient,
+        private dialog: MatDialog,
+        public override http: HttpClient,
         public override ui: UIService){ 
-        super(ui);
+        super(ui, http);
     }
     
     ngOnInit(): void {
@@ -46,38 +47,58 @@ export class EditTabComponent extends BeanEditTab<FactureBean> implements OnInit
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title)        
     }
 
-    /**************************************************
-     * Liste des évènements générés par l'utilisateur *
-     * ************************************************
-     */
+    protected override afterSaveAction(bean: FactureBean, option?:any): void {
+        super.afterSaveAction(bean, option);
 
+        if( option?.processPaiement && option?.data ){
+            this.initPaiement(bean, option?.data.records)
+        }
+    }
 
-    /* ********************
-     * Fin des évènements *
-     * ********************
-     */
+    override saveUrl():string {
+        return `achat-vente/facture`;
+    }
 
-    /******************************************************
-     * Liste des actions que peut exécuter un utilisateur *
-     * ****************************************************
-     */
+    afficherReglementAction() {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("factureCode", this.bean.factureCode.value);
+        this.dialog.open(ReglementDialogComponent, { data: {queryParams:queryParams, url: `achat-vente/facture/reglement`} });
+    }
 
-    saveAction() {
-        this.http.post(`achat-vente/facture`, BeanTools.reviewBeanAction(this.bean))
-            .pipe(map((e: any) => <any>e))
-            .subscribe(data => {
-                this.ui.displayFlashMessage(<Array<Message>>data.messages);
-                this.afterSaveAction(data.record)
+    initPaiementAction() {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("factureCode", this.bean.factureCode.value);
+
+        this.http.get(`achat-vente/facture/init-paiement`, {params:queryParams}) 
+        .pipe(map((e: any) => <any>e))
+        .subscribe(data => {
+            this.initPaiement(this.bean, data.records);
+        })
+    }
+
+    private initPaiement(bean: FactureBean, paiements:Array<PaiementBean>) {
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("factureCode", bean.factureCode.value);
+        let dialogRef = this.dialog.open(PaiementDialogComponent, { data: {
+                    bean:bean, 
+                    paiements: paiements, 
+                    saveUrl: `achat-vente/facture/encaisser`,
+                    saveParams:queryParams
+                } 
             });
+            dialogRef.afterClosed().subscribe(result => {
+                if( result ){
+                    this.afterSaveAction(result);
+                }
+        }); 
     }
 
-    /* *****************
-     * Fin des actions *
-     * *****************
-     */
-
-    private isCreation(): boolean {
-        return ClientOperationEnumVd.CREATE == this.bean.action;
-    }
+    override getSaveQueryParam(option?:any){
+        let queryParams = super.getSaveQueryParam();
+        if( option?.processPaiement ){
+            queryParams = queryParams.append('processPaiement', option.processPaiement);
+        }
+        return queryParams;
+     }
 
 }

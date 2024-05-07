@@ -3,7 +3,6 @@ package com.agro360.service.finance;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,11 @@ public class RubriqueService extends AbstractService {
 	@Autowired
 	RubriqueOperation service;
 
-	public List<RubriqueBean> searchAction(ClientContext ctx, Optional<RubriqueSearchBean> searchBean) {
-		return service.findRubriquesByCriteria(ctx, searchBean.orElse(new RubriqueSearchBean()));
+	public List<RubriqueBean> search(ClientContext ctx, RubriqueSearchBean searchBean) {
+		return service.findRubriquesByCriteria(ctx, searchBean);
 	}
 
-	public void saveAction(ClientContext ctx, List<RubriqueBean> beans) {
+	public void save(ClientContext ctx, List<RubriqueBean> beans) {
 		beans.stream().map(e -> save(ctx, e)).flatMap(List::stream).collect(Collectors.toList());
 	}
 	

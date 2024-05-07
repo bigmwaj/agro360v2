@@ -13,7 +13,7 @@ public class RubriqueSearchBean extends AbstractSearchBean{
 
 	private static final long serialVersionUID = 355487810396906725L;
 
-	private FieldMetadata<String> rubriqueCode = new FieldMetadata<>("Rubrique");
+	private FieldMetadata<String> rubrique = new FieldMetadata<>("Rubrique");
 
 	private FieldMetadata<TransactionTypeEnumVd> type = new FieldMetadata<>("Type", TransactionTypeEnumVd.getAsMap());
 

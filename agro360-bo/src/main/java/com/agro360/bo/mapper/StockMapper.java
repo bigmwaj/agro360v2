@@ -1,5 +1,7 @@
 package com.agro360.bo.mapper;
 
+import java.util.Map;
+
 import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.ArticleSearchBean;
 import com.agro360.bo.bean.stock.ArticleTaxeBean;
@@ -43,6 +45,18 @@ public class StockMapper {
 		bean.setUnite(map(unite));
 		return bean;
 	}
+	
+	public static Map.Entry<Object, String> asOption(ArticleBean bean) {
+		var value = bean.getArticleCode().getValue();
+		var label = bean.getArticleCode().getValue();
+		var desc = bean.getDescription().getValue();
+		if( desc != null ) {
+			label += " - " + desc;
+		}
+		return Map.of(Object.class.cast(value), label)
+				.entrySet().stream()
+				.findFirst().get();
+	}
 
 	public static ArticleTaxeBean map(ArticleTaxeDto dto) {
 		var bean = new ArticleTaxeBean();
@@ -78,6 +92,17 @@ public class StockMapper {
 		return bean;
 	}
 
+	public static Map.Entry<Object, String> asOption(MagasinBean bean) {
+		var value = bean.getMagasinCode().getValue();
+		var label = bean.getDescription().getValue();
+		if( label == null ) {
+			label = value;
+		}
+		return Map.of(Object.class.cast(value), label)
+				.entrySet().stream()
+				.findFirst().get();
+	}
+
 	public static VariantBean map(VariantDto dto) {
 		var bean = new VariantBean();
 		bean.getArticleCode().setValue(dto.getArticleCode());
@@ -85,6 +110,19 @@ public class StockMapper {
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getAlias().setValue(dto.getAlias());
 		return bean;
+	}
+	
+
+	public static Map.Entry<Object, String> asOption(VariantBean bean) {
+		var value = bean.getVariantCode().getValue();
+		var label = bean.getDescription().getValue();
+		if( label == null ) {
+			label = value;
+		}
+		label = String.format("%s - %s", bean.getAlias().getValue(), label);
+		return Map.of(Object.class.cast(value), label)
+				.entrySet().stream()
+				.findFirst().get();
 	}
 
 	public static UniteSearchBean buildUniteSearchBean() {
@@ -97,6 +135,18 @@ public class StockMapper {
 		bean.getUniteCode().setValue(dto.getUniteCode());
 		bean.getDescription().setValue(dto.getDescription());
 		return bean;
+	}
+	
+	public static Map.Entry<Object, String> asOption(UniteBean bean) {
+		var value = bean.getUniteCode().getValue();
+		var label = bean.getUniteCode().getValue();
+		var desc = bean.getDescription().getValue();
+		if( desc != null ) {
+			label += " - " + desc;
+		}
+		return Map.of(Object.class.cast(value), label)
+				.entrySet().stream()
+				.findFirst().get();
 	}
 
 	public static InventaireSearchBean buildInventaireSearchBean() {

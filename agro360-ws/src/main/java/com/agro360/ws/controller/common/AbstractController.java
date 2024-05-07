@@ -1,5 +1,8 @@
 package com.agro360.ws.controller.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.agro360.operation.context.ClientContext;
 
 public class AbstractController {
@@ -32,5 +35,9 @@ public class AbstractController {
 	
 	protected ClientContext getClientContext() {
 		return new ClientContext();
+	}
+
+	protected Logger getLogger() {
+		return LoggerFactory.getLogger(getClass());
 	}
 }

@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 public class ArticleTaxeDto extends AbstractDto {
 	
 	@Id
-	@Column(name = "ARTICLE_CODE", updatable = false, length = 16)
+	@Column(name = "ARTICLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String articleCode;
 	

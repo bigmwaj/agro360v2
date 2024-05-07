@@ -3,27 +3,29 @@ import { ArticleTypeEnumVd, OperationTypeEnumVd } from './vd.stock';
 import { AbstractBean, AbstractSearchBean } from './bean.common';
 import { TaxeBean } from './bean.finance';
 
-export interface VariantBean extends AbstractBean {
-	variantCode: FieldMetadata<string>;
-	alias: FieldMetadata<string>;
-	articleCode: FieldMetadata<string>;
+export interface MagasinBean extends AbstractBean {
+	magasinCode: FieldMetadata<string>;
 	description: FieldMetadata<string>;
 };
 
-export interface InventaireSearchBean extends AbstractSearchBean {
-	magasinCode: FieldMetadata<string>;
+export interface UniteBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	uniteCode: FieldMetadata<string>;
+};
+
+export interface ArticleBean extends AbstractBean {
+	unite: UniteBean;
+	conversions: Array<ConversionBean>;
+	taxes: Array<ArticleTaxeBean>;
+	variants: Array<VariantBean>;
 	articleCode: FieldMetadata<string>;
-	createInventaireBtn: FieldMetadata<string>;
-	uniteBtn: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+	type: FieldMetadata<ArticleTypeEnumVd>;
 };
 
 export interface ArticleTaxeBean extends AbstractBean {
 	selected: FieldMetadata<boolean>;
 	taxe: TaxeBean;
-};
-
-export interface UniteSearchBean extends AbstractSearchBean {
-	uniteCode: FieldMetadata<string>;
 };
 
 export interface OperationBean extends AbstractBean {
@@ -38,31 +40,28 @@ export interface OperationBean extends AbstractBean {
 	type: FieldMetadata<OperationTypeEnumVd>;
 };
 
+export interface InventaireSearchBean extends AbstractSearchBean {
+	magasinCode: FieldMetadata<string>;
+	articleCode: FieldMetadata<string>;
+	createInventaireBtn: FieldMetadata<string>;
+	uniteBtn: FieldMetadata<string>;
+};
+
 export interface OperationSearchBean extends AbstractSearchBean {
 	variantCode: FieldMetadata<string>;
 	magasinCode: FieldMetadata<string>;
 	articleCode: FieldMetadata<string>;
 };
 
-export interface ConversionBean extends AbstractBean {
-	unite: UniteBean;
-	facteur: FieldMetadata<number>;
+export interface UniteSearchBean extends AbstractSearchBean {
+	uniteCode: FieldMetadata<string>;
 };
 
-export interface ArticleSearchBean extends AbstractSearchBean {
-	articleCode: FieldMetadata<string>;
-	uniteBtn: FieldMetadata<string>;
-	type: FieldMetadata<ArticleTypeEnumVd>;
-};
-
-export interface ArticleBean extends AbstractBean {
-	unite: UniteBean;
-	conversions: Array<ConversionBean>;
-	taxes: Array<ArticleTaxeBean>;
-	variants: Array<VariantBean>;
+export interface VariantBean extends AbstractBean {
+	variantCode: FieldMetadata<string>;
+	alias: FieldMetadata<string>;
 	articleCode: FieldMetadata<string>;
 	description: FieldMetadata<string>;
-	type: FieldMetadata<ArticleTypeEnumVd>;
 };
 
 export interface InventaireBean extends AbstractBean {
@@ -82,18 +81,19 @@ export interface InventaireBean extends AbstractBean {
 	ajustQteBtn: FieldMetadata<string>;
 };
 
-export interface UniteBean extends AbstractBean {
-	description: FieldMetadata<string>;
-	uniteCode: FieldMetadata<string>;
-};
-
-export interface MagasinBean extends AbstractBean {
-	magasinCode: FieldMetadata<string>;
-	description: FieldMetadata<string>;
+export interface ArticleSearchBean extends AbstractSearchBean {
+	articleCode: FieldMetadata<string>;
+	uniteBtn: FieldMetadata<string>;
+	type: FieldMetadata<ArticleTypeEnumVd>;
 };
 
 export interface MagasinSearchBean extends AbstractSearchBean {
 	magasinCode: FieldMetadata<string>;
 	createMagasinBtn: FieldMetadata<string>;
 	uniteBtn: FieldMetadata<string>;
+};
+
+export interface ConversionBean extends AbstractBean {
+	unite: UniteBean;
+	facteur: FieldMetadata<number>;
 };

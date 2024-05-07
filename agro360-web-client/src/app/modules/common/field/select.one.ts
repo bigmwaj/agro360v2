@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
     standalone: true,
@@ -13,23 +14,32 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         MatInputModule,
         FormsModule,
         MatSelectModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatTooltipModule
     ],
     selector: 'select-one-field',
     template: `    
     <mat-form-field [appearance]="appearance" [class]="getCssClass()">
         <mat-label *ngIf="displayLabel">{{label}}</mat-label>
-        <mat-select [(ngModel)]="field.value" (selectionChange)="_onChange()"
-            [disabled]="!field.editable"
+        <mat-select [(ngModel)]="field.value" (selectionChange)="_onChange($event)"
+            [disabled]="!field.editable" 
+            [class]="inputCssClass"
+            [matTooltip]="field.tooltip"
             [required]="field.required">
-            <mat-option>--</mat-option>    
-            <ng-container *ngFor="let o of keys(field.valueOptions)">
-                <mat-option [value]="o">{{ field.valueOptions[o] }}</mat-option>
-            </ng-container>
+            <mat-option>--</mat-option>  
+            <mat-option *ngFor="let k of keys(field.valueOptions)" [value]="cast(k)">{{ field.valueOptions[k] }}</mat-option>
+           
         </mat-select>
     </mat-form-field>`
 })
 export class SelectOneFieldComponent extends AbstractFieldComponent {
+
+    cast(value:any):any{
+        if( (typeof this.field.value) == 'number'){
+            return parseFloat(value) ;
+        }
+        return value;
+    }
 
     getCssClass(): string {
         return 'input-field select-one';

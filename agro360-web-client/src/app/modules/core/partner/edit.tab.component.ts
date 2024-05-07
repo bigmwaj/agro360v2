@@ -1,11 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { map } from 'rxjs';
 import { PartnerBean } from 'src/app/backed/bean.core';
-import { Message } from 'src/app/backed/message';
-import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanEditTab } from '../../common/bean.edit.tab';
@@ -27,14 +23,10 @@ export class EditTabComponent extends BeanEditTab<PartnerBean> implements OnInit
     module:string;
 
     constructor(
-        private http: HttpClient,
         public dialog: MatDialog,
+        public override http: HttpClient,
         public override ui: UIService) {
-            super(ui);
-    }
-
-    private isCreation(): boolean {
-        return ClientOperationEnumVd.CREATE == this.bean.action;
+        super(ui, http);
     }
 
     ngOnInit(): void {
@@ -79,13 +71,8 @@ export class EditTabComponent extends BeanEditTab<PartnerBean> implements OnInit
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title);
     }
 
-    saveAction() {
-        this.http.post(`core/partner`, BeanTools.reviewBeanAction(this.bean))            
-            .pipe(map((e: any) => <any>e))
-            .subscribe(data => {
-                this.ui.displayFlashMessage(<Array<Message>>data.messages);
-                this.afterSaveAction(data.record)
-            });
+    saveUrl():string {
+        return `core/partner`;
     }
 
     categoryAction() {
