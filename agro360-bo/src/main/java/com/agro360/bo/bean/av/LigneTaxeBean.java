@@ -18,7 +18,11 @@ public class LigneTaxeBean extends AbstractBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;
 
-	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant Taxe");
+	private FieldMetadata<Long> ligneId = new FieldMetadata<>("Ligne ID");
+	
+	private FieldMetadata<String> commandeCode = new FieldMetadata<>("Commande");
+	
+	private FieldMetadata<BigDecimal> montant = new FieldMetadata<>("Montant");
 
 	private FieldMetadata<Double> taux = new FieldMetadata<>("Taux");
 

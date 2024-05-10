@@ -34,7 +34,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/date">
 		<property name="editable">
 			<list>
-				<ref bean="IsBeanCreateOrUpdateOperation" />
+				<ref bean="IsBeanCreateOperation" />
 				<ref bean="commande.isModifiable" />
 			</list>
 		</property>
@@ -112,10 +112,10 @@
 		<property name="editable">
 			<list>				
 				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
-					<constructor-arg ref="IsBeanCreateOrUpdateOperation"/>
+					<constructor-arg ref="commande.isModifiable"/>
 				</bean>
 				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
-					<constructor-arg ref="IsCommandeEditableStatus"/>
+					<constructor-arg ref="IsBeanCreateOperation"/>
 				</bean>
 			</list>
 		</property>
@@ -130,10 +130,10 @@
 		<property name="editable">
 			<list>
 				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
-					<constructor-arg ref="IsBeanCreateOrUpdateOperation"/>
+					<constructor-arg ref="commande.isModifiable"/>
 				</bean>
 				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
-					<constructor-arg ref="IsCommandeEditableStatus"/>
+					<constructor-arg ref="IsBeanCreateOperation"/>
 				</bean>
 			</list>
 		</property>

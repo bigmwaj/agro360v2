@@ -95,8 +95,10 @@ public class CompteOperation extends AbstractOperation<CompteDto, String> {
 	
 	private EtatCompteBean initSolde(EtatCompteBean bean) {
 		var compteCode = bean.getCompte().getCompteCode().getValue();
+		getLogger().debug("Le compte est {}", compteCode);
 		var solde = dao.calculateSolde(compteCode);
 		bean.getSolde().setValue(solde != null ? solde : BigDecimal.ZERO);
+		
 		return bean;
 	}
 	

@@ -10,14 +10,14 @@ import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanEditTab } from '../../common/bean.edit.tab';
 import { PaiementDialogComponent } from '../common/paiement.dialog.component';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
-import { EditLigneListComponent } from './ligne/edit.ligne.list.component';
+import { ListComponent as LigneListComponent} from './ligne/list.component';
 import { ReglementDialogComponent } from '../common/reglement.dialog.component';
 
 @Component({
     standalone: true,
     imports: [
         SharedModule,
-        EditLigneListComponent,
+        LigneListComponent,
         MatTooltipModule
     ],
     selector: 'achat-vente-commande-edit-tab',
@@ -28,8 +28,8 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
     @Input({required:true})
     module:string;
 
-    @ViewChild(EditLigneListComponent)
-    ligneList: EditLigneListComponent
+    @ViewChild(LigneListComponent)
+    ligneList: LigneListComponent
 
     partnerLabel: string
 
@@ -89,9 +89,9 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
         return queryParams;
      }
 
-     override saveUrl(): string {
-         return `achat-vente/commande`;
-     }
+    override saveUrl(): string {
+        return `achat-vente/commande`;
+    }
 
     protected override afterSaveAction(bean: CommandeBean, option?:any): void {
         super.afterSaveAction(bean, option);
@@ -146,7 +146,7 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
     afficherReglementAction() {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("commandeCode", this.bean.commandeCode.value);
-        this.dialog.open(ReglementDialogComponent, { data: {queryParams:queryParams, url: `achat-vente/commande/reglement`} });
+        this.dialog.open(ReglementDialogComponent, { data: {bean:this.bean, queryParams:queryParams, url: `achat-vente/commande/reglement`} });
     }
 
     private noDeleted = (e: LigneBean) => e.action != ClientOperationEnumVd.DELETE;

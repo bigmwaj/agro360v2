@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
+import { map } from 'rxjs';
+import { EtatRecetteDepenseBean } from 'src/app/backed/bean.finance';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 
 @Component({
@@ -14,22 +17,28 @@ export class AvicoleBlockComponent implements OnInit {
     depenseVsRecette: any = [];
     ponte: any = [];
     deces: any = [];
-    ngOnInit() {
+
+    constructor(
+        private http: HttpClient) {
+    }
+
+    private initDepenseVsRecetteChart(beans:Array<EtatRecetteDepenseBean>){
+        
         this.depenseVsRecette = new Chart('depenseVsRecette', {
             type: 'bar',
             data: { 
-                labels: ['SEM 4', 'SEM 3', 'SEM 2', 'SEM 1'],
+                labels: beans.map(b => b.semaine.value),
                 datasets: [
                     {
                         label: 'dépense',
-                        data: [12, 19, 3, 5],
+                        data: beans.map(b => b.depense.value),
                         borderWidth: 1,
                         stack: 'Stack 0',
                         backgroundColor: 'red',
                     },
                     {
                         label: 'recette',
-                        data: [12, 40, 3, 5],
+                        data: beans.map(b => b.recette.value),
                         borderWidth: 1,
                         stack: 'Stack 1',
                         backgroundColor: 'green',
@@ -54,66 +63,14 @@ export class AvicoleBlockComponent implements OnInit {
                 },
             },
         });
-
-        this.ponte = new Chart('ponte', {
-            type: 'bar',
-            data: { 
-                labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-                datasets: [
-                    {
-                        label: 'oeufs',
-                        data: [12, 19, 3, 5, 20, 15, 18],
-                        borderWidth: 1,
-                        stack: 'Stack 0',
-                        backgroundColor: 'yellow',
-                    },
-                ],
-            },
-            options: {
-                plugins: {
-                    title: {
-                      display: true,
-                      text: 'Évolution de la ponte'
-                    },
-                  },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-        this.deces = new Chart('deces', {
-            type: 'bar',
-            data: { 
-                labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
-                datasets: [
-                    {
-                        label: 'sujet',
-                        data: [12, 19, 3, 5, 6, 7, 9],
-                        borderWidth: 1,
-                        stack: 'Stack 0',
-                        backgroundColor: 'blue',
-                    },
-                ],
-            },
-            options: {
-                plugins: {
-                    title: {
-                      display: true,
-                      text: 'Décès'
-                    },
-                  },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                    },
-                },
-            },
-        });
-
-
     }
 
+    ngOnInit() {
+        this.http        
+            .get(`finance/transaction/generate-etat-recette-depense`)  
+            .pipe(map((data: any) => data))
+            .subscribe(data => {
+                this.initDepenseVsRecetteChart(data.records);
+            });
+    }
 }

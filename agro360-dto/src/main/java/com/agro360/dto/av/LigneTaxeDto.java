@@ -1,5 +1,7 @@
 package com.agro360.dto.av;
 
+import java.math.BigDecimal;
+
 import com.agro360.dto.common.AbstractDto;
 import com.agro360.dto.finance.TaxeDto;
 
@@ -30,14 +32,17 @@ public class LigneTaxeDto extends AbstractDto {
 	
 	@Id
 	@EqualsAndHashCode.Include()
-	@JoinColumn(name = "TAXE_CODE")
+	@JoinColumn(name = "TAXE_CODE", updatable = false)
 	@ManyToOne()
 	private TaxeDto taxe;
 	
 	/**
-	 * Pour permettre qu'on modifie le taux de la taxe source sans impacté la valeur d'usage actuelle
+	 * Historisation
 	 */
 	@Column(name = "TAUX")
 	private Double taux; 
+	
+	@Column(name = "MONTANT", precision = 16, scale = 4)
+	private BigDecimal montant;
 	
 }

@@ -6,13 +6,13 @@
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-<!--	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/changeStatusBtn">-->
-<!--		<property name="visible">-->
-<!--			<list>-->
-<!--				<bean class="com.agro360.operation.rule.module.av.facture.IsStatusChangeAllowed" />-->
-<!--			</list>-->
-<!--		</property>-->
-<!--	</bean>-->
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/changeStatusBtn">
+		<property name="visible">
+			<list>
+				<ref bean="facture.isChangeStatusAuth"/>
+			</list>
+		</property>
+	</bean>
 
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/saveBtn">
 		<property name="visible">
@@ -21,46 +21,24 @@
 			</list>
 		</property>
 	</bean>
-<!--	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/reglerBtn">-->
-<!--		<property name="visible">-->
-<!--			<list>-->
-<!--				<ref bean="facture.isReglable" />-->
-<!--			</list>-->
-<!--		</property>-->
-<!--	</bean>-->
-<!--	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/annulerBtn">-->
-<!--		<property name="visible">-->
-<!--			<list>-->
-<!--				<ref bean="facture.isReglable" />-->
-<!--			</list>-->
-<!--		</property>-->
-<!--	</bean>-->
-<!--	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/terminerBtn">-->
-<!--		<property name="visible">-->
-<!--			<list>-->
-<!--				<ref bean="facture.isAnnulable" />-->
-<!--			</list>-->
-<!--		</property>-->
-<!--	</bean>-->
 	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/reglerBtn">
+		<property name="visible">
+			<list>
+				<ref bean="facture.isReglable" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/deleteBtn">
+		<property name="visible">
+			<list>
+				<ref bean="facture.isDeletable" />
+			</list>
+		</property>
+	</bean>
 
-<!--	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/retourBtn">-->
-<!--		<property name="visible">-->
-<!--			<list>-->
-<!--				<ref bean="facture.isRetournable" />-->
-<!--			</list>-->
-<!--		</property>-->
-<!--	</bean>-->
-
-<!--	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/receptionBtn">-->
-<!--		<property name="visible">-->
-<!--			<list>-->
-<!--				<ref bean="facture.isReceptionnable" />-->
-<!--			</list>-->
-<!--		</property>-->
-<!--	</bean>-->
-
-	<bean name="av/facture-search-result"  class="com.agro360.operation.metadata.BeanMetadataConfig">
+	<bean name="av/facture-search-result" class="com.agro360.operation.metadata.BeanMetadataConfig">
 		<property name="editable">
 			<list>
 			</list>
@@ -68,10 +46,9 @@
 		<property name="fields">
 			<map>
 				<entry key="saveBtn" value-ref="facture-search-result/saveBtn" />
-<!--				<entry key="deleteBtn" value-ref="facture-search-result/deleteBtn" />-->
-<!--				<entry key="reglerBtn" value-ref="facture-search-result/reglerBtn" />-->
-<!--				<entry key="annulerBtn" value-ref="facture-search-result/annulerBtn" />-->
-<!--				<entry key="terminerBtn" value-ref="facture-search-result/terminerBtn" />-->
+				<entry key="changeStatusBtn" value-ref="facture-search-result/changeStatusBtn" />
+				<entry key="reglerBtn" value-ref="facture-search-result/reglerBtn" />
+				<entry key="deleteBtn" value-ref="facture-search-result/deleteBtn" />
 			</map>
 		</property>
 	</bean>

@@ -1,12 +1,18 @@
 package com.agro360.operation.logic.finance;
 
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.agro360.bo.bean.finance.EtatRecetteDepenseBean;
 import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.bean.finance.TransactionSearchBean;
 import com.agro360.bo.bean.finance.TransfertBean;
@@ -219,5 +225,37 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		dto = super.save(dto);	
 		
 		return FinanceMapper.map(dto);
+	}
+
+	public List<EtatRecetteDepenseBean> genererEtatRecetteDepense(ClientContext ctx, LocalDate semaine) {
+		var end = semaine.plusDays(14-semaine.getDayOfWeek().getValue());
+		var start = end.minusDays(28);
+		
+		var etats = new HashMap<LocalDate, EtatRecetteDepenseBean>(4);
+		for (var i = 0; i < 4; i++) {
+			var curr = start.plusDays(7 * i);
+			etats.put(curr, new EtatRecetteDepenseBean(curr));			
+		}
+		
+		var depenses =  dao.calculerCumul(TransactionTypeEnumVd.DEPENSE.name(), start, end);
+		var recettes =  dao.calculerCumul(TransactionTypeEnumVd.RECETTE.name(), start, end);
+		
+		for (var etat : depenses) {
+			Date s = (Date) etat.get("semaine");
+			BigDecimal m = (BigDecimal) etat.get("montant");
+			var bean = etats.get(s.toLocalDate());
+			bean.getDepense().setValue(m);
+		}
+//		
+		for (var etat : recettes) {
+			Date s = (Date) etat.get("semaine");
+			BigDecimal m = (BigDecimal) etat.get("montant");
+			var bean = etats.get(s.toLocalDate());
+			bean.getRecette().setValue(m);
+		}
+		
+		Comparator<EtatRecetteDepenseBean> comparator;
+		comparator = (a, b) -> a.getSemaine().getValue().compareTo(b.getSemaine().getValue());
+		return etats.values().stream().sorted(comparator).collect(Collectors.toList());
 	}
 }

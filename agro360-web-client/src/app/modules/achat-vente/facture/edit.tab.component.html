@@ -1,11 +1,6 @@
-<h2 class="p-3" mat-dialog-title>Edition</h2>
-
 <section class="p-3">
     <div class="row">
         <div class="col-6">
-            <h4>
-                Détails de la facture
-            </h4>
             <div class="row">
                 <div class="col-6">
                     <input-text-field [field]="bean.factureCode"></input-text-field>                            
@@ -44,6 +39,12 @@
                     </div> 
                     <div class="col-4">   
                         <input-number-field [field]="bean.taxe"></input-number-field>
+                        <button mat-icon-button color="primary" 
+                            class="field-button"                          
+                            (click)="listerTaxesAction()"
+                            matTooltip="Liste des taxes appliquées">
+                            <mat-icon>list_task</mat-icon>
+                        </button> 
                     </div> 
                     <div class="col-4">   
                         <input-number-field [field]="bean.remise"></input-number-field>

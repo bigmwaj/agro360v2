@@ -84,7 +84,7 @@
 
                     <ng-container matColumnDef="cumulPaiement">
                         <th mat-header-cell *matHeaderCellDef>Paiement</th>
-                        <td mat-cell *matCellDef="let element">{{element.cumulPaiement.value}}</td>
+                        <td mat-cell *matCellDef="let element">{{element.cumulPaiement.value | currency: '  ' : 'symbol' : '1.2-2'}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="date">
@@ -106,20 +106,20 @@
 
                     <ng-container matColumnDef="prixTotal">
                         <th mat-header-cell *matHeaderCellDef>Prix Total</th>
-                        <td mat-cell *matCellDef="let element">{{element.prixTotal.value}}</td>
+                        <td mat-cell *matCellDef="let element">{{element.prixTotal.value | currency: '  ' : 'symbol' : '1.2-2'}}</td>
                     </ng-container>
 
                     <ng-container matColumnDef="remise">
                         <th mat-header-cell *matHeaderCellDef>Remise</th>
                         <td mat-cell *matCellDef="let element">
-                            {{element.remise.value}}
+                            {{element.remise.value | currency: '  ' : 'symbol' : '1.2-2'}}
                         </td>
                     </ng-container>
 
                     <ng-container matColumnDef="taxe">
                         <th mat-header-cell *matHeaderCellDef>Taxe</th>
                         <td mat-cell *matCellDef="let element">
-                            {{element.taxe.value}}
+                            {{element.taxe.value | currency: '  ' : 'symbol' : '1.2-2'}}
                         </td>
                     </ng-container>
 

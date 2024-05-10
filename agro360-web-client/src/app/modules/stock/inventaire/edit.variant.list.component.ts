@@ -41,8 +41,6 @@ export class EditVariantListComponent extends BeanList<InventaireBean> implement
         }else{
             bean.action = ClientOperationEnumVd.SYNC;
         }
-
-        console.log( bean)
     }
 
     override toggleAllRows(){

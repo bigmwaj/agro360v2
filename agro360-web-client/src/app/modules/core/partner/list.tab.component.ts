@@ -96,8 +96,7 @@ export class ListTabComponent extends BeanPagedListTab<PartnerBean, PartnerSearc
     categoryAction() {
         let dialogRef = this.dialog.open(CategoryIndexModalComponent);
         dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-            console.log(result)
+           
             this.searchAction();
         }); 
     } 

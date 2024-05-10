@@ -43,19 +43,19 @@ public class LigneController extends AbstractController {
 	private LigneForm form;
 
 	@GetMapping("/taxe")
-	public ResponseEntity<List<LigneTaxeBean>> getLigneTaxesAction(
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam() Optional<Long> ligneId,
-			@RequestParam() String articleCode) {		
+	public ResponseEntity<List<LigneTaxeBean>> getTaxesAction(
+			@RequestParam String commandeCode, 
+			@RequestParam Optional<Long> ligneId,
+			@RequestParam String articleCode) {		
 		var ctx = getClientContext();
-		var taxes = service.findLigneTaxes(ctx, commandeCode, ligneId, articleCode);
+		var taxes = service.findTaxes(ctx, commandeCode, ligneId, articleCode);
 		return ResponseEntity.ok(taxes);
 	}
 	
 	@PostMapping("/refresh-prix")
 	public ResponseEntity<LigneBean> refreshLignePrixAction(
-			@RequestParam(required = true) CommandeTypeEnumVd type,
-			@RequestBody(required = true) LigneBean ligne) {		
+			@RequestParam CommandeTypeEnumVd type,
+			@RequestBody LigneBean ligne) {		
 		var ctx = getClientContext();
 		ligne = service.initialiserPrixCalcules(ctx, type, ligne);
 		return ResponseEntity.ok(ligne);
@@ -63,10 +63,10 @@ public class LigneController extends AbstractController {
 	
 	@GetMapping(CREATE_FORM_RN)
 	public ResponseEntity<ModelMap> getLigneCreateFormAction(
-			@RequestParam(required = true) CommandeTypeEnumVd type,
-			@RequestParam(required = false) String commandeCode, 
-			@RequestParam() Optional<String> magasinCode,
-			@RequestParam() Optional<String> alias) {		
+			@RequestParam CommandeTypeEnumVd type,
+			@RequestParam String commandeCode, 
+			@RequestParam Optional<String> magasinCode,
+			@RequestParam Optional<String> alias) {		
 		var ctx = getClientContext();
 		var form = this.form.initCreateFormBean(ctx, type, commandeCode, magasinCode, alias);
 		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
@@ -76,7 +76,7 @@ public class LigneController extends AbstractController {
 	
 	@GetMapping("/article-option")
 	public ResponseEntity<Map<Object, String>> getLigneArticleOptionsAction(
-			@RequestParam(required = true) ArticleTypeEnumVd type) {		
+			@RequestParam ArticleTypeEnumVd type) {		
 		var ctx = getClientContext();
 		var searchBean = new ArticleSearchBean();
 		searchBean.getType().setValue(type);
@@ -87,7 +87,7 @@ public class LigneController extends AbstractController {
 	
 	@GetMapping("/variant-option")
 	public ResponseEntity<Map<Object, String>> getLigneVariantOptionsAction(
-			@RequestParam(required = true) String articleCode) {		
+			@RequestParam String articleCode) {		
 		var ctx = getClientContext();
 		var options = articleService.getVariantArticleAsOption(ctx, articleCode);
 		return ResponseEntity.ok(options);
@@ -95,7 +95,7 @@ public class LigneController extends AbstractController {
 	
 	@GetMapping("/unite-option")
 	public ResponseEntity<Map<Object, String>> getLigneUniteOptionsAction(
-			@RequestParam(required = true) String articleCode) {		
+			@RequestParam String articleCode) {		
 		var ctx = getClientContext();
 		var options = articleService.getUniteArticleAsOption(ctx, articleCode);
 		return ResponseEntity.ok(options);
@@ -103,11 +103,11 @@ public class LigneController extends AbstractController {
 	
 	@GetMapping("/prix-unitaire")
 	public ResponseEntity<BigDecimal> getLignePrixUnitaireAction(
-			@RequestParam(required = true) CommandeTypeEnumVd type,
-			@RequestParam(required = true) String magasinCode,
-			@RequestParam(required = true) String articleCode,
-			@RequestParam(required = true) String variantCode,
-			@RequestParam(required = true) String uniteCode) {		
+			@RequestParam CommandeTypeEnumVd type,
+			@RequestParam String magasinCode,
+			@RequestParam String articleCode,
+			@RequestParam String variantCode,
+			@RequestParam String uniteCode) {		
 		var ctx = getClientContext();
 		BigDecimal pu;
 		if( CommandeTypeEnumVd.ACHAT.equals(type)) {

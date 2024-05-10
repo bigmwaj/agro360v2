@@ -20,7 +20,7 @@ public class FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd>
 
 	private static final long serialVersionUID = 1647090333349627006L;
 
-	private FieldMetadata<String> factureCode = new FieldMetadata<>("Code");
+	private FieldMetadata<String> factureCode = new FieldMetadata<>("Facture");
 
 	private FieldMetadata<LocalDate> date = new FieldMetadata<>("Date");
 
@@ -36,14 +36,11 @@ public class FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd>
 
 	private FieldMetadata<BigDecimal> remise = new FieldMetadata<>("Remise Totale");
 
-	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total + Taxe - Remise");
+	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total - Remise + Taxes");
 
 	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
 
 	private FieldMetadata<String> reglerBtn = new FieldMetadata<>();
-	
-	@Setter
-	private PaiementBean paiement = new PaiementBean();
 
 	@Setter
 	private PartnerBean partner = new PartnerBean();

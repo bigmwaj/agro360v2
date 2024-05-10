@@ -8,6 +8,7 @@ import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { PaiementEditComponent } from './paiement.edit.component';
 import { CommandeStatusEnumVd } from 'src/app/backed/vd.av';
+import { FieldMetadata } from 'src/app/backed/metadata';
 
 @Component({
     standalone: true,
@@ -21,6 +22,8 @@ import { CommandeStatusEnumVd } from 'src/app/backed/vd.av';
 export class PaiementDialogComponent implements OnInit {
 
     bean: CommandeBean | FactureBean;
+
+    ref:FieldMetadata<string>
 
     paiements:Array<PaiementBean>
 
@@ -37,6 +40,14 @@ export class PaiementDialogComponent implements OnInit {
     ngOnInit(): void {
         this.bean = this.data.bean;
         this.paiements = this.data.paiements;
+
+        const _bean: any = this.bean;
+        
+        if( _bean.factureCode ){
+            this.ref = (<FactureBean>this.bean).factureCode
+        }else{
+            this.ref = (<CommandeBean>this.bean).commandeCode
+        }
     }
 
     saveAction() {

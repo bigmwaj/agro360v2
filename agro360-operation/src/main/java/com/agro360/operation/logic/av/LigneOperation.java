@@ -78,6 +78,9 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 
 		var msgTpl = "Ligne %d créée avec succès";
 		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
+		
+		 dto.getLigneId();
+		 bean.getLigneId().setValue(dto.getLigneId());
 	}
 
 	@RuleNamespace("av/commande/ligne/update")

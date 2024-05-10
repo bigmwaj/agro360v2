@@ -36,7 +36,7 @@ public class CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumV
 
 	private FieldMetadata<BigDecimal> prixTotalHT = new FieldMetadata<>("Prix Total(HT)");
 
-	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total + Taxe - Remise");
+	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total - Remise + Taxes");
 
 	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
 

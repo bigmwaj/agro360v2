@@ -33,6 +33,7 @@ public class FilterStatusAction extends AbstractAction<Map<Object, String>, Fact
 			valueOptions.put(FactureStatusEnumVd.ANNL, FactureStatusEnumVd.ANNL.getLibelle());
 			break;
 			
+		case RGLM:
 		case ATAP:
 			valueOptions.put(FactureStatusEnumVd.APPR, FactureStatusEnumVd.APPR.getLibelle());
 			valueOptions.put(FactureStatusEnumVd.REJT, FactureStatusEnumVd.REJT.getLibelle());

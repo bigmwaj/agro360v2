@@ -31,6 +31,7 @@ import com.agro360.operation.logic.av.ReglementCommandeOperation;
 import com.agro360.operation.logic.av.ReglementFactureOperation;
 import com.agro360.operation.logic.finance.TransactionOperation;
 import com.agro360.service.common.AbstractService;
+import com.agro360.service.common.UserInput;
 import com.agro360.service.stock.InventaireServiceHelper;
 import com.agro360.vd.av.CommandeStatusEnumVd;
 import com.agro360.vd.av.CommandeTypeEnumVd;
@@ -81,12 +82,12 @@ public class CommandeService extends AbstractService {
 		.orElse(BigDecimal.ZERO);
 	}
 	
-	private void initPrix(ClientContext ctx, CommandeBean bean) {
-		Predicate<LigneBean> notDeleted = e -> !ClientOperationEnumVd.DELETE.equals(e.getAction());
+	private void initChampsCalcules(ClientContext ctx, CommandeBean bean) {
+		Predicate<LigneBean> deleted = e -> ClientOperationEnumVd.DELETE.equals(e.getAction());
 		
 		bean.getLignes().stream()
-			.filter(notDeleted)
-			.forEach(e -> ligneServiceHelper.initPrix(ctx, e));
+			.filter(Predicate.not(deleted))
+			.forEach(e -> ligneServiceHelper.initChampsCalcules(ctx, bean, e));
         
         var prixTotalHT = cumulerPrix(bean.getLignes(), LigneBean::getPrixTotalHT);
         var taxe = cumulerPrix(bean.getLignes(), LigneBean::getTaxe);
@@ -104,6 +105,7 @@ public class CommandeService extends AbstractService {
         bean.getPrixTotal().setValueChanged(true);
 	}
 	
+	@UserInput(metadataBeanName = "av/commande", validatorBeanName = "")
 	public void save(ClientContext ctx, CommandeBean bean) {
 		switch (bean.getAction()) {
 		case CREATE:
@@ -166,7 +168,7 @@ public class CommandeService extends AbstractService {
 		Consumer<TransactionBean> approuverFn;
 		approuverFn = e -> transactionOperation.approuverTransaction(ctx, e);
 		
-		reglementCommandeOperation.findReglementsByCommandeCode(ctx, commandeCode)
+		reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
 				.stream()
 				.map(ReglementCommandeBean::getTransaction)
 				.filter(isReservee)
@@ -177,15 +179,13 @@ public class CommandeService extends AbstractService {
 	private boolean existReglementsAnnules(ClientContext ctx, CommandeBean bean) {
 		var commandeCode = bean.getCommandeCode().getValue();
 		
-		
-		return reglementCommandeOperation.findReglementsByCommandeCode(ctx, commandeCode)
+		return reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
 			.stream()
 			.map(ReglementCommandeBean::getTransaction)
 			.map(TransactionBean::getStatus)
 			.map(FieldMetadata::getValue)
 			.anyMatch(TransactionStatusEnumVd.ANNULEE::equals);
 	}
-	
 
 	private TransactionBean setToAnnulee(TransactionBean bean) {
 		bean.getStatus().setValue(TransactionStatusEnumVd.ANNULEE);
@@ -201,7 +201,7 @@ public class CommandeService extends AbstractService {
 		Consumer<TransactionBean> annulerFn;
 		annulerFn = e -> transactionOperation.annulerTransaction(ctx, e);
 		
-		reglementCommandeOperation.findReglementsByCommandeCode(ctx, commandeCode)
+		reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
 				.stream()
 				.map(ReglementCommandeBean::getTransaction)
 				.filter(isReservee)
@@ -217,7 +217,7 @@ public class CommandeService extends AbstractService {
 	private BigDecimal calculerCumulPaiements(ClientContext ctx, CommandeBean bean) {
 		var commandeCode = bean.getCommandeCode().getValue();
 		Predicate<TransactionBean> nonAnnulee = t -> !TransactionStatusEnumVd.ANNULEE.equals(t.getStatus().getValue());
-		return reglementCommandeOperation.findReglementsByCommandeCode(ctx, commandeCode)
+		return reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
 			.stream()
 			.map(ReglementCommandeBean::getTransaction)
 			.filter(nonAnnulee)
@@ -228,15 +228,15 @@ public class CommandeService extends AbstractService {
 	}
 	
 	private void create(ClientContext ctx, CommandeBean bean) {
-		initPrix(ctx, bean);
+		initChampsCalcules(ctx, bean);
 		operation.createCommande(ctx, bean);
-		createLignesCommande(ctx, bean);
+		ligneServiceHelper.createLignesCommande(ctx, bean, bean.getLignes());
 	}
 	
 	private void update(ClientContext ctx, CommandeBean bean) {		
-		initPrix(ctx, bean);
+		initChampsCalcules(ctx, bean);
 		operation.updateCommande(ctx, bean);
-		syncLignesCommande(ctx, bean);
+		ligneServiceHelper.syncLignesCommande(ctx, bean, bean.getLignes());
 	}
 	
 	public void reglerCommande(ClientContext ctx, String commandeCode, List<PaiementBean> paiements) {
@@ -310,17 +310,9 @@ public class CommandeService extends AbstractService {
 		var prixTotalNet = freshBean.getPrixTotal().getValue();
 		var reste = prixTotalNet.subtract(cumulPaiements);
 		
-		if( reste.compareTo(BigDecimal.ZERO) != 0 ) {
-			if( reste.compareTo(BigDecimal.ZERO) > 0 ) {
-				reglerCommandeACredit(ctx, freshBean, reste);
-			}else {
-				var msgTpl = "Trop perçu %.2f de la commande. Montant total %.2f, Cumul Paiement %.2f";
-				throw new RuntimeException(String.format(msgTpl, reste, prixTotalNet, cumulPaiements));
-			}
-		}
+		approuverReglements(ctx, bean);
 		
 		var anyAnnulation = existReglementsAnnules(ctx, bean);
-		approuverReglements(ctx, bean);
 		if( anyAnnulation || reste.compareTo(BigDecimal.ZERO) != 0 ) {
 			bean.getStatus().setValue(CommandeStatusEnumVd.ATAP);
 			bean.getStatusDate().setValue(LocalDateTime.now());
@@ -329,6 +321,15 @@ public class CommandeService extends AbstractService {
 			bean.getStatus().setValue(CommandeStatusEnumVd.TERM);
 			bean.getStatusDate().setValue(LocalDateTime.now());
 			operation.terminerCommande(ctx, bean);					
+		}
+
+		if( reste.compareTo(BigDecimal.ZERO) != 0 ) {
+			if( reste.compareTo(BigDecimal.ZERO) > 0 ) {
+				reglerCommandeACredit(ctx, freshBean, reste);
+			}else {
+				var msgTpl = "Trop perçu %.2f de la commande. Montant total %.2f, Cumul Paiement %.2f";
+				throw new RuntimeException(String.format(msgTpl, reste, prixTotalNet, cumulPaiements));
+			}
 		}
 		
 		if( CommandeTypeEnumVd.VENTE.equals(bean.getType().getValue()) ) {
@@ -398,8 +399,9 @@ public class CommandeService extends AbstractService {
 		return facture;
 	}
 
-	private void assignerReglementsCommande(ClientContext ctx, CommandeBean bean, FactureBean facture) {
+	private void assignerReglementsCommandeDansFacture(ClientContext ctx, CommandeBean bean, FactureBean facture) {
 		var commandeCode = bean.getCommandeCode().getValue();
+		
 		Predicate<TransactionBean> isAppr;
 		isAppr = e -> TransactionStatusEnumVd.APPROUVEE.equals(e.getStatus().getValue());
 		
@@ -409,15 +411,15 @@ public class CommandeService extends AbstractService {
 		Consumer<ReglementFactureBean> save;
 		save = e -> reglementFactureOperation.createReglement(ctx, e);
 		
-		reglementCommandeOperation.findReglementsByCommandeCode(ctx, commandeCode)
-				.stream()
-				.map(ReglementCommandeBean::getTransaction)
-				.filter(isAppr)
-				.map(mapper)
-				.forEach(save);
+		reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
+			.stream()
+			.map(ReglementCommandeBean::getTransaction)
+			.filter(isAppr)
+			.map(mapper)
+			.forEach(save);
 	}
 
-	private void reglerCommandeACredit(ClientContext clientContext, CommandeBean bean, BigDecimal reste) {
+	private void reglerCommandeACredit(ClientContext ctx, CommandeBean bean, BigDecimal reste) {
 		
 		var facture = initFacture(bean);
 		
@@ -435,37 +437,10 @@ public class CommandeService extends AbstractService {
 		facture.getCumulPaiement().setValue(bean.getCumulPaiement().getValue());
 		facture.getRemise().setValue(bean.getRemise().getValue());
 
-		factureOperation.createFacture(clientContext, facture);
+		factureOperation.createFacture(ctx, facture);
 		
-		assignerReglementsCommande(clientContext, bean, facture);
-		
-	}
-	
-	private void createLignesCommande(ClientContext ctx, CommandeBean bean) {
-		for (LigneBean ligne : bean.getLignes()) {
-			ligneOperation.createLigne(ctx, bean, ligne);
-		}
-	}
-	
-	private void syncLignesCommande(ClientContext ctx, CommandeBean bean) {
-		for (LigneBean ligne : bean.getLignes()) {
-			switch (ligne.getAction()) {
-			case CREATE:
-				ligneOperation.createLigne(ctx, bean, ligne);
-				break;
-				
-			case UPDATE:
-				ligneOperation.updateLigne(ctx, bean, ligne);
-				break;
-				
-			case DELETE:
-				ligneOperation.deleteLigne(ctx, bean, ligne);
-				break;
-
-			default:
-				break;
-			}
-		}
+		assignerReglementsCommandeDansFacture(ctx, bean, facture);
+		ligneServiceHelper.assignerFactureTaxesAppliquees(ctx, bean, facture);
 	}
 
 	public CommandeBean findCommande(ClientContext ctx, String value) {
@@ -473,7 +448,7 @@ public class CommandeService extends AbstractService {
 	}
 
 	public List<ReglementBean> findReglements(ClientContext ctx, String commandeCode) {
-		var reglements = reglementCommandeOperation.findReglementsByCommandeCode(ctx, commandeCode)
+		var reglements = reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
 				.stream().map(ReglementCommandeBean::getTransaction)
 				.map(ReglementBean::new)
 				.collect(Collectors.toCollection(ArrayList<ReglementBean>::new));

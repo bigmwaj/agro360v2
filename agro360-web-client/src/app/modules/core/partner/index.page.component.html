@@ -35,4 +35,18 @@
             </core-partner-edit-tab>
         </mat-tab>
     </ng-container>
-  </mat-tab-group>
+</mat-tab-group>
+
+
+<div class="d-flex p-3">
+    <button mat-fab extended cdkFocusInitial  class="ms-3 mb-3 me-2"
+        (click)="saveAction()" 
+        color="primary"
+        *ngIf="currentEditingBean?.saveBtn?.visible">
+        <mat-icon>save</mat-icon>Enregistrer
+    </button>
+
+    <button mat-fab color="warn" extended (click)="addAction()" class="me-3 mb-3">
+        <mat-icon>add</mat-icon> Ajouter un nouveau partenaire
+    </button>
+</div>

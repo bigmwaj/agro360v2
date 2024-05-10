@@ -29,8 +29,7 @@ public class RetourController extends AbstractController {
 	private RetourLigneService service;
 
 	@GetMapping(CREATE_FORM_RN)
-	public ResponseEntity<ModelMap> getCreateFormAction(
-			@RequestParam(required = false) String commandeCode) {		
+	public ResponseEntity<ModelMap> getCreateFormAction(@RequestParam String commandeCode) {		
 		var ctx = getClientContext();
 		var form = this.form.initCreateFormBean(ctx, commandeCode);
 
@@ -40,7 +39,7 @@ public class RetourController extends AbstractController {
 	}
 	
 	@GetMapping()
-	public ResponseEntity<ModelMap> getRetoursAction(@RequestParam(required = false) String commandeCode) {		
+	public ResponseEntity<ModelMap> getRetoursAction(@RequestParam String commandeCode) {		
 		var ctx = getClientContext();
 		var records = service.findCommandeRetours(ctx, commandeCode);
 		records = form.initUpdateFormBean(ctx, commandeCode, records);
@@ -51,8 +50,7 @@ public class RetourController extends AbstractController {
 	}
 	
 	@GetMapping("/ligne")
-	public ResponseEntity<ModelMap> getLigneAction(
-			@RequestParam(required = false) String commandeCode,
+	public ResponseEntity<ModelMap> getLigneAction(@RequestParam String commandeCode,
 			@RequestParam(required = false) Long ligneId) {		
 		var ctx = getClientContext();
 		var ligne = form.initLigne(ctx, commandeCode, ligneId);
@@ -62,10 +60,8 @@ public class RetourController extends AbstractController {
 	}
 
 	@PostMapping()
-	public ResponseEntity<ModelMap> saveAction(
-			@RequestParam(required = false) String commandeCode,
-			@RequestBody @Validated List<RetourLigneBean> beans
-			) {
+	public ResponseEntity<ModelMap> saveAction(@RequestParam String commandeCode,
+			@RequestBody @Validated List<RetourLigneBean> beans) {
 		var ctx = getClientContext();
 		service.save(ctx, commandeCode, beans);
 		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));

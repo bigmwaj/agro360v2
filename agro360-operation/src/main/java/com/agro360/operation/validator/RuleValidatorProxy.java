@@ -28,7 +28,7 @@ public class RuleValidatorProxy {
 		
 	}
 
-	@Before(value = "execution(public * com.agro360.service.logic..*.*(..)) && @annotation(ruleNamespace)", 
+	@Before(value = "execution(public * com.agro360.operation.logic..*.*(..)) && @annotation(ruleNamespace)", 
 			argNames = "joinPoint,ruleNamespace")
     public void preValidate(JoinPoint joinPoint, RuleNamespace ruleNamespace) {
         logger.debug("{} -> Post validation start ...", getServiceName(joinPoint));
@@ -40,7 +40,7 @@ public class RuleValidatorProxy {
 	}
 	
 	@AfterReturning(
-			value = "execution(public * com.agro360.service.logic..*.*(..)) && @annotation(ruleNamespace)", 
+			value = "execution(public * com.agro360.operation.logic..*.*(..)) && @annotation(ruleNamespace)", 
 			returning = "retVal",
 			argNames = "joinPoint,retVal,ruleNamespace")
     public void postValidate(JoinPoint joinPoint, Object retVal, RuleNamespace ruleNamespace) {

@@ -36,8 +36,9 @@ public class LigneTaxeOperation extends AbstractOperation<LigneTaxeDto, LigneTax
 	@RuleNamespace("av/commande/ligne/taxe/create")
 	public void createLigne(ClientContext ctx, CommandeBean commande, LigneBean ligne, LigneTaxeBean bean) {
 		var dto = new LigneTaxeDto();
-		dto.setCommandeCode(commande.getCommandeCode().getValue());		
-		dto.setLigneId(ligne.getLigneId().getValue());	
+		dto.setCommandeCode(bean.getCommandeCode().getValue());		
+		dto.setLigneId(bean.getLigneId().getValue());	
+		dto.setMontant(bean.getMontant().getValue());
 		
 		var taxe = taxeDao.getReferenceById(bean.getTaxe().getTaxeCode().getValue());
 		dto.setTaxe(taxe);
@@ -45,32 +46,34 @@ public class LigneTaxeOperation extends AbstractOperation<LigneTaxeDto, LigneTax
 		
 		super.save(dto);
 	}
-
-	@RuleNamespace("av/commande/ligne/ligne/delete")
-	public void deleteLigne(ClientContext ctx, CommandeBean commande, LigneBean ligne, LigneTaxeBean bean) {
-		var dto = findLigneTaxeDto(commande, ligne, bean);
-		dao.delete(dto);
+	
+	public void deleteLignes(ClientContext ctx, CommandeBean commande, LigneBean ligne) {
+		var dtos = findLigneTaxeDto(commande, ligne);
+		dao.deleteAll(dtos);
 	}
 
-	public LigneTaxeBean findLigneTaxeByCode(ClientContext ctx, String commandeCode, Long ligneId, String taxeCode) {
-		return AchatVenteMapper.map(findLigneTaxeDto(commandeCode, ligneId, taxeCode));
-	}
-
-	public List<LigneTaxeBean> findLigneTaxesLigne(ClientContext ctx, String commandeCode, Long ligneId) {
+	public List<LigneTaxeBean> findLigneTaxes(ClientContext ctx, CommandeBean commande, LigneBean ligne) {
+		var commandeCode = commande.getCommandeCode().getValue();
+		var ligneId = ligne.getLigneId().getValue();
 		return dao.findAllByCommandeCodeAndLigneId(commandeCode, ligneId)
 				.stream().map(AchatVenteMapper::map)
 				.collect(Collectors.toList());
 	}
 	
-	private LigneTaxeDto findLigneTaxeDto(String commandeCode, Long ligneId, String taxeCode) {
-		return dao.findOneByCommandeCodeAndLigneIdAndTaxeTaxeCode(commandeCode, ligneId, taxeCode)
-				.orElseThrow();
+	public List<LigneTaxeBean> findLigneTaxes(ClientContext ctx, CommandeBean commande) {
+		var commandeCode = commande.getCommandeCode().getValue();
+		return dao.findAllByCommandeCode(commandeCode)
+				.stream().map(AchatVenteMapper::map)
+				.collect(Collectors.toList());
 	}
 	
-	private LigneTaxeDto findLigneTaxeDto(CommandeBean commande, LigneBean ligne, LigneTaxeBean bean) {
+	private List<LigneTaxeDto> findLigneTaxeDto(String commandeCode, Long ligneId) {
+		return dao.findAllByCommandeCodeAndLigneId(commandeCode, ligneId);
+	}
+	
+	private List<LigneTaxeDto> findLigneTaxeDto(CommandeBean commande, LigneBean ligne) {
 		var commandeCode = commande.getCommandeCode().getValue();
 		var ligneId = ligne.getLigneId().getValue();
-		var taxeCode = bean.getTaxe().getTaxeCode().getValue();
-		return findLigneTaxeDto(commandeCode, ligneId, taxeCode);
+		return findLigneTaxeDto(commandeCode, ligneId);
 	}
 }

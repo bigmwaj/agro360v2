@@ -10,10 +10,10 @@ import { SharedModule } from 'src/app/modules/common/shared.module';
     imports: [
         SharedModule
     ],
-    selector: 'achat-vente-display-ligne-taxe-dialog',
-    templateUrl: './display.ligne.taxe.dialog.component.html',
+    selector: 'achat-vente-ligne-taxe-list-dialog',
+    templateUrl: './taxe.list.dialog.component.html',
 })
-export class DisplayLigneTaxeDialogComponent implements OnInit {
+export class TaxeListDialogComponent implements OnInit {
 
     bean: LigneBean;
 
@@ -30,7 +30,7 @@ export class DisplayLigneTaxeDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: {ligne:LigneBean, commande: CommandeBean},
         private http: HttpClient,
         public dialog: MatDialog,
-        public dialogRef: MatDialogRef<DisplayLigneTaxeDialogComponent>) { }
+        public dialogRef: MatDialogRef<TaxeListDialogComponent>) { }
 
     ngOnInit(): void {
         this.bean = this.data.ligne

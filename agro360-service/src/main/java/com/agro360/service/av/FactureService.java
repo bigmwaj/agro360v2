@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.agro360.bo.bean.av.EtatDetteBean;
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
+import com.agro360.bo.bean.av.FactureTaxeBean;
 import com.agro360.bo.bean.av.PaiementBean;
 import com.agro360.bo.bean.av.ReglementBean;
 import com.agro360.bo.bean.av.ReglementFactureBean;
@@ -20,6 +22,7 @@ import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.av.FactureOperation;
+import com.agro360.operation.logic.av.FactureTaxeOperation;
 import com.agro360.operation.logic.av.ReglementFactureOperation;
 import com.agro360.operation.logic.finance.TransactionOperation;
 import com.agro360.service.common.AbstractService;
@@ -33,6 +36,9 @@ public class FactureService extends AbstractService {
 
 	@Autowired
 	private FactureOperation operation;
+	
+	@Autowired
+	private FactureTaxeOperation factureTaxeOperation;
 	
 	@Autowired
 	private ReglementFactureOperation reglementFactureOperation;
@@ -50,16 +56,28 @@ public class FactureService extends AbstractService {
 		var remise = bean.getRemise().getValue();
 		
 		var prixTotal = prixTotalHT.add(taxe).subtract(remise);
-		bean.getPrixTotalHT().setValue(prixTotal);
+		bean.getPrixTotal().setValue(prixTotal);
+		bean.getPrixTotal().setValueChanged(true);
 		
 		operation.createFacture(ctx, bean);
+	}
+	
+	private void update(ClientContext ctx, FactureBean bean) {
+		var prixTotalHT = bean.getPrixTotalHT().getValue();
+		var taxe = bean.getTaxe().getValue();
+		var remise = bean.getRemise().getValue();
+		
+		var prixTotal = prixTotalHT.add(taxe).subtract(remise);
+		bean.getPrixTotal().setValue(prixTotal);
+		bean.getPrixTotal().setValueChanged(true);
+		
+		operation.updateFacture(ctx, bean);
 	}
 	
 	public void save(ClientContext ctx, FactureBean bean) {
 		
 		switch (bean.getAction()) {
-		case CREATE:
-			
+		case CREATE:			
 			create(ctx, bean);
 			
 			var msgTpl = "La facture <strong>%s</strong> a été créée avec succès!";
@@ -67,7 +85,7 @@ public class FactureService extends AbstractService {
 			break;
 			
 		case UPDATE:
-			operation.updateFacture(ctx, bean);
+			update(ctx, bean);
 			
 			msgTpl = "La facture <strong>%s</strong> a été modifiée avec succès!";
 			ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));
@@ -166,14 +184,22 @@ public class FactureService extends AbstractService {
 		}
 		
 		reglerFacture(ctx, bean, paiementsValides);
-		
+		var status = bean.getStatus().getValue();
 		if( prixTotal.compareTo(paiementTotal) == 0 ) {
 			solderFacture(ctx, bean);
+		}else if( FactureStatusEnumVd.BRLN.equals(status)){
+			initierPaiementCommande(ctx, bean);
 		}
 		
 		bean.getCumulPaiement().setValue(nouveauCumulPaiement);
 		bean.getCumulPaiement().setValueChanged(true);
 		operation.updateFacture(ctx, bean);
+	}
+
+	private void initierPaiementCommande(ClientContext ctx, FactureBean bean) {
+		bean.getStatus().setValue(FactureStatusEnumVd.RGLM);
+		bean.getStatusDate().setValue(LocalDateTime.now());
+		operation.initPaiementFacture(ctx, bean);
 	}
 	
 	private void approuverReglements(ClientContext ctx, FactureBean bean) {
@@ -266,5 +292,13 @@ public class FactureService extends AbstractService {
 		rg.getFactureCode().setValue(bean.getFactureCode().getValue());
 		
 		reglementFactureOperation.createReglement(ctx, rg);
+	}
+
+	public List<FactureTaxeBean> findTaxes(ClientContext ctx, String factureCode) {
+		return factureTaxeOperation.findFactureTaxesFacture(ctx, factureCode);
+	}
+	
+	public List<EtatDetteBean> genererEtatDette(ClientContext ctx) {
+		return operation.genererEtatDette(ctx);
 	}
 }

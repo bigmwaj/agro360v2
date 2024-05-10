@@ -46,7 +46,8 @@ public class CommandeController extends AbstractController {
 			@Validated Optional<CommandeSearchBean> searchBean) {
 		var ctx = getClientContext();
 		var sb = searchBean.orElse(new CommandeSearchBean());
-		var model = new ModelMap(RECORDS_MODEL_KEY, form.initSearchResultBeans(ctx, service.search(ctx, sb)));
+		var result = service.search(ctx, sb);
+		var model = new ModelMap(RECORDS_MODEL_KEY, form.initSearchResultBeans(ctx, result));
 		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
 		return ResponseEntity.ok(model);
 	}
@@ -85,26 +86,27 @@ public class CommandeController extends AbstractController {
 		
 		var commandeCode = bean.getCommandeCode().getValue();
 		if( processPaiement.isPresent() && processPaiement.get() ) {
-			return initPaiementAction(ctx, commandeCode);
+			return initPaiement(ctx, commandeCode);
 		}
 		
 		var action = bean.getAction();
 		var model = new ModelMap();
+		
 		if( !ClientOperationEnumVd.DELETE.equals(action)) {
 			bean = form.initEditFormBean(ctx, bean.getCommandeCode().getValue());	
 			model.addAttribute(RECORD_MODEL_KEY, bean);
 		}
+		
 		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
 		return ResponseEntity.ok(model);
 	}
 	
 	@GetMapping("/init-paiement")
-	public ResponseEntity<ModelMap> initPaiementAction(
-			@RequestParam(required = true) String commandeCode) {
-		return initPaiementAction(getClientContext(), commandeCode);
+	public ResponseEntity<ModelMap> initPaiementAction(@RequestParam String commandeCode) {
+		return initPaiement(getClientContext(), commandeCode);
 	}
 	
-	private ResponseEntity<ModelMap> initPaiementAction( ClientContext ctx, String commandeCode) {
+	private ResponseEntity<ModelMap> initPaiement( ClientContext ctx, String commandeCode) {
 		var model = new ModelMap();
 		var paiements = form.initPaiementsFormBean(ctx, commandeCode);
 		var bean = form.initEditFormBean(ctx, commandeCode);	
@@ -114,21 +116,8 @@ public class CommandeController extends AbstractController {
 		return ResponseEntity.ok(model);
 	}
 	
-	@PostMapping("change-status")
-	public ResponseEntity<ModelMap> changeStatusAction(@RequestBody @Validated CommandeBean bean) {
-		var ctx = getClientContext();
-		var model = new ModelMap();
-		service.save(ctx, bean);
-		bean = service.findCommande(ctx, bean.getCommandeCode().getValue());
-		bean = form.initEditFormBean(ctx, bean.getCommandeCode().getValue());	
-		model.addAttribute(RECORD_MODEL_KEY, bean);
-		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
-		return ResponseEntity.ok(model);
-	}
-	
 	@PostMapping("/encaisser")
-	public ResponseEntity<ModelMap> encaisserAction(
-			@RequestParam(required = true) String commandeCode,
+	public ResponseEntity<ModelMap> encaisserAction(@RequestParam String commandeCode,
 			@RequestBody @Validated List<PaiementBean> paiements) {
 		var ctx = getClientContext();
 		var model = new ModelMap();
@@ -141,16 +130,14 @@ public class CommandeController extends AbstractController {
 	}
 	
 	@GetMapping("/reglement")
-	public ResponseEntity<List<ReglementBean>> getReglementsAction(
-			@RequestParam(required = true) String commandeCode) {		
+	public ResponseEntity<List<ReglementBean>> getReglementsAction(@RequestParam String commandeCode) {		
 		var ctx = getClientContext();
 		var reglements = service.findReglements(ctx, commandeCode);
 		return ResponseEntity.ok(reglements);
 	}
 	
 	@GetMapping("/variants")
-	public ResponseEntity<List<VariantBean>> getLigneVariantsAction(
-			@RequestParam(required = true) String query) {		
+	public ResponseEntity<List<VariantBean>> getLigneVariantsAction(@RequestParam String query) {		
 		var ctx = getClientContext();
 		var options = articleService.getVariantsByQuery(ctx, query);
 		return ResponseEntity.ok(options);

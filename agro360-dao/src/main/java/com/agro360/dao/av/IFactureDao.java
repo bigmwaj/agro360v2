@@ -1,5 +1,6 @@
 package com.agro360.dao.av;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -14,6 +15,15 @@ import com.agro360.vd.av.FactureTypeEnumVd;
 
 @Repository
 public interface IFactureDao extends IDao<FactureDto, String>{
+	
+	@Query(
+		value ="select "
+			+ " sum(prixTotal - cumulPaiement)"
+			+ " from com.agro360.dto.av.FactureDto dto"
+			+ " where dto.type = :type and dto.status not in ('ANNL', 'CLOT')"
+	)
+	BigDecimal calculerDettes(@Param("type") FactureTypeEnumVd type);
+	
 	@Query(
 		value = "   select dto from com.agro360.dto.av.FactureDto dto"
 				+ " where (:code is null or dto.factureCode like %:code%)"

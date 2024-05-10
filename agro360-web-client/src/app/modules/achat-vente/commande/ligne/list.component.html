@@ -87,21 +87,17 @@
             <ng-container matColumnDef="taxe">
                 <th mat-header-cell *matHeaderCellDef>Taxe</th>
                 <td mat-cell *matCellDef="let element">                    
-                    <div class="d-flex">
-                        <div>
-                            <input-number-field 
-                                [field]="element.taxe" 
-                                [displayLabel]="false">
-                            </input-number-field>
-                        </div>
-                        <div>
-                            <div class="field-button pt-1" >
-                                <button mat-icon-button color="primary"                             
-                                    title="Liste des taxes appliquée" 
-                                    (click)="listerTaxesAction(element)">
-                                    <mat-icon>open_in_new</mat-icon>
-                                </button> 
-                            </div>
+                    <div class="d-inline-flex">
+                        <input-number-field 
+                            [field]="element.taxe" 
+                            [displayLabel]="false">
+                        </input-number-field>
+                        <div class="field-button pt-1" >
+                            <button mat-icon-button color="primary"                             
+                                title="Liste des taxes appliquée" 
+                                (click)="listerTaxesAction(element)">
+                                <mat-icon>open_in_new</mat-icon>
+                            </button> 
                         </div>
                     </div>
                 </td>
@@ -216,14 +212,15 @@
                             <mat-icon>more_vert</mat-icon>
                         </button>
                         <mat-menu #menu="matMenu"> 
-                            <button mat-menu-item color="primary"  (click)="listerTaxesAction(element)">
+                            <button mat-menu-item color="primary" (click)="listerTaxesAction(element)">
                                 <mat-icon>open_in_new</mat-icon>Taxes appliquées
                             </button> 
                             <button mat-menu-item color="primary" (click)="editRemiseAction(element)">
-                                <mat-icon>open_in_new</mat-icon>Paramètre de la remise
+                                <mat-icon>open_in_new</mat-icon>Paramètres de la remise
                             </button> 
                               
-                            <mat-divider></mat-divider> 
+                            <mat-divider></mat-divider>
+
                             <button mat-menu-item color="primary" title="Copier" 
                                 *ngIf="commande.createLigneBtn.visible"
                                 (click)="copyAction(element)">

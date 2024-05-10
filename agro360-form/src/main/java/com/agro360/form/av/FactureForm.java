@@ -3,6 +3,7 @@ package com.agro360.form.av;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -53,20 +54,21 @@ public class FactureForm {
 		initPartnerOption(ctx, bean.getPartner().getPartnerCode()::setValueOptions);
 		return bean;
 	}
-
-	@MetadataBeanName("av/facture-init-paiement")
-	public List<PaiementBean> initPaiementsFormBean(ClientContext ctx, String factureCode) {
-		return compteOperation.findComptesByCriteria(ctx, new CompteSearchBean())
-			.stream().map(PaiementBean::new)
-			.collect(Collectors.toList());
-	}
 	
 	@MetadataBeanName("av/facture")
 	public FactureBean initEditFormBean(ClientContext ctx, String factureCode) {
 		var bean = operation.findFactureByCode(ctx, factureCode);
 		
 		bean.setAction(ClientOperationEnumVd.UPDATE);
+		initPartnerOption(ctx, bean.getPartner().getPartnerCode()::setValueOptions, bean.getPartner());
 		return bean;
+	}
+
+	@MetadataBeanName("av/facture-init-paiement")
+	public List<PaiementBean> initPaiementsFormBean(ClientContext ctx, String factureCode) {
+		return compteOperation.findComptesByCriteria(ctx, new CompteSearchBean())
+			.stream().map(PaiementBean::new)
+			.collect(Collectors.toList());
 	}
 
 	@MetadataBeanName("av/facture")
@@ -96,13 +98,19 @@ public class FactureForm {
 		return beans;
 	}
 
+	Function<PartnerBean, Object> partnerCodeFn = e -> e.getPartnerCode().getValue();
+	
+	Function<PartnerBean, String> partnerLibelleFn = e -> e.getPartnerName().getValue();
+	
 	private void initPartnerOption(ClientContext ctx, Consumer<Map<Object, String>> valueOptionsSetter) {
-		Function<PartnerBean, Object> codeFn = e -> e.getPartnerCode().getValue();
-		Function<PartnerBean, String> libelleFn = e -> e.getPartnerName().getValue();
-		
 		var options = partnerOperation.findPartnersByCriteria(ctx, new PartnerSearchBean())
-				.stream().collect(Collectors.toMap(codeFn, libelleFn));
-		
+				.stream().collect(Collectors.toMap(partnerCodeFn, partnerLibelleFn));
+		valueOptionsSetter.accept(options);
+	}
+	
+	private void initPartnerOption(ClientContext ctx, Consumer<Map<Object, String>> valueOptionsSetter, PartnerBean bean) {
+		var options = Collections.singleton(bean)
+				.stream().collect(Collectors.toMap(partnerCodeFn, partnerLibelleFn));
 		valueOptionsSetter.accept(options);
 	}
 	

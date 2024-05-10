@@ -17,6 +17,7 @@ import { IndexModalComponent } from '../unite/index.modal.component';
 import { EditDialogComponent } from './edit.dialog.component';
 import { CreateDialogComponent } from './create.dialog.component';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
+import { UploadDialogComponent } from '../../common/upload.dialog.component';
 
 @Component({
     standalone: true,
@@ -26,7 +27,8 @@ import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
         MatToolbarModule,
         FormsModule,        
         MatTooltipModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        UploadDialogComponent
     ],
     selector: 'stock-inventaire-list-tab',
     templateUrl: './list.tab.component.html'
@@ -118,6 +120,10 @@ export class ListTabComponent extends BeanPagedListTab<InventaireBean, Inventair
 
     uniteAction() {
         this.dialog.open(IndexModalComponent);
+    }
+
+    importAction() {
+        this.dialog.open(UploadDialogComponent);
     }
 
     override addAction(option?:any) {        

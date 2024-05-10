@@ -9,10 +9,10 @@ import { SharedModule } from 'src/app/modules/common/shared.module';
     imports: [
         SharedModule
     ],
-    selector: 'achat-vente-commande-edit-remise-dialog',
-    templateUrl: './edit.remise.dialog.component.html',
+    selector: 'achat-vente-commande-remise-dialog',
+    templateUrl: './remise.dialog.component.html',
 })
-export class EditRemiseDialogComponent implements OnInit {
+export class RemiseDialogComponent implements OnInit {
 
     bean: LigneBean;
 

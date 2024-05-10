@@ -5,49 +5,21 @@ import { PartnerBean } from './bean.core';
 import { CompteBean, TaxeBean, TransactionBean } from './bean.finance';
 import { ArticleBean, MagasinBean, UniteBean } from './bean.stock';
 
-export interface RetourLigneBean extends AbstractBean {
-	unite: UniteBean;
-	quantite: FieldMetadata<number>;
-	prixUnitaire: FieldMetadata<number>;
-	retourId: FieldMetadata<number>;
-	description: FieldMetadata<string>;
-	date: FieldMetadata<any>;
-	status: FieldMetadata<RetourStatusEnumVd>;
-	ligne: LigneBean;
-};
-
-export interface CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumVd> {
-	magasin: MagasinBean;
-	annulerBtn: FieldMetadata<string>;
+export interface FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd> {
 	cumulPaiement: FieldMetadata<number>;
 	prixTotalHT: FieldMetadata<number>;
-	lignes: Array<LigneBean>;
+	status: FieldMetadata<FactureStatusEnumVd>;
 	description: FieldMetadata<string>;
 	partner: PartnerBean;
-	createLigneBtn: FieldMetadata<string>;
-	retourBtn: FieldMetadata<string>;
-	terminerBtn: FieldMetadata<string>;
-	commandeCode: FieldMetadata<string>;
+	type: FieldMetadata<FactureTypeEnumVd>;
+	compte: CompteBean;
 	remise: FieldMetadata<number>;
-	receptionBtn: FieldMetadata<string>;
 	taxe: FieldMetadata<number>;
 	reglerBtn: FieldMetadata<string>;
-	status: FieldMetadata<CommandeStatusEnumVd>;
+	factureCode: FieldMetadata<string>;
 	date: FieldMetadata<any>;
-	type: FieldMetadata<CommandeTypeEnumVd>;
 	prixTotal: FieldMetadata<number>;
-};
-
-export interface CommandeSearchBean extends AbstractSearchBean {
-	statusIn: FieldMetadata<any>;
-	commandeCode: FieldMetadata<string>;
-	receptionBtn: FieldMetadata<string>;
-	ville: FieldMetadata<string>;
-	dateDebut: FieldMetadata<any>;
-	partner: FieldMetadata<string>;
-	dateFin: FieldMetadata<any>;
-	type: FieldMetadata<CommandeTypeEnumVd>;
-	retourBtn: FieldMetadata<string>;
+	commande: CommandeBean;
 };
 
 export interface LigneBean extends AbstractBean {
@@ -75,14 +47,6 @@ export interface ReglementFactureBean extends AbstractBean {
 	factureCode: FieldMetadata<string>;
 };
 
-export interface PaiementBean extends AbstractBean {
-	reste: FieldMetadata<number>;
-	montant: FieldMetadata<number>;
-	ref: FieldMetadata<string>;
-	encaissementBtn: FieldMetadata<string>;
-	compte: CompteBean;
-};
-
 export interface ReceptionLigneBean extends AbstractStatusTrackingBean<ReceptionStatusEnumVd> {
 	unite: UniteBean;
 	quantite: FieldMetadata<number>;
@@ -94,34 +58,89 @@ export interface ReceptionLigneBean extends AbstractStatusTrackingBean<Reception
 	status: FieldMetadata<ReceptionStatusEnumVd>;
 };
 
-export interface LigneTaxeBean extends AbstractBean {
+export interface PaiementBean extends AbstractBean {
+	reste: FieldMetadata<number>;
 	montant: FieldMetadata<number>;
+	ref: FieldMetadata<string>;
+	encaissementBtn: FieldMetadata<string>;
+	compte: CompteBean;
+};
+
+export interface LigneTaxeBean extends AbstractBean {
+	commandeCode: FieldMetadata<string>;
+	montant: FieldMetadata<number>;
+	ligneId: FieldMetadata<number>;
 	taux: FieldMetadata<number>;
 	taxe: TaxeBean;
 };
 
-export interface FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd> {
-	paiement: PaiementBean;
-	cumulPaiement: FieldMetadata<number>;
-	prixTotalHT: FieldMetadata<number>;
-	status: FieldMetadata<FactureStatusEnumVd>;
-	description: FieldMetadata<string>;
-	partner: PartnerBean;
+export interface EtatDetteBean {
+	montant: FieldMetadata<number>;
 	type: FieldMetadata<FactureTypeEnumVd>;
-	compte: CompteBean;
-	remise: FieldMetadata<number>;
-	taxe: FieldMetadata<number>;
-	reglerBtn: FieldMetadata<string>;
-	factureCode: FieldMetadata<string>;
-	date: FieldMetadata<any>;
-	prixTotal: FieldMetadata<number>;
-	commande: CommandeBean;
+	libelle: FieldMetadata<string>;
 };
 
 export interface ReglementBean extends AbstractBean {
 	facture: FactureBean;
 	transaction: TransactionBean;
 	type: any;
+};
+
+export interface CommandeSearchBean extends AbstractSearchBean {
+	statusIn: FieldMetadata<any>;
+	commandeCode: FieldMetadata<string>;
+	receptionBtn: FieldMetadata<string>;
+	ville: FieldMetadata<string>;
+	dateDebut: FieldMetadata<any>;
+	partner: FieldMetadata<string>;
+	dateFin: FieldMetadata<any>;
+	type: FieldMetadata<CommandeTypeEnumVd>;
+	retourBtn: FieldMetadata<string>;
+};
+
+export interface RetourLigneBean extends AbstractBean {
+	unite: UniteBean;
+	quantite: FieldMetadata<number>;
+	prixUnitaire: FieldMetadata<number>;
+	retourId: FieldMetadata<number>;
+	description: FieldMetadata<string>;
+	date: FieldMetadata<any>;
+	status: FieldMetadata<RetourStatusEnumVd>;
+	ligne: LigneBean;
+};
+
+export interface FactureTaxeBean extends AbstractBean {
+	montant: FieldMetadata<number>;
+	taux: FieldMetadata<number>;
+	taxe: TaxeBean;
+};
+
+export interface CommandeBean extends AbstractStatusTrackingBean<CommandeStatusEnumVd> {
+	magasin: MagasinBean;
+	annulerBtn: FieldMetadata<string>;
+	cumulPaiement: FieldMetadata<number>;
+	prixTotalHT: FieldMetadata<number>;
+	lignes: Array<LigneBean>;
+	description: FieldMetadata<string>;
+	partner: PartnerBean;
+	createLigneBtn: FieldMetadata<string>;
+	retourBtn: FieldMetadata<string>;
+	terminerBtn: FieldMetadata<string>;
+	commandeCode: FieldMetadata<string>;
+	remise: FieldMetadata<number>;
+	receptionBtn: FieldMetadata<string>;
+	taxe: FieldMetadata<number>;
+	reglerBtn: FieldMetadata<string>;
+	status: FieldMetadata<CommandeStatusEnumVd>;
+	date: FieldMetadata<any>;
+	type: FieldMetadata<CommandeTypeEnumVd>;
+	prixTotal: FieldMetadata<number>;
+};
+
+export interface ReglementCommandeBean extends AbstractBean {
+	commandeCode: FieldMetadata<string>;
+	reglementId: FieldMetadata<number>;
+	transaction: TransactionBean;
 };
 
 export interface FactureSearchBean extends AbstractSearchBean {
@@ -132,10 +151,4 @@ export interface FactureSearchBean extends AbstractSearchBean {
 	dateFin: FieldMetadata<any>;
 	factureCode: FieldMetadata<string>;
 	type: FieldMetadata<FactureTypeEnumVd>;
-};
-
-export interface ReglementCommandeBean extends AbstractBean {
-	commandeCode: FieldMetadata<string>;
-	reglementId: FieldMetadata<number>;
-	transaction: TransactionBean;
 };
