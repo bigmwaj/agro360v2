@@ -199,7 +199,9 @@
 	<bean name="av/ligne" class="com.agro360.operation.metadata.BeanMetadataConfig">
 		<property name="editable">
 			<list>
-				<bean class="com.agro360.operation.rule.module.av.ligne.IsCommandeEditableStatus"/>
+				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
+					<constructor-arg ref="commande.isModifiable"/>
+				</bean>
 			</list>
 		</property>
 		<property name="fields">

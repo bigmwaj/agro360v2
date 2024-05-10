@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { CommandeBean } from 'src/app/backed/bean.av';
 import { Message } from 'src/app/backed/message';
@@ -25,7 +25,7 @@ export class ChangeStatusDialogComponent implements OnInit {
 
     status: CommandeStatusEnumVd;
 
-    currentStatus: FieldMetadata<CommandeStatusEnumVd>
+    currentStatusField: FieldMetadata<CommandeStatusEnumVd>
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: {
@@ -50,17 +50,16 @@ export class ChangeStatusDialogComponent implements OnInit {
             .get(`achat-vente/commande/change-status-form`, { params: queryParams })
             .subscribe(data => {
                 this.bean = <CommandeBean>data;
-                this.currentStatus = JSON.parse(JSON.stringify(this.bean.status));
-                this.currentStatus.editable = false
+                this.currentStatusField = JSON.parse(JSON.stringify(this.bean.status));
+                this.currentStatusField.editable = false
                 if( this.data.status ){
-                    this.bean.status.value = this.data.status
-                    
+                    this.bean.status.value = this.data.status                    
                 }
             });
     }
 
     changeStatusAction() {
-        this.http.post(`achat-vente/commande/change-status`, this.bean) 
+        this.http.post(`achat-vente/commande`, this.bean) 
         .pipe(map((e: any) => <any>e))
         .subscribe(data => {
             this.dialogRef.close(data.record);

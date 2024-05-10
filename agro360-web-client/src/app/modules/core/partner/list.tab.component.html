@@ -151,6 +151,12 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu"> 
+                                <button mat-menu-item color="primary" title="Afficher" (click)="editAction(element)">
+                                    <mat-icon>preview</mat-icon>Consulter
+                                </button>   
+                                <button mat-menu-item color="primary" title="Copier" (click)="addAction({bean:element})">
+                                    <mat-icon>content_copy</mat-icon>Copier
+                                </button>   
                                 <button mat-menu-item color="primary"
                                     *ngIf="element.deleteBtn.visible"
                                     title="Supprimer" (click)="deleteAction(element)">

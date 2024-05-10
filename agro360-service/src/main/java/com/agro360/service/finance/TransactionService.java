@@ -1,11 +1,13 @@
 package com.agro360.service.finance;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.agro360.bo.bean.finance.EtatRecetteDepenseBean;
 import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.bean.finance.TransactionSearchBean;
 import com.agro360.bo.bean.finance.TransfertBean;
@@ -74,6 +76,10 @@ public class TransactionService extends AbstractService {
 
 	public TransactionBean findTransaction(ClientContext ctx, String value) {
 		return operation.findTransactionByCode(ctx, value);
+	}
+	
+	public List<EtatRecetteDepenseBean> genererEtatRecetteDepense(ClientContext ctx, LocalDate semaine) {
+		return operation.genererEtatRecetteDepense(ctx, semaine);
 	}
 
 }

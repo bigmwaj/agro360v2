@@ -1,11 +1,14 @@
 package com.agro360.operation.logic.av;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.agro360.bo.bean.av.EtatDetteBean;
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
 import com.agro360.bo.mapper.AchatVenteMapper;
@@ -18,6 +21,7 @@ import com.agro360.dto.av.FactureDto;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.common.AbstractOperation;
 import com.agro360.operation.utils.RuleNamespace;
+import com.agro360.vd.av.FactureTypeEnumVd;
 
 @Service("av/FactureService")
 public class FactureOperation extends AbstractOperation<FactureDto, String> {
@@ -111,8 +115,8 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 		dao.delete(dto);
 	}
 
-	public FactureBean findFactureByCode(ClientContext ctx, String commandeCode) {
-		var dto = dao.getReferenceById(commandeCode);
+	public FactureBean findFactureByCode(ClientContext ctx, String factureCode) {
+		var dto = dao.getReferenceById(factureCode);
 		return AchatVenteMapper.map(dto);	
 	}
 	
@@ -156,6 +160,21 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 	public List<FactureBean> findFacturesByCommandeCode(ClientContext ctx, String commandeCode) {
 		return dao.findAllByCommandeCommandeCode(commandeCode).stream()
 				.map(AchatVenteMapper::map)
+				.collect(Collectors.toList());
+	}
+
+	@RuleNamespace("av/facture/init-paiement")
+	public void initPaiementFacture(ClientContext ctx, FactureBean bean) {
+		changeFactureStatus(ctx, bean);
+		var msgTpl = "Initialisation du paiement de la facture %s effectuée avec succès";
+		ctx.success(String.format(msgTpl, bean.getFactureCode().getValue()));
+	}
+	
+	public List<EtatDetteBean> genererEtatDette(ClientContext ctx) {
+		Function<FactureTypeEnumVd, EtatDetteBean> calculer;
+		calculer = t -> new EtatDetteBean(t, dao.calculerDettes(t));
+		return Arrays.stream(FactureTypeEnumVd.values())
+				.map(calculer)
 				.collect(Collectors.toList());
 	}
 

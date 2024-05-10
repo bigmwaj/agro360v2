@@ -26,7 +26,7 @@ public class LigneService extends AbstractService {
 	@Autowired
 	private LigneServiceHelper ligneServiceHelper;
 	
-	public List<LigneTaxeBean> findLigneTaxes(ClientContext ctx, String commandeCode, Optional<Long> ligneId,
+	public List<LigneTaxeBean> findTaxes(ClientContext ctx, String commandeCode, Optional<Long> ligneId,
 			String articleCode) {
 //		if( ligneId.filter(e -> !e.equals(0L)).isPresent()) {
 //			return ligneTaxeOperation.findLigneTaxesLigne(ctx, commandeCode, ligneId.get());
@@ -40,7 +40,7 @@ public class LigneService extends AbstractService {
 
 
 	public LigneBean initialiserPrixCalcules(ClientContext ctx, CommandeTypeEnumVd type, LigneBean ligne) {
-		ligneServiceHelper.initPrix(ctx, ligne);
+		ligneServiceHelper.initChampsCalcules(ctx, type, ligne);
 		return ligne;		
 	}
 	

@@ -20,6 +20,7 @@ import { ReglementDialogComponent } from '../common/reglement.dialog.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { map } from 'rxjs';
 import { PaiementDialogComponent } from '../common/paiement.dialog.component';
+import { TaxeListDialogComponent } from './taxe.list.dialog.component';
 
 @Component({
     standalone: true,
@@ -53,7 +54,10 @@ export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearc
         'date',
         'type',
         'partner',
+        'taxe',
+        'remise',
         'prixTotal',
+        'cumulPaiement',
         'actions'
     ];
     
@@ -117,7 +121,13 @@ export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearc
     afficherReglementAction(bean: FactureBean) {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("factureCode", bean.factureCode.value);
-        this.dialog.open(ReglementDialogComponent, { data: {queryParams:queryParams, url: `achat-vente/facture/reglement`} });
+        this.dialog.open(ReglementDialogComponent, { data: {bean:bean, queryParams:queryParams, url: `achat-vente/facture/reglement`} });
+    }
+
+    listerTaxesAction(bean: FactureBean) {
+        this.dialog.open(TaxeListDialogComponent, { 
+            data: bean
+        });
     }
 
     initPaiementAction(bean: FactureBean) {

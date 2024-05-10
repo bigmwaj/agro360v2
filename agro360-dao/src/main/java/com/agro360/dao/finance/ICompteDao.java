@@ -15,17 +15,18 @@ import com.agro360.vd.finance.CompteTypeEnumVd;
 public interface ICompteDao extends IDao<CompteDto, String>{
 	
 	@Query(
-		value = "select \r\n"
-				+ "sum(\r\n"
-				+ "case transaction_type\r\n"
-				+ "	when 'DEPENSE' then -montant\r\n"
-				+ "	when 'RETRAIT' then -montant\r\n"
-				+ "	when 'RECETTE' then montant\r\n"
-				+ "	when 'DEPOT' then montant\r\n"
-				+ "	else 0\r\n"
-				+ "end) as montant\r\n"
-				+ "from fin_tbl_transaction where compte_code = :compte", 
-		nativeQuery = true
+		value ="select "
+			+ " sum("
+			+ " case dto.type"
+			+ "	  when 'DEPENSE' then -montant"
+			+ "	  when 'RETRAIT' then -montant"
+			+ "	  when 'RECETTE' then montant"
+			+ "	  when 'DEPOT' then montant"
+			+ "	  else 0 "
+			+ " end) as montant"
+			+ " from com.agro360.dto.finance.TransactionDto dto "
+			+ " where dto.compte.compteCode = :compte "
+			+ " and status not in ('ANNULEE')"
 	)
 	BigDecimal calculateSolde(@Param("compte") String compte);
 	

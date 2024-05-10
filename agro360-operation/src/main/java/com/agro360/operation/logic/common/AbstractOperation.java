@@ -36,7 +36,7 @@ public abstract class AbstractOperation<E extends AbstractDto, K> {
 		}
 	}
 
-	public E save(E dto) {
+	protected E save(E dto) {
 		dto.setCreateBy("A.MOUAFO");
 		dto.setCreateAt(LocalDateTime.now());
 		dto.setUpdateBy("A.MOUAFO");
@@ -44,7 +44,7 @@ public abstract class AbstractOperation<E extends AbstractDto, K> {
 		return getDao().save(dto);
 	}
 
-	public void delete(E dto) {
+	protected void delete(E dto) {
 		getDao().delete(dto);
 	}
 	

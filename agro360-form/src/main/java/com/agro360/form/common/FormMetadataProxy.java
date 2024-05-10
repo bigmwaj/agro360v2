@@ -49,6 +49,7 @@ public class FormMetadataProxy {
         }
         
         var ctx = (ClientContext) args[0];
+        
         if( retVal instanceof AbstractBean ) {
         	var bean = (AbstractBean) retVal;
         	applyMetadata(ctx, beanName, bean);

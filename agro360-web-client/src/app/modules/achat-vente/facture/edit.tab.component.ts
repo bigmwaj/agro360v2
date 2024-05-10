@@ -8,11 +8,14 @@ import { ReglementDialogComponent } from '../common/reglement.dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PaiementDialogComponent } from '../common/paiement.dialog.component';
 import { map } from 'rxjs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TaxeListDialogComponent } from './taxe.list.dialog.component';
 
 @Component({
     standalone: true,
     imports: [
-        SharedModule
+        SharedModule,
+        MatTooltipModule,
     ],
     selector: 'achat-vente-facture-edit-tab',
     templateUrl: './edit.tab.component.html'
@@ -62,7 +65,13 @@ export class EditTabComponent extends BeanEditTab<FactureBean> implements OnInit
     afficherReglementAction() {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("factureCode", this.bean.factureCode.value);
-        this.dialog.open(ReglementDialogComponent, { data: {queryParams:queryParams, url: `achat-vente/facture/reglement`} });
+        this.dialog.open(ReglementDialogComponent, { data: {bean:this.bean, queryParams:queryParams, url: `achat-vente/facture/reglement`} });
+    }
+
+    listerTaxesAction() {
+        this.dialog.open(TaxeListDialogComponent, { 
+            data: this.bean
+        });
     }
 
     initPaiementAction() {

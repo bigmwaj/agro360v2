@@ -24,13 +24,13 @@ export abstract class BeanEditTab<B extends AbstractBean> implements AfterViewIn
 
     abstract saveUrl():string;
 
+    constructor(public ui: UIService, public http: HttpClient){
+
+    }
+
     protected afterSaveAction(bean:B, option?:any):void{
         this.bean = bean;
         this.onBeanSave.emit(bean);
-    }
-
-    constructor(public ui: UIService, public http: HttpClient){
-
     }
 
     ngAfterViewInit():void{
@@ -43,12 +43,11 @@ export abstract class BeanEditTab<B extends AbstractBean> implements AfterViewIn
             .pipe(map((e: any) => <any>e))
             .subscribe(data => {
                 this.ui.displayFlashMessage(<Array<Message>>data.messages);
-                let _option:any
-                if( option ){
-                    _option = option;
+                if( option === undefined ){
+                    option = {};
                 }
-                _option.data = data;
-                this.afterSaveAction(data.record, _option)
+                option.data = data;
+                this.afterSaveAction(data.record, option)
             });
     }
 

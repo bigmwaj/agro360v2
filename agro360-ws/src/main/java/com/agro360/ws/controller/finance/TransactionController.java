@@ -1,5 +1,6 @@
 package com.agro360.ws.controller.finance;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -113,4 +114,9 @@ public class TransactionController extends AbstractController {
 		return ResponseEntity.ok(model);
 	}
 
+	@GetMapping("/generate-etat-recette-depense")
+	public ResponseEntity<ModelMap> generateEtatRecetteDepense() {
+		var etat = service.genererEtatRecetteDepense(getClientContext(), LocalDate.now());
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, etat));
+	}
 }

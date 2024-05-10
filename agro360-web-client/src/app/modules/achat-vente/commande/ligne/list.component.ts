@@ -13,8 +13,8 @@ import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/modules/common/bean.list';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { DisplayLigneTaxeDialogComponent } from './display.ligne.taxe.dialog.component';
-import { EditRemiseDialogComponent } from './edit.remise.dialog.component';
+import { TaxeListDialogComponent } from './taxe.list.dialog.component';
+import { RemiseDialogComponent } from './remise.dialog.component';
 
 @Component({
     standalone: true,
@@ -22,10 +22,10 @@ import { EditRemiseDialogComponent } from './edit.remise.dialog.component';
         SharedModule,
         MatDividerModule
     ],
-    selector: 'achat-vente-edit-ligne-list',
-    templateUrl: './edit.ligne.list.component.html'
+    selector: 'achat-vente-ligne-list',
+    templateUrl: './list.component.html'
 })
-export class EditLigneListComponent extends BeanList<LigneBean> {
+export class ListComponent extends BeanList<LigneBean> {
     
     displayedColumns: string[] = [
         'select',
@@ -239,7 +239,7 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     }
     
     listerTaxesAction(bean: LigneBean) {
-        this.dialog.open(DisplayLigneTaxeDialogComponent, { 
+        this.dialog.open(TaxeListDialogComponent, { 
             data: {
                 ligne:bean,
                 commande:this.commande
@@ -248,7 +248,7 @@ export class EditLigneListComponent extends BeanList<LigneBean> {
     }
 
     editRemiseAction(bean: LigneBean) {
-        let dialogRef = this.dialog.open(EditRemiseDialogComponent, { data: bean });
+        let dialogRef = this.dialog.open(RemiseDialogComponent, { data: bean });
         dialogRef.afterClosed().subscribe(result => {
             this.updatePrixCalcule(bean)
         });  

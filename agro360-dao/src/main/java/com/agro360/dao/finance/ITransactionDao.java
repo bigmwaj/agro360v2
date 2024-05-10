@@ -1,8 +1,8 @@
 package com.agro360.dao.finance;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,18 +15,21 @@ import com.agro360.vd.finance.TransactionTypeEnumVd;
 
 @Repository
 public interface ITransactionDao extends IDao<TransactionDto, String>{
+	
 	@Query(
-			value = "select \r\n"
-					+ "	sum(\r\n"
-					+ "    case transaction_type\r\n"
-					+ "		when 'DEPENSE' then -montant\r\n"
-					+ "		when 'RECETTE' then montant\r\n"
-					+ "		else 0\r\n"
-					+ "	end) as montant\r\n"
-					+ "from fin_tbl_transaction where status not in ('ANNULEE', 'ENCOURS')", 
-			nativeQuery = true
-		)
-	BigDecimal calculateBenefice();
+	value ="select dto.transaction_type as type, sum(dto.montant) as montant,"
+		+ " adddate(dto.transaction_date, 6 - weekday(dto.transaction_date)) semaine "
+		+ " from fin_tbl_transaction dto "
+		+ " where dto.transaction_type = :type and status not in ('ANNULEE')"
+		+ " group by dto.transaction_type, semaine"
+		+ " having semaine >= :debut and semaine <= :fin",
+		nativeQuery = true
+	)
+	List<Map<String, Object>> calculerCumul(
+		@Param("type") String type, 
+		@Param("debut") LocalDate debut,
+		@Param("fin") LocalDate fin
+	);
 	
 	@Query(
 		value = "   select dto from com.agro360.dto.finance.TransactionDto dto"
@@ -59,7 +62,6 @@ public interface ITransactionDao extends IDao<TransactionDto, String>{
 		@Param("compte")String compte, 
 		@Param("rubrique")String rubrique
 	);
-	
 
 	@Query(
 		value = "   select count(dto) from com.agro360.dto.finance.TransactionDto dto"

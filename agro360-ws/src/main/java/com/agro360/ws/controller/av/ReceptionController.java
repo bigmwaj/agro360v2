@@ -65,8 +65,7 @@ public class ReceptionController extends AbstractController {
 	@PostMapping()
 	public ResponseEntity<ModelMap> saveAction(
 			@RequestParam(required = false) String commandeCode, 
-			@RequestBody @Validated List<ReceptionLigneBean> beans
-			) {
+			@RequestBody @Validated List<ReceptionLigneBean> beans) {
 		var ctx = getClientContext();
 		service.save(ctx, commandeCode, beans);
 		return ResponseEntity.ok(new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages()));

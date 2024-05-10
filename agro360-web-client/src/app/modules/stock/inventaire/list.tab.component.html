@@ -189,6 +189,9 @@
                                 <button mat-menu-item color="primary" class="me-2" (click)="uniteAction()">
                                     <mat-icon>open_in_new</mat-icon>Unités
                                 </button>
+                                <button mat-menu-item color="primary" class="me-2" (click)="importAction()">
+                                    <mat-icon>open_in_new</mat-icon>Importer
+                                </button>
                             </mat-menu>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-end">
@@ -197,7 +200,7 @@
                             </button>
                             <mat-menu #menu="matMenu">                                
                                 <button mat-menu-item color="primary" class="me-2" (click)="ajusterQuantiteAction(element)">
-                                    <mat-icon>open_in_new</mat-icon>Ajuster la Quantité 
+                                    <mat-icon>open_in_new</mat-icon>Ajuster la quantité 
                                 </button>                         
                                 <button mat-menu-item color="primary" class="me-2" (click)="ajusterPrixVenteAction(element)">
                                     <mat-icon>open_in_new</mat-icon>Modifier le prix de vente

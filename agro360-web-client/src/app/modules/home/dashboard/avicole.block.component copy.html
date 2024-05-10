@@ -1,0 +1,59 @@
+<div class="card mb-4">
+    <div class="card-header m-0 p-0 ps-3 d-flex flex-row align-items-center justify-content-between">
+        <span>États des comptes</span>
+
+        <button mat-icon-button color="secondary" class="m-0 p-1" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">                                
+            <button mat-menu-item color="primary">
+                <mat-icon>open_in_new</mat-icon>Cycle ABC
+            </button>
+        </mat-menu>
+    </div>
+    <div class="card-body">
+      <div class="row">
+            <div class="col-7">
+                <div class="border border-primary mb-3">                    
+                    <canvas id="depenseVsRecette">{{depenseVsRecette}}</canvas>
+                </div>
+            </div>
+            <div class="col-5">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Date de mise en enclos
+                        <span class="badge text-bg-primary rounded-pill">2024-05-01</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Date de reformation probable
+                        <span class="badge text-bg-primary rounded-pill">2026-05-01</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Sujets décedés
+                        <span class="badge text-bg-primary rounded-pill">180</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Sujets vivants/départ
+                        <span class="badge text-bg-primary rounded-pill">3900 / 4080</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Dépenses avant ponte
+                        <span class="badge text-bg-primary rounded-pill">3900</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Gain potentiel(Recettes - Dépenses)
+                        <span class="badge text-bg-primary rounded-pill">3900</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Quantité aliments consommées(en tonne)
+                        <span class="badge text-bg-primary rounded-pill">50</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        Quantité copeaux consommées(en sac)
+                        <span class="badge text-bg-primary rounded-pill">50</span>
+                    </li>
+              </ul>
+            </div>
+        </div>          
+    </div>
+</div>

@@ -1,18 +1,28 @@
 <h2 mat-dialog-title>Confirmation Paiement</h2>
 <mat-dialog-content>
     <div class="container-fluid mt-3">
-        <div *ngIf="bean">
-            <div class="row">
-                <div class="col-6">
-                    <input-text-field [field]="bean.prixTotal"></input-text-field>
-                </div>
-                <div class="col-6">
-                    <input-text-field [field]="bean.cumulPaiement"></input-text-field>
-                </div>
+        <div class="row">
+            <div class="col-6">
+                <input-text-field [field]="ref"></input-text-field>
+            </div>
+            <div class="col-6">
+                <input-text-field [field]="bean.partner.partnerCode"></input-text-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input-text-field [field]="bean.prixTotal"></input-text-field>
+            </div>
+            <div class="col-6">
+                <input-text-field [field]="bean.cumulPaiement"></input-text-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <achat-vente-common-paiement-edit [paiements]="paiements" [bean]="bean"></achat-vente-common-paiement-edit>
             </div>
         </div>
     </div>
-    <achat-vente-common-paiement-edit [paiements]="paiements" [bean]="bean"></achat-vente-common-paiement-edit>
 </mat-dialog-content>
 <mat-dialog-actions align="end" class="m-3">
     <button mat-raised-button mat-dialog-close>Annuler</button>

@@ -12,8 +12,10 @@ import com.agro360.dto.av.LigneTaxePk;
 @Repository
 public interface ILigneTaxeDao extends IDao<LigneTaxeDto, LigneTaxePk>{
 
-	Optional<LigneTaxeDto> findOneByCommandeCodeAndLigneIdAndTaxeTaxeCode(String commandeCode, Long ligneId, String taxeCode);
-
 	List<LigneTaxeDto> findAllByCommandeCodeAndLigneId(String commandeCode, Long ligneId);
+	
+	List<LigneTaxeDto> findAllByCommandeCode(String commandeCode);
+	
+	Optional<LigneTaxeDto> findOneByCommandeCodeAndLigneIdAndTaxeTaxeCode(String commandeCode, Long ligneId, String taxeCode);
 
 }

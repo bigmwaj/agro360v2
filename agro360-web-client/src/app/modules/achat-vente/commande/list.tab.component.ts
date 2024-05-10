@@ -104,7 +104,7 @@ export class ListTabComponent extends BeanPagedListTab<CommandeBean, CommandeSea
         }
     }
 
-    areBeansEqual(b1:CommandeBean, b2:CommandeBean){
+    override areBeansEqual(b1:CommandeBean, b2:CommandeBean){
         return b1 == b2 || b1.commandeCode.value == b2.commandeCode.value;
     }
 
@@ -129,7 +129,7 @@ export class ListTabComponent extends BeanPagedListTab<CommandeBean, CommandeSea
     afficherReglementAction(bean:CommandeBean) {        
         let queryParams = new HttpParams();
         queryParams = queryParams.append("commandeCode", bean.commandeCode.value);
-        this.dialog.open(ReglementDialogComponent, {data: {queryParams:queryParams, url: `achat-vente/commande/reglement`} });
+        this.dialog.open(ReglementDialogComponent, {data: {bean:bean, queryParams:queryParams, url: `achat-vente/commande/reglement`} });
     }  
         
     retourAction(bean: CommandeBean) {

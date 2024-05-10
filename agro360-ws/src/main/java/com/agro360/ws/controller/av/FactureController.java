@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
+import com.agro360.bo.bean.av.FactureTaxeBean;
 import com.agro360.bo.bean.av.PaiementBean;
 import com.agro360.bo.bean.av.ReglementBean;
 import com.agro360.form.av.FactureForm;
@@ -38,8 +39,10 @@ public class FactureController extends AbstractController {
 	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
 			@RequestBody(required = false) @Validated Optional<FactureSearchBean> searchBean) {
+		var ctx = getClientContext();
 		var sb = searchBean.orElse(new FactureSearchBean());
-		var model = new ModelMap(RECORDS_MODEL_KEY, service.search(getClientContext(), sb));
+		var result = service.search(ctx, sb);
+		var model = new ModelMap(RECORDS_MODEL_KEY, form.initSearchResultBeans(ctx, result));
 		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
 		return ResponseEntity.ok(model);
 	}
@@ -82,6 +85,7 @@ public class FactureController extends AbstractController {
 		
 		var action = bean.getAction();
 		var model = new ModelMap();
+		
 		if( !ClientOperationEnumVd.DELETE.equals(action)) {
 			bean = form.initEditFormBean(ctx, bean.getFactureCode().getValue());	
 			model.addAttribute(RECORD_MODEL_KEY, bean);
@@ -92,7 +96,7 @@ public class FactureController extends AbstractController {
 	
 	@GetMapping("/init-paiement")
 	public ResponseEntity<ModelMap> initPaiementAction(
-			@RequestParam(required = true) String factureCode) {
+			@RequestParam String factureCode) {
 		return initPaiementAction(getClientContext(), factureCode);
 	}
 
@@ -107,8 +111,7 @@ public class FactureController extends AbstractController {
 	}
 	
 	@PostMapping("/encaisser")
-	public ResponseEntity<ModelMap> encaisserAction(
-			@RequestParam(required = true) String factureCode,
+	public ResponseEntity<ModelMap> encaisserAction(@RequestParam String factureCode,
 			@RequestBody @Validated List<PaiementBean> paiements) {
 		var ctx = getClientContext();
 		var model = new ModelMap();
@@ -121,10 +124,22 @@ public class FactureController extends AbstractController {
 	}
 	
 	@GetMapping("/reglement")
-	public ResponseEntity<List<ReglementBean>> getReglementsAction(
-			@RequestParam(required = true) String factureCode) {		
+	public ResponseEntity<List<ReglementBean>> getReglementsAction(@RequestParam String factureCode) {		
 		var ctx = getClientContext();
 		var reglements = service.findReglements(ctx, factureCode);
 		return ResponseEntity.ok(reglements);
+	}
+
+	@GetMapping("/taxe")
+	public ResponseEntity<List<FactureTaxeBean>> getTaxesAction(
+			@RequestParam String factureCode) {		
+		var ctx = getClientContext();
+		var taxes = service.findTaxes(ctx, factureCode);
+		return ResponseEntity.ok(taxes);
+	}
+
+	@GetMapping("/generate-etat-dette")
+	public ResponseEntity<ModelMap> generateEtatDetteAction() {
+		return ResponseEntity.ok(new ModelMap(RECORDS_MODEL_KEY, service.genererEtatDette(getClientContext())));
 	}
 }

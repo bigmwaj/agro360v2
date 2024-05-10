@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { SharedModule } from 'src/app/modules/common/shared.module';
-import { map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { EtatCompteBean } from 'src/app/backed/bean.finance';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { map } from 'rxjs';
+import { EtatCompteBean } from 'src/app/backed/bean.finance';
+import { SharedModule } from 'src/app/modules/common/shared.module';
 import { IndexModalComponent } from '../../finance/compte/index.modal.component';
 
 @Component({
@@ -19,12 +19,11 @@ export class CompteBlockComponent implements OnInit {
     
     etatComptes: EtatCompteBean[]
 
-    totaux:number = 0
+    totaux: number = 0
 
     constructor(
         private http: HttpClient,     
         private dialog: MatDialog) {
-
     }
 
     ngOnInit(): void {
@@ -39,8 +38,6 @@ export class CompteBlockComponent implements OnInit {
     
     compteAction() {
         let dialogRef =  this.dialog.open(IndexModalComponent);
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`TODO: Ne pas raffraichir si l'utilisateur n'a pas soumis le formulaire`)
-        });  
+        dialogRef.afterClosed().subscribe(result => {});  
     }
 }

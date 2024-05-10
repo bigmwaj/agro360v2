@@ -84,7 +84,6 @@ export abstract class BeanIndexPage<B extends AbstractBean, L extends BeanListTa
 
         // On doit mettre à jour le bean dans le editingBean list TODO
         if( this.currentEditTab ){
-            console.log( 'on synch le bean')
             this.currentEditTab.bean = <B>$event
             this.currentEditingBean = <B>$event
         }
