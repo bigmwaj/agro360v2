@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MagasinBean } from 'src/app/backed/bean.stock';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanEditTab } from '../../common/bean.edit.tab';
+import { BeanEditTab } from '../../common/bean/bean.edit.tab';
 
 @Component({
     standalone: true,

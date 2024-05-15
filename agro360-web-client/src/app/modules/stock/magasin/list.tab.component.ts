@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MagasinBean, MagasinSearchBean } from 'src/app/backed/bean.stock';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
+import { BeanPagedListTab } from '../../common/bean/bean.paged.list.tab';
 import { IndexModalComponent } from '../unite/index.modal.component';
 
 @Component({

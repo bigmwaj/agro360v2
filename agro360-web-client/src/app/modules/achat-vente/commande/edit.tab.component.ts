@@ -7,11 +7,14 @@ import { CommandeStatusEnumVd } from 'src/app/backed/vd.av';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanEditTab } from '../../common/bean.edit.tab';
+import { BeanEditTab } from '../../common/bean/bean.edit.tab';
 import { PaiementDialogComponent } from '../common/paiement.dialog.component';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { ListComponent as LigneListComponent} from './ligne/list.component';
 import { ReglementDialogComponent } from '../common/reglement.dialog.component';
+import { PartnerBean } from 'src/app/backed/bean.core';
+import { Observable } from 'rxjs';
+import { EditorDialogComponent } from '../../common/component/editor.dialog.component';
 
 @Component({
     standalone: true,
@@ -55,8 +58,27 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
         }
 
         this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title)
-        
     }
+
+    mapPartnerToLabelFn(partner: PartnerBean): string {
+        return partner.partnerCode.value + ' - ' + partner.partnerName.value;
+    }
+
+    partnerLookupFn(query:string, bean: CommandeBean):Observable<any>{
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append('type', bean.type.value);
+        queryParams = queryParams.append('query', query);
+        return this.http.get(`achat-vente/commande/partner-query`, { params: queryParams });
+    }
+    
+    mapPartnerToKeyFn(partner: PartnerBean): string {
+        return partner.partnerCode.value;
+    }
+
+    editDescriptionAction() {
+        this.dialog.open(EditorDialogComponent, { data: this.bean.description });
+    }
+
 
     /**************************************************
      * Liste des évènements générés par l'utilisateur *

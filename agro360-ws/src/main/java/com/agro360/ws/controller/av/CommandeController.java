@@ -18,11 +18,12 @@ import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.CommandeSearchBean;
 import com.agro360.bo.bean.av.PaiementBean;
 import com.agro360.bo.bean.av.ReglementBean;
-import com.agro360.bo.bean.stock.VariantBean;
+import com.agro360.bo.bean.core.PartnerBean;
+import com.agro360.bo.bean.core.PartnerSearchBean;
 import com.agro360.form.av.CommandeForm;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.service.av.CommandeService;
-import com.agro360.service.stock.ArticleService;
+import com.agro360.service.core.PartnerService;
 import com.agro360.vd.av.CommandeTypeEnumVd;
 import com.agro360.vd.common.ClientOperationEnumVd;
 import com.agro360.ws.controller.common.AbstractController;
@@ -35,10 +36,10 @@ public class CommandeController extends AbstractController {
 	private CommandeService service;
 	
 	@Autowired
-	private CommandeForm form;
+	private PartnerService partnerService;
 	
 	@Autowired
-	private ArticleService articleService;
+	private CommandeForm form;
 
 	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
@@ -136,10 +137,14 @@ public class CommandeController extends AbstractController {
 		return ResponseEntity.ok(reglements);
 	}
 	
-	@GetMapping("/variants")
-	public ResponseEntity<List<VariantBean>> getLigneVariantsAction(@RequestParam String query) {		
+	@GetMapping("/partner-query")
+	public ResponseEntity<List<PartnerBean>> findPartnersByQueryAction(
+			@RequestParam String query,
+			@RequestParam CommandeTypeEnumVd type) {		
 		var ctx = getClientContext();
-		var options = articleService.getVariantsByQuery(ctx, query);
+		var searchBean = new PartnerSearchBean();
+		searchBean.getPartnerCode().setValue(query);
+		var options = partnerService.search(ctx, searchBean);
 		return ResponseEntity.ok(options);
 	}
 	

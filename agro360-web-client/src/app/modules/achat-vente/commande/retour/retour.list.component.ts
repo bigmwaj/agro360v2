@@ -6,8 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { map } from 'rxjs';
 import { CommandeBean, RetourLigneBean } from 'src/app/backed/bean.av';
 import { Message } from 'src/app/backed/message';
-import { BeanList } from 'src/app/modules/common/bean.list';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { BeanList } from 'src/app/modules/common/bean/bean.list';
+import { BeanTools } from 'src/app/modules/common/bean/bean.tools';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 

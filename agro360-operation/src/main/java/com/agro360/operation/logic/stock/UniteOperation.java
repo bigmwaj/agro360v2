@@ -34,7 +34,7 @@ public class UniteOperation extends AbstractOperation<UniteDto, String> {
 		setDtoValue(dto::setUniteCode, bean.getUniteCode());
 		setDtoValue(dto::setDescription, bean.getDescription());
 		
-		dto = super.save(dto);
+		dto = super.save(ctx, dto);
 	}
 	
 	@RuleNamespace("stock/unite/update")
@@ -43,7 +43,7 @@ public class UniteOperation extends AbstractOperation<UniteDto, String> {
 		
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		
-		dto = super.save(dto);	
+		dto = super.save(ctx, dto);	
 	}
 	
 	@RuleNamespace("stock/unite/delete")

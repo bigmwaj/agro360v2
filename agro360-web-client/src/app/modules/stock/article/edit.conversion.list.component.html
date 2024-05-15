@@ -26,8 +26,7 @@
     <ng-container matColumnDef="facteur">
         <th mat-header-cell *matHeaderCellDef>Facteur</th>
         <td mat-cell *matCellDef="let element">
-            <input-text-field [field]="element.facteur" [displayLabel]="false">
-            </input-text-field>
+            <input-number-field [field]="element.facteur" [displayLabel]="false"></input-number-field>
         </td>
     </ng-container>
 

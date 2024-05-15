@@ -1,6 +1,6 @@
 import { AfterViewInit, Component } from "@angular/core";
 import { AbstractBean, AbstractSearchBean } from "src/app/backed/bean.common";
-import { UIService } from "./service/ui.service";
+import { UIService } from "../service/ui.service";
 import { BeanListTab } from "./bean.list.tab";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { map } from "rxjs";

@@ -15,42 +15,37 @@ public class UserAccountForm {
 	@Autowired
 	private UserAccountOperation operation;	
 
+	public UserAccountBean initLoginFormBean(ClientContext ctx) {
+		var bean = new UserAccountBean();
+		return bean;
+	}
+	
 	public UserAccountBean initCreateFormBean(ClientContext ctx) {
 		var bean = new UserAccountBean();
 		
 		bean.setAction(ClientOperationEnumVd.CREATE);
 		
-		bean.getStatus().setValue(UserAccountStatusEnumVd.ACTIVE);
-		bean.getStatus().setEditable(false);
-		bean.getPartnerCode().setRequired(true);
+		bean.getStatus().setValue(UserAccountStatusEnumVd.ENABLED);
 		return bean;
 	}
 	
 	public UserAccountBean initEditFormBean(ClientContext ctx, String partnerCode) {
-		var bean = operation.findPartnerByCode(ctx, partnerCode);
+		var bean = operation.findUserAccountByCode(ctx, partnerCode);
 		bean.setAction(ClientOperationEnumVd.UPDATE);
 		
-		bean.getPartnerCode().setRequired(true);
-		bean.getStatus().setEditable(false);
 		return bean;
 	}
 
 	public UserAccountBean initDeleteFormBean(ClientContext ctx, String partnerCode) {
-		var bean = operation.findPartnerByCode(ctx, partnerCode);
+		var bean = operation.findUserAccountByCode(ctx, partnerCode);
 		
 		bean.setAction(ClientOperationEnumVd.DELETE);
-		
-		bean.getPartnerCode().setRequired(true);
 		return bean;
 	}
 
 	public UserAccountBean initChangeStatusFormBean(ClientContext ctx, String partnerCode) {
-		var bean = operation.findPartnerByCode(ctx, partnerCode);
-		
+		var bean = operation.findUserAccountByCode(ctx, partnerCode);
 		bean.setAction(ClientOperationEnumVd.CHANGE_STATUS);
-		
-		bean.getPartnerCode().setRequired(true);
-		bean.getStatus().setRequired(true);
 		return bean;
 	}
 

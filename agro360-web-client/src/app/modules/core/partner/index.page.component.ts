@@ -6,7 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { PartnerBean } from 'src/app/backed/bean.core';
 import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanIndexPage } from '../../common/bean.index.page';
+import { BeanIndexPage } from '../../common/bean/bean.index.page';
 import { EditTabComponent } from './edit.tab.component';
 import { ListTabComponent } from './list.tab.component';
 

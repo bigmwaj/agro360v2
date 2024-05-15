@@ -1,0 +1,8 @@
+<h2 mat-dialog-title>Confirmation déconnexion</h2>
+<mat-dialog-content>
+    Êtes-vous sûre de vouloir de vous déconnecter?
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3 pt-0 mt-0">
+    <button mat-raised-button mat-dialog-close>Non</button>
+    <button mat-raised-button  mat-dialog-close cdkFocusInitial (click)="processAction()">Oui</button>
+</mat-dialog-actions>

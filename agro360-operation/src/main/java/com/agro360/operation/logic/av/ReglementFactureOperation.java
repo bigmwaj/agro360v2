@@ -40,7 +40,7 @@ public class ReglementFactureOperation extends AbstractOperation<ReglementFactur
 		
 		setDtoValue(dto::setFactureCode, bean.getFactureCode());
 		
-		super.save(dto);
+		super.save(ctx, dto);
 	}
 
 	public List<ReglementFactureBean> findReglementsByFactureCode(ClientContext ctx, String factureCode) {

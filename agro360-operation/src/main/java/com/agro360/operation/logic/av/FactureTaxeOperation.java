@@ -42,7 +42,7 @@ public class FactureTaxeOperation extends AbstractOperation<FactureTaxeDto, Fact
 		dto.setTaux(taxe.getTaux());
 		dto.setMontant(bean.getMontant().getValue());
 		
-		super.save(dto);
+		super.save(ctx, dto);
 	}
 
 	@RuleNamespace("av/facture/taxe/delete")

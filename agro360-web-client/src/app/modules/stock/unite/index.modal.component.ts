@@ -7,12 +7,12 @@ import { map } from 'rxjs';
 import { UniteBean, UniteSearchBean } from 'src/app/backed/bean.stock';
 import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/modules/common/bean.list';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { BeanList } from 'src/app/modules/common/bean/bean.list';
+import { BeanTools } from 'src/app/modules/common/bean/bean.tools';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
-import { BeanPagedList } from '../../common/bean.paged.list';
+import { BeanPagedListTab } from '../../common/bean/bean.paged.list.tab';
+import { BeanPagedList } from '../../common/bean/bean.paged.list';
 
 @Component({
     standalone: true,

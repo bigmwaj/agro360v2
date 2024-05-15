@@ -31,18 +31,18 @@ public class CategoryService extends AbstractService {
 
 	public void saveAction(ClientContext ctx, CategoryBean bean) {		
 		var messages = new ArrayList<Message>();
-		save(bean, messages);
+		save(ctx, bean, messages);
 	}
 	
-	private void save(CategoryBean bean, List<Message> messages) {
+	private void save(ClientContext ctx, CategoryBean bean, List<Message> messages) {
 		if( !"ROOT".equals(bean.getCategoryCode().getValue()) ) {
 			switch (bean.getAction()) {
 			case CREATE:
-				service.createCategory(bean);
+				service.createCategory(ctx, bean);
 				break;
 
 			case UPDATE:
-				service.updateCategory(bean);
+				service.updateCategory(ctx, bean);
 				break;
 
 			case DELETE:
@@ -55,7 +55,7 @@ public class CategoryService extends AbstractService {
 		}
 		
 		for (var b : bean.getChildren()) {
-			save(b, messages);
+			save(ctx, b, messages);
 		}
 	}
 

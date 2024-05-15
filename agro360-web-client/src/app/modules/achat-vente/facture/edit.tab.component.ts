@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FactureBean, PaiementBean } from 'src/app/backed/bean.av';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanEditTab } from '../../common/bean.edit.tab';
+import { BeanEditTab } from '../../common/bean/bean.edit.tab';
 import { ReglementDialogComponent } from '../common/reglement.dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PaiementDialogComponent } from '../common/paiement.dialog.component';

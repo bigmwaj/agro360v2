@@ -48,7 +48,7 @@ public class ArticleTaxeOperation extends AbstractOperation<ArticleTaxeDto, Arti
 		
 		setDtoValue(dto::setArticleCode, article.getArticleCode());
 		
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 	}
 	
 	@RuleNamespace("stock/article/taxe/delete")

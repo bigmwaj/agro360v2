@@ -80,7 +80,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		setDtoValue(dto::setDate, bean.getDate());
 		setDtoValue(dto::setMontant, bean.getMontant());
 		
-		super.save(dto);	
+		super.save(ctx, dto);	
 		var msgTpl = "Transaction %s créée avec succès";
 		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
 	}
@@ -91,7 +91,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 
 		setDtoChangedValue(dto::setNote, bean.getNote());
 		
-		super.save(dto);
+		super.save(ctx, dto);
 
 		var msgTpl = "Transaction %s modifiée avec succès";
 		ctx.success(String.format(msgTpl, bean.getTransactionCode().getValue()));
@@ -101,7 +101,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		var dto = dao.getReferenceById(bean.getTransactionCode().getValue());
 		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setStatusDate, bean.getStatusDate());
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 	}
 
 	@RuleNamespace("finance/transaction/cloturer")
@@ -208,7 +208,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		
 		dto.setTransactionCode(generateTransactionCode());
 		
-		dto = super.save(dto);	
+		dto = super.save(ctx, dto);	
 		
 		return FinanceMapper.map(dto);
 	}
@@ -222,7 +222,7 @@ public class TransactionOperation extends AbstractOperation<TransactionDto, Stri
 		
 		dto.setTransactionCode(generateTransactionCode());
 		
-		dto = super.save(dto);	
+		dto = super.save(ctx, dto);	
 		
 		return FinanceMapper.map(dto);
 	}

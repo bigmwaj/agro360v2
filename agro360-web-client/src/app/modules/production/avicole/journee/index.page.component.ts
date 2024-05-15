@@ -9,7 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ProductionAvicoleService } from '../production.avicole.service';
 import { JourneeBean, JourneeSearchBean } from 'src/app/backed/bean.production.avicole';
 import { IndexProducitonListComponent } from './index.production.list.component';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { BeanTools } from 'src/app/modules/common/bean/bean.tools';
 import { Message } from 'src/app/backed/message';
 
 @Component({

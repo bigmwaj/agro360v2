@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.bo.bean.av.LigneBean;
 import com.agro360.bo.bean.av.LigneTaxeBean;
+import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.ArticleSearchBean;
+import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.form.av.LigneForm;
 import com.agro360.service.av.LigneService;
 import com.agro360.service.stock.ArticleService;
@@ -65,7 +67,7 @@ public class LigneController extends AbstractController {
 	public ResponseEntity<ModelMap> getLigneCreateFormAction(
 			@RequestParam CommandeTypeEnumVd type,
 			@RequestParam String commandeCode, 
-			@RequestParam Optional<String> magasinCode,
+			@RequestParam String magasinCode,
 			@RequestParam Optional<String> alias) {		
 		var ctx = getClientContext();
 		var form = this.form.initCreateFormBean(ctx, type, commandeCode, magasinCode, alias);
@@ -74,14 +76,22 @@ public class LigneController extends AbstractController {
 		return ResponseEntity.ok(model);
 	}
 	
-	@GetMapping("/article-option")
-	public ResponseEntity<Map<Object, String>> getLigneArticleOptionsAction(
+	@GetMapping("/variant-query")
+	public ResponseEntity<List<VariantBean>> findVariantsByQueryAction(@RequestParam String query) {		
+		var ctx = getClientContext();
+		var options = articleService.getVariantsByQuery(ctx, query);
+		return ResponseEntity.ok(options);
+	}
+	
+	@GetMapping("/article-query")
+	public ResponseEntity<List<ArticleBean>> findArticlesByQueryAndTypeAction(
+			@RequestParam String query,
 			@RequestParam ArticleTypeEnumVd type) {		
 		var ctx = getClientContext();
 		var searchBean = new ArticleSearchBean();
 		searchBean.getType().setValue(type);
-		searchBean.setPageSize(null);
-		var options = articleService.searchAsOptions(ctx, searchBean);
+		searchBean.getArticleCode().setValue(query);
+		var options = articleService.search(ctx, searchBean);
 		return ResponseEntity.ok(options);
 	}
 	
@@ -119,5 +129,7 @@ public class LigneController extends AbstractController {
 		}
 		return ResponseEntity.ok(pu);
 	}
+	
+	
 	
 }

@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommandeBean, FactureBean, PaiementBean } from 'src/app/backed/bean.av';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanList } from '../../common/bean.list';
+import { BeanList } from '../../common/bean/bean.list';
 
 @Component({
     standalone: true,

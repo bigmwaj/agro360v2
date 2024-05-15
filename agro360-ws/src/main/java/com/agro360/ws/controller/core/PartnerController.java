@@ -40,28 +40,28 @@ public class PartnerController extends AbstractController {
 		return ResponseEntity.ok(model);
 	}
 	
-	@GetMapping("/search-form")
+	@GetMapping(SEARCH_FORM_RN)
 	public ResponseEntity<PartnerSearchBean> getSearchFormAction() {
 		return ResponseEntity.ok(form.initSearchFormBean(getClientContext()));
 	}
 	
-	@GetMapping("/edit-form")
+	@GetMapping(EDIT_FORM_RN)
 	public ResponseEntity<PartnerBean> getEditFormAction(@RequestParam String partnerCode) {
 		return ResponseEntity.ok(form.initEditFormBean(getClientContext(), partnerCode));
 	}
 
-	@GetMapping("/create-form")
+	@GetMapping(CREATE_FORM_RN)
 	public ResponseEntity<PartnerBean> getCreateFormAction(@RequestParam Optional<String> copyFrom) {
 		return ResponseEntity.ok(form.initCreateFormBean(getClientContext(), copyFrom));
 	}
 
-	@GetMapping("/delete-form")
+	@GetMapping(DELETE_FORM_RN)
 	public ResponseEntity<PartnerBean> getDeleteFormAction(@RequestParam String partnerCode) {
 		System.out.println("PartnerController.getDeleteFormAction() " + partnerCode);
 		return ResponseEntity.ok(form.initDeleteFormBean(getClientContext(), partnerCode));
 	}
 
-	@GetMapping("/change-status-form")
+	@GetMapping(CHANGE_STATUS_FORM_RN)
 	public ResponseEntity<PartnerBean> getChangeStatusFormAction(@RequestParam String partnerCode) {
 		return ResponseEntity.ok(form.initChangeStatusFormBean(getClientContext(), partnerCode));
 	}

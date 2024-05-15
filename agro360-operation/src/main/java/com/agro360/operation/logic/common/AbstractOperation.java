@@ -12,6 +12,7 @@ import org.springframework.lang.NonNull;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.dao.common.IDao;
 import com.agro360.dto.common.AbstractDto;
+import com.agro360.operation.context.ClientContext;
 
 import jakarta.persistence.EntityManager;
 
@@ -36,15 +37,15 @@ public abstract class AbstractOperation<E extends AbstractDto, K> {
 		}
 	}
 
-	protected E save(E dto) {
-		dto.setCreateBy("A.MOUAFO");
+	protected E save(ClientContext ctx, E dto) {
+		dto.setCreateBy(ctx.getCurrentUser());
 		dto.setCreateAt(LocalDateTime.now());
-		dto.setUpdateBy("A.MOUAFO");
+		dto.setUpdateBy(ctx.getCurrentUser());
 		dto.setUpdateAt(LocalDateTime.now());
 		return getDao().save(dto);
 	}
 
-	protected void delete(E dto) {
+	protected void delete(ClientContext ctx, E dto) {
 		getDao().delete(dto);
 	}
 	

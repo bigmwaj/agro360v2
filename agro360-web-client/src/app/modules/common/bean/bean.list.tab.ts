@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, Input } from "@angular/core";
 import { AbstractBean } from "src/app/backed/bean.common";
 import { BeanList } from "./bean.list";
-import { BreadcrumbItem, UIService } from "./service/ui.service";
+import { BreadcrumbItem, UIService } from "../service/ui.service";
 
 @Component({
     standalone: true,

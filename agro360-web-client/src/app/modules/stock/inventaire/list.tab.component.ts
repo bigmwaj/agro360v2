@@ -12,12 +12,12 @@ import { Message } from 'src/app/backed/message';
 import { FieldMetadata } from 'src/app/backed/metadata';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
+import { BeanPagedListTab } from '../../common/bean/bean.paged.list.tab';
 import { IndexModalComponent } from '../unite/index.modal.component';
 import { EditDialogComponent } from './edit.dialog.component';
 import { CreateDialogComponent } from './create.dialog.component';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { UploadDialogComponent } from '../../common/upload.dialog.component';
+import { UploadDialogComponent } from '../../common/component/upload.dialog.component';
 
 @Component({
     standalone: true,

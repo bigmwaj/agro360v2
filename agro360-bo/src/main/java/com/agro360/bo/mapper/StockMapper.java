@@ -46,14 +46,18 @@ public class StockMapper {
 		return bean;
 	}
 	
-	public static Map.Entry<Object, String> asOption(ArticleBean bean) {
+	public static Map<Object, String> asOptionMap(ArticleBean bean) {
 		var value = bean.getArticleCode().getValue();
 		var label = bean.getArticleCode().getValue();
 		var desc = bean.getDescription().getValue();
 		if( desc != null ) {
 			label += " - " + desc;
 		}
-		return Map.of(Object.class.cast(value), label)
+		return Map.of(Object.class.cast(value), label);
+	}
+	
+	public static Map.Entry<Object, String> asOption(ArticleBean bean) {
+		return asOptionMap(bean)
 				.entrySet().stream()
 				.findFirst().get();
 	}

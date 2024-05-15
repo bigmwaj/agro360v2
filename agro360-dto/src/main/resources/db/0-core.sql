@@ -75,3 +75,25 @@ create table `core_tbl_partner_cat` (
   	constraint `core_tbl_partner_cat_fk_core_tbl_partner` foreign key (`partner_code`) references `core_tbl_partner` (`partner_code`)
 ) 
 engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+
+drop table if exists `core_tbl_user_account`;
+create table `core_tbl_user_account`(
+  	`created_at` 	datetime not null,
+  	`created_by` 	varchar(16) not null,
+  	`updated_at` 	datetime not null,
+  	`updated_by` 	varchar(16) not null,
+  	
+ 	`partner_code` 	varchar(16) not null,
+ 	
+  	`password` 		varchar(512) not null,
+  	`lang` 			varchar(5) null,
+  	`magasin` 		varchar(16) null,
+  	`roles` 		varchar(32) null,
+  	`status` 		varchar(8) not null,
+  	`status_date` 	datetime default null,
+	primary key `core_tbl_user_account_pk`(`partner_code`),
+	key `core_tbl_user_account_fk_core_tbl_partner` (`partner_code`),
+  	constraint `core_tbl_user_account_fk_core_tbl_partner` foreign key (`partner_code`) references `core_tbl_partner` (`partner_code`)
+) 
+engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+

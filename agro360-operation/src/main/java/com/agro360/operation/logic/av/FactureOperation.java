@@ -93,7 +93,7 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 		setDtoValue(dto::setCumulPaiement, bean.getCumulPaiement());
 		setDtoValue(dto::setRemise, bean.getRemise());
 		
-		super.save(dto);	
+		super.save(ctx, dto);	
 	}
 
 	@RuleNamespace("av/facture/update")
@@ -124,7 +124,7 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 		var dto = dao.getReferenceById(bean.getFactureCode().getValue());
 		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setStatusDate, bean.getStatusDate());
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 	}
 
 	@RuleNamespace("av/facture/demander-approbation")

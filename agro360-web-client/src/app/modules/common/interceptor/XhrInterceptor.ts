@@ -3,13 +3,15 @@ import { Injectable } from "@angular/core";
 import { catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { UIService } from "../service/ui.service";
+import { AuthService } from "../service/auth.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class XhrInterceptor implements HttpInterceptor{
     constructor(
-        private ui: UIService
+        private ui: UIService,
+        private authService: AuthService
     ){}
 
     intercept(req : HttpRequest<any>, next : HttpHandler){
@@ -22,20 +24,17 @@ export class XhrInterceptor implements HttpInterceptor{
     }
 
     private setHeaders(req : HttpRequest<any>, headers : HttpHeaders):HttpHeaders{
-        if( req.url.indexOf('credentials') < 0 ){
-            headers = this.setJWT(headers);
+        if( !req.withCredentials ){
+            headers = this.setAuthorizationHeader(headers);
         }
-       
         headers = this.setLanguage(headers)
         headers = headers.append('X-Requested-With', 'XMLHttpRequest')
         return headers;
     }
 
-    private setJWT(headers:HttpHeaders):HttpHeaders{
-        /*const val = this.storageService.getJWT();
-        if( null != val ){
-            return headers.append('Authorization', val)
-        }*/
+    private setAuthorizationHeader(headers:HttpHeaders):HttpHeaders{
+        headers = headers.set('Authorization', this.authService.credentials)
+        headers = headers.set('X-XSRF-Token', this.authService.csrf)
         return headers;
     }
 

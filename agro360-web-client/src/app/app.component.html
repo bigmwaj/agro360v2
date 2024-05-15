@@ -1,7 +1,7 @@
 <mat-drawer-container>
     <mat-drawer #drawerLeft>
         <div class="container-fluid main-menu">
-            <mat-selection-list role="list">
+            <mat-selection-list role="list" *ngIf="displayMenu()">
                 <mat-list-item role="listitem">
                     <a href="">Tableau de bord</a>
                 </mat-list-item>
@@ -33,12 +33,23 @@
             </button>
             <div class="ms-3 mt-3" #pageTitle></div>
             <span class="menu-spacer"></span>
-            <button mat-icon-button class="favorite-icon">
-                <mat-icon>favorite</mat-icon>
+            <button mat-icon-button extended color="basic" routerLinkActive="active" routerLink="/login" *ngIf="!isAuthenticated()">
+                <mat-icon>login</mat-icon>
             </button>
-            <button mat-icon-button>
-                <mat-icon>share</mat-icon>
-            </button>
+            <ng-container *ngIf="isAuthenticated()">
+                <button mat-icon-button color="secondary" [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">                                
+                    <button mat-menu-item color="primary" routerLinkActive="active" routerLink="/profil">
+                        <mat-icon>person</mat-icon>Profile
+                    </button>
+                    <mat-divider></mat-divider>
+                    <button mat-menu-item color="primary" (click)="logoutAction()">
+                        <mat-icon>logout</mat-icon>Déconnexion
+                    </button>                                
+                </mat-menu>
+            </ng-container>
         </mat-toolbar>
         <div class="container-fluid container-main pb-3 pt-3"> 
             <section class="main-content">

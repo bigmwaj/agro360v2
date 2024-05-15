@@ -6,7 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TransactionBean } from 'src/app/backed/bean.finance';
 import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanIndexPage } from '../../common/bean.index.page';
+import { BeanIndexPage } from '../../common/bean/bean.index.page';
 import { IndexModalComponent as CompteIndexModalComponent } from '../compte/index.modal.component';
 import { IndexModalComponent as RubriqueIndexModalComponent } from '../rubrique/index.modal.component';
 import { EditTabComponent } from './edit.tab.component';

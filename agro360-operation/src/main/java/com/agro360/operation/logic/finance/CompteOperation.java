@@ -48,7 +48,7 @@ public class CompteOperation extends AbstractOperation<CompteDto, String> {
 			dto.setPartner(partner);
 		}
 		
-		dto = super.save(dto);
+		dto = super.save(ctx, dto);
 	}
 	
 	@RuleNamespace("stock/compte/update")
@@ -58,7 +58,7 @@ public class CompteOperation extends AbstractOperation<CompteDto, String> {
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		setDtoChangedValue(dto::setLibelle, bean.getLibelle());
 		
-		dto = super.save(dto);
+		dto = super.save(ctx, dto);
 	}
 	
 	@RuleNamespace("stock/compte/delete")

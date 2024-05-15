@@ -1,8 +1,8 @@
 <section class="p-3">
     <h4 class="m-0 p-0">
-        <div class="d-flex" *ngIf="commande.createLigneBtn.visible">
+        <div class="d-flex">
             <div>
-                <input-text-field 
+                <input-text-field
                     [field]="alias" (keydown.enter)="addFromAliasAction()">
                 </input-text-field>
                 <button mat-icon-button color="primary"
@@ -17,11 +17,12 @@
                 <autocomplete-field 
                     (onSelected)="addFromQueryAction($event)"
                     [field]="query" 
-                    [lookupUrl]="lookupUrl" 
-                    [displayFn]="displayFn">
+                    [lookupFn]="variantLookupFn" 
+                    [keyFn]="mapVariantToKeyFn"
+                    [displayFn]="mapVariantToLabelFn">
                 </autocomplete-field>    
                 <button mat-icon-button color="primary"
-                    [disabled]="query.value == null || alias.value == ''"
+                    [disabled]="query.value == null || query.value == ''"
                     class="field-button"
                     title="Recehrcher l'article">
                     <mat-icon>search</mat-icon>
@@ -32,23 +33,7 @@
     </h4>
 
     <div class="table-wrapper">
-        <table mat-table [dataSource]="this" class="beans-table editable table-borderless commande-ligne">
-            <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef class="text-start">
-                    <mat-checkbox (change)="$event ? toggleAllRows() : null"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="selection.hasValue() && !isAllSelected()" 
-                        [aria-label]="checkboxLabel()">
-                    </mat-checkbox>
-                </th>
-                <td mat-cell *matCellDef="let row" class="text-start">
-                    <mat-checkbox (click)="$event.stopPropagation()" 
-                        (change)="$event ? selection.toggle(row) : null"
-                        [checked]="selection.isSelected(row)" 
-                        [aria-label]="checkboxLabel(row)">
-                    </mat-checkbox>
-                </td>
-            </ng-container>
+        <table mat-table [dataSource]="this" class="beans-table editable table-borderless commande-ligne">            
 
             <ng-container matColumnDef="description">
                 <th mat-header-cell *matHeaderCellDef>Description</th>
@@ -64,13 +49,13 @@
                 <th mat-header-cell *matHeaderCellDef>Remise</th>
                 <td mat-cell *matCellDef="let element">
                     <div class="d-flex">
-                        <div class="">
+                        <div>
                             <input-number-field  
                                 [field]="element.remise" 
                                 [displayLabel]="false">
                             </input-number-field>
                         </div>
-                        <div class="">
+                        <div>
                             <div class="field-button pt-1" >
                                 <button mat-icon-button 
                                     color="primary"  
@@ -116,13 +101,17 @@
 
             <ng-container matColumnDef="article">
                 <th mat-header-cell *matHeaderCellDef>Article</th>
-                <td mat-cell *matCellDef="let element">
-                    <select-one-field 
-                        (onChange)="onSelectArticleEvent(element)" 
-                        *ngIf="isStandard(element)"
+                <td mat-cell *matCellDef="let element">                    
+                    <autocomplete-field                     
+                        (onSelected)="element.article.articleCode.value=$event.option.value;onSelectArticleEvent(element)"
                         [field]="element.article.articleCode" 
-                        [displayLabel]="false">
-                    </select-one-field>
+                        [lookupFn]="articleLookupFn" 
+                        [keyFn]="mapArticleToKeyFn"
+                        [displayLabel]="false"
+                        [lookupFnOptions]="element" 
+                        *ngIf="isStandard(element)"
+                        [displayFn]="mapArticleToLabelFn">
+                    </autocomplete-field>
 
                     <input-text-field *ngIf="!isStandard(element)" 
                         [field]="element.description"
@@ -196,10 +185,6 @@
                         title="Ajouter" (click)="addAction()">
                         <mat-icon>add</mat-icon>
                     </button>
-                    <button mat-icon-button color="secondary" [matMenuTriggerFor]="menu">
-                        <mat-icon>more_vert</mat-icon>
-                    </button>
-                    <mat-menu #menu="matMenu"></mat-menu>
                 </th>
                 <td mat-cell *matCellDef="let element" class="text-end">
                     <div class="text-nowrap">

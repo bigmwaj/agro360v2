@@ -2,8 +2,10 @@ package com.agro360.ws.controller.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.agro360.operation.context.ClientContext;
+import com.agro360.operation.utils.AuthenticatedUser;
 
 public class AbstractController {
 
@@ -34,7 +36,9 @@ public class AbstractController {
 	protected final static String CHANGE_STATUS_FORM_RN = "change-status-form";
 	
 	protected ClientContext getClientContext() {
-		return new ClientContext();
+		var auth = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		var authUser = (AuthenticatedUser) auth;
+		return new ClientContext(authUser.getUserInfo());
 	}
 
 	protected Logger getLogger() {

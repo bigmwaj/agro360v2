@@ -39,14 +39,15 @@ public class ConversionOperation extends AbstractOperation<ConversionDto, Conver
 	@RuleNamespace("stock/article/conversion/create")
 	public void createConversion(ClientContext ctx, ArticleBean article, ConversionBean bean) {
 		var dto = new ConversionDto();
-		var uniteDto = uniteDao.getReferenceById(article.getUnite().getUniteCode().getValue());
+		var uniteCode = bean.getUnite().getUniteCode().getValue();
+		var uniteDto = uniteDao.getReferenceById(uniteCode);
 		
 		setDtoValue(dto::setFacteur, bean.getFacteur());
 		setDtoValue(dto::setArticleCode, article.getArticleCode());
 		
 		dto.setUnite(uniteDto);
 		
-		super.save(dto);
+		super.save(ctx, dto);
 	}
 	
 	@RuleNamespace("stock/article/conversion/update")
@@ -55,13 +56,13 @@ public class ConversionOperation extends AbstractOperation<ConversionDto, Conver
 
 		setDtoChangedValue(dto::setFacteur, bean.getFacteur());
 		
-		super.save(dto);
+		super.save(ctx, dto);
 	}
 	
 	@RuleNamespace("stock/article/conversion/delete")
 	public void deleteConversion(ClientContext ctx, ArticleBean article, ConversionBean bean) {
 		var dto = dao.getReferenceById(buildPK(article, bean));
-		super.delete(dto);
+		super.delete(ctx, dto);
 	}
 	
 	public List<ConversionBean> findConversionsByArticleCode(ClientContext ctx, String articleCode) {

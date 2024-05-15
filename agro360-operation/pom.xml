@@ -14,10 +14,11 @@
 	<name>agro360-operation</name>
 	<description>Business Operation Project</description>
 	<dependencies>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter</artifactId>-->
-<!--		</dependency>-->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		
 		<dependency>
 			<groupId>com.agro360</groupId>

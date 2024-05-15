@@ -40,7 +40,7 @@ public class TaxeOperation extends AbstractOperation<TaxeDto, String> {
 		setDtoValue(dto::setTaux, bean.getTaux());
 		setDtoValue(dto::setDescription, bean.getDescription());
 		
-		dto = super.save(dto);	
+		dto = super.save(ctx, dto);	
 	}
 
 	@RuleNamespace("av/taxe/update")
@@ -50,7 +50,7 @@ public class TaxeOperation extends AbstractOperation<TaxeDto, String> {
 		setDtoChangedValue(dto::setTaux, bean.getTaux());
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		
-		super.save(dto);		
+		super.save(ctx, dto);		
 	}
 
 	@RuleNamespace("av/taxe/delete")

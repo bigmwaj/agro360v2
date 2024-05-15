@@ -4,7 +4,7 @@ import { TransactionBean } from 'src/app/backed/bean.finance';
 import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanEditTab } from '../../common/bean.edit.tab';
+import { BeanEditTab } from '../../common/bean/bean.edit.tab';
 
 @Component({
     standalone: true,

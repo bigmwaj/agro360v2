@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanTools } from 'src/app/modules/common/bean.tools';
+import { BeanTools } from 'src/app/modules/common/bean/bean.tools';
 import { CycleBean } from 'src/app/backed/bean.production.avicole';
 import { EditMetadataListComponent } from './edit.metadata.list.component';
 import { map } from 'rxjs';

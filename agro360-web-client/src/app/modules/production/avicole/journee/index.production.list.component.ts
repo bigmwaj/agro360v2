@@ -1,7 +1,7 @@
 
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { MatTable } from '@angular/material/table';
-import { BeanList } from 'src/app/modules/common/bean.list';
+import { BeanList } from 'src/app/modules/common/bean/bean.list';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { ProductionBean } from 'src/app/backed/bean.production.avicole';
 import { MatTabsModule } from '@angular/material/tabs';

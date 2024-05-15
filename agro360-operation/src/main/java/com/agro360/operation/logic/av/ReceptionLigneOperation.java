@@ -54,7 +54,7 @@ public class ReceptionLigneOperation extends AbstractOperation<ReceptionLigneDto
 		dto.setUnite(unite);
 		
 		dto.setCommandeCode(ligne.getCommandeCode());
-		super.save(dto);
+		super.save(ctx, dto);
 		
 	}
 
@@ -71,7 +71,7 @@ public class ReceptionLigneOperation extends AbstractOperation<ReceptionLigneDto
 			var unite = uniteDao.getReferenceById(uniteCode);
 			dto.setUnite(unite);
 		}
-		super.save(dto);
+		super.save(ctx, dto);
 	}
 
 	public void deleteReceptionLigne(ClientContext ctx, String commandeCode, ReceptionLigneBean bean) {
@@ -79,7 +79,7 @@ public class ReceptionLigneOperation extends AbstractOperation<ReceptionLigneDto
 		var receptionId = bean.getReceptionId().getValue();
 		var dto = dao.findOndByCommandeCodeAndLigneLigneIdAndReceptionId(commandeCode, ligneId, receptionId).orElseThrow();
 		
-		super.delete(dto);
+		super.delete(ctx, dto);
 	}
 
 }
