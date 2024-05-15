@@ -19,8 +19,9 @@ import { PartnerModule } from './modules/core/core.module';
 import { AchatVentModule } from './modules/achat-vente/achat-vente.module';
 import { AchatModule } from './modules/achat/achat.module';
 import { PaieModule } from './modules/paie/paie.module';
-import { UIModule } from './modules/common/ui.module';
+import { SystemModule } from './modules/common/system.module';
 import { XhrInterceptor } from './modules/common/interceptor/XhrInterceptor';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
     declarations: [
@@ -33,6 +34,7 @@ import { XhrInterceptor } from './modules/common/interceptor/XhrInterceptor';
         AppRoutingModule,
         BrowserAnimationsModule,
         CommonModule,
+        MatMenuModule,
         HttpClientModule,        
         MatSidenavModule,
         MatToolbarModule,
@@ -46,7 +48,7 @@ import { XhrInterceptor } from './modules/common/interceptor/XhrInterceptor';
         ProductionAvicoleModule,
         HomeModule,
         PaieModule,
-        UIModule.forRoot({title:'Bienvenue sur Agro360'})
+        SystemModule.forRoot({title:'Bienvenue sur Agro360'})
         
     ],
     providers: [

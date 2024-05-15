@@ -30,6 +30,11 @@ public class InventaireDto extends AbstractDto {
 	@JoinColumn(name = "ARTICLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private ArticleDto article;	
+	
+	@Id
+	@Column(name = "VARIANT_CODE", updatable = false)
+	@EqualsAndHashCode.Include()
+	private String variantCode;
 
 	@ManyToOne()
 	@JoinColumn(name = "UNITE_ACHAT_CODE")
@@ -38,11 +43,6 @@ public class InventaireDto extends AbstractDto {
 	@ManyToOne()
 	@JoinColumn(name = "UNITE_VENTE_CODE")
 	private UniteDto uniteVente;
-	
-	@Id
-	@Column(name = "VARIANT_CODE", updatable = false)
-	@EqualsAndHashCode.Include()
-	private String variantCode;
 
 	@Column(name = "QUANTITE")
 	private Double quantite;

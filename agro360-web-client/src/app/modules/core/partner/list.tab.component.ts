@@ -6,7 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { PartnerBean, PartnerSearchBean } from 'src/app/backed/bean.core';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
+import { BeanPagedListTab } from '../../common/bean/bean.paged.list.tab';
 import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';

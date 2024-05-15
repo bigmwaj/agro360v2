@@ -3,6 +3,7 @@ package com.agro360.bo.bean.common;
 import java.io.Serializable;
 
 import com.agro360.bo.metadata.FieldMetadata;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,6 +35,7 @@ public class AbstractSearchBean  extends AbstractBean implements Serializable {
 		this.pageSize = pageSize;
 	}
 	
+	@JsonIgnore
 	public Integer getOffset() {
 		if( pageSize != null ) {
 			return pageSize * pageIndex;
@@ -41,6 +43,7 @@ public class AbstractSearchBean  extends AbstractBean implements Serializable {
 		return pageIndex;
 	}
 	
+	@JsonIgnore
 	public Short getLimit() {
 		if( pageSize == null ) {
 			return DEFAULT_QUERY_LIMIT;

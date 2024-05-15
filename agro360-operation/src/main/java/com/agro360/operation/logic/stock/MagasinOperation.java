@@ -35,7 +35,7 @@ public class MagasinOperation extends AbstractOperation<MagasinDto, String> {
 		setDtoValue(dto::setMagasinCode, bean.getMagasinCode());
 		setDtoValue(dto::setDescription, bean.getDescription());
 		
-		dto = super.save(dto);	
+		dto = super.save(ctx, dto);	
 	}
 
 	@RuleNamespace("stock/magasin/update")
@@ -44,7 +44,7 @@ public class MagasinOperation extends AbstractOperation<MagasinDto, String> {
 
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		
-		dto = super.save(dto);	
+		dto = super.save(ctx, dto);	
 	}
 
 	@RuleNamespace("stock/magasin/delete")

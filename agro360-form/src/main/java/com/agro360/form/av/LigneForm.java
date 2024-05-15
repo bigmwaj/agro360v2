@@ -1,13 +1,16 @@
 package com.agro360.form.av;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.LigneBean;
+import com.agro360.bo.mapper.StockMapper;
 import com.agro360.form.common.AbstractForm;
 import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
@@ -36,7 +39,7 @@ public class LigneForm extends AbstractForm{
 	public LigneBean initCreateFormBean(ClientContext ctx, 
 			CommandeTypeEnumVd type,
 			String commandeCode, 
-			Optional<String> magasinCode, 
+			String magasinCode, 
 			Optional<String> alias) {
 
 		var variant = alias.map(e -> variantOperation.findVariantByAlias(ctx, e)).orElse(null);
@@ -49,15 +52,27 @@ public class LigneForm extends AbstractForm{
 			var articleCode = variant.getArticleCode().getValue();	
 			
 			var article = articleOperation.findArticleByCode(ctx, articleCode);
-			
+			var typeArticle = article.getType().getValue();
+			switch (typeArticle) {
+			case ARTC:
+				bean.getType().setValue(LigneTypeEnumVd.ARTC);
+				break;
+				
+			case SSTD:
+				bean.getType().setValue(LigneTypeEnumVd.SSTD);
+				break;
+
+			default:
+				var msgTpl = "Le type d'article %s n'est pas pris en charge";
+				throw new RuntimeException(String.format(msgTpl, typeArticle));
+			}
 			bean.getArticle().getArticleCode().setValue(articleCode);
-			bean.getType().setValue(LigneTypeEnumVd.ARTC);
 			bean.getVariantCode().setValue(variantCode);
 			bean.setUnite(article.getUnite());
 			
-			if( magasinCode.isPresent() ) {
-				initFromInventaire(ctx, bean, magasinCode.get());
-			}			
+			initPrixUnitFromInventaire(ctx, bean, magasinCode);
+			
+			initArticle(ctx, bean);
 		}
 		
 		bean.setAction(ClientOperationEnumVd.CREATE);
@@ -77,7 +92,7 @@ public class LigneForm extends AbstractForm{
 		return bean;
 	}
 	
-	private void initFromInventaire(ClientContext ctx, LigneBean bean, String magasinCode) {
+	private void initPrixUnitFromInventaire(ClientContext ctx, LigneBean bean, String magasinCode) {
 		var variantCode = bean.getVariantCode().getValue();
 		var articleCode = bean.getArticle().getArticleCode().getValue();
 		
@@ -102,5 +117,18 @@ public class LigneForm extends AbstractForm{
 			ctx.warn(String.format(msgTpl, variantCode, articleCode, magasinCode));
 		}
 	}
-
+	
+	void initArticle(ClientContext ctx, LigneBean ligne) {		
+		var articleCode = ligne.getArticle().getArticleCode().getValue();
+		var variantOptions = variantOperation.findVariantsByArticleCode(ctx, articleCode)
+				.stream().map(StockMapper::asOption)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		ligne.getVariantCode().setValueOptions(variantOptions);
+		
+		var uniteOptions = articleOperation.findUnitesArticleByCode(ctx, articleCode)
+				.stream().map(StockMapper::asOption)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		ligne.getUnite().getUniteCode().setValueOptions(uniteOptions);
+		
+	}
 }

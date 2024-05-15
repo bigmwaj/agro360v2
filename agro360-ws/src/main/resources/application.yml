@@ -17,3 +17,7 @@ spring:
 server:
    port: 8080
    
+   
+jwt.secret: bigmwaj
+front.url: http://localhost:4200
+   

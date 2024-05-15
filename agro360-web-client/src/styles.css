@@ -178,27 +178,27 @@ td .input-checkbox.input-field{
 
 table.commande-ligne .mat-column-article,
 table.commande-ligne .mat-column-article .mat-mdc-form-field{
-    width: 120px;
+    width: 140px;
 }
 
 table.commande-ligne .mat-column-variantCode,
 table.commande-ligne .mat-column-variantCode .mat-mdc-form-field{
-    width: 120px;
+    width: 160px;
 }
 
 table.commande-ligne .mat-column-unite,
 table.commande-ligne .mat-column-unite .mat-mdc-form-field{
-    width: 120px;
+    width: 140px;
 }
 
 table.commande-ligne .mat-column-quantite,
 table.commande-ligne .mat-column-quantite .mat-mdc-form-field{
-    width: 80px;
+    width: 70px;
 }
 
 table.commande-ligne .mat-column-prixUnitaire,
 table.commande-ligne .mat-column-prixUnitaire .mat-mdc-form-field{
-    width: 120px;
+    width: 100px;
 }
 
 table.commande-ligne .mat-column-prixTotal,
@@ -255,4 +255,8 @@ table.post-commande .mat-column-unite .mat-mdc-form-field{
 table.post-commande .mat-column-raison,
 table.post-commande .mat-column-raison .mat-mdc-form-field{
     width: 100px;
+}
+
+autocomplete-field mat-form-field{
+    width: 100%;
 }

@@ -9,7 +9,7 @@ import { TransactionBean, TransactionSearchBean } from 'src/app/backed/bean.fina
 import { TransactionTypeEnumVd } from 'src/app/backed/vd.finance';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
+import { BeanPagedListTab } from '../../common/bean/bean.paged.list.tab';
 import { IndexModalComponent as CompteIndexModalComponent } from '../compte/index.modal.component';
 import { IndexModalComponent as RubriqueIndexModalComponent } from '../rubrique/index.modal.component';
 import { IndexModalComponent as TaxeIndexModalComponent } from '../taxe/index.modal.component';

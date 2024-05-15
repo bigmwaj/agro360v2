@@ -44,7 +44,7 @@ public class LigneTaxeOperation extends AbstractOperation<LigneTaxeDto, LigneTax
 		dto.setTaxe(taxe);
 		dto.setTaux(taxe.getTaux());
 		
-		super.save(dto);
+		super.save(ctx, dto);
 	}
 	
 	public void deleteLignes(ClientContext ctx, CommandeBean commande, LigneBean ligne) {

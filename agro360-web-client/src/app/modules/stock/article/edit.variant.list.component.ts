@@ -3,7 +3,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { VariantBean } from 'src/app/backed/bean.stock';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/modules/common/bean.list';
+import { BeanList } from 'src/app/modules/common/bean/bean.list';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { StockService } from '../stock.service';
 import { map } from 'rxjs';

@@ -20,7 +20,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         <input matInput type="text" 
             [matTooltip]="field.tooltip"
             [maxLength]="field.maxLength && field.maxLength > 0 ? field.maxLength : 256"
-            [(ngModel)]="field.value"  [class]="inputCssClass"
+            [(ngModel)]="field.value"  
+            [class]="inputCssClass"
             (change)="_onChange($event)"
             [disabled]="!field.editable"
             [required]="field.required"/>

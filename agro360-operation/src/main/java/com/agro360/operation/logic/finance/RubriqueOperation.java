@@ -36,7 +36,7 @@ public class RubriqueOperation extends AbstractOperation<RubriqueDto, String> {
 		setDtoValue(dto::setType, bean.getType());
 		setDtoValue(dto::setDescription, bean.getDescription());
 		
-		dto = super.save(dto);
+		dto = super.save(ctx, dto);
 	}
 	
 	@RuleNamespace("stock/rubrique/update")
@@ -46,7 +46,7 @@ public class RubriqueOperation extends AbstractOperation<RubriqueDto, String> {
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		setDtoChangedValue(dto::setLibelle, bean.getLibelle());
 		
-		dto = super.save(dto);	
+		dto = super.save(ctx, dto);	
 	}
 	
 	@RuleNamespace("stock/rubrique/delete")

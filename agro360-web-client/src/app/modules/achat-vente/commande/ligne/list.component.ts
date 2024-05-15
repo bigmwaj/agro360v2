@@ -3,18 +3,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { CommandeBean, LigneBean } from 'src/app/backed/bean.av';
-import { VariantBean } from 'src/app/backed/bean.stock';
+import { ArticleBean, VariantBean } from 'src/app/backed/bean.stock';
 import { Message } from 'src/app/backed/message';
 import { FieldMetadata } from 'src/app/backed/metadata';
 import { LigneTypeEnumVd } from 'src/app/backed/vd.av';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/modules/common/bean.list';
+import { BeanList } from 'src/app/modules/common/bean/bean.list';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { TaxeListDialogComponent } from './taxe.list.dialog.component';
 import { RemiseDialogComponent } from './remise.dialog.component';
+import { TaxeListDialogComponent } from './taxe.list.dialog.component';
 
 @Component({
     standalone: true,
@@ -28,7 +28,6 @@ import { RemiseDialogComponent } from './remise.dialog.component';
 export class ListComponent extends BeanList<LigneBean> {
     
     displayedColumns: string[] = [
-        'select',
         'quantite',
         'prixUnitaire',
         'prixTotal',
@@ -41,13 +40,6 @@ export class ListComponent extends BeanList<LigneBean> {
         'actions'
     ];
 
-    constructor(
-        public http: HttpClient,
-        public dialog: MatDialog,
-        private ui: UIService) {
-        super()
-    }
-
     @Input({required:true})
     public commande: CommandeBean;
     
@@ -57,45 +49,70 @@ export class ListComponent extends BeanList<LigneBean> {
     public alias:FieldMetadata<string> = {
         label:'Alias', 
         tooltip: `Si vous connaissez l'alias de la variante de l'article que vous souhaitez ajouter, merci de le saisir ici et valider.`,
-        editable:true
+        editable:true,
+        value:''
     } as FieldMetadata<string>;
 
     public query:FieldMetadata<string> = {
         label:'Rechercher',
-        editable:true
+        editable:true,
+        value:''
     } as FieldMetadata<string>;
-    
-    lookupUrl = `achat-vente/commande/variants`;
 
-    displayFn(variant: VariantBean): string {
-        return variant.variantCode.value + ' - ' + variant.description.value;
-    }
+    articleLookupUrl = `achat-vente/commande/ligne/article-option`;
 
-    override getKeyLabel(bean: LigneBean): string | number {
-        return bean.ligneId.value;
+    constructor(
+        public http: HttpClient,
+        public dialog: MatDialog,
+        private ui: UIService) {
+        super()
     }
 
     ngOnInit(): void {
         this.setData(this.commande.lignes);
+        this.query.editable = this.commande.createLigneBtn.visible;
+        this.alias.editable = this.commande.createLigneBtn.visible;
+    }
+
+    mapVariantToLabelFn(variant: VariantBean): string {
+        return variant.variantCode.value + ' - ' + variant.description.value;
+    }
+
+    mapVariantToKeyFn(variant: VariantBean): string {
+        return variant.alias.value;
+    }
+
+    mapArticleToLabelFn(article: ArticleBean): string {
+        return article.articleCode.value + ' - ' + article.description.value;
+    }
+
+    mapArticleToKeyFn(article: ArticleBean): string {
+        return article.articleCode.value;
+    }
+
+    variantLookupFn(query:string):Observable<any>{
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append("query", query);
+        return this.http.get(`achat-vente/commande/ligne/variant-query`, { params: queryParams });
+    }
+    
+    articleLookupFn(query:string, bean:LigneBean):Observable<any>{
+        let queryParams = new HttpParams();
+        queryParams = queryParams.append('type', bean.type.value);
+        queryParams = queryParams.append("query", query);
+        return this.http.get(`achat-vente/commande/ligne/article-query`, { params: queryParams });
     }
 
     isStandard(bean: LigneBean): boolean{
         return [ LigneTypeEnumVd.ARTC, LigneTypeEnumVd.SSTD ].includes(bean.type.value);
     }
-  
-    override setData(data: LigneBean[]){
-        super.setData(data);
 
-        data.forEach(e => {
-            this.onSelectLigneTypeEvent(e);
-            this.onSelectArticleEvent(e);
-        })
+    override getKeyLabel(bean: LigneBean): string | number {
+        return bean.ligneId.value;
     }
    
     override prependItem(bean: LigneBean){
         super.prependItem(bean);
-        this.onSelectLigneTypeEvent(bean);
-        this.onSelectArticleEvent(bean);
         this.updatePrixCalcule(bean);
     }
     
@@ -134,22 +151,7 @@ export class ListComponent extends BeanList<LigneBean> {
         bean.unite.uniteCode.valueOptions = {}
         bean.variantCode.valueOptions = {}
         bean.article.articleCode.valueOptions = {}
-
-        const types = [LigneTypeEnumVd.ARTC, LigneTypeEnumVd.SSTD];
-        const type = bean.type.value;
-
-        if( !types.includes(type) ){
-            return;
-        }
-
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('type', bean.type.value);
-        this.http
-            .get(`achat-vente/commande/ligne/article-option`, { params: queryParams })
-            .pipe(map((data: any) => data))
-            .subscribe(data => {
-                bean.article.articleCode.valueOptions = data
-            });
+        bean.article.articleCode.value = ''
     }
     
     onSelectArticleEvent(bean: LigneBean) {
@@ -168,13 +170,21 @@ export class ListComponent extends BeanList<LigneBean> {
         this.http
             .get(`achat-vente/commande/ligne/variant-option`, { params: queryParams })
             .subscribe(data => { 
-                bean.variantCode.valueOptions = data
+                bean.variantCode.valueOptions = data;
+                const keys = Object.keys(data)
+                if( keys.length == 1){
+                    bean.variantCode.value = keys[0]
+                }
             });
 
         this.http
-            .get(`achat-vente/commande/ligne/unite-option`, { params: queryParams })
+            .get(`achat-vente/commande/ligne/unite-option`, { params: queryParams }) 
             .subscribe(data => { 
-                bean.unite.uniteCode.valueOptions = data
+                bean.unite.uniteCode.valueOptions = data;
+                const keys = Object.keys(data)
+                if( keys.length == 1){
+                    bean.unite.uniteCode.value = keys[0]
+                }
             });
     }
     
@@ -187,10 +197,10 @@ export class ListComponent extends BeanList<LigneBean> {
         let queryParams = new HttpParams();
         queryParams = queryParams.append('commandeCode', this.commande.commandeCode.value);
         queryParams = queryParams.append('type', this.commande.type.value);
+        queryParams = queryParams.append('magasinCode', this.commande.magasin.magasinCode.value);
 
         if( alias ){
             queryParams = queryParams.append('alias', alias);
-            queryParams = queryParams.append('magasinCode', this.commande.magasin.magasinCode.value);
         }
         this.http
             .get(`achat-vente/commande/ligne/create-form`, { params: queryParams })
@@ -202,7 +212,8 @@ export class ListComponent extends BeanList<LigneBean> {
                     this.ui.displayFlashMessage(<Message[]>data.messages);
                 }
                 this.updatePrixCommande.emit();
-                this.alias.value = ''; // Pour la création à partir de l'alias
+                this.alias.value = '';
+                this.query.value = '';
             });
     }
 
@@ -250,7 +261,9 @@ export class ListComponent extends BeanList<LigneBean> {
     editRemiseAction(bean: LigneBean) {
         let dialogRef = this.dialog.open(RemiseDialogComponent, { data: bean });
         dialogRef.afterClosed().subscribe(result => {
-            this.updatePrixCalcule(bean)
+            if( this.commande.createLigneBtn.visible ){
+                this.updatePrixCalcule(bean)
+            }
         });  
     }
 

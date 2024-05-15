@@ -43,7 +43,7 @@ public class ArticleOperation extends AbstractOperation<ArticleDto, String> {
 		setDtoValue(dto::setType, bean.getType());
 		setDtoValue(dto::setDescription, bean.getDescription());
 		
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 	}
 
 	@RuleNamespace("stock/article/update")
@@ -53,7 +53,7 @@ public class ArticleOperation extends AbstractOperation<ArticleDto, String> {
 		setDtoChangedValue(dto::setType, bean.getType());
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 	}
 	
 	@RuleNamespace("stock/article/delete")

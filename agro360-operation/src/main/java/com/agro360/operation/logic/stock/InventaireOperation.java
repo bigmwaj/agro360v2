@@ -79,13 +79,17 @@ public class InventaireOperation extends AbstractOperation<InventaireDto, Invent
 		setDtoValue(dto::setPrixUnitaireAchat, bean.getPrixUnitaireAchat());
 		setDtoValue(dto::setPrixUnitaireVente, bean.getPrixUnitaireVente());
 		
-		super.save(dto);		
+		super.save(ctx, dto);		
 	}
 
 	@Autowired
 	private IConversionDao conversionDao;
 	
-	private Map<String, Double> getFacteurs(ClientContext ctx, String articleCode, String uniteSource, String uniteBase, String uniteCible) {
+	private Map<String, Double> getFacteurs(ClientContext ctx, String articleCode, String uniteSource, 
+			String uniteBase, String uniteCible) {
+		getLogger().debug("On recherche le convertisseur de l'article {}, uniteSource = {}, uniteBase = {}, uniteCible = {}",
+				articleCode, uniteSource, uniteBase, uniteCible);
+		
 		// Conversion de la source vers la base
 		Double facteurSourceBase = null;
 		if( uniteBase.equals(uniteSource) ) {
@@ -127,7 +131,7 @@ public class InventaireOperation extends AbstractOperation<InventaireDto, Invent
 		
 		dto.setQuantite(quantite);
 		
-		super.save(dto);		
+		super.save(ctx, dto);		
 	}
 	
 	@RuleNamespace("stock/inventaire/update-prix-vente")
@@ -147,7 +151,7 @@ public class InventaireOperation extends AbstractOperation<InventaireDto, Invent
 		}
 		
 		dto.setPrixUnitaireVente(puv);
-		super.save(dto);		
+		super.save(ctx, dto);		
 	}
 	
 	@RuleNamespace("stock/inventaire/update-unite-vente")
@@ -156,7 +160,7 @@ public class InventaireOperation extends AbstractOperation<InventaireDto, Invent
 		var uniteVenteCode = bean.getUniteVente().getUniteCode().getValue();
 		var uniteVente = uniteDao.getReferenceById(uniteVenteCode);
 		dto.setUniteVente(uniteVente);
-		super.save(dto);		
+		super.save(ctx, dto);		
 	}
 	
 	@RuleNamespace("stock/inventaire/update-unite-achat")
@@ -165,7 +169,7 @@ public class InventaireOperation extends AbstractOperation<InventaireDto, Invent
 		var uniteAchatCode = bean.getUniteAchat().getUniteCode().getValue();
 		var uniteAchat = uniteDao.getReferenceById(uniteAchatCode);
 		dto.setUniteAchat(uniteAchat);
-		super.save(dto);		
+		super.save(ctx, dto);		
 	}
 
 	public InventaireBean findInventaireByCode(ClientContext ctx, String magasinCode, String articleCode, String variantCode) {

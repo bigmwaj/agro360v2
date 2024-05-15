@@ -1,6 +1,6 @@
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Message } from 'src/app/backed/message';
-import { FlashMessageComponent } from '../flash-message.component';
+import { FlashMessageComponent } from '../component/flash-message.component';
 import { ElementRef, Injectable, Optional } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { MessageTypeEnumVd } from 'src/app/backed/vd.common';
@@ -76,7 +76,7 @@ export class UIService {
 
         */
     const lis = items.map( e => `<li class="breadcrumb-item">${e}</li>`)
-        .reduce((e, f) => e+f);
+        .reduce((e, f) => e + f);
     const nav = `
             <nav aria-label="breadcrumb" class="fs-6"
                 style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);">
@@ -106,7 +106,7 @@ export class UIService {
         const status = err.status;
         let msg:Message = {            
             type: MessageTypeEnumVd.ERROR,
-            message:`Une erreur est survenue pendant le traitement de votre requête.`
+            message:`Une erreur est survenue pendant le traitement de votre requête. Status: ${status}`
         }
         switch (status) {
             case 500:

@@ -64,11 +64,11 @@ public class PartnerService extends AbstractService {
 
 		case CHANGE_STATUS:
 			switch (bean.getStatus().getValue()) {
-			case ACTIVE:
+			case ENABLED:
 				operation.activatePartner(ctx, bean);
 				
 				break;
-			case INACTIVE:
+			case DISABLED:
 				operation.deactivatePartner(ctx, bean);
 				
 				break;

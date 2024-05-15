@@ -1,5 +1,6 @@
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { UIConfig, UIService } from './service/ui.service';
+import { AuthService } from './service/auth.service';
 
 @NgModule({
     imports: [ 
@@ -9,21 +10,22 @@ import { UIConfig, UIService } from './service/ui.service';
                 
     ],
     providers:[
-        UIService,        
+        UIService,   
+        AuthService     
     ]
 })
-export class UIModule {
+export class SystemModule {
 
-    constructor(@Optional() @SkipSelf() parentModule?: UIModule) {
+    constructor(@Optional() @SkipSelf() parentModule?: SystemModule) {
         if (parentModule) {
           throw new Error(
-            'UIModule is already loaded. Import it in the AppModule only');
+            'SystemModule is already loaded. Import it in the AppModule only');
         }
     }
 
-    static forRoot(config: UIConfig): ModuleWithProviders<UIModule> {
+    static forRoot(config: UIConfig): ModuleWithProviders<SystemModule> {
         return {
-            ngModule: UIModule,
+            ngModule: SystemModule,
             providers: [{
                 provide: UIConfig, useValue: config 
             }]

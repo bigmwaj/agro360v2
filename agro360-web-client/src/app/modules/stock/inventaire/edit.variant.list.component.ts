@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InventaireBean, VariantBean } from 'src/app/backed/bean.stock';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/modules/common/bean.list';
+import { BeanList } from 'src/app/modules/common/bean/bean.list';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 
 @Component({

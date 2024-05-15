@@ -41,7 +41,7 @@ public class OperationOperation extends AbstractOperation<OperationDto, Long> {
 		setDtoValue(dto::setDate, bean.getDate());
 		setDtoValue(dto::setInventaireAvant, bean.getInventaireAvant());
 		
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 	}
 
 	public OperationBean findOperationByCode(ClientContext ctx, Long operationId) {

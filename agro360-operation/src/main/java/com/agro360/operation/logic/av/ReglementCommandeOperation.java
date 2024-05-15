@@ -40,7 +40,7 @@ public class ReglementCommandeOperation extends AbstractOperation<ReglementComma
 		
 		setDtoValue(dto::setCommandeCode, bean.getCommandeCode());
 		
-		super.save(dto);	
+		super.save(ctx, dto);	
 	}
 
 	public List<ReglementCommandeBean> findReglementsCommande(ClientContext ctx, String commandeCode) {

@@ -88,7 +88,7 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		setDtoValue(dto::setTaxe, bean.getTaxe());
 		setDtoValue(dto::setRemise, bean.getRemise());
 		
-		super.save(dto);	
+		super.save(ctx, dto);	
 
 		var msgTpl = "Commande %s créée avec succès";
 		ctx.success(String.format(msgTpl, bean.getCommandeCode().getValue()));
@@ -106,7 +106,7 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		setDtoChangedValue(dto::setTaxe, bean.getTaxe());
 		setDtoChangedValue(dto::setRemise, bean.getRemise());
 		
-		super.save(dto);	
+		super.save(ctx, dto);	
 		
 		var msgTpl = "Commande %s modifiée avec succès";
 		ctx.success(String.format(msgTpl, bean.getCommandeCode().getValue()));
@@ -130,7 +130,7 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		var dto = dao.getReferenceById(bean.getCommandeCode().getValue());
 		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setStatusDate, bean.getStatusDate());
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 	}
 
 	@RuleNamespace("av/commande/demander-approbation")

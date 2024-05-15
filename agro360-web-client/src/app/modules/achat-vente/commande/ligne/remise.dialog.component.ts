@@ -31,6 +31,7 @@ export class RemiseDialogComponent implements OnInit {
     isMontant():boolean{
         return this.bean && RemiseTypeEnumVd.MONTANT == this.bean.remiseType.value;
     }
+    
     isTaux():boolean{
         return this.bean && RemiseTypeEnumVd.TAUX == this.bean.remiseType.value;
     }

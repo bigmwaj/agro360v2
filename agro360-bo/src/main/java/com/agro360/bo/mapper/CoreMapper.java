@@ -67,11 +67,16 @@ public class CoreMapper {
 				.findFirst().get();
 	}
 
-	public static UserAccountBean map(UserAccountDto dto) {
+	public static UserAccountBean map(UserAccountDto dto, PartnerDto partner) {
 		UserAccountBean bean = new UserAccountBean();
-		bean.getPartnerCode().setValue(dto.getPartnerCode());
-
+		if( partner != null ) {
+			bean.setPartner(CoreMapper.map(partner));
+		}
+		bean.getPassword().setValue(dto.getPassword());
 		bean.getStatus().setValue(dto.getStatus());
+		bean.getLang().setValue(dto.getLang());
+		bean.getMagasin().setValue(dto.getMagasin());
+		bean.getRoles().setValue(dto.getRoles());
 		bean.getStatus().setValueOptions(UserAccountStatusEnumVd.getAsMap());
 
 		bean.getPassword().setValue(dto.getPassword());

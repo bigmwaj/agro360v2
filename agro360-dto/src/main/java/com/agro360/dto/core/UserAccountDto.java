@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "CORE_TBL_USER_ACCOUNT")
 public class UserAccountDto extends AbstractStatusTrackingDto<UserAccountStatusEnumVd> {
-
+	
 	@Id
 	@Column(name = "PARTNER_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
@@ -27,5 +27,14 @@ public class UserAccountDto extends AbstractStatusTrackingDto<UserAccountStatusE
 
 	@Column(name = "PASSWORD")
 	private String password;
+	
+	@Column(name = "LANG")
+	private String lang;
+	
+	@Column(name = "ROLES")
+	private String roles;
+	
+	@Column(name = "MAGASIN")
+	private String magasin;
 	
 }

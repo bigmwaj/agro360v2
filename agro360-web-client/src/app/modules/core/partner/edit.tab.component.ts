@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PartnerBean } from 'src/app/backed/bean.core';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanEditTab } from '../../common/bean.edit.tab';
+import { BeanEditTab } from '../../common/bean/bean.edit.tab';
 import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
 import { CategoryBlockComponent } from './category.block.component';
 

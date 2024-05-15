@@ -74,7 +74,7 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 		setDtoValue(dto::setTaxe, bean.getTaxe());
 		setDtoValue(dto::setRemise, bean.getRemise());
 		
-		super.save(dto);
+		super.save(ctx, dto);
 
 		var msgTpl = "Ligne %d créée avec succès";
 		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
@@ -119,7 +119,7 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 		setDtoChangedValue(dto::setPrixTotalHT, bean.getPrixTotalHT());
 		setDtoChangedValue(dto::setTaxe, bean.getTaxe());
 		
-		super.save(dto);
+		super.save(ctx, dto);
 		
 
 		var msgTpl = "Ligne %d modifiée avec succès";

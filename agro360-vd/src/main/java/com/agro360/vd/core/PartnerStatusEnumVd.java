@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 public enum PartnerStatusEnumVd {
 
-	ACTIVE("Active"),
+	ENABLED("Activé"),
 	
-	INACTIVE("Inactive");
+	DISABLED("Désactivé");
 	
 	public static final int COLUMN_LENGTH = 8;
 	

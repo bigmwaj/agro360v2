@@ -5,7 +5,7 @@ import { AbstractBean } from "src/app/backed/bean.common";
 import { Message } from "src/app/backed/message";
 import { ClientOperationEnumVd } from "src/app/backed/vd.common";
 import { BeanTools } from "./bean.tools";
-import { BreadcrumbItem, UIService } from "./service/ui.service";
+import { BreadcrumbItem, UIService } from "../service/ui.service";
 
 @Component({
     standalone: true,

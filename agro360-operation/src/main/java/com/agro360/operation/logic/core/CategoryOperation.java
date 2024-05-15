@@ -39,7 +39,7 @@ public class CategoryOperation extends AbstractOperation<CategoryDto, String> {
 	}
 	
 	@RuleNamespace("core/category/create")
-	public CategoryBean createCategory(CategoryBean bean) {
+	public CategoryBean createCategory(ClientContext ctx, CategoryBean bean) {
 		var dto = new CategoryDto();
 		
 		setDtoValue(dto::setDescription, bean.getDescription());
@@ -48,17 +48,17 @@ public class CategoryOperation extends AbstractOperation<CategoryDto, String> {
 		var parent = dao.getReferenceById(bean.getParentCategoryCode().getValue());
 		dto.setParent(parent);
 		
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 		return this.map(dto);
 	}
 	
 	@RuleNamespace("core/category/update")
-	public CategoryBean updateCategory(CategoryBean bean) {
+	public CategoryBean updateCategory(ClientContext ctx, CategoryBean bean) {
 		var dto = dao.getReferenceById(bean.getCategoryCode().getValue());
 
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 		return this.map(dto);
 	}
 	

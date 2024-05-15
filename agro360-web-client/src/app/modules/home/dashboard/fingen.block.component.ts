@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs';
 import { EtatDetteBean } from 'src/app/backed/bean.av';
-import { EtatCompteBean } from 'src/app/backed/bean.finance';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 
 @Component({

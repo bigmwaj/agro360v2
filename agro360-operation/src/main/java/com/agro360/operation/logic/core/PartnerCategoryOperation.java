@@ -159,7 +159,7 @@ public class PartnerCategoryOperation extends AbstractOperation<PartnerCategoryD
 		
 		if( ! newsPartnerCategoryDtos.isEmpty() ) {
 			for (var partnerCategoryDto : newsPartnerCategoryDtos) {
-				save(partnerCategoryDto);
+				save(ctx, partnerCategoryDto);
 			}
 		}
 		

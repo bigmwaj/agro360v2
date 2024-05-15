@@ -43,7 +43,7 @@ public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
 		setDtoValue(dto::setDescription, bean.getDescription());
 		setDtoValue(dto::setAlias, bean.getAlias());
 		
-		super.save(dto);		
+		super.save(ctx, dto);		
 	}
 	
 	@RuleNamespace("stock/article/variant/update")
@@ -54,7 +54,7 @@ public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
 		setDtoChangedValue(dto::setAlias, bean.getAlias());
 		
-		super.save(dto);
+		super.save(ctx, dto);
 		
 	}
 	
@@ -62,7 +62,7 @@ public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
 	public void deleteVariant(ClientContext ctx, ArticleBean article, VariantBean bean) {
 		var dto = dao.getReferenceById(buildPK(article, bean));
 		
-		super.delete(dto);
+		super.delete(ctx, dto);
 	}
 	
 	public List<VariantBean> findVariantsByArticleCode(ClientContext ctx, String articleCode) {

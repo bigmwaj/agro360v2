@@ -2,6 +2,7 @@ https://www.angularjswiki.com/material/
 https://material.angular.io/
 https://angular.io/
 https://fonts.google.com/icons
+https://spring.io/guides/tutorials/spring-security-and-angular-js
 
 # Agro360WebClient
 

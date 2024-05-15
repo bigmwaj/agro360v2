@@ -46,7 +46,7 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 		setDtoValue(dto::setType, bean.getType());
 		setDtoValue(dto::setTitle, bean.getTitle());		
 		
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 		return CoreMapper.map(dto);	
 	}
 	
@@ -69,7 +69,7 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 		setDtoChangedValue(dto::setType, bean.getType());
 		setDtoChangedValue(dto::setTitle, bean.getTitle());
 		
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 		return CoreMapper.map(dto);
 	}
 	
@@ -79,7 +79,7 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 		setDtoValue(dto::setStatus, bean.getStatus());
 		setDtoValue(dto::setStatusDate, bean.getStatusDate());
 		
-		dto = super.save(dto);		
+		dto = super.save(ctx, dto);		
 	}
 	
 	@RuleNamespace("core/partner/deactivate")

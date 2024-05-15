@@ -54,7 +54,7 @@ public class RetourLigneOperation extends AbstractOperation<RetourLigneDto, Long
 		dto.setUnite(unite);
 		
 		dto.setCommandeCode(ligne.getCommandeCode());
-		super.save(dto);
+		super.save(ctx, dto);
 		
 	}
 
@@ -71,7 +71,7 @@ public class RetourLigneOperation extends AbstractOperation<RetourLigneDto, Long
 			var unite = uniteDao.getReferenceById(uniteCode);
 			dto.setUnite(unite);
 		}
-		super.save(dto);
+		super.save(ctx, dto);
 	}
 
 	public void deleteRetourLigne(ClientContext ctx, String commandeCode, RetourLigneBean bean) {
@@ -79,7 +79,7 @@ public class RetourLigneOperation extends AbstractOperation<RetourLigneDto, Long
 		var retourId = bean.getRetourId().getValue();
 		var dto = dao.findOndByCommandeCodeAndLigneLigneIdAndRetourId(commandeCode, ligneId, retourId).orElseThrow();
 		
-		super.delete(dto);
+		super.delete(ctx, dto);
 	}
 
 }

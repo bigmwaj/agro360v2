@@ -9,7 +9,7 @@ import { ListTabComponent } from './list.tab.component';
 import { InventaireBean } from 'src/app/backed/bean.stock';
 import { BreadcrumbItem } from 'src/app/modules/common/service/ui.service';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanIndexPage } from '../../common/bean.index.page';
+import { BeanIndexPage } from '../../common/bean/bean.index.page';
 
 @Component({
     standalone: true,

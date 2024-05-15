@@ -15,7 +15,7 @@ import { CommandeBean, CommandeSearchBean, PaiementBean } from 'src/app/backed/b
 import { CommandeTypeEnumVd } from 'src/app/backed/vd.av';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanPagedListTab } from '../../common/bean.paged.list.tab';
+import { BeanPagedListTab } from '../../common/bean/bean.paged.list.tab';
 import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
 import { ReceptionDialogComponent } from './reception/reception.dialog.component';

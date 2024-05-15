@@ -34,7 +34,7 @@ public class PartnerForm {
 		var bean = copyFrom.map(e -> operation.findPartnerByCode(ctx, e))
 				.orElse(new PartnerBean());
 		bean.setAction(ClientOperationEnumVd.CREATE);
-		bean.getStatus().setValue(PartnerStatusEnumVd.ACTIVE);
+		bean.getStatus().setValue(PartnerStatusEnumVd.ENABLED);
 		bean.getPartnerCode().setValue(null);
 		bean.getPhone().setValue(null);
 		bean.getEmail().setValue(null);

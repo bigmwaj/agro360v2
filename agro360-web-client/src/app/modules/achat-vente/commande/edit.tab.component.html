@@ -1,4 +1,4 @@
-<section class="p-3">
+<section class="p-3 d-none">
     <div class="row">
         <div class="col-8">
             <div class="row">
@@ -17,10 +17,14 @@
                     <select-one-field [field]="bean.status"></select-one-field>                     
                 </div>
                 <div class="col-4"> 
-                    <select-one-field 
-                        [field]="bean.partner.partnerCode"
-                        [label]="partnerLabel">
-                    </select-one-field>                        
+                    <autocomplete-field             
+                        [field]="bean.partner.partnerCode" 
+                        [label]="partnerLabel"
+                        [lookupFn]="partnerLookupFn" 
+                        [keyFn]="mapPartnerToKeyFn"
+                        [lookupFnOptions]="bean" 
+                        [displayFn]="mapPartnerToLabelFn">
+                    </autocomplete-field>                      
                 </div>
                 <div class="col-4">  
                     <select-one-field [field]="bean.magasin.magasinCode"></select-one-field>                      
@@ -30,7 +34,13 @@
                 <div class="col-4">                          
                 </div>
                 <div class="col-8">      
-                    <input-text-field [field]="bean.description"></input-text-field>                  
+                    <input-text-field [field]="bean.description"></input-text-field>
+                    <button mat-icon-button color="primary" 
+                        class="field-button"                          
+                        (click)="editDescriptionAction()"
+                        matTooltip="Editer la description">
+                        <mat-icon>edit_note</mat-icon>
+                    </button>                  
                 </div>
             </div>
         </div>
@@ -87,6 +97,76 @@
             </div>
         </div>
     </div>    
+</section>
+
+<section class="p-3">
+    <div  class="d-flex">
+        <div class="m-1">
+            <select-one-field [field]="bean.status"></select-one-field>
+        </div>
+        <div class="m-1">
+            <autocomplete-field             
+                [field]="bean.partner.partnerCode" 
+                [label]="partnerLabel"
+                [lookupFn]="partnerLookupFn" 
+                [keyFn]="mapPartnerToKeyFn"
+                [lookupFnOptions]="bean" 
+                [displayFn]="mapPartnerToLabelFn">
+            </autocomplete-field>            
+        </div>
+        <div class="m-1">
+            <button mat-icon-button 
+                [color]="bean.description.value == '' || bean.description.value == null ? 'primary' : 'warn'"          
+                (click)="editDescriptionAction()"
+                matTooltip="Editer la description">
+                <mat-icon>edit_note</mat-icon>
+            </button>            
+        </div>
+        <div class="m-1">
+            <input-number-field [field]="bean.prixTotalHT"></input-number-field>            
+        </div>
+        <div class="m-1">
+            <input-number-field [field]="bean.taxe"></input-number-field>            
+        </div>
+        <div class="m-1">
+            <input-number-field [field]="bean.remise"></input-number-field>
+        </div>
+    </div>  
+    <div  class="d-flex">
+        <div class="m-1">
+            <input-number-field [field]="bean.prixTotal"></input-number-field>
+        </div>
+        <div class="m-1">
+            <input-number-field [field]="bean.cumulPaiement"></input-number-field>
+            <button mat-icon-button color="primary" 
+                class="field-button"                          
+                (click)="afficherReglementAction()"
+                matTooltip="Liste des paiements">
+                <mat-icon>list_task</mat-icon>
+            </button> 
+        </div>
+        <div class="m-1">
+            <button mat-fab color="primary" 
+                extended 
+                (click)="saveAction({processPaiement:true})"
+                *ngIf="bean.reglerBtn.visible">
+                <mat-icon>currency_exchange</mat-icon> Régler
+            </button>
+        </div>
+        <div class="ms-auto flex-fill"></div>
+        <button mat-fab color="basic" 
+            extended class="ms-1" 
+            (click)="saveAction({terminer:true})"
+            *ngIf="bean.terminerBtn.visible">
+            <mat-icon>currency_exchange</mat-icon> Terminer
+        </button>
+        <button mat-fab color="basic" 
+            extended class="ms-1" 
+            (click)="annulerAction()"
+            *ngIf="bean.annulerBtn.visible">
+            <mat-icon>currency_exchange</mat-icon> Annuler
+        </button>
+    </div>   
 </section>
 
 <achat-vente-ligne-list 
