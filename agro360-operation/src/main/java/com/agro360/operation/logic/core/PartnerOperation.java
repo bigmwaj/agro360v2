@@ -105,10 +105,10 @@ public class PartnerOperation extends AbstractOperation<PartnerDto, String> {
 	
 	@RuleNamespace("core/partner/search")
 	public List<PartnerBean> findPartnersByCriteria(ClientContext ctx, PartnerSearchBean searchBean) {
-		var code = getNullOrUpperCase(searchBean::getPartnerCode, "%");
-		var phone = getNullOrUpperCase(searchBean::getPhone, "%");
-		var email = getNullOrUpperCase(searchBean::getEmail, "%");
-		var city = getNullOrUpperCase(searchBean::getCity, "%");
+		var code = searchBean.getNullOrUpperCase(searchBean::getPartnerCode, "%");
+		var phone = searchBean.getNullOrUpperCase(searchBean::getPhone, "%");
+		var email = searchBean.getNullOrUpperCase(searchBean::getEmail, "%");
+		var city = searchBean.getNullOrUpperCase(searchBean::getCity, "%");
 		var type = searchBean.getType().getValue();
 		
 		var status = searchBean.getStatusIn().getValue();

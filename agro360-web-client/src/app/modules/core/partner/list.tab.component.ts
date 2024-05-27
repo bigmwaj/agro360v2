@@ -27,7 +27,6 @@ export class ListTabComponent extends BeanPagedListTab<PartnerBean, PartnerSearc
     module:string
 
     displayedColumns: string[] = [
-        'select',
         'partnerCode',
         'status',
         'partnerName',

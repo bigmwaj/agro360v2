@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import com.agro360.bo.bean.stock.ArticleBean;
@@ -21,7 +22,6 @@ import com.agro360.operation.utils.RuleNamespace;
 
 @Service
 public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
-
 
 	@Autowired
 	IVariantDao dao;
@@ -79,9 +79,17 @@ public class VariantOperation extends AbstractOperation<VariantDto, VariantPk> {
 	}
 
 	public VariantBean findVariantByAlias(ClientContext ctx, String alias) {
-		var msgFormat = "Aucun variant n'a été trouvé ayant pour alias <strong>%s</strong>";
-		Supplier<RuntimeException> exSplr= () -> new RuntimeException(String.format(msgFormat, alias));
+		var msgTpl = "Aucun variant n'a été trouvé ayant pour alias <strong>%s</strong>";
+		Supplier<RuntimeException> exSplr= () -> new RuntimeException(String.format(msgTpl, alias));
 		return dao.findOneByAliasIgnoreCase(alias).map(StockMapper::map).orElseThrow(exSplr);
+	}
+	
+	private String getNullOrUpperCase(String value, @NonNull String wrapper) {
+		if( value != null && !value.isBlank() ) {
+			return wrapper + value.toUpperCase() + wrapper;
+		}
+		
+		return null;
 	}
 	
 	public List<VariantBean> findVariantsByQuery(ClientContext ctx, String query) {

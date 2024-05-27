@@ -1,5 +1,7 @@
 package com.agro360.bo.bean.core;
 
+import java.time.LocalDateTime;
+
 import com.agro360.bo.bean.common.AbstractStatusTrackingBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.core.UserAccountStatusEnumVd;
@@ -22,6 +24,8 @@ public class UserAccountBean extends AbstractStatusTrackingBean<UserAccountStatu
 	private FieldMetadata<String> roles = new FieldMetadata<>("Roles");
 	
 	private FieldMetadata<String> magasin = new FieldMetadata<>("Magasin");
+	
+	private FieldMetadata<LocalDateTime> passwordLastChangeDate = new FieldMetadata<>("Password Last Change Date");
 	
 	@JsonIgnore
 	private FieldMetadata<String> password = new FieldMetadata<>("Password");

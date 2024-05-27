@@ -17,7 +17,7 @@ import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.CommandeSearchBean;
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.LigneBean;
-import com.agro360.bo.bean.av.PaiementBean;
+import com.agro360.bo.bean.av.PaiementParamBean;
 import com.agro360.bo.bean.av.ReglementBean;
 import com.agro360.bo.bean.av.ReglementCommandeBean;
 import com.agro360.bo.bean.av.ReglementFactureBean;
@@ -73,38 +73,6 @@ public class CommandeService extends AbstractService {
 		return operation.findCommandesByCriteria(ctx, searchBean);
 	}
 	
-	private BigDecimal cumulerPrix(List<LigneBean> lignes, Function<LigneBean, FieldMetadata<BigDecimal>> mapper) {
-		return lignes.stream()
-    	.map(mapper)
-    	.map(FieldMetadata::getValue)
-    	.map(BigDecimal.class::cast)
-    	.reduce(BigDecimal::add)
-		.orElse(BigDecimal.ZERO);
-	}
-	
-	private void initChampsCalcules(ClientContext ctx, CommandeBean bean) {
-		Predicate<LigneBean> deleted = e -> ClientOperationEnumVd.DELETE.equals(e.getAction());
-		
-		bean.getLignes().stream()
-			.filter(Predicate.not(deleted))
-			.forEach(e -> ligneServiceHelper.initChampsCalcules(ctx, bean, e));
-        
-        var prixTotalHT = cumulerPrix(bean.getLignes(), LigneBean::getPrixTotalHT);
-        var taxe = cumulerPrix(bean.getLignes(), LigneBean::getTaxe);
-        var pritTotal = cumulerPrix(bean.getLignes(), LigneBean::getPrixTotal);
-        var remise = cumulerPrix(bean.getLignes(), LigneBean::getRemise);
-        
-        bean.getPrixTotalHT().setValue(prixTotalHT);
-        bean.getRemise().setValue(remise);
-        bean.getTaxe().setValue(taxe);
-        bean.getPrixTotal().setValue(pritTotal);
-        
-        bean.getPrixTotalHT().setValueChanged(true);
-        bean.getRemise().setValueChanged(true);
-        bean.getTaxe().setValueChanged(true);
-        bean.getPrixTotal().setValueChanged(true);
-	}
-	
 	@UserInput(metadataBeanName = "av/commande", validatorBeanName = "")
 	public void save(ClientContext ctx, CommandeBean bean) {
 		switch (bean.getAction()) {
@@ -119,7 +87,7 @@ public class CommandeService extends AbstractService {
 		case CHANGE_STATUS:
 			switch (bean.getStatus().getValue()) {
 			case AANN:
-				annulerReglements(ctx, bean);
+				preAnnulerReglements(ctx, bean);
 				operation.demanderAnnulationCommande(ctx, bean);
 				break;
 				
@@ -131,8 +99,8 @@ public class CommandeService extends AbstractService {
 				terminerCommande(ctx, bean);			
 				break;
 				
-			case APPR:
-				operation.approuverCommande(ctx, bean);
+			case TERM:
+				operation.terminerCommande(ctx, bean);
 				break;
 				
 			case CLOT:
@@ -153,6 +121,68 @@ public class CommandeService extends AbstractService {
 			
 		}
 	}
+	public CommandeBean findCommande(ClientContext ctx, String commandeCode) {
+		return operation.findCommandeByCode(ctx, commandeCode);
+	}
+
+	public List<ReglementBean> findReglements(ClientContext ctx, String commandeCode) {
+		var reglements = reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
+				.stream().map(ReglementCommandeBean::getTransaction)
+				.map(ReglementBean::new)
+				.collect(Collectors.toCollection(ArrayList<ReglementBean>::new));
+		
+		var factures = factureOperation.findFacturesByCommandeCode(ctx, commandeCode)
+				.stream()
+				.map(ReglementBean::new)
+				.collect(Collectors.toList());
+		
+		reglements.addAll(factures);
+		return reglements;
+		
+	}
+	
+	public void reglerCommande(ClientContext ctx, String commandeCode, List<PaiementParamBean> paiements) {
+		final var bean = operation.findCommandeByCode(ctx, commandeCode);
+		var status = bean.getStatus().getValue();
+		var prixTotal = bean.getPrixTotal().getValue();
+		
+		Predicate<PaiementParamBean> nonNull = e -> e.getMontant().getValue() != null;
+		Predicate<PaiementParamBean> positif = e -> BigDecimal.ZERO.compareTo(e.getMontant().getValue()) < 0 ;
+		
+		var paiementsValides = paiements.stream()
+			.filter(nonNull)
+			.filter(positif)
+			.collect(Collectors.toList());
+		
+		var paiementTotal = paiementsValides.stream()
+			.map(PaiementParamBean::getMontant)
+			.map(FieldMetadata::getValue)
+			.reduce(BigDecimal::add)
+			.orElse(BigDecimal.ZERO);
+		
+		var cumulPaiement = calculerCumulPaiements(ctx, bean);
+		
+		var nouveauCumulPaiement = paiementTotal.add(cumulPaiement);
+		
+		if( nouveauCumulPaiement.compareTo(prixTotal) > 0 ) {
+			var msgTpl = "Trop perçu %.2f de la commande. Montant total: %.2f, Cumul Paiement %.2f, Paiement demandé: %.2f";
+			throw new RuntimeException(String.format(msgTpl, nouveauCumulPaiement.subtract(prixTotal), prixTotal, cumulPaiement, paiementTotal));
+		}
+		
+		// On enregistre les nouveaux règlements
+		reglerCommande(ctx, bean, paiementsValides);
+		
+		if( prixTotal.compareTo(nouveauCumulPaiement) == 0 ) {
+			// On termine la commande
+			terminerCommande(ctx, bean);
+		}else if( !CommandeStatusEnumVd.RGLM.equals(status)) {// Paiement du complément
+			initierPaiementCommande(ctx, bean);
+		}
+		
+		bean.getCumulPaiement().setValue(nouveauCumulPaiement);
+		bean.getCumulPaiement().setValueChanged(true);
+		operation.updateCommande(ctx, bean);
+	}
 	
 	private TransactionBean setToApprouvee(TransactionBean bean) {
 		bean.getStatus().setValue(TransactionStatusEnumVd.APPROUVEE);
@@ -169,11 +199,11 @@ public class CommandeService extends AbstractService {
 		approuverFn = e -> transactionOperation.approuverTransaction(ctx, e);
 		
 		reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
-				.stream()
-				.map(ReglementCommandeBean::getTransaction)
-				.filter(isReservee)
-				.map(this::setToApprouvee)
-				.forEach(approuverFn);
+			.stream()
+			.map(ReglementCommandeBean::getTransaction)
+			.filter(isReservee)
+			.map(this::setToApprouvee)
+			.forEach(approuverFn);
 	}
 	
 	private boolean existReglementsAnnules(ClientContext ctx, CommandeBean bean) {
@@ -192,7 +222,7 @@ public class CommandeService extends AbstractService {
 		return bean;
 	}
 	
-	private void annulerReglements(ClientContext ctx, CommandeBean bean) {
+	private void preAnnulerReglements(ClientContext ctx, CommandeBean bean) {
 		var commandeCode = bean.getCommandeCode().getValue();
 		
 		Predicate<TransactionBean> isReservee;
@@ -202,11 +232,11 @@ public class CommandeService extends AbstractService {
 		annulerFn = e -> transactionOperation.annulerTransaction(ctx, e);
 		
 		reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
-				.stream()
-				.map(ReglementCommandeBean::getTransaction)
-				.filter(isReservee)
-				.map(this::setToAnnulee)
-				.forEach(annulerFn);
+			.stream()
+			.map(ReglementCommandeBean::getTransaction)
+			.filter(isReservee)
+			.map(this::setToAnnulee)
+			.forEach(annulerFn);
 		
 		bean = operation.findCommandeByCode(ctx, commandeCode);
 		bean.getCumulPaiement().setValue(BigDecimal.ZERO);
@@ -239,62 +269,8 @@ public class CommandeService extends AbstractService {
 		ligneServiceHelper.syncLignesCommande(ctx, bean, bean.getLignes());
 	}
 	
-	public void reglerCommande(ClientContext ctx, String commandeCode, List<PaiementBean> paiements) {
-		final var bean = operation.findCommandeByCode(ctx, commandeCode);
-		var status = bean.getStatus().getValue();
-		var prixTotal = bean.getPrixTotal().getValue();
-		
-		Predicate<PaiementBean> nonNull = e -> e.getMontant().getValue() != null;
-		Predicate<PaiementBean> positif = e -> BigDecimal.ZERO.compareTo(e.getMontant().getValue()) < 0 ;
-		
-		var paiementsValides = paiements.stream()
-			.filter(nonNull)
-			.filter(positif)
-			.collect(Collectors.toList());
-		
-		var paiementTotal = paiementsValides.stream()
-				.map(PaiementBean::getMontant)
-				.map(FieldMetadata::getValue)
-				.reduce(BigDecimal::add)
-				.orElse(BigDecimal.ZERO);
-		
-		var cumulPaiement = bean.getCumulPaiement().getValue();
-		var nouveauCumulPaiement = paiementTotal.add(cumulPaiement);
-		
-		if( nouveauCumulPaiement.compareTo(prixTotal) > 0 ) {
-			var msgTpl = "Trop perçu %.2f de la commande. Montant total: %.2f, Cumul Paiement %.2f, Paiement demandé: %.2f";
-			throw new RuntimeException(String.format(msgTpl, nouveauCumulPaiement.subtract(prixTotal), prixTotal, cumulPaiement, paiementTotal));
-		}
-		
-		if( CommandeStatusEnumVd.RGLM.equals(status)) {// Paiement du complément
-			if( prixTotal.compareTo(nouveauCumulPaiement) == 0 ) {
-				// On enregistre les nouveaux règlements
-				reglerCommande(ctx, bean, paiementsValides);
-				
-				// On termine la commande
-				terminerCommande(ctx, bean);
-				
-			}else {
-				// On enregistre les compléments de règlements
-				reglerCommande(ctx, bean, paiementsValides);
-			}
-		}else {// Premier essaie de paiement
-			// On enregistre les règlements
-			reglerCommande(ctx, bean, paiementsValides);
-			
-			if( prixTotal.compareTo(paiementTotal) == 0 ) {
-				terminerCommande(ctx, bean);
-			}else {
-				initierPaiementCommande(ctx, bean);
-			}
-		}
-		
-		bean.getCumulPaiement().setValue(nouveauCumulPaiement);
-		bean.getCumulPaiement().setValueChanged(true);
-		operation.updateCommande(ctx, bean);
-	}
 	
-	private void reglerCommande(ClientContext ctx, CommandeBean bean, List<PaiementBean> paiements) {
+	private void reglerCommande(ClientContext ctx, CommandeBean bean, List<PaiementParamBean> paiements) {
 		paiements.stream().forEach(e -> reglerCommande(ctx, bean, e));
 	}
 
@@ -318,7 +294,7 @@ public class CommandeService extends AbstractService {
 			bean.getStatusDate().setValue(LocalDateTime.now());
 			operation.demanderApprobationCommande(ctx, bean);
 		}else {
-			bean.getStatus().setValue(CommandeStatusEnumVd.TERM);
+			bean.getStatus().setValue(CommandeStatusEnumVd.SOLD);
 			bean.getStatusDate().setValue(LocalDateTime.now());
 			operation.terminerCommande(ctx, bean);					
 		}
@@ -359,7 +335,7 @@ public class CommandeService extends AbstractService {
 		return tx;
 	}
 	
-	private void reglerCommande(ClientContext ctx, CommandeBean bean, PaiementBean paiement) {
+	private void reglerCommande(ClientContext ctx, CommandeBean bean, PaiementParamBean paiement) {
 		var tx = initTransaction(bean);
 		tx.getStatus().setValue(TransactionStatusEnumVd.RESERVEE);
 		tx.setCompte(paiement.getCompte());
@@ -426,7 +402,7 @@ public class CommandeService extends AbstractService {
 		facture.getFactureCode().setValue(factureOperation.generateFactureCode());
 		facture.setCommande(bean);
 		facture.setPartner(bean.getPartner());
-		facture.getStatus().setValue(FactureStatusEnumVd.APPR);
+		facture.getStatus().setValue(FactureStatusEnumVd.TERM);
 		facture.getStatusDate().setValue(LocalDateTime.now());
 		
 		facture.getDate().setValue(bean.getDate().getValue());
@@ -443,23 +419,35 @@ public class CommandeService extends AbstractService {
 		ligneServiceHelper.assignerFactureTaxesAppliquees(ctx, bean, facture);
 	}
 
-	public CommandeBean findCommande(ClientContext ctx, String value) {
-		return operation.findCommandeByCode(ctx, value);
+	private BigDecimal cumulerPrix(List<LigneBean> lignes, Function<LigneBean, FieldMetadata<BigDecimal>> mapper) {
+		return lignes.stream()
+    	.map(mapper)
+    	.map(FieldMetadata::getValue)
+    	.map(BigDecimal.class::cast)
+    	.reduce(BigDecimal::add)
+		.orElse(BigDecimal.ZERO);
 	}
-
-	public List<ReglementBean> findReglements(ClientContext ctx, String commandeCode) {
-		var reglements = reglementCommandeOperation.findReglementsCommande(ctx, commandeCode)
-				.stream().map(ReglementCommandeBean::getTransaction)
-				.map(ReglementBean::new)
-				.collect(Collectors.toCollection(ArrayList<ReglementBean>::new));
+	
+	private void initChampsCalcules(ClientContext ctx, CommandeBean bean) {
+		Predicate<LigneBean> deleted = e -> ClientOperationEnumVd.DELETE.equals(e.getAction());
 		
-		var factures = factureOperation.findFacturesByCommandeCode(ctx, commandeCode)
-				.stream()
-				.map(ReglementBean::new)
-				.collect(Collectors.toCollection(ArrayList<ReglementBean>::new));
-		
-		reglements.addAll(factures);
-		return reglements;
-		
+		bean.getLignes().stream()
+			.filter(Predicate.not(deleted))
+			.forEach(e -> ligneServiceHelper.initChampsCalcules(ctx, bean, e));
+        
+        var prixTotalHT = cumulerPrix(bean.getLignes(), LigneBean::getPrixTotalHT);
+        var taxe = cumulerPrix(bean.getLignes(), LigneBean::getTaxe);
+        var pritTotal = cumulerPrix(bean.getLignes(), LigneBean::getPrixTotal);
+        var remise = cumulerPrix(bean.getLignes(), LigneBean::getRemise);
+        
+        bean.getPrixTotalHT().setValue(prixTotalHT);
+        bean.getRemise().setValue(remise);
+        bean.getTaxe().setValue(taxe);
+        bean.getPrixTotal().setValue(pritTotal);
+        
+        bean.getPrixTotalHT().setValueChanged(true);
+        bean.getRemise().setValueChanged(true);
+        bean.getTaxe().setValueChanged(true);
+        bean.getPrixTotal().setValueChanged(true);
 	}
 }

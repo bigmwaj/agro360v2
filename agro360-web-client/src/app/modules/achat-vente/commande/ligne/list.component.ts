@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
-import { Observable, map } from 'rxjs';
+import { map } from 'rxjs';
 import { CommandeBean, LigneBean } from 'src/app/backed/bean.av';
 import { ArticleBean, VariantBean } from 'src/app/backed/bean.stock';
 import { Message } from 'src/app/backed/message';
@@ -11,6 +11,7 @@ import { FieldMetadata } from 'src/app/backed/metadata';
 import { LigneTypeEnumVd } from 'src/app/backed/vd.av';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { BeanList } from 'src/app/modules/common/bean/bean.list';
+import { AutocompleteConfig } from 'src/app/modules/common/field/autocomplete';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { RemiseDialogComponent } from './remise.dialog.component';
@@ -47,7 +48,7 @@ export class ListComponent extends BeanList<LigneBean> {
     updatePrixCommande = new EventEmitter();
 
     public alias:FieldMetadata<string> = {
-        label:'Alias', 
+        label: 'Alias', 
         tooltip: `Si vous connaissez l'alias de la variante de l'article que vous souhaitez ajouter, merci de le saisir ici et valider.`,
         editable:true,
         value:''
@@ -59,8 +60,6 @@ export class ListComponent extends BeanList<LigneBean> {
         value:''
     } as FieldMetadata<string>;
 
-    articleLookupUrl = `achat-vente/commande/ligne/article-option`;
-
     constructor(
         public http: HttpClient,
         public dialog: MatDialog,
@@ -68,39 +67,63 @@ export class ListComponent extends BeanList<LigneBean> {
         super()
     }
 
+    variantLookupConfig:AutocompleteConfig;
+
+    articleLookupConfig:AutocompleteConfig;
+
     ngOnInit(): void {
         this.setData(this.commande.lignes);
         this.query.editable = this.commande.createLigneBtn.visible;
         this.alias.editable = this.commande.createLigneBtn.visible;
-    }
 
-    mapVariantToLabelFn(variant: VariantBean): string {
-        return variant.variantCode.value + ' - ' + variant.description.value;
-    }
-
-    mapVariantToKeyFn(variant: VariantBean): string {
-        return variant.alias.value;
-    }
-
-    mapArticleToLabelFn(article: ArticleBean): string {
-        return article.articleCode.value + ' - ' + article.description.value;
-    }
-
-    mapArticleToKeyFn(article: ArticleBean): string {
-        return article.articleCode.value;
-    }
-
-    variantLookupFn(query:string):Observable<any>{
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append("query", query);
-        return this.http.get(`achat-vente/commande/ligne/variant-query`, { params: queryParams });
-    }
+        this.setupVariantLookupConfig();
     
-    articleLookupFn(query:string, bean:LigneBean):Observable<any>{
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('type', bean.type.value);
-        queryParams = queryParams.append("query", query);
-        return this.http.get(`achat-vente/commande/ligne/article-query`, { params: queryParams });
+        this.setupArticleLookupConfig();    
+    }
+
+    private setupVariantLookupConfig(){
+        const http = this.http;
+
+        this.variantLookupConfig = {
+
+            displayFn:function(bean: VariantBean){
+                return bean.variantCode.value + ' - ' + bean.description.value;
+            },
+    
+            keyFn:function(bean: VariantBean){
+                return bean.alias.value;
+            },
+    
+            lookupFn: function(q:string){
+                let queryParams = new HttpParams();
+                queryParams = queryParams.append("query", q);
+                return http.get(`achat-vente/commande/ligne/variant-query`, { params: queryParams })                
+                    .pipe(map((data: any) => data));
+            }
+        }
+    }
+
+    private setupArticleLookupConfig(){
+        const http = this.http;
+        
+        this.articleLookupConfig = {
+
+            displayFn:function(bean: ArticleBean){
+                return bean.articleCode.value + ' - ' + bean.description.value;
+            },
+    
+            keyFn:function(bean: ArticleBean){
+                return bean.articleCode.value;
+            },
+    
+            lookupFn: function(q:string, bean:LigneBean){                
+                let queryParams = new HttpParams();
+                queryParams = queryParams.append('type', bean.type.value);
+                queryParams = queryParams.append('query', q);
+                return http.get(`achat-vente/commande/ligne/article-query`, { params: queryParams });
+            }    
+        }
+
     }
 
     isStandard(bean: LigneBean): boolean{

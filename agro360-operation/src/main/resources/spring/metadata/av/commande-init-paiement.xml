@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<bean  class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-init-paiement/montant">
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-init-paiement/montant">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue" />
@@ -30,13 +30,78 @@
 			</list>
 		</property>
 	</bean>
-
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-init-paiement/saveBtn"/>
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-init-paiement/email">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="64" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-init-paiement/phone">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="64" />
+							</bean>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-init-paiement/interacVia">
+		<property name="editable">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />
+			</list>
+		</property>
+	</bean>
 
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-init-paiement/compte.compteCode">
 		<property name="required">
 			<list>
 				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="editable">
+			<list>
+				<ref bean="IsFalse" />
 			</list>
 		</property>
 	</bean>
@@ -49,7 +114,9 @@
 		<property name="fields">
 			<map>
 				<entry key="montant" value-ref="commande-init-paiement/montant" />
-				<entry key="saveBtn" value-ref="commande-init-paiement/saveBtn" />
+				<entry key="email" value-ref="commande-init-paiement/email" />
+				<entry key="phone" value-ref="commande-init-paiement/phone" />
+				<entry key="interacVia" value-ref="commande-init-paiement/interacVia" />
 			</map>
 		</property>
 		<property name="beans">

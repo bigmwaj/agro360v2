@@ -6,23 +6,32 @@ import java.util.stream.Collectors;
 
 public enum CommandeStatusEnumVd {
 	BRLN("Brouillon"),
-	RGLM("Règlement En cours"),
-    TERM("Terminée"),
-    ATAP("Att. Approbation"),
-    APPR("Approuvée"),
-    AANN("Att. Annulation"),
-    ANNL("Annulée"),
+	ATAP("Att. Approbation"),
+	AANN("Att. Annulation"),
+	RGLM("Règlement En cours", true),
+	TERM("Approuvée"),
+    SOLD("Terminée", true),
+    RECP("Recep. Partielle", true),
+    RECT("Recep. Totale", true),
     CLOT("Clôturée"),
-    RECP("Recep. Partielle"),
-    RECT("Recep. Totale");
-	
-	public static final int COLUMN_LENGTH = 4;
+    ANNL("Annulée");
 	
 	private final String libelle;
+	
+	/**
+	 * Si true, on ne doit pas lister le statut au front-end lors du changement de status
+	 */
+	private final boolean internalOnly;
     
     CommandeStatusEnumVd(String libelle) {
 		this.libelle = libelle;
+		this.internalOnly = false;
 	}
+    
+    CommandeStatusEnumVd(String libelle, boolean internalOnly) {
+    	this.libelle = libelle;
+    	this.internalOnly = internalOnly;
+    }
 
 	public String getLibelle() {
 		return libelle;
@@ -30,5 +39,9 @@ public enum CommandeStatusEnumVd {
 	
 	public static Map<Object, String> getAsMap() {
 		return Arrays.stream(values()).collect(Collectors.toMap(e -> e.name(), e -> e.libelle));
+	}
+
+	public boolean isInternalOnly() {
+		return internalOnly;
 	}
 }

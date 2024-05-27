@@ -2,17 +2,11 @@ import { FieldMetadata } from './metadata';
 import { PartnerStatusEnumVd, PartnerTypeEnumVd, UserAccountStatusEnumVd } from './vd.core';
 import { AbstractBean, AbstractSearchBean, AbstractStatusTrackingBean } from './bean.common';
 
-export interface CategoryBean extends AbstractBean {
+export interface PartnerCategoryBean extends AbstractBean {
+	children: Array<PartnerCategoryBean>;
 	categoryCode: FieldMetadata<string>;
 	description: FieldMetadata<string>;
-	children: Array<CategoryBean>;
-	parentCategoryCode: FieldMetadata<string>;
-};
-
-export interface UserAccountBean extends AbstractStatusTrackingBean<UserAccountStatusEnumVd> {
-	partner: PartnerBean;
-	status: FieldMetadata<UserAccountStatusEnumVd>;
-	password: FieldMetadata<string>;
+	selected: FieldMetadata<boolean>;
 };
 
 export interface PartnerSearchBean extends AbstractSearchBean {
@@ -26,11 +20,14 @@ export interface PartnerSearchBean extends AbstractSearchBean {
 	type: FieldMetadata<PartnerTypeEnumVd>;
 };
 
-export interface PartnerCategoryBean extends AbstractBean {
-	children: Array<PartnerCategoryBean>;
-	categoryCode: FieldMetadata<string>;
-	description: FieldMetadata<string>;
-	selected: FieldMetadata<boolean>;
+export interface UserAccountBean extends AbstractStatusTrackingBean<UserAccountStatusEnumVd> {
+	passwordLastChangeDate: FieldMetadata<any>;
+	magasin: FieldMetadata<string>;
+	roles: FieldMetadata<string>;
+	partner: PartnerBean;
+	status: FieldMetadata<UserAccountStatusEnumVd>;
+	password: FieldMetadata<string>;
+	lang: FieldMetadata<string>;
 };
 
 export interface PartnerBean extends AbstractStatusTrackingBean<PartnerStatusEnumVd> {
@@ -48,4 +45,11 @@ export interface PartnerBean extends AbstractStatusTrackingBean<PartnerStatusEnu
 	type: FieldMetadata<PartnerTypeEnumVd>;
 	partnerName: FieldMetadata<string>;
 	name: FieldMetadata<string>;
+};
+
+export interface CategoryBean extends AbstractBean {
+	categoryCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+	children: Array<CategoryBean>;
+	parentCategoryCode: FieldMetadata<string>;
 };

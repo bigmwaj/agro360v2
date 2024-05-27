@@ -1,10 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IndexPageComponent } from './index/index.page.component';
+import { AuthGuard } from '../common/guard/auth.guard';
 
 const routes: Routes = [    
-    { path: 'achat', pathMatch: 'full', redirectTo: 'achat/index' },
-    { path: 'achat/index', component: IndexPageComponent }
+    {        
+        path: 'achat',
+        canActivate: [AuthGuard], 
+        children:[
+            { path: '', pathMatch: 'full', redirectTo: 'index' },
+            { path: 'index', component: IndexPageComponent }
+        ]
+    }
 ];
 
 @NgModule({

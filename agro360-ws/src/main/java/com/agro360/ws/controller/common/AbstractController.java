@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.agro360.operation.context.ClientContext;
-import com.agro360.operation.utils.AuthenticatedUser;
+import com.agro360.operation.security.AuthenticatedUser;
 
 public class AbstractController {
 

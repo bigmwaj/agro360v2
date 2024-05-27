@@ -35,7 +35,8 @@ public class RetourLigneOperation extends AbstractOperation<RetourLigneDto, Long
 	
 	public List<RetourLigneBean> findCommandeRetours(ClientContext ctx, String commandeCode) {
 		return dao.findAllByCommandeCode(commandeCode).stream()
-				.map(AchatVenteMapper::map).collect(Collectors.toList());
+				.map(AchatVenteMapper::map)
+				.collect(Collectors.toList());
 	}
 
 	public void createRetourLigne(ClientContext ctx, String commandeCode, RetourLigneBean bean) {

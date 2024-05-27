@@ -12,6 +12,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,10 +39,10 @@ public class SecurityConfig {
 	@Value("${front.url}")
 	private String frontUrl;
 
+//	@Primary
 //	@Bean
 	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-		return encoder;
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 
 	@Autowired
@@ -57,14 +58,23 @@ public class SecurityConfig {
 		// set the name of the attribute the CsrfToken will be populated on
 		requestHandler.setCsrfRequestAttributeName("X-XSRF-Token");
 
-		http.httpBasic(Customizer.withDefaults()).cors(e -> e.configurationSource(t -> corsConfig(t)))
-				.csrf(e -> e.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-						.csrfTokenRequestHandler(requestHandler).disable())
-				.logout(e -> e.logoutUrl("/logout")).formLogin(e -> e.loginProcessingUrl("/login"))
-				.authorizeHttpRequests(e -> e.requestMatchers("/logout", "/login", "/resources/**").permitAll()
-						.anyRequest().authenticated())
-				.sessionManagement(e -> e.sessionCreationPolicy(SessionCreationPolicy.NEVER));
+		http.httpBasic(Customizer.withDefaults())
+			.cors(e -> e.configurationSource(t -> corsConfig(t)))
+			.csrf(e -> e.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+					.csrfTokenRequestHandler(requestHandler).disable())
+			.logout(this::logoutConfig)
+			.formLogin(e -> e.loginProcessingUrl("/login"))
+			.authorizeHttpRequests(e -> e.requestMatchers("/logout", "/login", "/resources/**").permitAll()
+					.anyRequest().authenticated())
+			.sessionManagement(e -> e.sessionCreationPolicy(SessionCreationPolicy.NEVER));
 		return http.build();
+	}
+	
+	private void logoutConfig(LogoutConfigurer<HttpSecurity> logout) {
+		logout.logoutUrl("/logout")
+			.invalidateHttpSession(true)
+			.clearAuthentication(true)
+			.permitAll();
 	}
 
 	@Bean

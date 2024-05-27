@@ -2,12 +2,8 @@
     <mat-toolbar color="secondary">                      
         <mat-toolbar-row class="search-toolbar" *ngIf="searchForm"> 
             <div class="me-2">                            
-                <input-text-field [field]="searchForm.magasinCode"></input-text-field>
+                <input-text-field [field]="searchForm.magasinCode"  (keyup)="searchAction()"></input-text-field>
             </div>
-
-            <button mat-icon-button color="primary" class="me-2" (click)="searchAction()">
-                <mat-icon>search</mat-icon>
-            </button>
 
             <button mat-icon-button color="primary" (click)="resetSearchFormAction()">
                 <mat-icon>restart_alt</mat-icon>

@@ -3,7 +3,7 @@ package com.agro360.operation.action.common;
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.operation.context.ClientContext;
 
-public class SetValueAction<T> extends AbstractAction<T, AbstractBean> {
+public class SetValueAction<T, B extends AbstractBean> extends AbstractAction<T, B> {
 
 	private final T value;
 

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { FactureBean, PaiementBean } from 'src/app/backed/bean.av';
+import { FactureBean, PaiementParamBean } from 'src/app/backed/bean.av';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanEditTab } from '../../common/bean/bean.edit.tab';
@@ -85,7 +85,7 @@ export class EditTabComponent extends BeanEditTab<FactureBean> implements OnInit
         })
     }
 
-    private initPaiement(bean: FactureBean, paiements:Array<PaiementBean>) {
+    private initPaiement(bean: FactureBean, paiements:Array<PaiementParamBean>) {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("factureCode", bean.factureCode.value);
         let dialogRef = this.dialog.open(PaiementDialogComponent, { data: {

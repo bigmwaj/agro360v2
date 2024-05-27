@@ -1,42 +1,28 @@
 import { Component, Input } from '@angular/core';
-import { CommandeBean, FactureBean, PaiementBean } from 'src/app/backed/bean.av';
+import { CommandeBean, FactureBean, PaiementParamBean } from 'src/app/backed/bean.av';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { BeanList } from '../../common/bean/bean.list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
     standalone: true,
     imports: [
-        SharedModule
+        SharedModule,
+        MatDividerModule,
+        MatCardModule
     ],
     selector: 'achat-vente-common-paiement-edit',
     templateUrl: './paiement.edit.component.html',
 })
-export class PaiementEditComponent  extends BeanList<PaiementBean> {
+export class PaiementEditComponent  {
 
     @Input({required:true})
-    paiements: Array<PaiementBean>;
+    paiements: Array<PaiementParamBean>;
     
     @Input({required:true})
     bean: CommandeBean | FactureBean;
 
-    displayedColumns: string[] = [
-        'compte',
-        'montant'
-    ];
-
-    constructor() {
-        super()
-    }
-
-    override getKeyLabel(bean: PaiementBean): string | number {
-        return bean.compte.compteCode.value;
-    }
-
-    ngOnInit(): void {
-        this.setData(this.paiements)
-    }
-
-    releverResteAction(paiement: PaiementBean){
+    releverResteAction(paiement: PaiementParamBean){
         let reste = this.bean.prixTotal.value - this.bean.cumulPaiement.value;
 
         let montant = reste - this.paiements

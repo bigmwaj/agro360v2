@@ -35,7 +35,7 @@
 		<property name="editable">
 			<list>
 				<ref bean="IsBeanCreateOperation" />
-				<ref bean="commande.isModifiable" />
+				<ref bean="commande/modifiable" />
 			</list>
 		</property>
 		<property name="required">
@@ -90,7 +90,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande/description">
 		<property name="editable">
 			<list>
-				<ref bean="commande.isModifiable" />
+				<ref bean="commande/modifiable" />
 			</list>
 		</property>
 		<property name="maxLength">
@@ -112,7 +112,7 @@
 		<property name="editable">
 			<list>				
 				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
-					<constructor-arg ref="commande.isModifiable"/>
+					<constructor-arg ref="commande/modifiable"/>
 				</bean>
 				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
 					<constructor-arg ref="IsBeanCreateOperation"/>
@@ -130,7 +130,7 @@
 		<property name="editable">
 			<list>
 				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
-					<constructor-arg ref="commande.isModifiable"/>
+					<constructor-arg ref="commande/modifiable"/>
 				</bean>
 				<bean class="com.agro360.operation.rule.common.IsOwnerEvalTrueRule">
 					<constructor-arg ref="IsBeanCreateOperation"/>

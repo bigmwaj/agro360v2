@@ -10,8 +10,6 @@ public enum LigneTypeEnumVd {
 	SERV("Service"), 
 	ARTC("Article");
 	
-	public static final int COLUMN_LENGTH = 4;
-	
 	private final String libelle;
 	
 	private LigneTypeEnumVd(String libelle) {
@@ -23,6 +21,6 @@ public enum LigneTypeEnumVd {
 	}
 	
 	public static Map<Object, String> getAsMap() {
-		return Arrays.stream(values()).collect(Collectors.toMap(e->e.name(), e->e.libelle));
+		return Arrays.stream(values()).collect(Collectors.toMap(e -> e.name(), e -> e.libelle));
 	}
 }

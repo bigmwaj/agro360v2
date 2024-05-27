@@ -9,7 +9,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/changeStatusBtn">
 		<property name="visible">
 			<list>
-				<ref bean="commande.isChangeStatusAuth"/>
+				<ref bean="commande/changeStatusAuth"/>
 			</list>
 		</property>
 	</bean>
@@ -17,7 +17,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/deleteBtn">
 		<property name="visible">
 			<list>
-				<ref bean="commande.isDeletable"/>
+				<ref bean="commande/deletable"/>
 			</list>
 		</property>
 	</bean>
@@ -25,7 +25,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/reglerBtn">
 		<property name="visible">
 			<list>
-				<ref bean="commande.isReglable" />
+				<ref bean="commande/reglable" />
 			</list>
 		</property>
 	</bean>
@@ -33,7 +33,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/annulerBtn">
 		<property name="visible">
 			<list>
-				<ref bean="commande.isAnnulable" />
+				<ref bean="commande/annulable" />
 			</list>
 		</property>
 	</bean>
@@ -41,7 +41,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/terminerBtn">
 		<property name="visible">
 			<list>
-				<ref bean="commande.isReglable" />
+				<ref bean="commande/reglable" />
 			</list>
 		</property>
 	</bean>
@@ -49,7 +49,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/retourBtn">
 		<property name="visible">
 			<list>
-				<ref bean="commande.isRetournable" />
+				<ref bean="commande/retournable" />
 			</list>
 		</property>
 	</bean>
@@ -57,7 +57,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/receptionBtn">
 		<property name="visible">
 			<list>
-				<ref bean="commande.isReceptionnable" />
+				<ref bean="commande/.receptionnable" />
 			</list>
 		</property>
 	</bean>
@@ -65,7 +65,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/createLigneBtn">
 		<property name="visible">
 			<list>
-				<ref bean="commande.isModifiable" />
+				<ref bean="commande/modifiable" />
 			</list>
 		</property>
 	</bean>
@@ -73,7 +73,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="commande-search-result/saveBtn">
 		<property name="visible">
 			<list>
-				<ref bean="commande.isModifiable" />
+				<ref bean="commande/modifiable" />
 			</list>
 		</property>
 	</bean>

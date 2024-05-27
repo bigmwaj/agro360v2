@@ -34,7 +34,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture/date">
 		<property name="editable">
 			<list>
-				<ref bean="facture.isModifiable" />
+				<ref bean="facture/modifiable" />
 			</list>
 		</property>
 		<property name="required">
@@ -89,7 +89,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture/description">
 		<property name="editable">
 			<list>
-				<ref bean="facture.isModifiable" />
+				<ref bean="facture/modifiable" />
 			</list>
 		</property>
 		<property name="maxLength">
@@ -110,7 +110,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture/prixTotalHT">
 		<property name="editable">
 			<list>
-				<ref bean="facture.isModifiable" />
+				<ref bean="facture/modifiable" />
 			</list>
 		</property>
 		<property name="required">
@@ -136,7 +136,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture/taxe">
 		<property name="editable">
 			<list>
-				<ref bean="facture.isModifiable" />
+				<ref bean="facture/modifiable" />
 			</list>
 		</property>
 		<property name="required">
@@ -162,7 +162,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture/remise">
 		<property name="editable">
 			<list>
-				<ref bean="facture.isModifiable" />
+				<ref bean="facture/modifiable" />
 			</list>
 		</property>
 		<property name="required">

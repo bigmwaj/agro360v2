@@ -1,6 +1,9 @@
 package com.agro360.bo.bean.common;
 
 import java.io.Serializable;
+import java.util.function.Supplier;
+
+import org.springframework.lang.NonNull;
 
 import com.agro360.bo.metadata.FieldMetadata;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,5 +52,30 @@ public class AbstractSearchBean  extends AbstractBean implements Serializable {
 			return DEFAULT_QUERY_LIMIT;
 		}
 		return pageSize;
+	}
+
+	
+	@JsonIgnore
+	public String getNullOrUpperCase(String value) {
+		return getNullOrUpperCase(value, "");
+	}
+	
+	@JsonIgnore
+	public String getNullOrUpperCase(String value, @NonNull String wrapper) {
+		if( value != null && !value.isBlank() ) {
+			return wrapper + value.toUpperCase() + wrapper;
+		}
+		
+		return null;
+	}
+	
+	@JsonIgnore
+	public String getNullOrUpperCase(Supplier<FieldMetadata<String>> valueFunction) {
+		return getNullOrUpperCase(valueFunction, "");
+	}
+	
+	@JsonIgnore
+	public String getNullOrUpperCase(Supplier<FieldMetadata<String>> valueFunction, String wrapper) {
+		return getNullOrUpperCase(valueFunction.get().getValue(), wrapper);
 	}
 }

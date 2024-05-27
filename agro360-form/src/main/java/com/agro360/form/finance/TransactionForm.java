@@ -105,6 +105,8 @@ public class TransactionForm {
 	@MetadataBeanName("finance/transaction-search")
 	public TransactionSearchBean initSearchFormBean(ClientContext ctx, Optional<TransactionTypeEnumVd> type) {
 		var bean = FinanceMapper.buildTransactionSearchBean();
+		
+		bean.getDateDebut().setValue(LocalDate.now());
 
 		initCompteOption(ctx, bean.getCompte()::setValueOptions);
 		initRubriqueOption(ctx, type.orElse(null), bean.getRubrique()::setValueOptions);

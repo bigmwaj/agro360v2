@@ -24,7 +24,6 @@ import { SharedModule } from 'src/app/modules/common/shared.module';
 export class RetourListComponent extends BeanList<RetourLigneBean> {
     
     displayedColumns: string[] = [
-        'select',
         'article',
         'status',
         'date',

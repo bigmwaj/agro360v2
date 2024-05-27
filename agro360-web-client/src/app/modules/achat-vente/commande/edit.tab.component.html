@@ -19,11 +19,8 @@
                 <div class="col-4"> 
                     <autocomplete-field             
                         [field]="bean.partner.partnerCode" 
-                        [label]="partnerLabel"
-                        [lookupFn]="partnerLookupFn" 
-                        [keyFn]="mapPartnerToKeyFn"
-                        [lookupFnOptions]="bean" 
-                        [displayFn]="mapPartnerToLabelFn">
+                        [lookupConfig]="partnerLookupConfig"
+                        [label]="partnerLabel">
                     </autocomplete-field>                      
                 </div>
                 <div class="col-4">  
@@ -35,12 +32,7 @@
                 </div>
                 <div class="col-8">      
                     <input-text-field [field]="bean.description"></input-text-field>
-                    <button mat-icon-button color="primary" 
-                        class="field-button"                          
-                        (click)="editDescriptionAction()"
-                        matTooltip="Editer la description">
-                        <mat-icon>edit_note</mat-icon>
-                    </button>                  
+                    <editor [field]="bean.description"></editor>
                 </div>
             </div>
         </div>
@@ -108,19 +100,11 @@
             <autocomplete-field             
                 [field]="bean.partner.partnerCode" 
                 [label]="partnerLabel"
-                [lookupFn]="partnerLookupFn" 
-                [keyFn]="mapPartnerToKeyFn"
-                [lookupFnOptions]="bean" 
-                [displayFn]="mapPartnerToLabelFn">
+                [lookupConfig]="partnerLookupConfig" >
             </autocomplete-field>            
         </div>
         <div class="m-1">
-            <button mat-icon-button 
-                [color]="bean.description.value == '' || bean.description.value == null ? 'primary' : 'warn'"          
-                (click)="editDescriptionAction()"
-                matTooltip="Editer la description">
-                <mat-icon>edit_note</mat-icon>
-            </button>            
+            <editor [field]="bean.description"></editor>                      
         </div>
         <div class="m-1">
             <input-number-field [field]="bean.prixTotalHT"></input-number-field>            
@@ -137,7 +121,7 @@
             <input-number-field [field]="bean.prixTotal"></input-number-field>
         </div>
         <div class="m-1">
-            <input-number-field [field]="bean.cumulPaiement"></input-number-field>
+            <input-number-field [field]="bean.cumulPaiement"></input-number-field>            
             <button mat-icon-button color="primary" 
                 class="field-button"                          
                 (click)="afficherReglementAction()"
@@ -158,7 +142,7 @@
             extended class="ms-1" 
             (click)="saveAction({terminer:true})"
             *ngIf="bean.terminerBtn.visible">
-            <mat-icon>currency_exchange</mat-icon> Terminer
+            <mat-icon>currency_exchange</mat-icon> Transférer
         </button>
         <button mat-fab color="basic" 
             extended class="ms-1" 

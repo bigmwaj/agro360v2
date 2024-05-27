@@ -66,6 +66,7 @@ public class InventaireServiceHelper {
 			String variantCode, Double quantite, OperationTypeEnumVd type) {
 		var freshBean = operation.findInventaireByCode(ctx, magasinCode, articleCode, variantCode);
 		var qte = quantite;
+		
 		if( OperationTypeEnumVd.SORT.equals(type)) {
 			qte = qte * -1.0;
 		}

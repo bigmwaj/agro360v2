@@ -111,6 +111,7 @@ create table `stock_tbl_inventaire` (
   `prix_unitaire_vente` decimal(16,4) not null,
   `unite_achat_code` varchar(16) not null,
   `unite_vente_code` varchar(16) not null,
+  `unite_stock_code` varchar(16) not null,
   
   `quantite` double not null,
   primary key `stock_tbl_inventaire_pk`(`magasin_code`, `article_code`, `variant_code`),
@@ -119,6 +120,7 @@ create table `stock_tbl_inventaire` (
   key `stock_tbl_inventaire_fk_stock_tbl_variant` (`article_code`, `variant_code`),
   key `stock_tbl_inventaire_fk_stock_tbl_unite_achat` (`unite_achat_code`),
   key `stock_tbl_inventaire_fk_stock_tbl_unite_vente` (`unite_vente_code`),
+  key `stock_tbl_inventaire_fk_stock_tbl_unite_stock` (`unite_stock_code`),
   
   constraint `stock_tbl_inventaire_fk_stock_tbl_magasin` 
 	foreign key (`magasin_code`) 
@@ -131,6 +133,9 @@ create table `stock_tbl_inventaire` (
 	references `stock_tbl_unite` (`unite_code`),
   constraint `stock_tbl_inventaire_fk_stock_tbl_unite_vente` 
 	foreign key (`unite_vente_code`) 
+	references `stock_tbl_unite` (`unite_code`),
+  constraint `stock_tbl_inventaire_fk_stock_tbl_unite_stock` 
+	foreign key (`unite_stock_code`) 
 	references `stock_tbl_unite` (`unite_code`)
 ) engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
 

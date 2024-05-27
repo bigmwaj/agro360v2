@@ -8,6 +8,12 @@ import { Observable, map } from 'rxjs';
 import { AbstractFieldComponent } from './abstract.field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+export interface AutocompleteConfig{
+    lookupFn:(e:string, options?:any) => Observable<any>;
+    displayFn: (o: any) => string;
+    keyFn: (o: any) => any;
+}
+
 @Component({
     standalone: true,
     imports:[
@@ -38,26 +44,20 @@ import { MatTooltipModule } from '@angular/material/tooltip';
             [(ngModel)]="field.value"
             [matAutocomplete]="auto"/>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="__onSelected($event)">
-            <mat-option *ngFor="let option of options; let index = index" [value]="keyFn(option)">
-                {{ displayFn(option) }}
+            <mat-option *ngFor="let option of options; let index = index" [value]="lookupConfig.keyFn(option)">
+                {{ lookupConfig.displayFn(option) }}
             </mat-option>
         </mat-autocomplete>
     </mat-form-field>    
     `
 })
 export class AutocompleteFieldComponent extends AbstractFieldComponent{
-   
+
     @Input({required: true})
-    lookupFn: (e:string, options?:any) => Observable<any>;
+    lookupConfig: AutocompleteConfig;
 
     @Input()
-    lookupFnOptions: any;
-
-    @Input({required: true})
-    displayFn: (option:any) => string;
-
-    @Input({required: true})
-    keyFn: (option:any) => any;
+    lookupOptions: any;
 
     @Output()
     onSelected = new EventEmitter();
@@ -75,7 +75,7 @@ export class AutocompleteFieldComponent extends AbstractFieldComponent{
             this.options = [];
             return;
         }
-        this.lookupFn(query, this.lookupFnOptions)
+        this.lookupConfig.lookupFn(query, this.lookupOptions)
         .pipe(map((data: any) => <Array<any>>data))
         .subscribe(options => this.options = options);
         

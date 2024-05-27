@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 
 public enum UserAccountStatusEnumVd {
 
+	LOCKED("Bloqué"),
+	
 	ENABLED("Activé"),
 	
 	DISABLED("Désactivé");
-	
-	public static final int COLUMN_LENGTH = 8;
 	
 	private final String libelle;
 	
@@ -23,6 +23,7 @@ public enum UserAccountStatusEnumVd {
 	}
 	
 	public static Map<Object, String> getAsMap() {
-		return Arrays.stream(values()).collect(Collectors.toMap(e->e.name(), e->e.libelle));
+		return Arrays.stream(values())
+				.collect(Collectors.toMap(UserAccountStatusEnumVd::name, UserAccountStatusEnumVd::getLibelle));
 	}
 }

@@ -31,12 +31,17 @@
 		</property>
 	</bean>
 
-	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-init-paiement/saveBtn"/>
+<!--	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-init-paiement/saveBtn"/>-->
 
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-init-paiement/compte.compteCode">
 		<property name="required">
 			<list>
 				<ref bean="IsTrue" />
+			</list>
+		</property>
+		<property name="editable">
+			<list>
+				<ref bean="IsFalse" />
 			</list>
 		</property>
 	</bean>
@@ -49,7 +54,7 @@
 		<property name="fields">
 			<map>
 				<entry key="montant" value-ref="facture-init-paiement/montant" />
-				<entry key="saveBtn" value-ref="facture-init-paiement/saveBtn" />
+<!--				<entry key="saveBtn" value-ref="facture-init-paiement/saveBtn" />-->
 			</map>
 		</property>
 		<property name="beans">

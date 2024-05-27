@@ -23,13 +23,25 @@ public class LigneService extends AbstractService {
 	@Autowired
 	private ArticleTaxeOperation articleTaxeOperation;
 	
+//	@Autowired
+//	private CommandeOperation commandeOperation;
+	
 	@Autowired
 	private LigneServiceHelper ligneServiceHelper;
 	
+//	@Autowired()
+//	@Qualifier("commande/modifiable")
+//	private AbstractRule<CommandeBean> editable;
+	
 	public List<LigneTaxeBean> findTaxes(ClientContext ctx, String commandeCode, Optional<Long> ligneId,
 			String articleCode) {
-//		if( ligneId.filter(e -> !e.equals(0L)).isPresent()) {
-//			return ligneTaxeOperation.findLigneTaxesLigne(ctx, commandeCode, ligneId.get());
+		
+//		if( articleCode != null && ligneId.filter(e -> !e.equals(0L)).isPresent()) {
+//			var commande = commandeOperation.findCommandeByCode(ctx, commandeCode);
+//			if( commande != null && !editable.eval(ctx, commande) ) {
+//				
+//			}
+//			//return ligneTaxeOperation.findLigneTaxesLigne(ctx, commandeCode, ligneId.get());
 //		}else {
 //		}
 		return articleTaxeOperation.findArticleTaxesByArticleCode(ctx, articleCode)
@@ -37,7 +49,6 @@ public class LigneService extends AbstractService {
 				.map(this::map)
 				.collect(Collectors.toList());
 	}
-
 
 	public LigneBean initialiserPrixCalcules(ClientContext ctx, CommandeTypeEnumVd type, LigneBean ligne) {
 		ligneServiceHelper.initChampsCalcules(ctx, type, ligne);

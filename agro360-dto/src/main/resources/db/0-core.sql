@@ -91,6 +91,7 @@ create table `core_tbl_user_account`(
   	`roles` 		varchar(32) null,
   	`status` 		varchar(8) not null,
   	`status_date` 	datetime default null,
+  	`password_last_change_date` 	datetime default null,
 	primary key `core_tbl_user_account_pk`(`partner_code`),
 	key `core_tbl_user_account_fk_core_tbl_partner` (`partner_code`),
   	constraint `core_tbl_user_account_fk_core_tbl_partner` foreign key (`partner_code`) references `core_tbl_partner` (`partner_code`)

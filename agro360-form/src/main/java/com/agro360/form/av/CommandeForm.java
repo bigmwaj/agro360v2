@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.CommandeSearchBean;
 import com.agro360.bo.bean.av.LigneBean;
-import com.agro360.bo.bean.av.PaiementBean;
+import com.agro360.bo.bean.av.PaiementParamBean;
 import com.agro360.bo.bean.finance.CompteSearchBean;
 import com.agro360.bo.bean.stock.MagasinBean;
 import com.agro360.bo.bean.stock.MagasinSearchBean;
@@ -123,15 +123,17 @@ public class CommandeForm extends AbstractForm{
 	}
 	
 	@MetadataBeanName("av/commande-init-paiement")
-	public List<PaiementBean> initPaiementsFormBean(ClientContext ctx, String commandeCode) {
+	public List<PaiementParamBean> initPaiementsFormBean(ClientContext ctx, String commandeCode) {
 		return compteOperation.findComptesByCriteria(ctx, new CompteSearchBean())
-			.stream().map(PaiementBean::new)
+			.stream()
+			.map(PaiementParamBean::new)
 			.collect(Collectors.toList());
 	}
 
 	@MetadataBeanName("av/commande-search")
 	public CommandeSearchBean initSearchFormBean(ClientContext ctx) {
-		var bean = AchatVenteMapper.buildCommandeSearchBean();		
+		var bean = AchatVenteMapper.buildCommandeSearchBean();
+		bean.getDateDebut().setValue(LocalDate.now());
 		return bean;
 	}
 	

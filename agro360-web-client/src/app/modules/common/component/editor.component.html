@@ -1,0 +1,6 @@
+<button mat-icon-button 
+    (click)="editDescriptionAction()"
+    [color]="field.value == '' || field.value == null ? 'primary' : 'warn'" 
+    matTooltip="Editer la description">
+    <mat-icon>edit_note</mat-icon>
+</button>

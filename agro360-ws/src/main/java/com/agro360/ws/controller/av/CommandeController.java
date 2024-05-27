@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.agro360.bo.bean.av.CommandeBean;
 import com.agro360.bo.bean.av.CommandeSearchBean;
-import com.agro360.bo.bean.av.PaiementBean;
+import com.agro360.bo.bean.av.PaiementParamBean;
 import com.agro360.bo.bean.av.ReglementBean;
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerSearchBean;
@@ -80,7 +80,8 @@ public class CommandeController extends AbstractController {
 	}
 	
 	@PostMapping()
-	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CommandeBean bean, @RequestParam Optional<Boolean> processPaiement) {
+	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated CommandeBean bean, 
+			@RequestParam Optional<Boolean> processPaiement) {
 		var ctx = getClientContext();
 		
 		service.save(ctx, bean);
@@ -119,7 +120,7 @@ public class CommandeController extends AbstractController {
 	
 	@PostMapping("/encaisser")
 	public ResponseEntity<ModelMap> encaisserAction(@RequestParam String commandeCode,
-			@RequestBody @Validated List<PaiementBean> paiements) {
+			@RequestBody @Validated List<PaiementParamBean> paiements) {
 		var ctx = getClientContext();
 		var model = new ModelMap();
 		

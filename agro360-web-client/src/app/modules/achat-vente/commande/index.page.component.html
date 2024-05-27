@@ -38,16 +38,32 @@
 </mat-tab-group>
 
 <div class="d-flex p-3">
-    <button mat-fab extended cdkFocusInitial  class="ms-3 mb-3 me-2"
+    <button mat-fab extended cdkFocusInitial  class="m-3"
         (click)="saveAction()" 
         color="primary"
         *ngIf="currentEditingBean?.saveBtn?.visible">
         <mat-icon>save</mat-icon>Enregistrer
     </button>
 
-    <button mat-fab color="warn" extended (click)="addAction()" class="me-3 mb-3">
+    <button mat-fab color="warn" extended (click)="addAction()" class="m-3">
         <mat-icon>add</mat-icon> Ajouter une nouvelle commande
     </button>
+
+    <button mat-icon-button color="secondary" class="m-3" [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu"> 
+        <button mat-menu-item color="primary">
+            <mat-icon>content_copy</mat-icon>Copier
+        </button>
+        <button mat-menu-item color="primary">
+            <mat-icon>delete</mat-icon>Supprimer
+        </button>
+        <mat-divider></mat-divider>
+        <button mat-menu-item color="primary">
+            <mat-icon>currency_exchange</mat-icon>Régler
+        </button>  
+    </mat-menu>
 </div> 
 
 

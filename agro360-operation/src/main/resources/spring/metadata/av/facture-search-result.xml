@@ -9,7 +9,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/changeStatusBtn">
 		<property name="visible">
 			<list>
-				<ref bean="facture.isChangeStatusAuth"/>
+				<ref bean="facture/changeStatusAuth"/>
 			</list>
 		</property>
 	</bean>
@@ -17,7 +17,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/saveBtn">
 		<property name="visible">
 			<list>
-				<ref bean="facture.isModifiable" />
+				<ref bean="facture/modifiable" />
 			</list>
 		</property>
 	</bean>
@@ -25,7 +25,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/reglerBtn">
 		<property name="visible">
 			<list>
-				<ref bean="facture.isReglable" />
+				<ref bean="facture/reglable" />
 			</list>
 		</property>
 	</bean>
@@ -33,7 +33,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="facture-search-result/deleteBtn">
 		<property name="visible">
 			<list>
-				<ref bean="facture.isDeletable" />
+				<ref bean="facture/deletable" />
 			</list>
 		</property>
 	</bean>

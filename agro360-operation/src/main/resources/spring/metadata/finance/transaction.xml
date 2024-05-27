@@ -8,25 +8,12 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/transactionCode">
 		<property name="editable">
 			<list>
-				<ref bean="IsBeanCreateOperation"/>
+				<ref bean="IsFalse"/>
 			</list>
 		</property>
 		<property name="required">
 			<list>
 				<ref bean="IsTrue" />					
-			</list>
-		</property>
-		<property name="maxLength">
-			<list>
-				<bean class="com.agro360.operation.metadata.ConstraintConfig">
-					<property name="actions">
-						<list>
-							<bean class="com.agro360.operation.action.common.SetValueAction">
-								<constructor-arg value="16"/>											
-							</bean>
-						</list>
-					</property>
-				</bean>							
 			</list>
 		</property>
 	</bean>		
@@ -55,7 +42,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/montant">
 		<property name="editable">
 			<list>
-				<ref bean="IsBeanCreateOrUpdateOperation" />				
+				<ref bean="transaction/modifiable" />				
 			</list>
 		</property>
 		<property name="min">
@@ -64,7 +51,7 @@
 					<property name="actions">
 						<list>
 							<bean class="com.agro360.operation.action.common.SetValueAction">
-								<constructor-arg value="45"/>											
+								<constructor-arg value="0"/>											
 							</bean>
 						</list>
 					</property>
@@ -81,7 +68,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction/date">
 		<property name="editable">
 			<list>
-				<ref bean="IsBeanCreateOrUpdateOperation" />						
+				<ref bean="transaction/modifiable" />						
 			</list>
 		</property>		
 		<property name="required">
@@ -167,14 +154,14 @@
 		</property>
 	</bean>		
 
-    <bean name="finance/transaction" class="com.agro360.operation.metadata.BeanMetadataConfig">
+    <bean name="finance/transaction" class="com.agro360.operation.metadata.BeanMetadataConfig"  parent="finance/transaction-search-result">
 		<property name="editable">
 			<list>
 				<ref bean="IsTrue"/>
 			</list>
 		</property>
 		<property name="fields">
-			<map>
+			<map merge="true">
 				<entry key="transactionCode" value-ref="transaction/transactionCode"/>
 				<entry key="date" value-ref="transaction/date"/>
 				<entry key="status" value-ref="transaction/status"/>

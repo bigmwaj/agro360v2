@@ -6,10 +6,8 @@
                     Recherche
                 </h4>
                 <div>
-                    <input-text-field [field]="searchForm.commandeCode"></input-text-field>
-                    <input-text-field [field]="searchForm.partner" [label]="partnerLabel"></input-text-field>
-                    <select-one-field [field]="searchForm.type"></select-one-field>
                     <select-multiple-field [field]="searchForm.statusIn"></select-multiple-field>
+                    <select-one-field [field]="searchForm.type"></select-one-field>
                 </div>
                 <div class="text-nowrap">
                     <button mat-raised-button  class="me-2" (click)="searchAction()">

@@ -40,6 +40,9 @@ public class InventaireBean extends AbstractBean {
 
 	@Setter
 	private UniteBean uniteVente = new UniteBean();
+	
+	@Setter
+	private UniteBean uniteStock = new UniteBean();
 
 	@Setter
 	private MagasinBean magasin = new MagasinBean();

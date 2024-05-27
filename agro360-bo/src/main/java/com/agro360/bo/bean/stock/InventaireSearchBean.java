@@ -14,11 +14,10 @@ public class InventaireSearchBean extends AbstractSearchBean{
 
 	private FieldMetadata<String> magasinCode = new FieldMetadata<>("Magasin");
 
-	private FieldMetadata<String> articleCode = new FieldMetadata<>("Article");
+	private FieldMetadata<String> articleCode = new FieldMetadata<>("Article ou variante");
 	
 	private FieldMetadata<String> createInventaireBtn = new FieldMetadata<>();
 	
 	private FieldMetadata<String> uniteBtn = new FieldMetadata<>();
-
 
 }

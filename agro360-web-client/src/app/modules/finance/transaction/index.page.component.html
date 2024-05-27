@@ -38,19 +38,19 @@
 </mat-tab-group>
 
 <div class="d-flex p-3">
-    <button mat-fab extended cdkFocusInitial class="ms-3 mb-3"
+    <button mat-fab extended cdkFocusInitial class="m-3"
         (click)="saveAction()" 
         color="primary"
         *ngIf="currentEditingBean?.saveBtn?.visible">
         <mat-icon>save</mat-icon>Enregistrer
     </button>
 
-    <button mat-fab extended class="me-3 mb-3" color="warn" *ngIf="addOptions.length == 1"
+    <button mat-fab extended class="m-3" color="warn" *ngIf="addOptions.length == 1"
         (click)="addAction({type:addOptions[0].type})">
         <mat-icon>add</mat-icon> Ajouter une nouvelle Transaction
     </button>
 
-    <button mat-fab extended class="me-3 mb-3" color="warn" *ngIf="addOptions.length != 1"
+    <button mat-fab extended class="m-3" color="warn" *ngIf="addOptions.length != 1"
         [matMenuTriggerFor]="addMenu">
         <mat-icon>add</mat-icon>  Ajouter une nouvelle Transaction
     </button>

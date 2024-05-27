@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agro360.operation.utils.AuthenticatedUser;
+import com.agro360.operation.security.AuthenticatedUser;
 import com.agro360.ws.controller.common.AbstractController;
 
 import jakarta.servlet.http.HttpServletRequest;

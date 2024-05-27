@@ -11,7 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CommandeBean, CommandeSearchBean, PaiementBean } from 'src/app/backed/bean.av';
+import { CommandeBean, CommandeSearchBean, PaiementParamBean } from 'src/app/backed/bean.av';
 import { CommandeTypeEnumVd } from 'src/app/backed/vd.av';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
@@ -51,7 +51,6 @@ export class ListTabComponent extends BeanPagedListTab<CommandeBean, CommandeSea
     partnerLabel: string;
     
     displayedColumns: string[] = [
-        'select',
         'commandeCode',
         'status',
         'date',
@@ -151,7 +150,7 @@ export class ListTabComponent extends BeanPagedListTab<CommandeBean, CommandeSea
         })
     }
 
-    private initPaiement(bean: CommandeBean, paiements:Array<PaiementBean>) {
+    private initPaiement(bean: CommandeBean, paiements:Array<PaiementParamBean>) {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("commandeCode", bean.commandeCode.value);
         let dialogRef = this.dialog.open(PaiementDialogComponent, { data: {

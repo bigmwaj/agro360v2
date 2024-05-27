@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
-import com.agro360.bo.bean.av.PaiementBean;
+import com.agro360.bo.bean.av.PaiementParamBean;
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerSearchBean;
 import com.agro360.bo.bean.finance.CompteSearchBean;
@@ -65,9 +65,9 @@ public class FactureForm {
 	}
 
 	@MetadataBeanName("av/facture-init-paiement")
-	public List<PaiementBean> initPaiementsFormBean(ClientContext ctx, String factureCode) {
+	public List<PaiementParamBean> initPaiementsFormBean(ClientContext ctx, String factureCode) {
 		return compteOperation.findComptesByCriteria(ctx, new CompteSearchBean())
-			.stream().map(PaiementBean::new)
+			.stream().map(PaiementParamBean::new)
 			.collect(Collectors.toList());
 	}
 
@@ -90,6 +90,7 @@ public class FactureForm {
 	@MetadataBeanName("av/facture-search")
 	public FactureSearchBean initSearchFormBean(ClientContext ctx) {
 		var bean = AchatVenteMapper.buildFactureSearchBean();
+		bean.getDateDebut().setValue(LocalDate.now());
 		return bean;
 	}
 	

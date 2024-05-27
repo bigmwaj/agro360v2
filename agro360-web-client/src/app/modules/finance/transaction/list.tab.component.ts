@@ -38,7 +38,6 @@ export class ListTabComponent extends BeanPagedListTab<TransactionBean, Transact
     partnerLabel: string = "Partenaire";
 
     displayedColumns: string[] = [
-        'select',
         'date',
         'transactionCode',
         'type',
@@ -145,7 +144,9 @@ export class ListTabComponent extends BeanPagedListTab<TransactionBean, Transact
             } 
         });
         dialogRef.afterClosed().subscribe(result => {
-            this.removeItem(bean);
+            if( result ){
+                this.removeItem(bean);
+            }
         });  
     }
 
@@ -167,15 +168,20 @@ export class ListTabComponent extends BeanPagedListTab<TransactionBean, Transact
         }});
 
         dialogRef.afterClosed()
-        .pipe(map((data: TransactionBean) => data)).subscribe(result => {
-            this.replaceItemWith(bean, result)
+        .pipe(map((data: TransactionBean) => data))
+        .subscribe(result => {
+            if( result ){
+                this.replaceItemWith(bean, result);
+            }
         });          
     }
     
     transfertAction() {
         let dialogRef = this.dialog.open(TransfertDialogComponent);
         
-        dialogRef.afterClosed().subscribe(result => { 
+        dialogRef.afterClosed()        
+        .pipe(map((data: Array<TransactionBean>) => data))
+        .subscribe(result => { 
             if( result ){
                 result.forEach((bean: TransactionBean) => {
                     this.prependItem(bean)

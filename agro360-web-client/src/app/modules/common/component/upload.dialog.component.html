@@ -2,12 +2,22 @@
 <mat-dialog-content class="mb-0 pb-0">
     <div class="container-fluid m-0 p-0">
         <div class="mb-3">
-            <label for="formFile" class="form-label">Sélectionner le fichier à téléverser</label>
-            <input class="form-control" type="file" id="formFile" multiple>
+            <label for="formFile" class="form-label">Sélectionner le fichier à traiter</label>
+            <input class="form-control" type="file" id="formFile" multiple  (change)="onFileSelected($event)" >
+        </div>
+        <div class="mb-3 row" *ngFor="let file of files">
+            <div class="col-9">
+                {{ file.name }}
+            </div>
+            <div class="col-3">
+                <button mat-icon-button color="secondary" (click)="remove(file)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
         </div>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end" class="m-3">
-    <button mat-raised-button mat-dialog-close>Annuler</button>
-    <button mat-raised-button cdkFocusInitial (click)="uploadAction()">Téléverser</button>
+    <button mat-raised-button cdkFocusInitial mat-dialog-close>Annuler</button>
+    <button mat-raised-button [disabled]="files.length == 0" (click)="uploadAction()">Traiter</button>
 </mat-dialog-actions>
