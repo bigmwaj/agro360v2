@@ -8,8 +8,6 @@ public enum FactureTypeEnumVd {
 	ACHAT("Achat"),
     VENTE("Vente");
 	
-	public static final int COLUMN_LENGTH = 8;
-	
 	private final String libelle;
     
     FactureTypeEnumVd(String libelle) {
@@ -21,6 +19,6 @@ public enum FactureTypeEnumVd {
 	}
 	
 	public static Map<Object, String> getAsMap() {
-		return Arrays.stream(values()).collect(Collectors.toMap(e->e.name(), e->e.libelle));
+		return Arrays.stream(values()).collect(Collectors.toMap(e -> e.name(), e -> e.libelle));
 	}
 }

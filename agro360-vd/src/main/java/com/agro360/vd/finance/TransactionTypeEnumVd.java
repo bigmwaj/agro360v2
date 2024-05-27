@@ -18,8 +18,6 @@ public enum TransactionTypeEnumVd {
 	
 	CREDIT("Crédit");
 	
-	public static final int COLUMN_LENGTH = 8;
-	
 	private final String libelle;
 	
 	private TransactionTypeEnumVd(String libelle) {

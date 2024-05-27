@@ -14,10 +14,14 @@ spring:
       add-properties: true
       livereload:
          enabled: true       
+   http:
+      multipart:
+         max-file-size: 10MB
+         max-request-size: 11MB
 server:
    port: 8080
    
-   
+
 jwt.secret: bigmwaj
 front.url: http://localhost:4200
    

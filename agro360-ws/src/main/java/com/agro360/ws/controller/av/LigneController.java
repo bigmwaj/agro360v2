@@ -64,7 +64,7 @@ public class LigneController extends AbstractController {
 	}	
 	
 	@GetMapping(CREATE_FORM_RN)
-	public ResponseEntity<ModelMap> getLigneCreateFormAction(
+	public ResponseEntity<ModelMap> getCreateFormAction(
 			@RequestParam CommandeTypeEnumVd type,
 			@RequestParam String commandeCode, 
 			@RequestParam String magasinCode,
@@ -96,7 +96,7 @@ public class LigneController extends AbstractController {
 	}
 	
 	@GetMapping("/variant-option")
-	public ResponseEntity<Map<Object, String>> getLigneVariantOptionsAction(
+	public ResponseEntity<Map<Object, String>> getVariantOptionsAction(
 			@RequestParam String articleCode) {		
 		var ctx = getClientContext();
 		var options = articleService.getVariantArticleAsOption(ctx, articleCode);
@@ -104,7 +104,7 @@ public class LigneController extends AbstractController {
 	}
 	
 	@GetMapping("/unite-option")
-	public ResponseEntity<Map<Object, String>> getLigneUniteOptionsAction(
+	public ResponseEntity<Map<Object, String>> getUniteOptionsAction(
 			@RequestParam String articleCode) {		
 		var ctx = getClientContext();
 		var options = articleService.getUniteArticleAsOption(ctx, articleCode);
@@ -112,12 +112,13 @@ public class LigneController extends AbstractController {
 	}
 	
 	@GetMapping("/prix-unitaire")
-	public ResponseEntity<BigDecimal> getLignePrixUnitaireAction(
+	public ResponseEntity<BigDecimal> getPrixUnitaireAction(
 			@RequestParam CommandeTypeEnumVd type,
 			@RequestParam String magasinCode,
 			@RequestParam String articleCode,
 			@RequestParam String variantCode,
-			@RequestParam String uniteCode) {		
+			@RequestParam String uniteCode) {
+		
 		var ctx = getClientContext();
 		BigDecimal pu;
 		if( CommandeTypeEnumVd.ACHAT.equals(type)) {
@@ -129,7 +130,5 @@ public class LigneController extends AbstractController {
 		}
 		return ResponseEntity.ok(pu);
 	}
-	
-	
 	
 }

@@ -1,38 +1,35 @@
 <section>
     <div class="table-wrapper">
-        <table mat-table [dataSource]="this" class="beans-table editable table-borderless paiements">
-            <ng-container matColumnDef="compte">
-                <th mat-header-cell *matHeaderCellDef>Compte</th>
-                <td mat-cell *matCellDef="let element">
-                    <input-text-field 
-                        [field]="element.compte.compteCode" 
-                        [displayLabel]="false">
-                    </input-text-field>
-                </td>
-            </ng-container>          
-
-            <ng-container matColumnDef="montant">
-                <th mat-header-cell *matHeaderCellDef>Montant</th>
-                <td mat-cell *matCellDef="let element">                    
-                    <div class="d-inline-flex" style="width: 100%;">
-                        <input-number-field style="width: 100%;"
-                            [field]="element.montant" 
-                            [displayLabel]="false">
-                        </input-number-field>
-                        <div class="field-button pt-1" >
-                            <button mat-icon-button color="primary" (click)="releverResteAction(element)"                          
-                                title="Relever le reste dans ce paiement" >
-                                <mat-icon>currency_exchange</mat-icon>
-                            </button> 
-                        </div>
-                    </div>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
-                [class.text-bg-danger]="row.action == 'DELETE'">
-            </tr>
-        </table>
+        <ng-container *ngFor="let element of paiements">
+            <mat-card class="border border-primary mb-2">
+                <mat-card-header>
+                    <mat-card-title>{{element.compte.libelle.value}}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="d-inline-flex p-1">
+                                <input-number-field [field]="element.montant"></input-number-field>
+                                <div class="field-button pt-1" >
+                                    <button mat-icon-button color="primary" (click)="releverResteAction(element)"                          
+                                        title="Relever le reste dans ce paiement" >
+                                        <mat-icon>currency_exchange</mat-icon>
+                                    </button> 
+                                </div>
+                            </div> 
+                        </div>  
+                        <div class="col-3" *ngIf="element.interacVia.visible">
+                            <input-radio-field [field]="element.interacVia"></input-radio-field>
+                        </div>  
+                        <div class="col-3" *ngIf="element.email.visible">
+                            <input-text-field [field]="element.email"></input-text-field>
+                        </div>  
+                        <div class="col-3" *ngIf="element.phone.visible">
+                            <input-text-field [field]="element.phone"></input-text-field>
+                        </div> 
+                    </div>    
+                </mat-card-content>
+            </mat-card>
+        </ng-container>
     </div>
 </section>

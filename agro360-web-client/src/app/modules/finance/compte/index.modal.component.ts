@@ -8,7 +8,6 @@ import { map } from 'rxjs';
 import { CompteBean, CompteSearchBean } from 'src/app/backed/bean.finance';
 import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/modules/common/bean/bean.list';
 import { BeanTools } from 'src/app/modules/common/bean/bean.tools';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
@@ -27,7 +26,6 @@ import { BeanPagedList } from '../../common/bean/bean.paged.list';
 export class IndexModalComponent extends BeanPagedList<CompteBean, CompteSearchBean> implements OnInit {
 
     displayedColumns: string[] = [
-        'select',
         'type',
         'compteCode',
         'partner',

@@ -20,7 +20,6 @@ import { SharedModule } from 'src/app/modules/common/shared.module';
 export class ReceptionListComponent extends BeanList<ReceptionLigneBean> {
     
     displayedColumns: string[] = [
-        'select',
         'article',
         'status',
         'date',

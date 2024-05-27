@@ -24,37 +24,37 @@ import lombok.EqualsAndHashCode;
 public class TransactionDto extends AbstractStatusTrackingDto<TransactionStatusEnumVd>{
 
 	@Id
-	@Column(name = "TRANSACTION_CODE", updatable = false, length = 20)
+	@Column(name = "TRANSACTION_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String transactionCode;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = TransactionStatusEnumVd.COLUMN_LENGTH)
+	@Column(name = "STATUS")
 	private TransactionStatusEnumVd status;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TRANSACTION_TYPE", nullable = false, updatable = false, length = TransactionTypeEnumVd.COLUMN_LENGTH)
+	@Column(name = "TRANSACTION_TYPE", updatable = false)
 	private TransactionTypeEnumVd type;
 
 	@ManyToOne()
-	@JoinColumn(name = "PARTNER_CODE", updatable = false, nullable = false)
+	@JoinColumn(name = "PARTNER_CODE", updatable = false)
 	private PartnerDto partner;
 	
 	@ManyToOne()
-	@JoinColumn(name = "COMPTE_CODE", updatable = false, nullable = false)
+	@JoinColumn(name = "COMPTE_CODE", updatable = false)
 	private CompteDto compte;
 	
 	@ManyToOne()
-	@JoinColumn(name = "RUBRIQUE_CODE", updatable = false, nullable = false)
+	@JoinColumn(name = "RUBRIQUE_CODE", updatable = false)
 	private RubriqueDto rubrique;
 
-	@Column(name = "TRANSACTION_DATE", updatable = false,  nullable = false)
+	@Column(name = "TRANSACTION_DATE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private LocalDate date;
 
-	@Column(name = "NOTE", length = 128)
+	@Column(name = "NOTE")
 	private String note;
 	
-	@Column(name = "MONTANT", updatable = false, nullable = false, precision = 16, scale = 4)
+	@Column(name = "MONTANT", updatable = false)
 	private BigDecimal montant;
 }

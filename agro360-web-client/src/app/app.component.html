@@ -18,10 +18,10 @@
                     <a href="/paie">Paies & Employés</a>
                 </mat-list-item>
                 <mat-list-item role="listitem">
-                    <a href="/finance/transaction">Gestion des transactions</a>
+                    <a href="/finance">Gestion des transactions</a>
                 </mat-list-item>
                 <mat-list-item role="listitem">
-                    <a href="/core/partner">Gestion des partenaires</a>
+                    <a href="/core">Gestion des partenaires</a>
                 </mat-list-item>
             </mat-selection-list>
         </div>
@@ -38,7 +38,7 @@
             </button>
             <ng-container *ngIf="isAuthenticated()">
                 <button mat-icon-button color="secondary" [matMenuTriggerFor]="menu">
-                    <mat-icon>more_vert</mat-icon>
+                    <mat-icon>person</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">                                
                     <button mat-menu-item color="primary" routerLinkActive="active" routerLink="/profil">

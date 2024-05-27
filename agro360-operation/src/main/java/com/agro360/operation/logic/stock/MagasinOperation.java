@@ -16,7 +16,6 @@ import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.common.AbstractOperation;
 import com.agro360.operation.utils.RuleNamespace;
 
-
 @Service
 public class MagasinOperation extends AbstractOperation<MagasinDto, String> {
 
@@ -66,7 +65,8 @@ public class MagasinOperation extends AbstractOperation<MagasinDto, String> {
         var length = dao.countMagasinsByCriteria( code);
         searchBean.setLength(length);
         return dao.findMagasinsByCriteria(searchBean.getOffset(), searchBean.getLimit(), code)
-        		.stream().map(StockMapper::map)
+        		.stream()
+        		.map(StockMapper::map)
         		.collect(Collectors.toList());
 	}
 }

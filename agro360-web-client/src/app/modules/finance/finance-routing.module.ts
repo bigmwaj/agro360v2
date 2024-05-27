@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { IndexPageComponent as TransactionIndexPageComponent } from './transaction/index.page.component';
+import { IndexPageComponent } from './transaction/index.page.component';
+import { AuthGuard } from '../common/guard/auth.guard';
 
 const routes: Routes = [
-    { path: 'finance/transaction', component: TransactionIndexPageComponent },
-    { path: 'finance/transaction/index', component: TransactionIndexPageComponent },
-    //{ path: 'finance/transaction/create', component: TransactionEditPageComponent },
-    //{ path: 'finance/transaction/edit/:transactionCode', component: TransactionEditPageComponent },
+    {        
+        path: 'finance',
+        canActivate: [AuthGuard], 
+        children:[
+            { path: '', pathMatch: 'full', redirectTo: 'index' },
+            { path: 'index', component: IndexPageComponent }
+        ]
+    }
 ];
 
 @NgModule({

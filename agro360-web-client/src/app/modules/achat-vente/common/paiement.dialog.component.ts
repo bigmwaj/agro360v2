@@ -2,13 +2,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { map } from 'rxjs';
-import { CommandeBean, FactureBean, PaiementBean } from 'src/app/backed/bean.av';
+import { CommandeBean, FactureBean, PaiementParamBean } from 'src/app/backed/bean.av';
 import { Message } from 'src/app/backed/message';
+import { FieldMetadata } from 'src/app/backed/metadata';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { PaiementEditComponent } from './paiement.edit.component';
-import { CommandeStatusEnumVd } from 'src/app/backed/vd.av';
-import { FieldMetadata } from 'src/app/backed/metadata';
 
 @Component({
     standalone: true,
@@ -25,12 +24,12 @@ export class PaiementDialogComponent implements OnInit {
 
     ref:FieldMetadata<string>
 
-    paiements:Array<PaiementBean>
+    paiements:Array<PaiementParamBean>
 
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: {
             bean: CommandeBean | FactureBean, 
-            paiements:Array<PaiementBean>, 
+            paiements:Array<PaiementParamBean>, 
             saveUrl:string, saveParams:HttpParams
         },
         private http: HttpClient,

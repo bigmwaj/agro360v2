@@ -13,9 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.agro360.bo.bean.core.UserAccountBean;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.core.UserAccountOperation;
-import com.agro360.operation.utils.AuthenticatedUser;
-import com.agro360.operation.utils.AuthenticatedUserGrantedAuthority;
+import com.agro360.operation.security.AuthenticatedUser;
+import com.agro360.operation.security.AuthenticatedUserGrantedAuthority;
 import com.agro360.service.common.AbstractService;
+import com.agro360.vd.core.UserAccountStatusEnumVd;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
@@ -31,7 +32,12 @@ public class UserAccountService extends AbstractService implements UserDetailsSe
 		ex = () -> new UsernameNotFoundException(String.format(msgTpl, username));
 		var user =  operation.findUserAccountByUserName(username).orElseThrow(ex);
 		
-		boolean enabled = true;
+		var status = user.getStatus().getValue();
+//		var passwordLastChangeDate = user.getPasswordLastChangeDate().getValue();
+		
+//		LocalDateTime.now().minus(passwordLastChangeDate.);
+		
+		boolean enabled = UserAccountStatusEnumVd.ENABLED.equals(status);
 		boolean accountNonExpired = true;
 		boolean credentialsNonExpired = true;
 		boolean accountNonLocked = true;		

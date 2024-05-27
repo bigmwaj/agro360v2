@@ -76,11 +76,23 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 		
 		super.save(ctx, dto);
 
-		var msgTpl = "Ligne %d créée avec succès";
-		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
+		var msgTpl = "Ligne %s créée avec succès";
+		ctx.success(String.format(msgTpl, toString(bean)));
 		
 		 dto.getLigneId();
 		 bean.getLigneId().setValue(dto.getLigneId());
+	}
+	
+	private String toString(LigneBean bean) {
+		var article = bean.getArticle().getArticleCode().getValue();
+		if( article == null || article.isEmpty() ) {
+			article = bean.getDescription().getValue();
+		}
+		var variant = bean.getVariantCode().getValue();
+		if( variant != null && !variant.isEmpty() ) {
+			article += "/" + variant;
+		}
+		return article;
 	}
 
 	@RuleNamespace("av/commande/ligne/update")
@@ -122,14 +134,14 @@ public class LigneOperation extends AbstractOperation<LigneDto, Long> {
 		super.save(ctx, dto);
 		
 
-		var msgTpl = "Ligne %d modifiée avec succès";
-		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
+		var msgTpl = "Ligne %s modifiée avec succès";
+		ctx.success(String.format(msgTpl, toString(bean)));
 	}
 
 	public void deleteLigne(ClientContext ctx, CommandeBean commande, LigneBean bean) {
 		var dto = findLigneDto(commande, bean);
-		var msgTpl = "Ligne %d supprimée avec succès";
-		ctx.success(String.format(msgTpl, bean.getLigneId().getValue()));
+		var msgTpl = "Ligne %s supprimée avec succès";
+		ctx.success(String.format(msgTpl, toString(bean)));
 		dao.delete(dto);
 	}
 	

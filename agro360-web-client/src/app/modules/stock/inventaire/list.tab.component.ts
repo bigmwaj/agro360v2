@@ -10,14 +10,14 @@ import { map } from 'rxjs';
 import { InventaireBean, InventaireSearchBean } from 'src/app/backed/bean.stock';
 import { Message } from 'src/app/backed/message';
 import { FieldMetadata } from 'src/app/backed/metadata';
+import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanPagedListTab } from '../../common/bean/bean.paged.list.tab';
-import { IndexModalComponent } from '../unite/index.modal.component';
-import { EditDialogComponent } from './edit.dialog.component';
-import { CreateDialogComponent } from './create.dialog.component';
-import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { UploadDialogComponent } from '../../common/component/upload.dialog.component';
+import { IndexModalComponent } from '../unite/index.modal.component';
+import { CreateDialogComponent } from './create.dialog.component';
+import { EditDialogComponent } from './edit.dialog.component';
 
 @Component({
     standalone: true,
@@ -36,10 +36,10 @@ import { UploadDialogComponent } from '../../common/component/upload.dialog.comp
 export class ListTabComponent extends BeanPagedListTab<InventaireBean, InventaireSearchBean> implements OnInit {
 
     displayedColumns: string[] = [
-        'select',
         'magasin',
         'article',
         'variantCode',
+        'unite.stock',
         'unite.achat',
         'prixUnitaireAchat',
         'unite.vente',
@@ -123,7 +123,21 @@ export class ListTabComponent extends BeanPagedListTab<InventaireBean, Inventair
     }
 
     importAction() {
-        this.dialog.open(UploadDialogComponent);
+        var dialogRef = this.dialog.open(UploadDialogComponent);
+        
+        dialogRef.afterClosed().subscribe((files: Array<File>) => {
+            if( files  && files.length > 0 ){
+                const formData = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    formData.append(`files`, files[i]);
+                }
+                this.http.post("stock/inventaire/import", formData)
+                .pipe(map((e: any) => <any>e))
+                .subscribe(data => {
+                    this.ui.displayFlashMessage(<Array<Message>>data.messages);
+                });
+            }
+        });  
     }
 
     override addAction(option?:any) {        

@@ -55,6 +55,7 @@ public class InventaireForm extends AbstractForm{
 		var options = buildUniteOptions(ctx, articleCode);	
 		bean.getUniteVente().getUniteCode().setValueOptions(options);
 		bean.getUniteAchat().getUniteCode().setValueOptions(options);
+		bean.getUniteStock().getUniteCode().setValueOptions(options);
 		bean.setAction(operation);
 		return bean;
 	}
@@ -64,6 +65,7 @@ public class InventaireForm extends AbstractForm{
 		bean.getArticle().getArticleCode().setEditable(true);
 		bean.getUniteAchat().getUniteCode().setEditable(true);
 		bean.getUniteVente().getUniteCode().setEditable(true);
+		bean.getUniteStock().getUniteCode().setEditable(true);
 		return bean;
 	}
 	

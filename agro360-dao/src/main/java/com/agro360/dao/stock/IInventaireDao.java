@@ -32,10 +32,14 @@ public interface IInventaireDao extends IDao<InventaireDto, InventairePk>{
 	
 	@Query(
 			value = "   select dto from com.agro360.dto.stock.InventaireDto dto"
+					+ " left join com.agro360.dto.stock.VariantDto variant on dto.variantCode = variant.variantCode and dto.article.articleCode = variant.articleCode"
 					+ " where (:magasin is null or dto.magasin.magasinCode = :magasin)"
 					+ " and (:article is null"
-					+ "		or (dto.article.articleCode like %:article%)"
-					+ "		or (upper(dto.article.description) like %:article%)"
+					+ "		or (dto.article.articleCode like :article)"
+					+ "		or (upper(dto.article.description) like :article)"
+					+ "		or (upper(variant.variantCode) like :article)"
+					+ "		or (upper(variant.description) like :article)"
+					+ "		or (upper(variant.alias) like :article)"
 					+ " ) "
 					+ "order by dto.magasin.magasinCode, dto.article.articleCode "
 					+ "limit :limit offset :offset"
@@ -50,11 +54,15 @@ public interface IInventaireDao extends IDao<InventaireDto, InventairePk>{
 	
 	@Query(
 			value = "   select count(dto) from com.agro360.dto.stock.InventaireDto dto"
+					+ " left join com.agro360.dto.stock.VariantDto variant on dto.variantCode = variant.variantCode and dto.article.articleCode = variant.articleCode"
 					+ " where (:magasin is null or dto.magasin.magasinCode = :magasin)"
 					+ " and (:article is null"
-					+ "		or (dto.article.articleCode like %:article%)"
-					+ "		or (upper(dto.article.description) like %:article%)"
-					+ " )"
+					+ "		or (dto.article.articleCode like :article)"
+					+ "		or (upper(dto.article.description) like :article)"
+					+ "		or (upper(variant.variantCode) like :article)"
+					+ "		or (upper(variant.description) like :article)"
+					+ "		or (upper(variant.alias) like :article)"
+					+ " ) "
 				
 		)
 	Long countInventairesByCriteria( 

@@ -1,7 +1,6 @@
 package com.agro360.ws.controller.finance;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import com.agro360.bo.bean.finance.TransactionSearchBean;
 import com.agro360.bo.bean.finance.TransfertBean;
 import com.agro360.form.finance.TransactionForm;
 import com.agro360.service.finance.TransactionService;
+import com.agro360.vd.common.ClientOperationEnumVd;
 import com.agro360.vd.finance.TransactionTypeEnumVd;
 import com.agro360.ws.controller.common.AbstractController;
 
@@ -56,7 +56,8 @@ public class TransactionController extends AbstractController {
 	}
 
 	@GetMapping("/create-form")
-	public ResponseEntity<TransactionBean> getCreateFormAction(@RequestParam TransactionTypeEnumVd type, @RequestParam Optional<String> copyFrom) {
+	public ResponseEntity<TransactionBean> getCreateFormAction(@RequestParam TransactionTypeEnumVd type, 
+			@RequestParam Optional<String> copyFrom) {
 		return ResponseEntity.ok(form.initCreateFormBean(getClientContext(), type, copyFrom));
 	}
 
@@ -78,28 +79,17 @@ public class TransactionController extends AbstractController {
 	
 	@PostMapping()
 	public ResponseEntity<ModelMap> saveAction(@RequestBody @Validated TransactionBean bean) {
-		var action = bean.getAction();
 		var ctx = getClientContext();
-		var model = new ModelMap();
 		
 		service.save(ctx, bean);
-		switch (action) {
-		case CREATE:
-		case UPDATE:
+		var action = bean.getAction();
+		var model = new ModelMap();
+		
+		if( !ClientOperationEnumVd.DELETE.equals(action)) {
 			bean = form.initEditFormBean(ctx, bean.getTransactionCode().getValue());	
 			model.addAttribute(RECORD_MODEL_KEY, bean);
-			break;
-			
-		case CHANGE_STATUS:
-			bean = service.findTransaction(ctx, bean.getTransactionCode().getValue());
-			var beans = Collections.singletonList(bean);
-			beans = form.initSearchResultBeans(ctx, beans);
-			model.addAttribute(RECORD_MODEL_KEY, beans.get(0));
-			break;
-
-		default:
-			break;
 		}
+		
 		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
 		return ResponseEntity.ok(model);
 	}

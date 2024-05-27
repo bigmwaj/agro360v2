@@ -25,7 +25,6 @@ import { DeleteDialogComponent } from './delete.dialog.component';
 export class ListTabComponent extends BeanPagedListTab<ArticleBean, ArticleSearchBean> implements OnInit {
 
     displayedColumns: string[] = [
-        'select',
         'articleCode',
         'unite',
         'type',

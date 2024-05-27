@@ -14,10 +14,6 @@
 	<name>agro360-dao</name>
 	<description>Data Acccess Object Project</description>
 	<dependencies>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter</artifactId>-->
-<!--		</dependency>-->
 		
 		<dependency>
 			<groupId>com.agro360</groupId>

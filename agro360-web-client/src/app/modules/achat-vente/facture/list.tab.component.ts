@@ -9,7 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FactureBean, FactureSearchBean, PaiementBean } from 'src/app/backed/bean.av';
+import { FactureBean, FactureSearchBean, PaiementParamBean } from 'src/app/backed/bean.av';
 import { FactureTypeEnumVd } from 'src/app/backed/vd.av';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
@@ -48,7 +48,6 @@ export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearc
     partnerLabel: string;
     
     displayedColumns: string[] = [
-        'select',
         'factureCode',
         'status',
         'date',
@@ -107,7 +106,9 @@ export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearc
     changeStatusAction(bean: FactureBean) {
         let dialogRef = this.dialog.open(ChangeStatusDialogComponent, { data: bean.factureCode.value });
         dialogRef.afterClosed().subscribe(result => {
-
+            if( result ){
+                this.replaceItemWith(bean, result);
+            }
         }); 
     }
 
@@ -141,7 +142,7 @@ export class ListTabComponent extends BeanPagedListTab<FactureBean, FactureSearc
         })
     }
 
-    private initPaiement(bean: FactureBean, paiements:Array<PaiementBean>) {
+    private initPaiement(bean: FactureBean, paiements:Array<PaiementParamBean>) {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("factureCode", bean.factureCode.value);
         let dialogRef = this.dialog.open(PaiementDialogComponent, { data: {

@@ -48,11 +48,11 @@ public class FactureOperation extends AbstractOperation<FactureDto, String> {
 	}
 
 	public List<FactureBean> findFacturesByCriteria(ClientContext ctx, FactureSearchBean searchBean) {
-		var code = getNullOrUpperCase(searchBean::getFactureCode);
+		var code = searchBean.getNullOrUpperCase(searchBean::getFactureCode);
 		var type = searchBean.getType().getValue();
 		var debut = searchBean.getDateDebut().getValue();
 		var fin = searchBean.getDateFin().getValue();
-		var partner = getNullOrUpperCase(searchBean::getPartner);
+		var partner = searchBean.getNullOrUpperCase(searchBean::getPartner);
 		
 		var status = searchBean.getStatusIn().getValue();
 		if( status != null && status.isEmpty() ) {

@@ -1,9 +1,12 @@
 package com.agro360.ws.controller.stock;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.agro360.bo.bean.stock.InventaireBean;
 import com.agro360.bo.bean.stock.InventaireSearchBean;
@@ -68,6 +73,24 @@ public class InventaireController extends AbstractController {
 		var record = service.save(ctx, bean);
 		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
 		model.addAttribute(RECORD_MODEL_KEY, record);
+		return ResponseEntity.ok(model);
+	}
+	
+	@PostMapping(value = "import", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<ModelMap> importAction(@RequestPart("files")  List<MultipartFile> files) {
+		var excelData = files.stream().map(t -> {
+			try {
+				return t.getInputStream();
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException(e.getLocalizedMessage());
+			}			
+		}).collect(Collectors.toList());
+		
+		
+		var ctx = getClientContext();
+		service.importInventory(ctx, excelData);
+		var model = new ModelMap(MESSAGES_MODEL_KEY, ctx.getMessages());
 		return ResponseEntity.ok(model);
 	}
 	

@@ -8,8 +8,6 @@ public enum CommandeTypeEnumVd {
 	ACHAT("Achat"),
     VENTE("Vente");
 	
-	public static final int COLUMN_LENGTH = 8;
-	
 	private final String libelle;
     
     CommandeTypeEnumVd(String libelle) {
@@ -21,6 +19,6 @@ public enum CommandeTypeEnumVd {
 	}
 	
 	public static Map<Object, String> getAsMap() {
-		return Arrays.stream(values()).collect(Collectors.toMap(e->e.name(), e->e.libelle));
+		return Arrays.stream(values()).collect(Collectors.toMap(e -> e.name(), e -> e.libelle));
 	}
 }

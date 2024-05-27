@@ -188,6 +188,12 @@ public class StockMapper {
 			uniteVente = new UniteDto();
 		}
 		bean.setUniteVente(map(uniteVente));
+		
+		var uniteStock = dto.getUniteStock();
+		if( uniteStock == null ) {
+			uniteStock = new UniteDto();
+		}
+		bean.setUniteStock(map(uniteStock));
 		return bean;
 	}
 

@@ -8,7 +8,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search-result/deleteBtn">
 		<property name="visible">
 			<list>
-				<bean class="com.agro360.operation.rule.module.finance.transaction.IsDeleteAllowed"/>
+				<ref bean="transaction/deletable"/>
 			</list>
 		</property>
 	</bean>	
@@ -16,7 +16,7 @@
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="transaction-search-result/changeStatusBtn">
 		<property name="visible">
 			<list>
-				<bean class="com.agro360.operation.rule.module.finance.transaction.IsStatusChangeAllowed"/>
+				<ref bean="transaction/changeStatusAuth"/>
 			</list>
 		</property>
 	</bean>	

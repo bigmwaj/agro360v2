@@ -17,9 +17,7 @@
                 <autocomplete-field 
                     (onSelected)="addFromQueryAction($event)"
                     [field]="query" 
-                    [lookupFn]="variantLookupFn" 
-                    [keyFn]="mapVariantToKeyFn"
-                    [displayFn]="mapVariantToLabelFn">
+                    [lookupConfig]="variantLookupConfig">
                 </autocomplete-field>    
                 <button mat-icon-button color="primary"
                     [disabled]="query.value == null || query.value == ''"
@@ -105,12 +103,10 @@
                     <autocomplete-field                     
                         (onSelected)="element.article.articleCode.value=$event.option.value;onSelectArticleEvent(element)"
                         [field]="element.article.articleCode" 
-                        [lookupFn]="articleLookupFn" 
-                        [keyFn]="mapArticleToKeyFn"
+                        [lookupConfig]="articleLookupConfig"
+                        [lookupOptions]="element"
                         [displayLabel]="false"
-                        [lookupFnOptions]="element" 
-                        *ngIf="isStandard(element)"
-                        [displayFn]="mapArticleToLabelFn">
+                        *ngIf="isStandard(element)">
                     </autocomplete-field>
 
                     <input-text-field *ngIf="!isStandard(element)" 

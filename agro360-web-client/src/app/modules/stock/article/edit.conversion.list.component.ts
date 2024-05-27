@@ -28,7 +28,6 @@ export class EditConversionListComponent extends BeanList<ConversionBean> implem
     conversions: Array<ConversionBean>;
 
     displayedColumns: string[] = [
-        'select',
         'unite',
         'facteur',
         'actions'

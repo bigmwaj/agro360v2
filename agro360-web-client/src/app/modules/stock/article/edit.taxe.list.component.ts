@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
+import { Component, Input, OnInit } from '@angular/core';
 import { ArticleTaxeBean } from 'src/app/backed/bean.stock';
 import { BeanList } from 'src/app/modules/common/bean/bean.list';
 import { SharedModule } from 'src/app/modules/common/shared.module';
@@ -47,7 +46,6 @@ export class EditTaxeListComponent extends BeanList<ArticleTaxeBean> implements 
 
     override toggleAllRows(){
         super.toggleAllRows();
-
         this.taxes.forEach(e => this.toggleChange(e));
     }
 }

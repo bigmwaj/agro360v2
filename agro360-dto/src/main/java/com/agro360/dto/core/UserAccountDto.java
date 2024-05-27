@@ -1,5 +1,7 @@
 package com.agro360.dto.core;
 
+import java.time.LocalDateTime;
+
 import com.agro360.dto.common.AbstractStatusTrackingDto;
 import com.agro360.vd.core.UserAccountStatusEnumVd;
 
@@ -27,6 +29,9 @@ public class UserAccountDto extends AbstractStatusTrackingDto<UserAccountStatusE
 
 	@Column(name = "PASSWORD")
 	private String password;
+	
+	@Column(name = "PASSWORD_LAST_CHANGE_DATE")
+	private LocalDateTime passwordLastChangeDate;
 	
 	@Column(name = "LANG")
 	private String lang;

@@ -8,7 +8,6 @@ import { map } from 'rxjs';
 import { RubriqueBean, RubriqueSearchBean } from 'src/app/backed/bean.finance';
 import { Message } from 'src/app/backed/message';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
-import { BeanList } from 'src/app/modules/common/bean/bean.list';
 import { BeanTools } from 'src/app/modules/common/bean/bean.tools';
 import { UIService } from 'src/app/modules/common/service/ui.service';
 import { SharedModule } from 'src/app/modules/common/shared.module';
@@ -28,7 +27,6 @@ export class IndexModalComponent extends BeanPagedList<RubriqueBean, RubriqueSea
   
 
     displayedColumns: string[] = [
-        'select',
         'type',
         'rubriqueCode',
         'libelle',

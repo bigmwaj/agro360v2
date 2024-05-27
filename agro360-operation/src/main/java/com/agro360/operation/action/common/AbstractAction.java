@@ -15,7 +15,7 @@ public abstract class AbstractAction<T, B extends AbstractBean> {
 	}
 
 	public void performAction(ClientContext ctx, B bean, String fieldName, String attributeName) {
-		var result = this.process(ctx, bean);
+		T result = this.process(ctx, bean);
 		var field = bean.getField(fieldName);
 		field.setAttribute(attributeName, result);
 	}

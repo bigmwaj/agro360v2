@@ -78,7 +78,6 @@ public class CoreMapper {
 		bean.getMagasin().setValue(dto.getMagasin());
 		bean.getRoles().setValue(dto.getRoles());
 		bean.getStatus().setValueOptions(UserAccountStatusEnumVd.getAsMap());
-
 		bean.getPassword().setValue(dto.getPassword());
 
 		return bean;

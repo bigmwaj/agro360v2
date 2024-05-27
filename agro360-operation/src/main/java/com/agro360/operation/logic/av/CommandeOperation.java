@@ -45,11 +45,11 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 	}
 	
 	public List<CommandeBean> findCommandesByCriteria(ClientContext ctx, CommandeSearchBean searchBean) {
-		var code = getNullOrUpperCase(searchBean::getCommandeCode);
+		var code = searchBean.getNullOrUpperCase(searchBean::getCommandeCode);
 		var type = searchBean.getType().getValue();
 		var debut = searchBean.getDateDebut().getValue();
 		var fin = searchBean.getDateFin().getValue();
-		var partner = getNullOrUpperCase(searchBean::getPartner);
+		var partner = searchBean.getNullOrUpperCase(searchBean::getPartner);
 		
 		var status = searchBean.getStatusIn().getValue();
 		if( status != null && status.isEmpty() ) {
@@ -186,13 +186,6 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 	public void receptionnerCommande(ClientContext ctx, CommandeBean bean) {
 		changeCommandeStatus(ctx, bean);
 		var msgTpl = "Commande %s totalement receptionnée avec succès";
-		ctx.success(String.format(msgTpl, bean.getCommandeCode().getValue()));
-	}
-
-	@RuleNamespace("av/commande/approuver")
-	public void approuverCommande(ClientContext ctx, CommandeBean bean) {
-		changeCommandeStatus(ctx, bean);	
-		var msgTpl = "Commande %s approuvée avec succès";
 		ctx.success(String.format(msgTpl, bean.getCommandeCode().getValue()));
 	}
 

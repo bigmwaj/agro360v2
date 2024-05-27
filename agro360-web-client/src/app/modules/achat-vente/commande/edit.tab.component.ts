@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CommandeBean, LigneBean, PaiementBean } from 'src/app/backed/bean.av';
+import { CommandeBean, LigneBean, PaiementParamBean } from 'src/app/backed/bean.av';
 import { CommandeStatusEnumVd } from 'src/app/backed/vd.av';
 import { ClientOperationEnumVd } from 'src/app/backed/vd.common';
 import { UIService } from 'src/app/modules/common/service/ui.service';
@@ -13,15 +13,16 @@ import { ChangeStatusDialogComponent } from './change-status.dialog.component';
 import { ListComponent as LigneListComponent} from './ligne/list.component';
 import { ReglementDialogComponent } from '../common/reglement.dialog.component';
 import { PartnerBean } from 'src/app/backed/bean.core';
-import { Observable } from 'rxjs';
-import { EditorDialogComponent } from '../../common/component/editor.dialog.component';
+import { EditorComponent } from '../../common/component/editor.component';
+import { AutocompleteConfig } from '../../common/field/autocomplete';
 
 @Component({
     standalone: true,
     imports: [
         SharedModule,
         LigneListComponent,
-        MatTooltipModule
+        MatTooltipModule,
+        EditorComponent
     ],
     selector: 'achat-vente-commande-edit-tab',
     templateUrl: './edit.tab.component.html'
@@ -33,6 +34,8 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
 
     @ViewChild(LigneListComponent)
     ligneList: LigneListComponent
+
+    partnerLookupConfig:AutocompleteConfig;
 
     partnerLabel: string
 
@@ -57,29 +60,34 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
             title = `Édition de la commande ${this.bean.commandeCode.value}`
         }
 
-        this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title)
+        this.breadcrumb = this.breadcrumb.addAndReturnChildItem(title);
+
+        this.setupPartnerLookupConfig();
     }
 
-    mapPartnerToLabelFn(partner: PartnerBean): string {
-        return partner.partnerCode.value + ' - ' + partner.partnerName.value;
-    }
-
-    partnerLookupFn(query:string, bean: CommandeBean):Observable<any>{
-        let queryParams = new HttpParams();
-        queryParams = queryParams.append('type', bean.type.value);
-        queryParams = queryParams.append('query', query);
-        return this.http.get(`achat-vente/commande/partner-query`, { params: queryParams });
-    }
     
-    mapPartnerToKeyFn(partner: PartnerBean): string {
-        return partner.partnerCode.value;
+    private setupPartnerLookupConfig(){
+        const http = this.http;
+        const partner = this.bean;
+        this.partnerLookupConfig = {
+
+            displayFn:function(bean: PartnerBean){
+                return bean.partnerCode.value + ' - ' + bean.partnerName.value;
+            },
+    
+            keyFn:function(bean: PartnerBean){
+                return bean.partnerCode.value;
+            },
+    
+            lookupFn: function(q:string){                
+                let queryParams = new HttpParams();
+                queryParams = queryParams.append('type', partner.type.value);
+                queryParams = queryParams.append('query', q);
+                return http.get(`achat-vente/commande/partner-query`, { params: queryParams });
+            }    
+        }
     }
-
-    editDescriptionAction() {
-        this.dialog.open(EditorDialogComponent, { data: this.bean.description });
-    }
-
-
+ 
     /**************************************************
      * Liste des évènements générés par l'utilisateur *
      * ************************************************
@@ -147,7 +155,7 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
         this.changerStatus(CommandeStatusEnumVd.AANN, `Etes vous sur de vouloir annuler la commande? <br/>La commande sera placée en attente annulation.`)
     }
 
-    private initPaiement(bean: CommandeBean, paiements:Array<PaiementBean>) {
+    private initPaiement(bean: CommandeBean, paiements:Array<PaiementParamBean>) {
         let queryParams = new HttpParams();
         queryParams = queryParams.append("commandeCode", this.bean.commandeCode.value);
 

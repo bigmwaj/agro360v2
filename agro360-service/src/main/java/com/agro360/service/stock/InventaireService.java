@@ -1,7 +1,9 @@
 package com.agro360.service.stock;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.InventaireBean;
 import com.agro360.bo.bean.stock.InventaireSearchBean;
 import com.agro360.operation.context.ClientContext;
+import com.agro360.operation.logic.stock.ImportInventaireOperation;
 import com.agro360.operation.logic.stock.InventaireOperation;
 import com.agro360.service.common.AbstractService;
 import com.agro360.vd.common.ClientOperationEnumVd;
@@ -24,6 +27,9 @@ public class InventaireService extends AbstractService {
 	
 	@Autowired
 	private InventaireServiceHelper serviceHelper;
+	
+	@Autowired
+	private ImportInventaireOperation importInventaireOperation;
 	
 	public List<InventaireBean> search(ClientContext ctx, InventaireSearchBean searchBean) {
 		return operation.findInventairesByCriteria(ctx, searchBean);
@@ -89,6 +95,19 @@ public class InventaireService extends AbstractService {
 		var variantCode = bean.getVariantCode().getValue();
 		return operation.findInventaireByCode(ctx, magasinCode, articleCode, variantCode);	
 	}
+
+	public BigDecimal getPrixUnitaireAchat(ClientContext ctx, String magasinCode, String articleCode, String variantCode, String uniteCode) {
+		return operation.getPrixUnitaireAchat(ctx, magasinCode, articleCode, variantCode, uniteCode);
+	}
+	
+	public BigDecimal getPrixUnitaireVente(ClientContext ctx, String magasinCode, String articleCode, String variantCode, String uniteCode) {
+		return operation.getPrixUnitaireVente(ctx, magasinCode, articleCode, variantCode, uniteCode);
+	}
+	
+	public void importInventory(ClientContext ctx, List<InputStream> excelsData) {
+		Consumer<InputStream> _import = e -> importInventaireOperation.importInventory(ctx, e);
+		excelsData.stream().forEach(_import);
+	}
 	
 	private void ajusterQuantite(ClientContext ctx, InventaireBean bean) {
 		serviceHelper.ajusterQuantite(ctx, bean);
@@ -118,12 +137,5 @@ public class InventaireService extends AbstractService {
 		ctx.success(String.format(msgTpl, variantCode, articleCode, magasinCode, prix.doubleValue()));
 	}
 
-	public BigDecimal getPrixUnitaireAchat(ClientContext ctx, String magasinCode, String articleCode, String variantCode, String uniteCode) {
-		return operation.getPrixUnitaireAchat(ctx, magasinCode, articleCode, variantCode, uniteCode);
-	}
-	
-	public BigDecimal getPrixUnitaireVente(ClientContext ctx, String magasinCode, String articleCode, String variantCode, String uniteCode) {
-		return operation.getPrixUnitaireVente(ctx, magasinCode, articleCode, variantCode, uniteCode);
-	}
 	
 }

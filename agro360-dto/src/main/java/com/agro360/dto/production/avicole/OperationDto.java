@@ -19,18 +19,18 @@ import lombok.EqualsAndHashCode;
 public class OperationDto extends AbstractLigneDto {
 
 	@ManyToOne()
-	@JoinColumn(name = "CYCLE_CODE", nullable = false, updatable = false)
+	@JoinColumn(name = "CYCLE_CODE", updatable = false)
 	private CycleDto cycle;
 
-	@Column(name = "NUMERO_JOURNEE", nullable = false, updatable = false)
+	@Column(name = "NUMERO_JOURNEE", updatable = false)
 	private Long numeroJournee;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "PHASE", nullable = false, updatable = false, length = PhaseEnumVd.COLUMN_LENGTH)
+	@Column(name = "PHASE", updatable = false)
 	private PhaseEnumVd phase;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "RUBRIQUE", nullable = false, updatable = false, length = RubriqueEnumVd.COLUMN_LENGTH)
+	@Column(name = "RUBRIQUE", updatable = false)
 	private RubriqueEnumVd rubrique;
 
 }

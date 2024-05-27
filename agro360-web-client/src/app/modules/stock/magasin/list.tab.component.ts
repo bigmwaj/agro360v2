@@ -21,7 +21,6 @@ import { IndexModalComponent } from '../unite/index.modal.component';
 export class ListTabComponent extends BeanPagedListTab<MagasinBean, MagasinSearchBean> implements OnInit {
 
     displayedColumns: string[] = [
-        'select',
         'magasinCode',
         'description',
         'actions'

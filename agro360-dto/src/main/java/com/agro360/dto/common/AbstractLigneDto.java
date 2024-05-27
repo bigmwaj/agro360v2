@@ -44,7 +44,7 @@ public abstract class AbstractLigneDto extends AbstractDto {
 	private String variantCode;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TYPE_LIGNE", nullable = false, updatable = false, length = LigneTypeEnumVd.COLUMN_LENGTH)
+	@Column(name = "TYPE_LIGNE", nullable = false, updatable = false)
 	private LigneTypeEnumVd typeLigne;
 
 	@Column(name = "DESCRIPTION", length = 128)

@@ -7,6 +7,7 @@ import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanIndexPage } from '../../common/bean/bean.index.page';
 import { EditTabComponent } from './edit.tab.component';
 import { ListTabComponent } from './list.tab.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
     standalone: true,
@@ -15,7 +16,8 @@ import { ListTabComponent } from './list.tab.component';
         SharedModule,
         MatTabsModule,
         ListTabComponent,
-        EditTabComponent
+        EditTabComponent,
+        MatDividerModule
     ],
     selector: 'achat-vente-commande-index-page',
     templateUrl: './index.page.component.html'

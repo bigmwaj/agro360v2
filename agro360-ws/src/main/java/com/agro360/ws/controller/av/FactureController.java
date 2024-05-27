@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agro360.bo.bean.av.FactureBean;
 import com.agro360.bo.bean.av.FactureSearchBean;
 import com.agro360.bo.bean.av.FactureTaxeBean;
-import com.agro360.bo.bean.av.PaiementBean;
+import com.agro360.bo.bean.av.PaiementParamBean;
 import com.agro360.bo.bean.av.ReglementBean;
 import com.agro360.form.av.FactureForm;
 import com.agro360.operation.context.ClientContext;
@@ -112,7 +112,7 @@ public class FactureController extends AbstractController {
 	
 	@PostMapping("/encaisser")
 	public ResponseEntity<ModelMap> encaisserAction(@RequestParam String factureCode,
-			@RequestBody @Validated List<PaiementBean> paiements) {
+			@RequestBody @Validated List<PaiementParamBean> paiements) {
 		var ctx = getClientContext();
 		var model = new ModelMap();
 		

@@ -37,6 +37,10 @@ public class InventaireDto extends AbstractDto {
 	private String variantCode;
 
 	@ManyToOne()
+	@JoinColumn(name = "UNITE_STOCK_CODE")
+	private UniteDto uniteStock;
+
+	@ManyToOne()
 	@JoinColumn(name = "UNITE_ACHAT_CODE")
 	private UniteDto uniteAchat;
 

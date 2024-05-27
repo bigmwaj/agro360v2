@@ -10,8 +10,6 @@ public enum ReceptionStatusEnumVd {
     APPR("Approuvée"),
     ANNL("Annulée");
 	
-	public static final int COLUMN_LENGTH = 4;
-	
 	private final String libelle;
     
     ReceptionStatusEnumVd(String libelle) {
