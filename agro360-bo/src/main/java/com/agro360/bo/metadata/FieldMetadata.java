@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.agro360.bo.message.Message;
-import com.agro360.bo.utils.TypeScriptInfos;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -38,7 +37,6 @@ public class FieldMetadata<T> {
 		this.valueOptions = valueOptions;
 	}
 
-	@TypeScriptInfos(type = "T")
 	private T value;
 
 	private String valueI18n;

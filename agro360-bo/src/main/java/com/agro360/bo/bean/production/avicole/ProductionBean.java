@@ -7,7 +7,6 @@ import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.bo.metadata.FieldMetadata;
-import com.agro360.bo.utils.TypeScriptInfos;
 import com.agro360.vd.common.ClientOperationEnumVd;
 import com.agro360.vd.production.avicole.ProductionCategoryEnumVd;
 
@@ -16,7 +15,6 @@ import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-@TypeScriptInfos(igroreSuperClassParam = true)
 public class ProductionBean extends AbstractBean {
 
 	private static final long serialVersionUID = 1647090333349627006L;

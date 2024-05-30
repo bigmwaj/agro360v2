@@ -21,7 +21,6 @@
 	<properties>
 		<project.version>1.0.0</project.version>
 		<java.version>17</java.version>
-		<spring-cloud.version>2021.0.0</spring-cloud.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
@@ -51,8 +50,9 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-		<!-- Pour permettre que l'application recharge au changement des fichiers html -->
+
+		<!-- Pour permettre que l'application recharge au changement des
+		fichiers html -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -60,27 +60,40 @@
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
-	
-	<dependencyManagement>
-	</dependencyManagement>
-	
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-		        <configuration>
-		          	<skipTests>true</skipTests>
-		        </configuration>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
 			</plugin>
+			
 		</plugins>
+		
+		<pluginManagement>
+			<plugins>
+				<plugin>
+				<groupId>com.agro360</groupId>
+				<artifactId>bean2ts-maven-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<packageSource>com.agro360</packageSource>
+				</configuration>
+			</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>

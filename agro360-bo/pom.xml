@@ -13,6 +13,7 @@
 	<artifactId>agro360-bo</artifactId>
 	<name>agro360-bo</name>
 	<description>Business Object Project</description>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -24,6 +25,30 @@
 			<artifactId>agro360-dto</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
 	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.agro360</groupId>
+				<artifactId>bean2ts-maven-plugin</artifactId>
+				<configuration>
+					<packageSource>com.agro360</packageSource>
+					<targetDir>${project.basedir}/../agro360-web-client/src/app/</targetDir>
+					<fieldTypeMap>
+						<com.agro360.bo.metadata.FieldMetadata.value>T</com.agro360.bo.metadata.FieldMetadata.value>
+					</fieldTypeMap>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>com.agro360</groupId>
+						<artifactId>agro360-bo</artifactId>
+						<version>${project.version}</version>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+	
 </project>

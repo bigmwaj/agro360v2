@@ -3,41 +3,41 @@ import { ClientOperationEnumVd } from './vd.common';
 import { LigneTypeEnumVd } from './vd.av';
 import { ArticleBean, UniteBean } from './bean.stock';
 
+export interface AbstractSearchBean extends AbstractBean {
+	pageIndex: number;
+	createBtn: FieldMetadata<any>;
+	pageSize: number;
+	pageSizeOptions: any;
+	length: number;
+};
+
 export interface AbstractStatusTrackingBean<T> extends AbstractBean {
-	changeStatusBtn: FieldMetadata<string>;
+	changeStatusBtn: FieldMetadata<any>;
 	statusDate: FieldMetadata<any>;
+};
+
+export interface AbstractLigneBean<E> extends AbstractBean {
+	unite: UniteBean;
+	typeLigne: FieldMetadata<LigneTypeEnumVd>;
+	article: ArticleBean;
+	variantCode: FieldMetadata<any>;
+	prixTotal: FieldMetadata<any>;
+	quantite: FieldMetadata<any>;
+	numero: FieldMetadata<any>;
+	description: FieldMetadata<any>;
+	prixUnitaire: FieldMetadata<any>;
+	ligneId: FieldMetadata<any>;
 };
 
 export interface AbstractBean {
 	editable: boolean;
-	deleteBtn: FieldMetadata<string>;
 	__TYPE__: string;
+	saveBtn: FieldMetadata<any>;
 	label: string;
+	deleteBtn: FieldMetadata<any>;
 	rootBean: AbstractBean;
 	visible: boolean;
 	ownerBean: AbstractBean;
 	valueChanged: boolean;
-	saveBtn: FieldMetadata<string>;
 	action: ClientOperationEnumVd;
-};
-
-export interface AbstractLigneBean extends AbstractBean {
-	variantCode: FieldMetadata<string>;
-	unite: UniteBean;
-	quantite: FieldMetadata<number>;
-	prixUnitaire: FieldMetadata<number>;
-	typeLigne: FieldMetadata<LigneTypeEnumVd>;
-	article: ArticleBean;
-	numero: FieldMetadata<number>;
-	description: FieldMetadata<string>;
-	ligneId: FieldMetadata<number>;
-	prixTotal: FieldMetadata<number>;
-};
-
-export interface AbstractSearchBean extends AbstractBean {
-	createBtn: FieldMetadata<string>;
-	pageIndex: number;
-	pageSize: number;
-	pageSizeOptions: any;
-	length: number;
 };
