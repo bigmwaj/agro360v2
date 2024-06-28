@@ -22,28 +22,28 @@ import lombok.EqualsAndHashCode;
 public class CycleDto extends AbstractStatusTrackingDto<CycleStatusEnumVd> {
 
 	@Id
-	@Column(name = "CYCLE_CODE", updatable = false, length = 16)
+	@Column(name = "CYCLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String cycleCode;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "STATUS", nullable = false, length = CycleStatusEnumVd.COLUMN_LENGTH)
+	@Column(name = "STATUS")
 	private CycleStatusEnumVd status;
 
 	@ManyToOne()
-	@JoinColumn(name = "MAGASIN_CODE", nullable = false)
+	@JoinColumn(name = "MAGASIN_CODE")
 	private MagasinDto magasin;
 
-	@Column(name = "DESCRIPTION", length = 64)
+	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "RACE_PLAN", nullable = false)
+	@Column(name = "RACE_PLAN")
 	private String racePlanifiee;
 
-	@Column(name = "QTE_PLAN", nullable = false)
+	@Column(name = "QTE_PLAN")
 	private Double quantitePlanifiee;
 
-	@Column(name = "DATE_PLAN", nullable = false)
+	@Column(name = "DATE_PLAN")
 	private LocalDate datePlanifiee;
 	
 	@Column(name = "RACE_EFF")
@@ -54,5 +54,4 @@ public class CycleDto extends AbstractStatusTrackingDto<CycleStatusEnumVd> {
 
 	@Column(name = "DATE_EFF")
 	private LocalDate dateEffective;
-
 }

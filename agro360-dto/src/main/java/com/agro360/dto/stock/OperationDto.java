@@ -49,7 +49,7 @@ public class OperationDto extends AbstractDto {
 	@Column(name = "QUANTITE")
 	private Double quantite;
 	
-	@Column(name = "PRIX_UNITAIRE", precision = 16, scale = 4)
+	@Column(name = "PRIX_UNITAIRE")
 	private BigDecimal prixUnitaire;
 
 }

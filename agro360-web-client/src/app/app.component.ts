@@ -32,5 +32,4 @@ export class AppComponent  {
     logoutAction() {
         this.dialog.open(LogoutDialogComponent);
     }
-
 }

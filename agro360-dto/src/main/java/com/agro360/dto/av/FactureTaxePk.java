@@ -9,11 +9,11 @@ import lombok.Data;
 public class FactureTaxePk implements Serializable {
 
 	private static final long serialVersionUID = -7643918247496362428L;
-	
+
 	private String factureCode;
-	
+
 	private String taxe;
-	
+
 	public FactureTaxePk() {
 		super();
 	}
@@ -30,8 +30,7 @@ public class FactureTaxePk implements Serializable {
 			return false;
 		}
 		var pk = (FactureTaxePk) obj;
-		return Objects.equals(factureCode, pk.factureCode)
-				&& Objects.equals(taxe, pk.taxe);
+		return Objects.equals(factureCode, pk.factureCode) && Objects.equals(taxe, pk.taxe);
 	}
 
 	@Override

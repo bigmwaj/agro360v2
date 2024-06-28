@@ -1,0 +1,9 @@
+<h2 mat-dialog-title>Connexion expirée!</h2>
+<mat-dialog-content class="mb-0 pb-0">
+    <input-text-field [field]="username"></input-text-field>
+    <input-password-field [field]="password"></input-password-field>   
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3">
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button cdkFocusInitial (click)="authenticate()">Connexion</button>
+</mat-dialog-actions>

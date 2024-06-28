@@ -64,7 +64,6 @@ export class EditTabComponent extends BeanEditTab<CommandeBean> implements OnIni
 
         this.setupPartnerLookupConfig();
     }
-
     
     private setupPartnerLookupConfig(){
         const http = this.http;

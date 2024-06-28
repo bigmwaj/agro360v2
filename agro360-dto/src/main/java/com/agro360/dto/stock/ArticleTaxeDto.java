@@ -17,16 +17,16 @@ import lombok.EqualsAndHashCode;
 @Entity(name = "STOCK_TBL_ARTICLE_TAXE")
 @IdClass(ArticleTaxePk.class)
 public class ArticleTaxeDto extends AbstractDto {
-	
+
 	@Id
 	@Column(name = "ARTICLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String articleCode;
-	
+
 	@Id
 	@EqualsAndHashCode.Include()
 	@JoinColumn(name = "TAXE_CODE")
 	@ManyToOne()
 	private TaxeDto taxe;
-	
+
 }

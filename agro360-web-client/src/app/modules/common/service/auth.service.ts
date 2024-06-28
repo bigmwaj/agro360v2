@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SessionStorageService } from '../store/session-storage.service';
 
 @Injectable({
@@ -13,21 +13,20 @@ export class AuthService {
     // store the URL so we can redirect after logging in
     redirectUrl: string | null = null;
     
-    get credentials():string{
+    get credentials() :string{
         const cred = this.sessionService.token;
         if( cred ){
             return cred;
         }
-        throw Error("Credential non défini");
+        throw Error("Credential non défini!");
     }
-
-    
+   
     get csrf():string{
         const cred = this.sessionService.csrf;
         if( cred ){
             return cred;
         }
-        throw Error("Csrf non défini");
+        throw Error("Csrf non défini!");
     }
     
     constructor(
@@ -36,9 +35,10 @@ export class AuthService {
         private sessionService: SessionStorageService
     ){}
     
-    login(credentials : {username:string, password:string}) : Observable<boolean> | boolean {
-        const auth = 'Basic ' + btoa(credentials.username + ':' + credentials.password)
-        this.http.get("", {
+    login(credentials : {username:string, password:string}, callback: null | (() => any) = null) : Subscription {
+        const auth = 'Basic ' + btoa(credentials.username + ':' + credentials.password);
+
+        return this.http.get("", {
             observe:'response', 
             withCredentials: true, 
             headers:{'Authorization': auth}
@@ -49,24 +49,31 @@ export class AuthService {
             const csrfToken = document.cookie.replace(/(?:(?:^|.*;\s*)XSRF-TOKEN\s*\=\s*([^;]*).*$)|^.*$/, '$1');
             this.sessionService.csrf = csrfToken;
 
-            if( this.redirectUrl ){
-                this.router.navigateByUrl(this.redirectUrl)
-                this.redirectUrl = null;
+            if( null == callback ){
+                if( this.redirectUrl ){
+                    this.router.navigateByUrl(this.redirectUrl)
+                    this.redirectUrl = null;
+                }else{
+                    this.router.navigateByUrl("/home")
+                }
             }else{
-                this.router.navigateByUrl("/home")
+                callback()
             }
         });
-        return true;
     }
 
     logout() {
         this.http.post("logout", {
            // withCredentials: true, 
-        }).subscribe(() => {});
+        }).subscribe();
         
         this.sessionService.clear();
-        this.router.navigateByUrl("/login");
+        this.redirectToLoginPage()
     }  
+
+    redirectToLoginPage(){        
+        this.router.navigateByUrl("/login");
+    }
 
     isLogged():boolean{
         return this.sessionService.isSessionAlive()

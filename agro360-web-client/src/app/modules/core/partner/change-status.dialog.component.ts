@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { PartnerBean } from 'src/app/backed/bean.core';
 import { Message } from 'src/app/backed/message';
@@ -22,7 +22,6 @@ export class ChangeStatusDialogComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: {partnerCode: string},
         private http: HttpClient,
-        public dialog: MatDialog,
         private ui: UIService,
         public dialogRef: MatDialogRef<ChangeStatusDialogComponent>) { }
 
@@ -38,7 +37,7 @@ export class ChangeStatusDialogComponent implements OnInit {
         this.http.post(`core/partner`, this.bean)           
         .pipe(map((e: any) => <any>e))
         .subscribe(data => {
-            this.dialog.closeAll();
+            this.dialogRef.close(data.record);
             this.ui.displayFlashMessage(<Array<Message>>data.messages);
         })
     }

@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "AV_TBL_FACTURE")
 public class FactureDto extends AbstractStatusTrackingDto<FactureStatusEnumVd> {
-	
+
 	@Id
 	@Column(name = "FACTURE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
@@ -34,11 +34,11 @@ public class FactureDto extends AbstractStatusTrackingDto<FactureStatusEnumVd> {
 	@ManyToOne()
 	@JoinColumn(name = "PARTNER_CODE", updatable = false)
 	private PartnerDto partner;
-	
+
 	@ManyToOne()
 	@JoinColumn(name = "COMMANDE_CODE", updatable = false)
 	private CommandeDto commande;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "FACTURE_TYPE", updatable = false)
 	private FactureTypeEnumVd type;
@@ -50,19 +50,19 @@ public class FactureDto extends AbstractStatusTrackingDto<FactureStatusEnumVd> {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "CUMUL_PAIEMENT", precision = 16, scale = 4)
+	@Column(name = "CUMUL_PAIEMENT")
 	private BigDecimal cumulPaiement;
-	
-	@Column(name = "TAXE", precision = 16, scale = 4)
+
+	@Column(name = "TAXE")
 	private BigDecimal taxe;
-	
-	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4)
+
+	@Column(name = "PRIX_TOTAL_HT")
 	private BigDecimal prixTotalHT;
-	
-	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4)
+
+	@Column(name = "PRIX_TOTAL")
 	private BigDecimal prixTotal;
-	
-	@Column(name = "REMISE", precision = 16, scale = 4)
+
+	@Column(name = "REMISE")
 	private BigDecimal remise;
 
 }

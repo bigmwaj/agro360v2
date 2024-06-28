@@ -8,10 +8,6 @@ import { Observable, map } from 'rxjs';
 })
 export class CommonService {
 
-    getBackendUrl(url: string): string {
-        return `${url}`;
-    }
-
     encodeQuery(searchQuery: any): HttpParams {
         let objJsonStr = JSON.stringify(searchQuery);
         let objJsonB64 = btoa(objJsonStr);

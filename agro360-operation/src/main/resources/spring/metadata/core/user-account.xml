@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="user-account/password">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="16"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>
+	</bean>							
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="user-account/passwordBis">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="16"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>
+	</bean>							
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="user-account/status">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanChangeStatusOperation"/>
+			</list>
+		</property>
+	</bean>				
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="user-account/statusDate">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanChangeStatusOperation"/>
+			</list>
+		</property>
+	</bean>		
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="user-account/lang">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+	</bean>			
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="user-account/magasin">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+	</bean>			
+		
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="user-account/roles">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation"/>
+			</list>
+		</property>
+		<property name="required">
+			<list>
+				<ref bean="IsTrue" />						
+			</list>
+		</property>
+	</bean>			
+    
+    <bean name="core/user-account" class="com.agro360.operation.metadata.BeanMetadataConfig">
+		<property name="fields">
+			<map merge="true">
+				<entry key="password" value-ref="user-account/password"/>
+				<entry key="passwordBis" value-ref="user-account/passwordBis"/>
+				<entry key="status" value-ref="user-account/status"/>
+				<entry key="statusDate" value-ref="user-account/statusDate"/>
+				<entry key="roles" value-ref="user-account/roles"/>
+				<entry key="lang" value-ref="user-account/lang"/>
+				<entry key="magasin" value-ref="user-account/magasin"/>
+			</map>
+		</property>
+	</bean>
+</beans>

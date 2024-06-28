@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.agro360.bo.bean.core.PartnerBean;
 import com.agro360.bo.bean.core.PartnerSearchBean;
 import com.agro360.form.core.PartnerForm;
+import com.agro360.service.common.ServiceValidationException;
 import com.agro360.service.core.PartnerService;
 import com.agro360.ws.controller.common.AbstractController;
 
@@ -35,7 +36,9 @@ public class PartnerController extends AbstractController {
 			@RequestBody 
 			@Validated Optional<PartnerSearchBean> searchBean) {	
 		var sb = searchBean.orElse(new PartnerSearchBean());
-		var model = new ModelMap(RECORDS_MODEL_KEY, service.search(getClientContext(), sb));
+		var ctx = getClientContext();
+		var records = service.search(ctx, sb);
+		var model = new ModelMap(RECORDS_MODEL_KEY, form.initSearchResultBeans(ctx, records));
 		model.addAttribute(RECORDS_TOTAL_KEY, sb.getLength());		
 		return ResponseEntity.ok(model);
 	}
@@ -57,7 +60,6 @@ public class PartnerController extends AbstractController {
 
 	@GetMapping(DELETE_FORM_RN)
 	public ResponseEntity<PartnerBean> getDeleteFormAction(@RequestParam String partnerCode) {
-		System.out.println("PartnerController.getDeleteFormAction() " + partnerCode);
 		return ResponseEntity.ok(form.initDeleteFormBean(getClientContext(), partnerCode));
 	}
 
@@ -72,26 +74,33 @@ public class PartnerController extends AbstractController {
 		var ctx = getClientContext();
 		var model = new ModelMap();
 		
-		service.save(ctx, bean);
-		switch (action) {
-		case CREATE:
-		case UPDATE:
-			bean = form.initEditFormBean(ctx, bean.getPartnerCode().getValue());	
-			model.addAttribute(RECORD_MODEL_KEY, bean);
-			break;
+		try {
 			
-		case CHANGE_STATUS:
-			bean = service.findPartner(ctx, bean.getPartnerCode().getValue());
-			var beans = Collections.singletonList(bean);
-			beans = form.initSearchResultBeans(ctx, beans);
-			model.addAttribute(RECORD_MODEL_KEY, beans.get(0));
-			break;
+			service.save(ctx, bean);
+			
+			switch (action) {
+			case CREATE:
+			case UPDATE:
+				bean = form.initEditFormBean(ctx, bean.getPartnerCode().getValue());	
+				model.addAttribute(RECORD_MODEL_KEY, bean);
+				break;
+				
+			case CHANGE_STATUS:
+				bean = service.findPartner(ctx, bean.getPartnerCode().getValue());
+				var beans = Collections.singletonList(bean);
+				beans = form.initSearchResultBeans(ctx, beans);
+				model.addAttribute(RECORD_MODEL_KEY, beans.get(0));
+				break;
 
-		default:
-			break;
+			default:
+				break;
+			}
+			model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
+			return ResponseEntity.ok(model);
+		} catch (ServiceValidationException e) {
+			getLogger().error(e.getLocalizedMessage(), e);
+			model.addAttribute(RECORD_MODEL_KEY, bean);
+			return ResponseEntity.badRequest().body(model);
 		}
-		model.addAttribute(MESSAGES_MODEL_KEY, ctx.getMessages());
-		return ResponseEntity.ok(model);
 	}
-
 }

@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.agro360.bo.bean.common.AbstractBean;
-import com.agro360.bo.bean.common.IHierarchieBean;
+import com.agro360.bo.bean.common.IHierarchyBean;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.rule.common.AbstractRule;
 
@@ -83,19 +83,19 @@ public class BeanMetadataConfig {
 				var childBean = bean.getBean(beanConfig.getKey());
 				childBean.setOwnerBean(bean);
 				childBean.setRootBean(bean.getRootBean());
-				if( !(childBean instanceof IHierarchieBean )) {
+				if( !(childBean instanceof IHierarchyBean )) {
 					var msgTpl = "Le type d'objet hierarchisé doit être %s";
-					throw new RuntimeException(String.format(msgTpl, IHierarchieBean.class));
+					throw new RuntimeException(String.format(msgTpl, IHierarchyBean.class));
 				}
-				applyHierarchieMetadata(ctx, beanConfig.getValue(), (IHierarchieBean)childBean, isOwnerEditable);
+				applyHierarchieMetadata(ctx, beanConfig.getValue(), (IHierarchyBean)childBean, isOwnerEditable);
 			}
 		}
 	}
 	
-	private void applyHierarchieMetadata(ClientContext ctx, BeanMetadataConfig config, IHierarchieBean bean, boolean isOwnerEditable) {
+	private void applyHierarchieMetadata(ClientContext ctx, BeanMetadataConfig config, IHierarchyBean bean, boolean isOwnerEditable) {
 		config.applyMetadata(ctx, (AbstractBean)bean, isOwnerEditable);
 		for (var child : bean.getChildren()) {
-			applyHierarchieMetadata(ctx, config, (IHierarchieBean)child, isOwnerEditable);
+			applyHierarchieMetadata(ctx, config, (IHierarchyBean)child, isOwnerEditable);
 		}
 	}
 

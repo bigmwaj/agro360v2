@@ -4,65 +4,65 @@ import { AbstractBean, AbstractStatusTrackingBean } from './bean.common';
 import { ArticleBean, MagasinBean, UniteBean, VariantBean } from './bean.stock';
 
 export interface MetadataBean extends AbstractBean {
-	type: FieldMetadata<any>;
-	metadataCode: FieldMetadata<any>;
-	value: FieldMetadata<any>;
-	description: FieldMetadata<any>;
-	libelle: FieldMetadata<any>;
-	ordre: FieldMetadata<any>;
+	metadataCode: FieldMetadata<string>;
+	value: FieldMetadata<string>;
+	type: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+	ordre: FieldMetadata<number>;
+	libelle: FieldMetadata<string>;
 };
 
-export interface JourneeBean extends AbstractBean {
-	journee: FieldMetadata<any>;
-	numeroJournee: FieldMetadata<any>;
-	productions: Array<ProductionBean>;
-	cycle: CycleBean;
-};
-
-export interface ProductionBean extends AbstractBean {
-	commentaire: FieldMetadata<any>;
-	unite: UniteBean;
-	numeroJournee: FieldMetadata<any>;
-	category: FieldMetadata<ProductionCategoryEnumVd>;
-	article: ArticleBean;
-	productionId: FieldMetadata<any>;
-	quantite: FieldMetadata<any>;
-	variant: VariantBean;
-	uniteLibelle: FieldMetadata<any>;
-	alveole: FieldMetadata<any>;
-};
-
-export interface CycleSearchBean extends AbstractBean {
-	cycleCode: FieldMetadata<any>;
-	magasin: FieldMetadata<any>;
-	status: FieldMetadata<CycleStatusEnumVd>;
+export interface ProductionSearchBean extends AbstractBean {
+	cycleCode: FieldMetadata<string>;
 };
 
 export interface OperationSearchBean extends AbstractBean {
 	phase: FieldMetadata<PhaseEnumVd>;
-	cycleCode: FieldMetadata<any>;
+	cycleCode: FieldMetadata<string>;
 	rubrique: FieldMetadata<RubriqueEnumVd>;
-};
-
-export interface ProductionSearchBean extends AbstractBean {
-	cycleCode: FieldMetadata<any>;
 };
 
 export interface JourneeSearchBean extends AbstractBean {
 	journee: FieldMetadata<any>;
-	cycleCode: FieldMetadata<any>;
+	cycleCode: FieldMetadata<string>;
+};
+
+export interface CycleSearchBean extends AbstractBean {
+	cycleCode: FieldMetadata<string>;
+	magasin: FieldMetadata<string>;
+	status: FieldMetadata<CycleStatusEnumVd>;
+};
+
+export interface ProductionBean extends AbstractBean {
+	unite: UniteBean;
+	category: FieldMetadata<ProductionCategoryEnumVd>;
+	quantite: FieldMetadata<number>;
+	productionId: FieldMetadata<number>;
+	commentaire: FieldMetadata<string>;
+	numeroJournee: FieldMetadata<number>;
+	article: ArticleBean;
+	uniteLibelle: FieldMetadata<string>;
+	variant: VariantBean;
+	alveole: FieldMetadata<number>;
 };
 
 export interface CycleBean extends AbstractStatusTrackingBean<CycleStatusEnumVd> {
 	magasin: MagasinBean;
-	racePlanifiee: FieldMetadata<any>;
-	quantiteEffective: FieldMetadata<any>;
-	raceEffective: FieldMetadata<any>;
-	cycleCode: FieldMetadata<any>;
-	description: FieldMetadata<any>;
+	cycleCode: FieldMetadata<string>;
+	racePlanifiee: FieldMetadata<string>;
+	quantiteEffective: FieldMetadata<number>;
+	raceEffective: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+	quantitePlanifiee: FieldMetadata<number>;
 	dateEffective: FieldMetadata<any>;
 	datePlanifiee: FieldMetadata<any>;
 	metadatas: Array<MetadataBean>;
 	status: FieldMetadata<CycleStatusEnumVd>;
-	quantitePlanifiee: FieldMetadata<any>;
+};
+
+export interface JourneeBean extends AbstractBean {
+	journee: FieldMetadata<any>;
+	numeroJournee: FieldMetadata<number>;
+	productions: Array<ProductionBean>;
+	cycle: CycleBean;
 };

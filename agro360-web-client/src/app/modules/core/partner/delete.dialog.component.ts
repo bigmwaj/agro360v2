@@ -22,7 +22,6 @@ export class DeleteDialogComponent implements OnInit {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: {partnerCode: string},
         private http: HttpClient,
-        public dialog: MatDialog,
         private ui: UIService,
         public dialogRef: MatDialogRef<DeleteDialogComponent>) { }
 
@@ -38,7 +37,7 @@ export class DeleteDialogComponent implements OnInit {
         this.http.post(`core/partner`, this.bean)
         .pipe(map((e: any) => <any>e))
         .subscribe(data => {
-            this.dialog.closeAll();
+            this.dialogRef.close(data.record);
             this.ui.displayFlashMessage(<Array<Message>>data.messages);
         })
     }

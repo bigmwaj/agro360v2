@@ -23,9 +23,9 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "AV_TBL_COMMANDE")
 public class CommandeDto extends AbstractStatusTrackingDto<CommandeStatusEnumVd> {
-	
+
 	@Id
-	@Column(name = "COMMANDE_CODE", updatable = false, length = 16)
+	@Column(name = "COMMANDE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String commandeCode;
 
@@ -35,11 +35,11 @@ public class CommandeDto extends AbstractStatusTrackingDto<CommandeStatusEnumVd>
 	@ManyToOne()
 	@JoinColumn(name = "PARTNER_CODE", updatable = false)
 	private PartnerDto partner;
-	
+
 	@ManyToOne()
 	@JoinColumn(name = "MAGASIN_CODE", updatable = false)
 	private MagasinDto magasin;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "COMMANDE_TYPE", updatable = false)
 	private CommandeTypeEnumVd type;
@@ -51,19 +51,19 @@ public class CommandeDto extends AbstractStatusTrackingDto<CommandeStatusEnumVd>
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@Column(name = "CUMUL_PAIEMENT", precision = 16, scale = 4)
+	@Column(name = "CUMUL_PAIEMENT")
 	private BigDecimal cumulPaiement;
-	
-	@Column(name = "TAXE", precision = 16, scale = 4)
+
+	@Column(name = "TAXE")
 	private BigDecimal taxe;
 
-	@Column(name = "REMISE", precision = 16, scale = 4)
+	@Column(name = "REMISE")
 	private BigDecimal remise;
-	
-	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4)
+
+	@Column(name = "PRIX_TOTAL_HT")
 	private BigDecimal prixTotalHT;
-	
-	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4)
+
+	@Column(name = "PRIX_TOTAL")
 	private BigDecimal prixTotal;
 
 }

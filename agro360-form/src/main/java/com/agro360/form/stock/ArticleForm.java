@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.agro360.bo.bean.common.AbstractBean;
 import com.agro360.bo.bean.finance.TaxeBean;
 import com.agro360.bo.bean.stock.ArticleBean;
+import com.agro360.bo.bean.stock.ArticleCategoryBean;
 import com.agro360.bo.bean.stock.ArticleSearchBean;
 import com.agro360.bo.bean.stock.ArticleTaxeBean;
 import com.agro360.bo.bean.stock.UniteBean;
@@ -21,6 +23,7 @@ import com.agro360.form.common.AbstractForm;
 import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.finance.TaxeOperation;
+import com.agro360.operation.logic.stock.ArticleCategoryOperation;
 import com.agro360.operation.logic.stock.ArticleOperation;
 import com.agro360.operation.logic.stock.ArticleTaxeOperation;
 import com.agro360.operation.logic.stock.ConversionOperation;
@@ -51,6 +54,9 @@ public class ArticleForm extends AbstractForm{
 	
 	@Autowired
 	private TaxeOperation taxeService;
+	
+	@Autowired
+	private ArticleCategoryOperation partnerCategoryOperation;
 
 	@MetadataBeanName("stock/article-search")
 	public ArticleSearchBean initSearchFormBean(ClientContext ctx) {
@@ -67,6 +73,9 @@ public class ArticleForm extends AbstractForm{
 		initArticleTaxesForm(ctx, bean);
 		
 		initUniteOption(ctx, bean);
+		
+		var root = partnerCategoryOperation.findAssignmentsFromLeaves(ctx, bean);
+		bean.setCategoriesHierarchie(root);
 		
 		return bean;
 	}
@@ -91,6 +100,22 @@ public class ArticleForm extends AbstractForm{
 		bean.setAction(ClientOperationEnumVd.CREATE);
 		bean.getVariants().stream().forEach(AbstractBean.setActionToCreate);
 		bean.getConversions().stream().forEach(AbstractBean.setActionToCreate);
+		
+		Function<ArticleBean, ArticleCategoryBean> getPartnerCat;
+		getPartnerCat = e -> partnerCategoryOperation.findAssignmentsFromLeaves(ctx, e);
+		
+		Supplier<ArticleCategoryBean> getDefaultCat;
+		getDefaultCat = () -> partnerCategoryOperation.findRoot(ctx, 5);
+		
+		var root = copyFrom.map(this::simpleMap).map(getPartnerCat).orElseGet(getDefaultCat);
+		bean.setCategoriesHierarchie(root);
+		
+		return bean;
+	}
+	
+	private ArticleBean simpleMap(String articleCode) {
+		var bean = new ArticleBean();
+		bean.getArticleCode().setValue(articleCode);
 		
 		return bean;
 	}

@@ -1,6 +1,47 @@
-<div class="row">
-    <div class="col-3">        
+<div *ngIf="bean">
+    <div class="mt-4 pt-4">
+        <h4 class="block-header">
+            Photo de profil
+        </h4>
+        <div>
+            <img src="http://eliteproservice-consulting.ca.s3-website.ca-central-1.amazonaws.com/logo.png" width="100px" alt="#">
+        </div>
     </div>
-    <div class="col-6">
+    <div class="mt-4 pt-4">
+        <h4 class="block-header">
+            Informations personnelles
+        </h4>
+        <div class="row">
+            <div class="col-4">
+                <input-text-field [field]="bean.partner.partnerCode"></input-text-field>
+            </div>
+            <div class="col-4">
+                <select-one-field [field]="bean.partner.type"></select-one-field>
+            </div>
+            <div class="col-4">
+                <input-text-field [field]="bean.partner.partnerName"></input-text-field>
+            </div>
+        </div> 
+        <div class="row">
+            <div class="col-6">
+                <input-text-field [field]="bean.partner.phone"></input-text-field>
+            </div>
+            <div class="col-6">
+                <input-text-field [field]="bean.partner.email"></input-text-field>
+            </div>
+        </div>  
+    </div>
+    <div class="mt-4 pt-4">
+        <h4 class="block-header">
+            Informations de session
+        </h4>
+        <div class="row">
+            <div class="col-4">
+                <input-text-field [field]="bean.lang"></input-text-field>
+            </div>
+            <div class="col-4">
+                <input-text-field [field]="bean.magasin"></input-text-field>
+            </div>
+        </div>
     </div>
 </div>

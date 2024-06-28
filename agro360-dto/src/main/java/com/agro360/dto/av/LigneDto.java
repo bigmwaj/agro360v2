@@ -24,13 +24,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Entity(name = "AV_TBL_LIGNE")
 public class LigneDto extends AbstractDto {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "LIGNE_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long ligneId;
-	
+
 	@Column(name = "COMMANDE_CODE", updatable = false)
 	private String commandeCode;
 
@@ -55,33 +55,33 @@ public class LigneDto extends AbstractDto {
 	@Column(name = "QUANTITE")
 	private Double quantite;
 
-	@Column(name = "PRIX_UNITAIRE", precision = 16, scale = 4)
+	@Column(name = "PRIX_UNITAIRE")
 	private BigDecimal prixUnitaire;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "REMISE_TYPE")
 	private RemiseTypeEnumVd remiseType;
 
 	@Column(name = "REMISE_TAUX")
 	private Double remiseTaux;
-	
-	@Column(name = "REMISE_MONTANT", precision = 16, scale = 4)
+
+	@Column(name = "REMISE_MONTANT")
 	private BigDecimal remiseMontant;
 
 	@Column(name = "REMISE_RAISON", length = 256)
 	private String remiseRaison;
-	
-	@Column(name = "TAXE", precision = 16, scale = 4)
+
+	@Column(name = "TAXE")
 	private BigDecimal taxe;
-	
-	@Column(name = "PRIX_TOTAL_HT", precision = 16, scale = 4)
+
+	@Column(name = "PRIX_TOTAL_HT")
 	private BigDecimal prixTotalHT;
-	
+
 	// prixTotalHT - remise + taxes
-	@Column(name = "PRIX_TOTAL", precision = 16, scale = 4)
+	@Column(name = "PRIX_TOTAL")
 	private BigDecimal prixTotal;
-	
-	@Column(name = "REMISE", precision = 16, scale = 4)
+
+	@Column(name = "REMISE")
 	private BigDecimal remise;
 
 }

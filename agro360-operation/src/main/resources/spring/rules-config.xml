@@ -34,15 +34,6 @@
 		<constructor-arg ref="IsBeanChangeStatusOperation"/>
     </bean>
     
-    <bean class="com.agro360.operation.rule.core.IsRootCategory" name="IsRootCategory"/>
-    <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsRootCategory">
-		<constructor-arg ref="IsRootCategory"/>
-    </bean>
-    <bean class="com.agro360.operation.rule.core.IsPartnerRootCategory" name="IsPartnerRootCategory"/>
-    <bean class="com.agro360.operation.rule.common.NotRule" name="Not_IsPartnerRootCategory">
-		<constructor-arg ref="IsPartnerRootCategory"/>
-    </bean>
-    
     <bean class="com.agro360.operation.rule.stock.inventaire.IsAjusterQuantiteRule" name="inventaire/IsAjusterQuantite"/>
     <bean class="com.agro360.operation.rule.stock.inventaire.IsModifierPrixVenteRule" name="inventaire/IsModifierPrixVente"/>
     <bean class="com.agro360.operation.rule.stock.inventaire.IsModifierUniteAchatRule" name="inventaire/IsModifierUniteAchat"/>

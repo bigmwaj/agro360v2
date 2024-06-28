@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "FIN_TBL_RUBRIQUE")
-public class RubriqueDto extends AbstractDto{
+public class RubriqueDto extends AbstractDto {
 
 	@Id
 	@Column(name = "RUBRIQUE_CODE", updatable = false)
@@ -26,7 +26,7 @@ public class RubriqueDto extends AbstractDto{
 
 	@Column(name = "DESCRIPTION")
 	private String description;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TRANSACTION_TYPE", updatable = false)
 	private TransactionTypeEnumVd type;

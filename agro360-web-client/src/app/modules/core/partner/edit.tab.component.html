@@ -1,39 +1,86 @@
 <section class="p-3">
     <div class="row">
-        <div class="col-9">
-            <h4>
-                Détails du partenaire
+        <div class="col-sm-9">
+            <h4 class="block-header">
+                Informations de base
             </h4>
-            <div class="row">
-                <div class="col-3">
-                    <input-text-field [field]="bean.partnerCode"></input-text-field>
-                    <select-one-field [field]="bean.type"></select-one-field>
-                    <select-one-field [field]="bean.status"></select-one-field>
-                </div>
-        
-                <div class="col-3">
-                    <input-text-field [field]="bean.name"></input-text-field>
-                    <input-text-field [field]="bean.firstName"></input-text-field>
-                    <input-text-field [field]="bean.lastName"></input-text-field>
-                </div>
-        
-                <div class="col-3">
-                    <input-text-field [field]="bean.title"></input-text-field>
-                    <input-tel-field [field]="bean.phone"></input-tel-field>
-                    <input-email-field [field]="bean.email"></input-email-field>
-                </div>
-                <div class="col-3">
-                    <input-text-field [field]="bean.country"></input-text-field>
-                    <input-text-field [field]="bean.city"></input-text-field>
-                    <input-textarea-field [field]="bean.address"></input-textarea-field>
+            <div class="mt-3">
+                <div class="row">
+                    <div class="col-xl-4">
+                        <input-text-field [field]="bean.partnerCode" label="Code du partenaire"></input-text-field>
+                    </div>
+                    <div class="col-xl-4">
+                        <select-one-field [field]="bean.type"></select-one-field>
+                    </div>
+                    <div class="col-xl-4">
+                        <select-one-field [field]="bean.status"></select-one-field>
+                    </div>
                 </div>
             </div>
+            <div class="mt-4 pt-4">
+                <h4 class="block-header">
+                    Contact principal
+                </h4>
+                <div class="row">
+                    <div class="col-xl-6">
+                        <input-text-field [field]="bean.firstName"></input-text-field>
+                    </div>
+                    <div class="col-xl-6">
+                        <input-text-field [field]="bean.lastName"></input-text-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-4">
+                        <select-one-field [field]="bean.title"></select-one-field>
+                    </div>
+                    <div class="col-xl-4">
+                        <input-tel-field [field]="bean.phone"></input-tel-field>
+                    </div>
+                    <div class="col-xl-4">
+                        <input-email-field [field]="bean.email"></input-email-field>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4 pt-4">
+                <div class="row">
+                    <div class="col-xl-4">
+                        <h4 class="block-header">
+                            Informations de la société
+                        </h4>
+                        <div class="row">
+                            <div class="col-12">
+                                <input-text-field [field]="bean.name"></input-text-field>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="col-xl-8">
+                        <h4 class="block-header">
+                            Adresse du partenaire
+                        </h4>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div>
+                                    <input-text-field [field]="bean.country"></input-text-field>
+                                </div>
+                                <div>
+                                    <input-text-field [field]="bean.city"></input-text-field>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <input-textarea-field [field]="bean.address"></input-textarea-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
         </div>
-        <div class="col-3">
-            <h4>
-                Catégories
-            </h4>
-            <core-partner-category-block [bean]="bean.categoriesHierarchie"></core-partner-category-block>
+        <div class="col-sm-3">
+            <div>
+                <h4 class="block-header">
+                    Catégories du partenaire
+                </h4>
+                <core-partner-category-block [bean]="bean.categoriesHierarchie"></core-partner-category-block>
+            </div>
         </div>
     </div>
     

@@ -70,8 +70,10 @@ public class CommandeOperation extends AbstractOperation<CommandeDto, String> {
 		var dto = new CommandeDto();
 		
 		var partnerCode = bean.getPartner().getPartnerCode().getValue();
-		var partner = partnerDao.getReferenceById(partnerCode);
-		dto.setPartner(partner);
+		if( partnerCode != null && partnerDao.existsById(partnerCode) ) {
+			var partner = partnerDao.getReferenceById(partnerCode);
+			dto.setPartner(partner);
+		}
 		
 		var magasinCode = bean.getMagasin().getMagasinCode().getValue();
 		var magasin = magasinDao.getReferenceById(magasinCode);

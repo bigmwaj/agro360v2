@@ -1,0 +1,294 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/**
+ * Start utilities
+ */
+.block-header{
+    @extend .fw-bold;
+    @extend .border-bottom;
+    @extend .border-primary;
+    @extend .border-2;
+}
+
+table .table-col-100,
+table .table-col-100 .mat-mdc-form-field{
+    width: 100px;
+}
+
+table .table-col-150,
+table .table-col-150 .mat-mdc-form-field{
+    width: 150px;
+}
+
+/**
+ * End utilities
+ */
+
+ /* **************************************************
+  * Start Core Module                                *
+  * **************************************************/
+
+ /**
+  * Start: Partner application
+  */
+.category-hirarchy .input-checkbox.input-field{
+    margin-bottom: 0 !important;
+ }
+ .category-hirarchy .input-checkbox.input-field .mdc-checkbox{
+    margin: 1px !important;
+ }
+ /**
+  * End Partner application
+  */
+
+  /* **************************************************
+   * Start Core Module                                *
+   * **************************************************/
+
+.main-content{
+    max-width: 1200px;
+    margin: auto;
+}
+.mat-mdc-tab-body-wrapper{
+    @extend .pt-3;
+}
+table {
+    width: 100%;
+}
+
+.menu-spacer {
+    flex: 1 1 auto;
+}
+.main-menu a{
+    color: #000;
+    text-decoration: none;
+}
+
+form-field+form-field {
+    margin-left: 8px;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.search-form{
+    width: 320px;
+    min-height: 500px;
+}
+
+.search-result{
+    min-height: 500px;
+}
+
+.bordered-cell {
+    border: 1px solid #e0e0e0;
+}
+
+.input-field {
+    width: 100%;
+}
+
+.edit-bean-form .input-field {
+    width: 100%;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.beans-table.editable th {
+    text-align: center;
+}
+
+.beans-table.editable th,
+.beans-table.editable td {
+    padding: 2px 2px 0 2px;
+}
+
+.beans-table.editable .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+.beans-table.editable .mat-mdc-text-field-wrapper {
+    padding: 0 5px;
+}
+
+.beans-table.editable .mat-mdc-form-field-infix {
+    padding: 10px 0px;
+    min-height: auto;
+}
+
+table.cycle-metadatas td.mat-column-value {
+    width: 100px;
+    text-align: center;
+}
+table.cycle-metadatas td.mat-column-value .mat-mdc-form-field-infix {
+    width: 50px;
+    text-align: center;
+}
+table.cycle-metadatas td.mat-column-value .mat-mdc-form-field-infix  input{
+    text-align: center;
+}
+.example-tree-invisible {
+    display: none;
+}
+
+.example-tree ul,
+.example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+
+
+
+
+/*
+   * This padding sets alignment of the nested nodes.
+   */
+.example-tree .mat-nested-tree-node div[role=group] {
+    padding-left: 40px;
+}
+
+/*
+   * Padding for leaf nodes.
+   * Leaf nodes need to have padding so as to align with other non-leaf nodes
+   * under the same parent.
+   */
+.example-tree div[role=group]>.mat-tree-node {
+    padding-left: 40px;
+}
+
+.productions-wrapper{
+    width: 1024px;
+}
+
+.productions .quantite-input{
+    width: 60px;
+}
+
+.productions .quantite-input input{
+    text-align: center;
+}
+.productions .mat-mdc-form-field-infix{
+    padding:3px 0 !important;
+}
+.field-button{margin-left: -48px;}
+
+.ajust-wrapper{
+    width: 120px;
+}
+.ajust-wrapper .input-ajust{
+    width: 70px;
+}
+
+.search-toolbar .mat-mdc-form-field-bottom-align{ display: none;}
+
+td .input-checkbox.input-field{
+    margin-bottom: 0 !important;
+}
+
+table.commande-ligne .mat-column-article,
+table.commande-ligne .mat-column-article .mat-mdc-form-field{
+    width: 140px;
+}
+
+table.commande-ligne .mat-column-variantCode,
+table.commande-ligne .mat-column-variantCode .mat-mdc-form-field{
+    width: 160px;
+}
+
+table.commande-ligne .mat-column-unite,
+table.commande-ligne .mat-column-unite .mat-mdc-form-field{
+    width: 140px;
+}
+
+table.commande-ligne .mat-column-quantite,
+table.commande-ligne .mat-column-quantite .mat-mdc-form-field{
+    width: 70px;
+}
+
+table.commande-ligne .mat-column-prixUnitaire,
+table.commande-ligne .mat-column-prixUnitaire .mat-mdc-form-field{
+    width: 100px;
+}
+
+table.commande-ligne .mat-column-prixTotal,
+table.commande-ligne .mat-column-prixTotal .mat-mdc-form-field{
+    width: 120px;
+}
+
+table.commande-ligne .mat-column-type,
+table.commande-ligne .mat-column-type .mat-mdc-form-field{
+    width: 120px;
+}
+
+table.commande-ligne .mat-column-remise,
+table.commande-ligne .mat-column-remise .mat-mdc-form-field{
+    width: 90px;
+}
+
+table.commande-ligne .mat-column-taxe,
+table.commande-ligne .mat-column-taxe .mat-mdc-form-field{
+    width: 90px;
+}
+
+table.post-commande .mat-column-status,
+table.post-commande .mat-column-status .mat-mdc-form-field{
+    width: 100px;
+}
+
+table.post-commande .mat-column-date,
+table.post-commande .mat-column-date .mat-mdc-form-field{
+    width: 150px;
+}
+
+table.post-commande .mat-column-quantite-commande,
+table.post-commande .mat-column-quantite-commande .mat-mdc-form-field,
+table.post-commande .mat-column-quantite,
+table.post-commande .mat-column-quantite .mat-mdc-form-field{
+    width: 70px;
+}
+
+table.post-commande .mat-column-prixUnitaire-commande,
+table.post-commande .mat-column-prixUnitaire-commande .mat-mdc-form-field,
+table.post-commande .mat-column-prixUnitaire,
+table.post-commande .mat-column-prixUnitaire .mat-mdc-form-field{
+    width: 70px;
+}
+
+table.post-commande .mat-column-unite-commande,
+table.post-commande .mat-column-unite-commande .mat-mdc-form-field,
+table.post-commande .mat-column-unite,
+table.post-commande .mat-column-unite .mat-mdc-form-field{
+    width: 100px;
+}
+
+table.post-commande .mat-column-raison,
+table.post-commande .mat-column-raison .mat-mdc-form-field{
+    width: 100px;
+}
+
+autocomplete-field mat-form-field{
+    width: 100%;
+}

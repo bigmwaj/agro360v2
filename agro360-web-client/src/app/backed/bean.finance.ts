@@ -3,81 +3,81 @@ import { CompteTypeEnumVd, TransactionStatusEnumVd, TransactionTypeEnumVd } from
 import { AbstractBean, AbstractSearchBean, AbstractStatusTrackingBean } from './bean.common';
 import { PartnerBean } from './bean.core';
 
-export interface CompteBean extends AbstractBean {
-	compteCode: FieldMetadata<any>;
-	type: FieldMetadata<CompteTypeEnumVd>;
-	partner: PartnerBean;
-	description: FieldMetadata<any>;
-	libelle: FieldMetadata<any>;
-};
-
-export interface TransactionSearchBean extends AbstractSearchBean {
-	statusIn: FieldMetadata<any>;
-	rubrique: FieldMetadata<any>;
-	compte: FieldMetadata<any>;
-	type: FieldMetadata<TransactionTypeEnumVd>;
-	rubriqueBtn: FieldMetadata<any>;
-	compteBtn: FieldMetadata<any>;
-	dateDebut: FieldMetadata<any>;
-	dateFin: FieldMetadata<any>;
-	partner: FieldMetadata<any>;
-	transfertBtn: FieldMetadata<any>;
-	transactionCode: FieldMetadata<any>;
-	taxeBtn: FieldMetadata<any>;
-};
-
-export interface RubriqueBean extends AbstractBean {
-	type: FieldMetadata<TransactionTypeEnumVd>;
-	rubriqueCode: FieldMetadata<any>;
-	description: FieldMetadata<any>;
-	libelle: FieldMetadata<any>;
-};
-
-export interface TaxeBean extends AbstractBean {
-	taux: FieldMetadata<any>;
-	description: FieldMetadata<any>;
-	taxeCode: FieldMetadata<any>;
-};
-
-export interface EtatCompteBean extends AbstractBean {
-	compte: CompteBean;
-	solde: FieldMetadata<any>;
+export interface EtatRecetteDepenseBean {
+	depense: FieldMetadata<number>;
+	semaine: FieldMetadata<any>;
+	recette: FieldMetadata<number>;
 };
 
 export interface TransactionBean extends AbstractStatusTrackingBean<TransactionStatusEnumVd> {
 	type: FieldMetadata<TransactionTypeEnumVd>;
-	montant: FieldMetadata<any>;
+	transactionCode: FieldMetadata<string>;
 	status: FieldMetadata<TransactionStatusEnumVd>;
 	rubrique: RubriqueBean;
-	note: FieldMetadata<any>;
+	montant: FieldMetadata<number>;
 	partner: PartnerBean;
 	date: FieldMetadata<any>;
-	transactionCode: FieldMetadata<any>;
+	note: FieldMetadata<string>;
 	compte: CompteBean;
 };
 
-export interface EtatRecetteDepenseBean {
-	depense: FieldMetadata<any>;
-	recette: FieldMetadata<any>;
-	semaine: FieldMetadata<any>;
+export interface CompteSearchBean extends AbstractSearchBean {
+	compte: FieldMetadata<string>;
+	type: FieldMetadata<CompteTypeEnumVd>;
+	partner: FieldMetadata<string>;
+};
+
+export interface TaxeBean extends AbstractBean {
+	taxeCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+	taux: FieldMetadata<number>;
+};
+
+export interface RubriqueSearchBean extends AbstractSearchBean {
+	rubrique: FieldMetadata<string>;
+	type: FieldMetadata<TransactionTypeEnumVd>;
+};
+
+export interface TransactionSearchBean extends AbstractSearchBean {
+	statusIn: FieldMetadata<any>;
+	rubrique: FieldMetadata<string>;
+	compte: FieldMetadata<string>;
+	rubriqueBtn: FieldMetadata<string>;
+	type: FieldMetadata<TransactionTypeEnumVd>;
+	transactionCode: FieldMetadata<string>;
+	compteBtn: FieldMetadata<string>;
+	dateDebut: FieldMetadata<any>;
+	taxeBtn: FieldMetadata<string>;
+	dateFin: FieldMetadata<any>;
+	partner: FieldMetadata<string>;
+	transfertBtn: FieldMetadata<string>;
 };
 
 export interface TransfertBean extends AbstractBean {
 	compteSource: CompteBean;
 	compteCible: CompteBean;
-	montant: FieldMetadata<any>;
-	note: FieldMetadata<any>;
+	montant: FieldMetadata<number>;
 	partner: PartnerBean;
 	date: FieldMetadata<any>;
+	note: FieldMetadata<string>;
 };
 
-export interface CompteSearchBean extends AbstractSearchBean {
-	compte: FieldMetadata<any>;
+export interface CompteBean extends AbstractBean {
 	type: FieldMetadata<CompteTypeEnumVd>;
-	partner: FieldMetadata<any>;
+	compteCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+	partner: PartnerBean;
+	libelle: FieldMetadata<string>;
 };
 
-export interface RubriqueSearchBean extends AbstractSearchBean {
-	rubrique: FieldMetadata<any>;
+export interface RubriqueBean extends AbstractBean {
 	type: FieldMetadata<TransactionTypeEnumVd>;
+	rubriqueCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+	libelle: FieldMetadata<string>;
+};
+
+export interface EtatCompteBean extends AbstractBean {
+	solde: FieldMetadata<number>;
+	compte: CompteBean;
 };

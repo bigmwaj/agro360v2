@@ -17,23 +17,23 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "FIN_TBL_COMPTE")
-public class CompteDto extends AbstractDto{
+public class CompteDto extends AbstractDto {
 
 	@Id
 	@Column(name = "COMPTE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String compteCode;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "COMPTE_TYPE", updatable = false)
 	private CompteTypeEnumVd type;
-	
+
 	@Column(name = "LIBELLE")
 	private String libelle;
 
 	@Column(name = "DESCRIPTION")
 	private String description;
-	
+
 	@ManyToOne()
 	@JoinColumn(name = "PARTNER_CODE", updatable = false)
 	private PartnerDto partner;

@@ -9,13 +9,13 @@ import lombok.Data;
 public class LigneTaxePk implements Serializable {
 
 	private static final long serialVersionUID = -7643918247496362428L;
-	
+
 	private String commandeCode;
-	
+
 	private Long ligneId;
 
 	private String taxe;
-	
+
 	public LigneTaxePk() {
 		super();
 	}
@@ -31,7 +31,7 @@ public class LigneTaxePk implements Serializable {
 		super();
 		this.commandeCode = dto.getCommandeCode();
 		this.ligneId = dto.getLigneId();
-		if( dto.getTaxe() != null ) {
+		if (dto.getTaxe() != null) {
 			this.taxe = dto.getTaxe().getTaxeCode();
 		}
 	}
@@ -42,8 +42,7 @@ public class LigneTaxePk implements Serializable {
 			return false;
 		}
 		var pk = (LigneTaxePk) obj;
-		return Objects.equals(commandeCode, pk.commandeCode)
-				&& Objects.equals(ligneId, pk.ligneId)
+		return Objects.equals(commandeCode, pk.commandeCode) && Objects.equals(ligneId, pk.ligneId)
 				&& Objects.equals(taxe, pk.taxe);
 	}
 

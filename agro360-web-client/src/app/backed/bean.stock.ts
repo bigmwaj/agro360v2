@@ -1,118 +1,131 @@
 import { FieldMetadata } from './metadata';
 import { ArticleTypeEnumVd, OperationTypeEnumVd } from './vd.stock';
-import { AbstractBean, AbstractSearchBean } from './bean.common';
+import { AbstractBean, AbstractCategoryBean, AbstractHierarchisableBean, AbstractSearchBean } from './bean.common';
+import { PartnerBean } from './bean.core';
 import { TaxeBean } from './bean.finance';
 
-export interface ImportInventaireBean extends AbstractBean {
-	uniteAchat: UniteBean;
-	magasin: MagasinBean;
-	prixUnitaireVenteAjust: FieldMetadata<any>;
-	article: ArticleBean;
-	defPrixVenteBtn: FieldMetadata<any>;
-	ajustQteBtn: FieldMetadata<any>;
-	alias: FieldMetadata<any>;
-	quantite: FieldMetadata<any>;
-	quantiteAjust: FieldMetadata<any>;
-	uniteStock: UniteBean;
-	uniteVente: UniteBean;
-	variantCode: FieldMetadata<any>;
-	prixUnitaireVente: FieldMetadata<any>;
-	prixUnitaireAchat: FieldMetadata<any>;
-	variantDescription: FieldMetadata<any>;
+export interface UniteBean extends AbstractBean {
+	description: FieldMetadata<string>;
+	uniteCode: FieldMetadata<string>;
+};
+
+export interface ArticleCategoryBean extends AbstractHierarchisableBean<CategoryBean> {
+
 };
 
 export interface MagasinBean extends AbstractBean {
-	description: FieldMetadata<any>;
-	magasinCode: FieldMetadata<any>;
+	magasinCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+};
+
+export interface InventaireBean extends AbstractBean {
+	variantCode: FieldMetadata<string>;
+	uniteAchat: UniteBean;
+	magasin: MagasinBean;
+	quantite: FieldMetadata<number>;
+	article: ArticleBean;
+	alias: FieldMetadata<string>;
+	prixUnitaireAchat: FieldMetadata<number>;
+	prixUnitaireVente: FieldMetadata<number>;
+	uniteStock: UniteBean;
+	prixUnitaireVenteAjust: FieldMetadata<number>;
+	uniteVente: UniteBean;
+	variantDescription: FieldMetadata<string>;
+	defPrixVenteBtn: FieldMetadata<string>;
+	quantiteAjust: FieldMetadata<number>;
+	ajustQteBtn: FieldMetadata<string>;
+};
+
+export interface MagasinSearchBean extends AbstractSearchBean {
+	magasinCode: FieldMetadata<string>;
+	createMagasinBtn: FieldMetadata<string>;
+	uniteBtn: FieldMetadata<string>;
+};
+
+export interface ArticleSearchBean extends AbstractSearchBean {
+	articleCode: FieldMetadata<string>;
+	uniteBtn: FieldMetadata<string>;
+	type: FieldMetadata<ArticleTypeEnumVd>;
 };
 
 export interface ConversionBean extends AbstractBean {
 	unite: UniteBean;
-	facteur: FieldMetadata<any>;
+	facteur: FieldMetadata<number>;
+};
+
+export interface CategoryBean extends AbstractCategoryBean<CategoryBean> {
+
+};
+
+export interface ImportInventaireBean extends AbstractBean {
+	variantCode: FieldMetadata<string>;
+	uniteAchat: UniteBean;
+	magasin: MagasinBean;
+	quantite: FieldMetadata<number>;
+	article: ArticleBean;
+	alias: FieldMetadata<string>;
+	prixUnitaireAchat: FieldMetadata<number>;
+	prixUnitaireVente: FieldMetadata<number>;
+	uniteStock: UniteBean;
+	prixUnitaireVenteAjust: FieldMetadata<number>;
+	uniteVente: UniteBean;
+	variantDescription: FieldMetadata<string>;
+	defPrixVenteBtn: FieldMetadata<string>;
+	quantiteAjust: FieldMetadata<number>;
+	ajustQteBtn: FieldMetadata<string>;
 };
 
 export interface VariantBean extends AbstractBean {
-	variantCode: FieldMetadata<any>;
-	articleCode: FieldMetadata<any>;
-	alias: FieldMetadata<any>;
-	description: FieldMetadata<any>;
-};
-
-export interface ArticleSearchBean extends AbstractSearchBean {
-	uniteBtn: FieldMetadata<any>;
-	articleCode: FieldMetadata<any>;
-	type: FieldMetadata<ArticleTypeEnumVd>;
-};
-
-export interface InventaireSearchBean extends AbstractSearchBean {
-	uniteBtn: FieldMetadata<any>;
-	articleCode: FieldMetadata<any>;
-	createInventaireBtn: FieldMetadata<any>;
-	magasinCode: FieldMetadata<any>;
-};
-
-export interface MagasinSearchBean extends AbstractSearchBean {
-	createMagasinBtn: FieldMetadata<any>;
-	uniteBtn: FieldMetadata<any>;
-	magasinCode: FieldMetadata<any>;
-};
-
-export interface ArticleTaxeBean extends AbstractBean {
-	taxe: TaxeBean;
-	selected: FieldMetadata<any>;
-};
-
-export interface InventaireBean extends AbstractBean {
-	uniteAchat: UniteBean;
-	magasin: MagasinBean;
-	prixUnitaireVenteAjust: FieldMetadata<any>;
-	article: ArticleBean;
-	defPrixVenteBtn: FieldMetadata<any>;
-	ajustQteBtn: FieldMetadata<any>;
-	alias: FieldMetadata<any>;
-	quantite: FieldMetadata<any>;
-	quantiteAjust: FieldMetadata<any>;
-	uniteStock: UniteBean;
-	uniteVente: UniteBean;
-	variantCode: FieldMetadata<any>;
-	prixUnitaireVente: FieldMetadata<any>;
-	prixUnitaireAchat: FieldMetadata<any>;
-	variantDescription: FieldMetadata<any>;
-};
-
-export interface UniteBean extends AbstractBean {
-	uniteCode: FieldMetadata<any>;
-	description: FieldMetadata<any>;
+	variantCode: FieldMetadata<string>;
+	alias: FieldMetadata<string>;
+	articleCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
 };
 
 export interface UniteSearchBean extends AbstractSearchBean {
-	uniteCode: FieldMetadata<any>;
+	uniteCode: FieldMetadata<string>;
+};
+
+export interface InventaireSearchBean extends AbstractSearchBean {
+	magasinCode: FieldMetadata<string>;
+	articleCode: FieldMetadata<string>;
+	createInventaireBtn: FieldMetadata<string>;
+	uniteBtn: FieldMetadata<string>;
 };
 
 export interface OperationBean extends AbstractBean {
-	inventaireAvant: FieldMetadata<any>;
-	variantCode: FieldMetadata<any>;
-	operationId: FieldMetadata<any>;
-	articleCode: FieldMetadata<any>;
-	quantite: FieldMetadata<any>;
+	variantCode: FieldMetadata<string>;
+	inventaireAvant: FieldMetadata<number>;
+	magasinCode: FieldMetadata<string>;
+	quantite: FieldMetadata<number>;
+	prixUnitaire: FieldMetadata<number>;
+	articleCode: FieldMetadata<string>;
 	date: FieldMetadata<any>;
-	prixUnitaire: FieldMetadata<any>;
+	operationId: FieldMetadata<number>;
 	type: FieldMetadata<OperationTypeEnumVd>;
-	magasinCode: FieldMetadata<any>;
+};
+
+export interface ArticleTaxeBean extends AbstractBean {
+	selected: FieldMetadata<boolean>;
+	taxe: TaxeBean;
 };
 
 export interface ArticleBean extends AbstractBean {
 	unite: UniteBean;
 	conversions: Array<ConversionBean>;
+	distributeur: PartnerBean;
+	categoriesHierarchie: ArticleCategoryBean;
 	taxes: Array<ArticleTaxeBean>;
 	variants: Array<VariantBean>;
-	articleCode: FieldMetadata<any>;
-	description: FieldMetadata<any>;
+	fabriquant: PartnerBean;
+	articleCode: FieldMetadata<string>;
+	description: FieldMetadata<string>;
+	origine: FieldMetadata<string>;
 	type: FieldMetadata<ArticleTypeEnumVd>;
 };
 
 export interface OperationSearchBean extends AbstractSearchBean {
-	variantCode: FieldMetadata<any>;
-	articleCode: FieldMetadata<any>;
-	magasinCode: FieldMetadata<any>;
+	variantCode: FieldMetadata<string>;
+	magasinCode: FieldMetadata<string>;
+	articleCode: FieldMetadata<string>;
 };

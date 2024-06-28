@@ -46,7 +46,7 @@ export class IndexPageComponent implements OnInit {
 
     resetSearchFormAction() {
         this.http
-            .get(this.service.getBackendUrl(`production/avicole/journee/search-form`))
+            .get(`production/avicole/journee/search-form`)
             .subscribe(data => {
                 this.searchForm = <JourneeSearchBean>data;                
                 if( this.cycleCode ){
@@ -65,7 +65,7 @@ export class IndexPageComponent implements OnInit {
         let queryParams = new HttpParams();
         queryParams = queryParams.append('q', objJsonB64);
         this.http
-            .get(this.service.getBackendUrl(`production/avicole/journee`), { params: queryParams })
+            .get(`production/avicole/journee`, { params: queryParams })
             .pipe(map((data: any) => data))
             .subscribe(data => {
                 this.bean = data.records[0]
@@ -73,7 +73,7 @@ export class IndexPageComponent implements OnInit {
     }
 
     saveAction() {
-        this.http.post(this.service.getBackendUrl(`production/avicole/journee`), BeanTools.reviewBeanAction(this.bean))
+        this.http.post(`production/avicole/journee`, BeanTools.reviewBeanAction(this.bean))
         .pipe(map((e: any) => <any>e))
         .subscribe(data => {
             this.ui.displayFlashMessage(<Array<Message>>data.messages);

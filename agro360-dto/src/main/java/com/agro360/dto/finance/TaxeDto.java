@@ -12,12 +12,12 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "FIN_TBL_TAXE")
 public class TaxeDto extends AbstractDto {
-	
+
 	@Id
 	@Column(name = "TAXE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String taxeCode;
-	
+
 	@Column(name = "TAUX")
 	private Double taux;
 
