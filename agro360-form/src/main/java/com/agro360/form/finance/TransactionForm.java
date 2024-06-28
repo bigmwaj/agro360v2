@@ -22,7 +22,6 @@ import com.agro360.bo.bean.finance.TransactionBean;
 import com.agro360.bo.bean.finance.TransactionSearchBean;
 import com.agro360.bo.bean.finance.TransfertBean;
 import com.agro360.bo.mapper.FinanceMapper;
-import com.agro360.bo.utils.Constants;
 import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.core.PartnerOperation;
@@ -138,7 +137,7 @@ public class TransactionForm {
 	
 	private void initPartnerOption(ClientContext ctx, Consumer<Map<Object, String>> valueOptionsSetter) {
 		Function<PartnerBean, Object> codeFn = e -> e.getPartnerCode().getValue();
-		Function<PartnerBean, String> libelleFn = Constants.PARTNER_BEAN2STR;		
+		Function<PartnerBean, String> libelleFn = PartnerBean::partnerBean2String;		
 		
 		var options = partnerOperation.findPartnersByCriteria(ctx, new PartnerSearchBean())
 				.stream().collect(Collectors.toMap(codeFn, libelleFn));

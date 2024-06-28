@@ -1,55 +1,55 @@
 import { FieldMetadata } from './metadata';
-import { PartnerStatusEnumVd, PartnerTypeEnumVd, UserAccountStatusEnumVd } from './vd.core';
-import { AbstractBean, AbstractSearchBean, AbstractStatusTrackingBean } from './bean.common';
-
-export interface PartnerCategoryBean extends AbstractBean {
-	categoryCode: FieldMetadata<any>;
-	children: Array<PartnerCategoryBean>;
-	description: FieldMetadata<any>;
-	selected: FieldMetadata<any>;
-};
-
-export interface PartnerSearchBean extends AbstractSearchBean {
-	email: FieldMetadata<any>;
-	city: FieldMetadata<any>;
-	categoryBtn: FieldMetadata<any>;
-	createPartnerBtn: FieldMetadata<any>;
-	statusIn: FieldMetadata<PartnerStatusEnumVd>;
-	type: FieldMetadata<PartnerTypeEnumVd>;
-	partnerCode: FieldMetadata<any>;
-	phone: FieldMetadata<any>;
-};
+import { PartnerStatusEnumVd, PartnerTypeEnumVd, UserAccountStatusEnumVd, UserLangEnumVd } from './vd.core';
+import { AbstractCategoryBean, AbstractHierarchisableBean, AbstractSearchBean, AbstractStatusTrackingBean } from './bean.common';
 
 export interface UserAccountBean extends AbstractStatusTrackingBean<UserAccountStatusEnumVd> {
 	passwordLastChangeDate: FieldMetadata<any>;
+	magasin: FieldMetadata<string>;
+	passwordBis: FieldMetadata<string>;
 	partner: PartnerBean;
 	roles: FieldMetadata<any>;
-	magasin: FieldMetadata<any>;
-	password: FieldMetadata<any>;
-	lang: FieldMetadata<any>;
+	lang: FieldMetadata<UserLangEnumVd>;
 	status: FieldMetadata<UserAccountStatusEnumVd>;
+	password: FieldMetadata<string>;
 };
 
-export interface CategoryBean extends AbstractBean {
-	categoryCode: FieldMetadata<any>;
-	children: Array<CategoryBean>;
-	parentCategoryCode: FieldMetadata<any>;
-	description: FieldMetadata<any>;
+export interface PartnerSearchBean extends AbstractSearchBean {
+	phone: FieldMetadata<string>;
+	city: FieldMetadata<string>;
+	partnerCode: FieldMetadata<string>;
+	categoryBtn: FieldMetadata<string>;
+	email: FieldMetadata<string>;
+	createPartnerBtn: FieldMetadata<string>;
+	statusIn: FieldMetadata<PartnerStatusEnumVd>;
+	type: FieldMetadata<PartnerTypeEnumVd>;
 };
 
 export interface PartnerBean extends AbstractStatusTrackingBean<PartnerStatusEnumVd> {
-	email: FieldMetadata<any>;
-	firstName: FieldMetadata<any>;
+	phone: FieldMetadata<string>;
+	city: FieldMetadata<string>;
+	updatePasswordBtn: FieldMetadata<string>;
 	categoriesHierarchie: PartnerCategoryBean;
+	partnerCode: FieldMetadata<string>;
+	lastName: FieldMetadata<string>;
+	address: FieldMetadata<string>;
 	status: FieldMetadata<PartnerStatusEnumVd>;
-	country: FieldMetadata<any>;
-	partnerCode: FieldMetadata<any>;
-	address: FieldMetadata<any>;
-	city: FieldMetadata<any>;
-	partnerName: FieldMetadata<any>;
-	lastName: FieldMetadata<any>;
-	name: FieldMetadata<any>;
-	title: FieldMetadata<any>;
+	createAccountBtn: FieldMetadata<string>;
+	country: FieldMetadata<string>;
+	deactivateAccountBtn: FieldMetadata<string>;
+	updateAccountBtn: FieldMetadata<string>;
+	activateAccountBtn: FieldMetadata<string>;
+	firstName: FieldMetadata<string>;
+	email: FieldMetadata<string>;
+	title: FieldMetadata<string>;
 	type: FieldMetadata<PartnerTypeEnumVd>;
-	phone: FieldMetadata<any>;
+	partnerName: FieldMetadata<string>;
+	name: FieldMetadata<string>;
+};
+
+export interface PartnerCategoryBean extends AbstractHierarchisableBean<CategoryBean> {
+
+};
+
+export interface CategoryBean extends AbstractCategoryBean<CategoryBean> {
+
 };

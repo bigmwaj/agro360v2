@@ -15,7 +15,6 @@ import com.agro360.bo.bean.core.PartnerSearchBean;
 import com.agro360.bo.bean.finance.CompteBean;
 import com.agro360.bo.bean.finance.CompteSearchBean;
 import com.agro360.bo.mapper.FinanceMapper;
-import com.agro360.bo.utils.Constants;
 import com.agro360.form.common.MetadataBeanName;
 import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.core.PartnerOperation;
@@ -61,7 +60,7 @@ public class CompteForm {
 	
 	private Map<Object, String> getPartnerOption(ClientContext ctx) {
 		Function<PartnerBean, Object> codeFn = e -> e.getPartnerCode().getValue();
-		Function<PartnerBean, String> libelleFn = Constants.PARTNER_BEAN2STR;		
+		Function<PartnerBean, String> libelleFn = PartnerBean::partnerBean2String;		
 		
 		return partnerOperation.findPartnersByCriteria(ctx, new PartnerSearchBean())
 				.stream().collect(Collectors.toMap(codeFn, libelleFn));

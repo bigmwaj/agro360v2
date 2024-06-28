@@ -19,15 +19,15 @@ public class MetadataDto extends AbstractDto {
 
 	@Id
 	@ManyToOne()
-	@JoinColumn(name = "CYCLE_CODE", nullable = false, updatable = false)
+	@JoinColumn(name = "CYCLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private CycleDto cycle;
 	
 	@Id
-	@Column(name = "METADATA_CODE", length = 64, nullable = false, updatable = false)
+	@Column(name = "METADATA_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String metadataCode;
 
-	@Column(name = "VALUE", length = 512, nullable = false)
+	@Column(name = "METADATA_VALUE")
 	private String value;
 }

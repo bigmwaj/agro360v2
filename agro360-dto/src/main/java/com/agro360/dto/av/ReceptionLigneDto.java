@@ -22,13 +22,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "AV_TBL_RECEPTION")
 public class ReceptionLigneDto extends AbstractStatusTrackingDto<ReceptionStatusEnumVd> {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "RECEPTION_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long receptionId;
-	
+
 	@Column(name = "COMMANDE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String commandeCode;
@@ -43,7 +43,7 @@ public class ReceptionLigneDto extends AbstractStatusTrackingDto<ReceptionStatus
 	@Enumerated(EnumType.STRING)
 	@Column(name = "STATUS")
 	private ReceptionStatusEnumVd status;
-	
+
 	@ManyToOne()
 	@JoinColumn(name = "UNITE_CODE")
 	private UniteDto unite;

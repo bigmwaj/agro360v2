@@ -57,6 +57,27 @@
 		</property>
 	</bean>			
 		
+    <bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="article/origine">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation"/>
+			</list>
+		</property>
+		<property name="maxLength">
+			<list>
+				<bean class="com.agro360.operation.metadata.ConstraintConfig">
+					<property name="actions">
+						<list>
+							<bean class="com.agro360.operation.action.common.SetValueAction">
+								<constructor-arg value="32"/>											
+							</bean>
+						</list>
+					</property>
+				</bean>							
+			</list>
+		</property>
+	</bean>			
+		
 	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="article/type">
 		<property name="editable">
 			<list>
@@ -90,11 +111,28 @@
 			</list>
 		</property>
 	</bean>				
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="article/fabriquant.partnerCode">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation"/>
+			</list>
+		</property>
+	</bean>				
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="article/distributeur.partnerCode">
+		<property name="editable">
+			<list>
+				<ref bean="IsBeanCreateOrUpdateOperation"/>
+			</list>
+		</property>
+	</bean>				
 					
     <bean name="stock/article" class="com.agro360.operation.metadata.BeanMetadataConfig">
 		<property name="fields">
 			<map>
 				<entry key="articleCode" value-ref="article/articleCode"/>
+				<entry key="origine" value-ref="article/origine"/>
 				<entry key="type" value-ref="article/type"/>
 				<entry key="description" value-ref="article/description"/>
 				<entry key="deleteBtn" value-ref="article/deleteBtn"/>
@@ -111,6 +149,24 @@
 						 </property>
 					 </bean>
 				 </entry>
+				 <entry key="fabriquant">
+					 <bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+					 	<property name="fields">
+							 <map>
+								 <entry key="partnerCode" value-ref="article/fabriquant.partnerCode"/>
+							 </map>
+						 </property>
+					 </bean>
+				 </entry>
+				 <entry key="distributeur">
+					 <bean class="com.agro360.operation.metadata.BeanMetadataConfig">
+					 	<property name="fields">
+							 <map>
+								 <entry key="partnerCode" value-ref="article/distributeur.partnerCode"/>
+							 </map>
+						 </property>
+					 </bean>
+				 </entry>
 			</map>
 		</property>
 		<property name="beanList">
@@ -118,6 +174,11 @@
 				<entry key="taxes" value-ref="stock/taxe" />
 				<entry key="variants" value-ref="stock/variant" />
 				<entry key="conversions" value-ref="stock/conversion" />
+			</map>
+		</property>
+		<property name="hierarchie">
+			<map>
+				<entry key="categoriesHierarchie" value-ref="stock/article-category" />
 			</map>
 		</property>
 	</bean>

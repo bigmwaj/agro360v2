@@ -14,7 +14,7 @@
 	<name>agro360-dao</name>
 	<description>Data Acccess Object Project</description>
 	<dependencies>
-		
+
 		<dependency>
 			<groupId>com.agro360</groupId>
 			<artifactId>agro360-dto</artifactId>
@@ -24,6 +24,12 @@
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

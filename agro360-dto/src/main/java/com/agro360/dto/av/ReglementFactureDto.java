@@ -17,16 +17,16 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Entity(name = "AV_TBL_REG_FACT")
 public class ReglementFactureDto extends AbstractDto {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "REG_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long reglementId;
-	
+
 	@Column(name = "FACTURE_CODE", updatable = false)
 	private String factureCode;
-	
+
 	@ManyToOne()
 	@JoinColumn(name = "TRANSACTION_CODE", updatable = false)
 	private TransactionDto transaction;

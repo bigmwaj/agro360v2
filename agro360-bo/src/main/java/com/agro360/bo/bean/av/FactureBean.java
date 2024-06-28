@@ -36,7 +36,7 @@ public class FactureBean extends AbstractStatusTrackingBean<FactureStatusEnumVd>
 
 	private FieldMetadata<BigDecimal> remise = new FieldMetadata<>("Remise Totale");
 
-	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total - Remise + Taxes");
+	private FieldMetadata<BigDecimal> prixTotal = new FieldMetadata<>("Prix Total");
 
 	private FieldMetadata<BigDecimal> taxe = new FieldMetadata<>("Taxe");
 

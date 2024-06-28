@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content>
+    <div *ngIf="bean" class="mt-1">
+        <div class="row">
+            <div class="col-4">
+                <input-text-field [field]="bean.partner.partnerCode"></input-text-field>
+            </div>
+            <div class="col-4">
+                <select-one-field [field]="bean.partner.type"></select-one-field>
+            </div>
+            <div class="col-4">
+                <input-text-field [field]="bean.partner.partnerName"></input-text-field>
+            </div>
+        </div> 
+        <div class="mt-4" *ngIf="bean.password.editable">
+            <h4 class="block-header">
+                Informations de connexion
+            </h4>
+            <div class="row">
+                <div class="col-6">
+                    <input-text-field [field]="bean.partner.phone"></input-text-field>
+                </div>
+                <div class="col-6">
+                    <input-text-field [field]="bean.partner.email"></input-text-field>
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col-6">
+                    <input-text-field [field]="bean.password"></input-text-field>
+                </div>
+                <div class="col-6">
+                    <input-text-field [field]="bean.passwordBis"></input-text-field>
+                </div>
+            </div>      
+        </div>
+        <div class="mt-4">
+            <h4 class="block-header">
+                Informations de session
+            </h4>
+            <div class="row">
+                <div class="col-4">
+                    <select-one-field [field]="bean.lang"></select-one-field>
+                </div>
+                <div class="col-4">
+                    <select-multiple-field [field]="bean.roles"></select-multiple-field>
+                </div>
+                <div class="col-4">
+                    <select-one-field [field]="bean.magasin"></select-one-field>
+                </div>
+            </div>
+        </div>
+        
+    </div>    
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="m-3">
+    <button mat-raised-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button cdkFocusInitial (click)="saveAction()">Enregistrer</button>
+</mat-dialog-actions>

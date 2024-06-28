@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Catégories</h2>
+<mat-dialog-content>
+    <section *ngIf="bean">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+            <!-- This is the tree node template for leaf nodes -->
+            <!-- There is inline padding applied to this node using styles.
+      This padding value depends on the mat-icon-button width. -->
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+                {{node.categoryCode.value}}
+            </mat-tree-node>
+            <!-- This is the tree node template for expandable nodes -->
+            <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+                <div class="mat-tree-node">
+                    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.categoryCode.value">
+                        <mat-icon class="mat-icon-rtl-mirror">
+                            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                        </mat-icon>
+                    </button>
+                    {{node.categoryCode.value}}
+                </div>
+                <!-- There is inline padding applied to this div using styles.
+            This padding value depends on the mat-icon-button width.  -->
+                <div [class.example-tree-invisible]="!treeControl.isExpanded(node)" role="group">
+                    <ng-container matTreeNodeOutlet></ng-container>
+                </div>
+            </mat-nested-tree-node>
+        </mat-tree>
+    </section>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Enregistrer</button>
+</mat-dialog-actions>

@@ -21,17 +21,17 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "FIN_TBL_TRANSACTION")
-public class TransactionDto extends AbstractStatusTrackingDto<TransactionStatusEnumVd>{
+public class TransactionDto extends AbstractStatusTrackingDto<TransactionStatusEnumVd> {
 
 	@Id
 	@Column(name = "TRANSACTION_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String transactionCode;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "STATUS")
 	private TransactionStatusEnumVd status;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "TRANSACTION_TYPE", updatable = false)
 	private TransactionTypeEnumVd type;
@@ -39,11 +39,11 @@ public class TransactionDto extends AbstractStatusTrackingDto<TransactionStatusE
 	@ManyToOne()
 	@JoinColumn(name = "PARTNER_CODE", updatable = false)
 	private PartnerDto partner;
-	
+
 	@ManyToOne()
 	@JoinColumn(name = "COMPTE_CODE", updatable = false)
 	private CompteDto compte;
-	
+
 	@ManyToOne()
 	@JoinColumn(name = "RUBRIQUE_CODE", updatable = false)
 	private RubriqueDto rubrique;
@@ -54,7 +54,7 @@ public class TransactionDto extends AbstractStatusTrackingDto<TransactionStatusE
 
 	@Column(name = "NOTE")
 	private String note;
-	
+
 	@Column(name = "MONTANT", updatable = false)
 	private BigDecimal montant;
 }

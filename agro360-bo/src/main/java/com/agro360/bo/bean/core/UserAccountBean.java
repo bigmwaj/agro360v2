@@ -1,11 +1,13 @@
 package com.agro360.bo.bean.core;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.agro360.bo.bean.common.AbstractStatusTrackingBean;
 import com.agro360.bo.metadata.FieldMetadata;
 import com.agro360.vd.core.UserAccountStatusEnumVd;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.agro360.vd.core.UserLangEnumVd;
+import com.agro360.vd.core.UserRoleEnumVd;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -19,16 +21,17 @@ public class UserAccountBean extends AbstractStatusTrackingBean<UserAccountStatu
 
 	private FieldMetadata<UserAccountStatusEnumVd> status = new FieldMetadata<>("Statut", UserAccountStatusEnumVd.getAsMap());
 
-	private FieldMetadata<String> lang = new FieldMetadata<>("Langue");
+	private FieldMetadata<UserLangEnumVd> lang = new FieldMetadata<>("Langue",UserLangEnumVd.getAsMap());
 	
-	private FieldMetadata<String> roles = new FieldMetadata<>("Roles");
+	private FieldMetadata<List<UserRoleEnumVd>> roles = new FieldMetadata<>("Roles", UserRoleEnumVd.getAsMap());
 	
 	private FieldMetadata<String> magasin = new FieldMetadata<>("Magasin");
 	
 	private FieldMetadata<LocalDateTime> passwordLastChangeDate = new FieldMetadata<>("Password Last Change Date");
 	
-	@JsonIgnore
 	private FieldMetadata<String> password = new FieldMetadata<>("Password");
+	
+	private FieldMetadata<String> passwordBis = new FieldMetadata<>("Password(Bis)");
 	
 	@Setter
 	private PartnerBean partner = new PartnerBean();

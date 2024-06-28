@@ -21,11 +21,18 @@ create table `stock_tbl_article` (
   `article_code` varchar(16) not null,
   
   `description` varchar(64) default null,
+  `origine` varchar(64) default null,
   `article_type` varchar(4) not null,
   `unite_code` varchar(16) not null,
+  `fabriquant_code` varchar(16) default null,
+  `distributeur_code` varchar(16) default null,
   primary key `stock_tbl_article_pk`(`article_code`),
   key `stock_tbl_article_fk_stock_tbl_unite` (`unite_code`),
-  constraint `stock_tbl_article_fk_stock_tbl_unite` foreign key (`unite_code`) references `stock_tbl_unite` (`unite_code`)
+  key `stock_tbl_article_fk_core_tbl_partner1` (`fabriquant_code`),
+  key `stock_tbl_article_fk_core_tbl_partner2` (`distributeur_code`),
+  constraint `stock_tbl_article_fk_stock_tbl_unite` foreign key (`unite_code`) references `stock_tbl_unite` (`unite_code`),
+  constraint `stock_tbl_article_fk_core_tbl_partner1` foreign key (`fabriquant_code`) references `core_tbl_partner` (`partner_code`),
+  constraint `stock_tbl_article_fk_core_tbl_partner2` foreign key (`distributeur_code`) references `core_tbl_partner` (`partner_code`)
 ) engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
 
 drop table if exists `stock_tbl_variant`;
@@ -164,3 +171,41 @@ create table `stock_tbl_operation` (
 	foreign key (`magasin_code`, `article_code`, `variant_code`) 
 	references `stock_tbl_inventaire` (`magasin_code`, `article_code`, `variant_code`)
 ) engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+
+drop table if exists `stock_tbl_cat`;
+create table `stock_tbl_cat` (
+  	`created_at` datetime not null,
+  	`created_by` varchar(16) not null,
+  	`updated_at` datetime not null,
+  	`updated_by` varchar(16) not null,
+  
+  	`category_code` varchar(16) not null,
+  
+  	`description` varchar(64) default null,
+  	`parent_category_code` varchar(16) default null,
+  	
+  	primary key `stock_tbl_cat_pk`(`category_code`),
+  	
+  	key `stock_tbl_cat_fk_stock_tbl_cat` (`parent_category_code`),
+  	constraint `stock_tbl_cat_fk_stock_tbl_cat` foreign key (`parent_category_code`) references `stock_tbl_cat` (`category_code`)
+) 
+engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;
+
+drop table if exists `stock_tbl_article_cat`;
+create table `stock_tbl_article_cat` (
+  	`created_at` 	datetime not null,
+  	`created_by` 	varchar(16) not null,
+  	`updated_at` 	datetime not null,
+  	`updated_by` 	varchar(16) not null,
+  	
+  	`category_code` varchar(255) not null,
+  	`article_code` 	varchar(255) not null,
+  	
+  	primary key `stock_tbl_article_cat_pk`(`category_code`,`article_code`),
+  	
+	key `stock_tbl_article_cat_fk_stock_tbl_cat` (`category_code`),
+	key `stock_tbl_article_cat_fk_stock_tbl_article` (`article_code`),
+  	constraint `stock_tbl_article_cat_fk_stock_tbl_cat` foreign key (`category_code`) references `stock_tbl_cat` (`category_code`),
+  	constraint `stock_tbl_article_cat_fk_stock_tbl_article` foreign key (`article_code`) references `stock_tbl_article` (`article_code`)
+) 
+engine=innodb default charset=utf8mb4 collate=utf8mb4_0900_ai_ci;

@@ -102,7 +102,6 @@ export class UIService {
     }
 
     handleError(err:any, o:Observable<any>){
-        console.log(err)
         const status = err.status;
         let msg:Message = {            
             type: MessageTypeEnumVd.ERROR,
@@ -123,6 +122,19 @@ export class UIService {
                 }
                 break;
                 
+            case 401:
+                msg = {
+                   type: MessageTypeEnumVd.ERROR,
+                   message:`Echec authentification!`
+               }
+               break;
+                
+            case 403:
+                msg = {
+                    type: MessageTypeEnumVd.ERROR,
+                    message:`Échec autorisation!`
+                }
+                break;
             default:
                 break;
         }

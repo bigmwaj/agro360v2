@@ -16,6 +16,8 @@ import com.agro360.operation.context.ClientContext;
 import com.agro360.operation.logic.core.PartnerCategoryOperation;
 import com.agro360.operation.logic.core.PartnerOperation;
 import com.agro360.service.common.AbstractService;
+import com.agro360.service.common.ServiceValidationException;
+import com.agro360.service.common.UserInput;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
@@ -36,7 +38,7 @@ public class PartnerService extends AbstractService {
 			categoryCodes.add(bean.getCategoryCode().getValue());			
 		}
 		
-		for (PartnerCategoryBean b : bean.getChildren()) {
+		for ( var b : bean.getChildren()) {
 			retrieveSelectedCategoryCodes(categoryCodes, b);
 		}
 	}
@@ -47,28 +49,32 @@ public class PartnerService extends AbstractService {
 		return categoryCodes;
 	}
 	
-	public void save(ClientContext ctx, PartnerBean bean) {
-		
+	@UserInput(validatorBeanName = "", metadataBeanName = "")
+	public void save(ClientContext ctx, PartnerBean bean) throws ServiceValidationException{
 		switch (bean.getAction()) {
 		case CREATE:
 			operation.createPartner(ctx, bean);
 			var categoryCodes = retrieveSelectedCategoryCodes(bean.getCategoriesHierarchie());
-			partnerCategoryOperation.syncPartnerCategories(ctx,  bean, categoryCodes);
+			partnerCategoryOperation.syncAssignments(ctx,  bean, categoryCodes);
+			ctx.success("Partenaire créé avec succès!");
 			break;
 			
 		case UPDATE:
 			operation.updatePartner(ctx, bean);
 			categoryCodes = retrieveSelectedCategoryCodes(bean.getCategoriesHierarchie());
-			partnerCategoryOperation.syncPartnerCategories(ctx, bean, categoryCodes);
+			partnerCategoryOperation.syncAssignments(ctx, bean, categoryCodes);
+			ctx.success("Partenaire modifié avec succès!");
 			break;
 
 		case CHANGE_STATUS:
 			switch (bean.getStatus().getValue()) {
 			case ENABLED:
+				ctx.success("Partenaire activé avec succès!");
 				operation.activatePartner(ctx, bean);
 				
 				break;
 			case DISABLED:
+				ctx.success("Partenaire désactivé avec succès!");
 				operation.deactivatePartner(ctx, bean);
 				
 				break;
@@ -79,7 +85,8 @@ public class PartnerService extends AbstractService {
 			break;
 
 		case DELETE:
-			partnerCategoryOperation.deleteAllPartnerCategories(ctx, bean);
+			partnerCategoryOperation.deleteAll(ctx, bean);
+			ctx.success("Partenaire supprimé avec succès!");
 			operation.deletePartner(ctx, bean);
 			break;
 			

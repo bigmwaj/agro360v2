@@ -20,8 +20,6 @@ export class AuthGuard implements CanActivate {
     }
     
     checkLogin(url: string) : boolean | UrlTree {
-
-
         if( this.authService.isLogged() ) {
             return true;
         }

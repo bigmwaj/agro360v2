@@ -1,5 +1,6 @@
 package com.agro360.ws.controller.stock;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agro360.bo.bean.core.PartnerBean;
+import com.agro360.bo.bean.core.PartnerSearchBean;
 import com.agro360.bo.bean.stock.ArticleBean;
 import com.agro360.bo.bean.stock.ArticleSearchBean;
 import com.agro360.bo.bean.stock.ConversionBean;
@@ -20,6 +23,7 @@ import com.agro360.bo.bean.stock.VariantBean;
 import com.agro360.form.stock.ArticleForm;
 import com.agro360.form.stock.ConversionForm;
 import com.agro360.form.stock.VariantForm;
+import com.agro360.service.core.PartnerService;
 import com.agro360.service.stock.ArticleService;
 import com.agro360.ws.controller.common.AbstractController;
 
@@ -38,6 +42,9 @@ public class ArticleController extends AbstractController {
 	
 	@Autowired
 	private ConversionForm conversionForm;
+	
+	@Autowired
+	private PartnerService partnerService;
 
 	@GetMapping
 	public ResponseEntity<ModelMap> searchAction(
@@ -97,5 +104,15 @@ public class ArticleController extends AbstractController {
 	@GetMapping("/conversion/create-form")
 	public ResponseEntity<ConversionBean> getConversionCreateFormAction(@RequestParam String articleCode, @RequestParam Optional<String> copyFrom) {
 		return ResponseEntity.ok(conversionForm.initCreateFormBean(getClientContext(), articleCode, copyFrom));
+	}
+	
+	@GetMapping("/partner-query")
+	public ResponseEntity<List<PartnerBean>> findPartnersByQueryAction(
+			@RequestParam String query) {		
+		var ctx = getClientContext();
+		var searchBean = new PartnerSearchBean();
+		searchBean.getPartnerCode().setValue(query);
+		var options = partnerService.search(ctx, searchBean);
+		return ResponseEntity.ok(options);
 	}
 }

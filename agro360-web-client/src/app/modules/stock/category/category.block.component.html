@@ -1,0 +1,12 @@
+<div *ngIf="bean" class="here category-hirarchy">
+    <input-checkbox-field 
+        [field]="bean.selected" 
+        [matTooltip]="bean.description.value"
+        [label]="bean.categoryCode.value">
+    </input-checkbox-field>
+    <div *ngIf="bean.children" style="margin-left:32px;">
+        <div *ngFor="let child of bean.children">
+            <stock-article-category-block [bean] = "child"></stock-article-category-block>
+        </div>
+    </div>
+</div>

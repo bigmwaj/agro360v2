@@ -24,36 +24,36 @@ public class ProductionDto extends AbstractDto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "PRODUCTION_ID", nullable = false, updatable = false)
+	@Column(name = "PRODUCTION_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long productionId;
 
 	@ManyToOne()
-	@JoinColumn(name = "CYCLE_CODE", nullable = false, updatable = false)
+	@JoinColumn(name = "CYCLE_CODE", updatable = false)
 	private CycleDto cycle;
 
-	@Column(name = "NUMERO_JOURNEE", nullable = false)
+	@Column(name = "NUMERO_JOURNEE")
 	private Long numeroJournee;
 
 	@ManyToOne()
-	@JoinColumn(name = "UNITE_CODE", nullable = false)
+	@JoinColumn(name = "UNITE_CODE")
 	private UniteDto unite;
 
 	@ManyToOne()
-	@JoinColumn(name = "ARTICLE_CODE", nullable = false)
+	@JoinColumn(name = "ARTICLE_CODE")
 	private ArticleDto article;
 
 	@Column(name = "VARIANT_CODE")
 	private String variantCode;
 
-	@Column(name = "COMMENTAIRE", length = 128)
+	@Column(name = "COMMENTAIRE")
 	private String commentaire;
 
-	@Column(name = "QUANTITE", nullable = false)
+	@Column(name = "QUANTITE")
 	private Double quantite;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "CATEGORY", nullable = false, updatable = false, length = ProductionCategoryEnumVd.COLUMN_LENGTH)
+	@Column(name = "CATEGORY", updatable = false)
 	private ProductionCategoryEnumVd category;
 
 }

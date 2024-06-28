@@ -71,13 +71,17 @@
 
                     <ng-container matColumnDef="partnerCode">
                         <th mat-header-cell *matHeaderCellDef>Code</th>
-                        <td mat-cell *matCellDef="let element">{{element.partnerCode.value}}</td>
+                        <td mat-cell *matCellDef="let element">
+                            <a color="primary" href="javascript:void(0)" title="Afficher" (click)="editAction(element)">
+                                {{element.partnerCode.value}}
+                            </a>                             
+                        </td>
                     </ng-container>
 
                     <ng-container matColumnDef="partnerName">
                         <th mat-header-cell *matHeaderCellDef>Intitulé</th>
                         <td mat-cell *matCellDef="let element">
-                            <span class="d-inline-block text-truncate" style="max-width: 100px;" [title]="element.partnerName.value">
+                            <span class="d-inline-block text-truncate" style="max-width: 140px;" [title]="element.partnerName.value">
                                 {{element.partnerName.value}}
                             </span>
                         </td>
@@ -130,15 +134,12 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu">                                
-                                <button mat-menu-item color="primary" class="me-2" (click)="categoryAction()">
+                                <button mat-menu-item color="primary" (click)="categoryAction()">
                                     <mat-icon>menu</mat-icon>Catégories
                                 </button>
                             </mat-menu>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-end">
-                            <button mat-icon-button color="primary" title="Afficher" (click)="editAction(element)">
-                                <mat-icon>preview</mat-icon>
-                            </button>
                             <button mat-icon-button color="primary" title="Copier" (click)="addAction({bean:element})">
                                 <mat-icon>content_copy</mat-icon>
                             </button>
@@ -151,6 +152,22 @@
                                 <mat-icon>more_vert</mat-icon>
                             </button>
                             <mat-menu #menu="matMenu"> 
+                                <button *ngIf="element.createAccountBtn.visible" mat-menu-item color="primary" (click)="createAccountAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Créer compte
+                                </button> 
+                                <button *ngIf="element.updateAccountBtn.visible" mat-menu-item color="primary" (click)="updateAccountAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Modifier compte
+                                </button> 
+                                <button *ngIf="element.updatePasswordBtn.visible" mat-menu-item color="primary" (click)="updatePasswordAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Modifier mot de passe
+                                </button>  
+                                <button *ngIf="element.activateAccountBtn.visible" mat-menu-item color="primary" (click)="activateAccountAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Activer compte
+                                </button>  
+                                <button *ngIf="element.deactivateAccountBtn.visible" mat-menu-item color="primary" (click)="deactivatAccountAction(element)">
+                                    <mat-icon>open_in_new</mat-icon>Désactiver compte
+                                </button>  
+                                <mat-divider></mat-divider> 
                                 <button mat-menu-item color="primary" title="Afficher" (click)="editAction(element)">
                                     <mat-icon>preview</mat-icon>Consulter
                                 </button>   

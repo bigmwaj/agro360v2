@@ -1,7 +1,8 @@
-<div *ngIf="bean" class="here">
+<div *ngIf="bean" class="here category-hirarchy">
     <input-checkbox-field 
         [field]="bean.selected" 
-        [label]="bean.categoryCode.value + ' ' + bean.description.value">
+        [matTooltip]="bean.description.value"
+        [label]="bean.categoryCode.value">
     </input-checkbox-field>
     <div *ngIf="bean.children" style="margin-left:32px;">
         <div *ngFor="let child of bean.children">

@@ -10,6 +10,7 @@ import { SharedModule } from 'src/app/modules/common/shared.module';
 import { BeanPagedListTab } from '../../common/bean/bean.paged.list.tab';
 import { IndexModalComponent } from '../unite/index.modal.component';
 import { DeleteDialogComponent } from './delete.dialog.component';
+import { IndexModalComponent as CategoryIndexModalComponent } from '../category/index.modal.component';
 
 @Component({
     standalone: true,
@@ -37,6 +38,13 @@ export class ListTabComponent extends BeanPagedListTab<ArticleBean, ArticleSearc
         public override http: HttpClient,       
         public override ui: UIService) {
         super(http, ui)
+    }
+
+    categoryAction() {
+        let dialogRef = this.dialog.open(CategoryIndexModalComponent);
+        dialogRef.afterClosed().subscribe(result => {           
+            //this.searchAction();
+        }); 
     }
 
     areBeansEqual(b1:ArticleBean, b2:ArticleBean){

@@ -38,21 +38,19 @@
         </div>
         <div class="col-4">
             <div class="row">
-                <div class="col-4">   
+                <div class="col-3">   
                     <input-number-field [field]="bean.prixTotalHT"></input-number-field>
                 </div> 
-                <div class="col-4">   
+                <div class="col-2">   
                     <input-number-field [field]="bean.taxe"></input-number-field>
                 </div> 
-                <div class="col-4">   
+                <div class="col-2">   
                     <input-number-field [field]="bean.remise"></input-number-field>
                 </div> 
-            </div>
-            <div class="row">               
-                <div class="col-6">   
+                <div class="col-3">   
                     <input-number-field [field]="bean.prixTotal"></input-number-field>
                 </div> 
-                <div class="col-6">   
+                <div class="col-3">   
                     <input-number-field [field]="bean.cumulPaiement"></input-number-field>
                     <button mat-icon-button color="primary" 
                         class="field-button"                          
@@ -92,35 +90,34 @@
 </section>
 
 <section class="p-3">
-    <div  class="d-flex">
-        <div class="m-1">
+    <div class="row">
+        <div class="col-2">
             <select-one-field [field]="bean.status"></select-one-field>
         </div>
-        <div class="m-1">
+        <div class="col-4">
             <autocomplete-field             
                 [field]="bean.partner.partnerCode" 
                 [label]="partnerLabel"
                 [lookupConfig]="partnerLookupConfig" >
-            </autocomplete-field>            
+            </autocomplete-field>    
+
+            <editor [field]="bean.description" class="field-button" ></editor>                      
         </div>
-        <div class="m-1">
-            <editor [field]="bean.description"></editor>                      
-        </div>
-        <div class="m-1">
+        <div class="col-2">
             <input-number-field [field]="bean.prixTotalHT"></input-number-field>            
         </div>
-        <div class="m-1">
+        <div class="col-2">
             <input-number-field [field]="bean.taxe"></input-number-field>            
         </div>
-        <div class="m-1">
+        <div class="col-2">
             <input-number-field [field]="bean.remise"></input-number-field>
         </div>
-    </div>  
-    <div  class="d-flex">
-        <div class="m-1">
+    </div>
+    <div class="row">
+        <div class="col-3">
             <input-number-field [field]="bean.prixTotal"></input-number-field>
         </div>
-        <div class="m-1">
+        <div class="col-3">
             <input-number-field [field]="bean.cumulPaiement"></input-number-field>            
             <button mat-icon-button color="primary" 
                 class="field-button"                          
@@ -129,28 +126,27 @@
                 <mat-icon>list_task</mat-icon>
             </button> 
         </div>
-        <div class="m-1">
+        <div class="col-6">
             <button mat-fab color="primary" 
                 extended 
                 (click)="saveAction({processPaiement:true})"
                 *ngIf="bean.reglerBtn.visible">
                 <mat-icon>currency_exchange</mat-icon> Régler
             </button>
+            <button mat-fab color="basic" 
+                extended class="ms-1" 
+                (click)="saveAction({terminer:true})"
+                *ngIf="bean.terminerBtn.visible">
+                <mat-icon>currency_exchange</mat-icon> Transférer
+            </button>
+            <button mat-fab color="basic" 
+                extended class="ms-1" 
+                (click)="annulerAction()"
+                *ngIf="bean.annulerBtn.visible">
+                <mat-icon>currency_exchange</mat-icon> Annuler
+            </button>
         </div>
-        <div class="ms-auto flex-fill"></div>
-        <button mat-fab color="basic" 
-            extended class="ms-1" 
-            (click)="saveAction({terminer:true})"
-            *ngIf="bean.terminerBtn.visible">
-            <mat-icon>currency_exchange</mat-icon> Transférer
-        </button>
-        <button mat-fab color="basic" 
-            extended class="ms-1" 
-            (click)="annulerAction()"
-            *ngIf="bean.annulerBtn.visible">
-            <mat-icon>currency_exchange</mat-icon> Annuler
-        </button>
-    </div>   
+    </div>  
 </section>
 
 <achat-vente-ligne-list 

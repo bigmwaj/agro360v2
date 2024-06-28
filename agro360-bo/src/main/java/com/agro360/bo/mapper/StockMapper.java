@@ -3,6 +3,7 @@ package com.agro360.bo.mapper;
 import java.util.Map;
 
 import com.agro360.bo.bean.stock.ArticleBean;
+import com.agro360.bo.bean.stock.ArticleCategoryBean;
 import com.agro360.bo.bean.stock.ArticleSearchBean;
 import com.agro360.bo.bean.stock.ArticleTaxeBean;
 import com.agro360.bo.bean.stock.ConversionBean;
@@ -15,7 +16,10 @@ import com.agro360.bo.bean.stock.OperationSearchBean;
 import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.bean.stock.UniteSearchBean;
 import com.agro360.bo.bean.stock.VariantBean;
+import com.agro360.dto.stock.CategoryDto;
+import com.agro360.dto.core.PartnerDto;
 import com.agro360.dto.finance.TaxeDto;
+import com.agro360.dto.stock.ArticleCategoryDto;
 import com.agro360.dto.stock.ArticleDto;
 import com.agro360.dto.stock.ArticleTaxeDto;
 import com.agro360.dto.stock.ConversionDto;
@@ -37,12 +41,26 @@ public class StockMapper {
 		bean.getArticleCode().setValue(dto.getArticleCode());
 		bean.getDescription().setValue(dto.getDescription());
 		bean.getType().setValue(dto.getType());
+		bean.getOrigine().setValue(dto.getOrigine());
 
 		var unite = dto.getUnite();
 		if( unite == null ) {
 			unite = new UniteDto();
 		}
 		bean.setUnite(map(unite));
+		
+		var fabriquant = dto.getFabriquant();
+		if( fabriquant == null ) {
+			fabriquant = new PartnerDto();
+		}
+		bean.setFabriquant(CoreMapper.map(fabriquant));
+		
+		var distributeur = dto.getDistributeur();
+		if( distributeur == null ) {
+			distributeur = new PartnerDto();
+		}
+		bean.setDistributeur(CoreMapper.map(distributeur));
+		
 		return bean;
 	}
 	
@@ -115,7 +133,6 @@ public class StockMapper {
 		bean.getAlias().setValue(dto.getAlias());
 		return bean;
 	}
-	
 
 	public static Map.Entry<Object, String> asOption(VariantBean bean) {
 		var value = bean.getVariantCode().getValue();
@@ -210,6 +227,22 @@ public class StockMapper {
 		bean.getQuantite().setValue(dto.getQuantite());
 		bean.getInventaireAvant().setValue(dto.getInventaireAvant());
 		bean.getPrixUnitaire().setValue(dto.getPrixUnitaire());
+		return bean;
+	}
+
+	public static ArticleCategoryBean map(ArticleCategoryDto dto) {
+		var bean = new ArticleCategoryBean();
+		bean.getCategoryCode().setValue(dto.getCategory().getCategoryCode());
+		bean.getDescription().setValue(dto.getCategory().getDescription());
+
+		return bean;
+	}
+
+	public static ArticleCategoryBean map(CategoryDto dto) {
+		var bean = new ArticleCategoryBean();
+		bean.getCategoryCode().setValue(dto.getCategoryCode());
+		bean.getDescription().setValue(dto.getDescription());
+
 		return bean;
 	}
 }

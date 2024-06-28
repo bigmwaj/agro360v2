@@ -39,21 +39,28 @@ public class PartnerForm {
 		bean.getPhone().setValue(null);
 		bean.getEmail().setValue(null);
 		
-		Function<String, PartnerCategoryBean> getPartnerCat;
-		getPartnerCat = e -> partnerCategoryOperation.findPartnerCategoryHierarchyFromLeaves(ctx, e);
+		Function<PartnerBean, PartnerCategoryBean> getPartnerCat;
+		getPartnerCat = e -> partnerCategoryOperation.findAssignmentsFromLeaves(ctx, e);
 		
 		Supplier<PartnerCategoryBean> getDefaultCat;
-		getDefaultCat = () -> partnerCategoryOperation.findPartnerRootCategoryHierarchy(ctx, 3);
+		getDefaultCat = () -> partnerCategoryOperation.findRoot(ctx, 5);
 		
-		var root = copyFrom.map(getPartnerCat).orElseGet(getDefaultCat);
+		var root = copyFrom.map(this::simpleMap).map(getPartnerCat).orElseGet(getDefaultCat);
 		bean.setCategoriesHierarchie(root);
+		return bean;
+	}
+
+	private PartnerBean simpleMap(String partnerCode) {
+		var bean = new PartnerBean();
+		bean.getPartnerCode().setValue(partnerCode);
+		
 		return bean;
 	}
 	
 	@MetadataBeanName("core/partner")
 	public PartnerBean initEditFormBean(ClientContext ctx, String partnerCode) {
 		var bean = operation.findPartnerByCode(ctx, partnerCode);
-		var root = partnerCategoryOperation.findPartnerCategoryHierarchyFromLeaves(ctx, partnerCode);
+		var root = partnerCategoryOperation.findAssignmentsFromLeaves(ctx, bean);
 		bean.setCategoriesHierarchie(root);
 		bean.setAction(ClientOperationEnumVd.UPDATE);
 		return bean;
@@ -80,6 +87,7 @@ public class PartnerForm {
 		return bean;
 	}
 
+	@MetadataBeanName("core/partner-search-result")
 	public List<PartnerBean> initSearchResultBeans(ClientContext ctx, List<PartnerBean> beans) {
 		return beans;
 	}

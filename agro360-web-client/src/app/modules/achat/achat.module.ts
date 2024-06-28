@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AchatRoutingModule } from './achat-routing.module';
 import { SharedModule } from 'src/app/modules/common/shared.module';
-import { AchatService } from './achat.service';
 
 @NgModule({
     declarations: [
@@ -12,7 +11,6 @@ import { AchatService } from './achat.service';
         SharedModule
     ],
     providers: [
-        AchatService
     ]
 })
 export class AchatModule { }

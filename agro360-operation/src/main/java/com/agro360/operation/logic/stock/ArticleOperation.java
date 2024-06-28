@@ -11,6 +11,7 @@ import com.agro360.bo.bean.stock.ArticleSearchBean;
 import com.agro360.bo.bean.stock.UniteBean;
 import com.agro360.bo.mapper.StockMapper;
 import com.agro360.dao.common.IDao;
+import com.agro360.dao.core.IPartnerDao;
 import com.agro360.dao.stock.IArticleDao;
 import com.agro360.dao.stock.IUniteDao;
 import com.agro360.dto.stock.ArticleDto;
@@ -26,6 +27,9 @@ public class ArticleOperation extends AbstractOperation<ArticleDto, String> {
 
 	@Autowired
 	IUniteDao uniteDao;
+	
+	@Autowired
+	IPartnerDao partnerDao;
 
 	@Override
 	protected IDao<ArticleDto, String> getDao() {
@@ -39,9 +43,22 @@ public class ArticleOperation extends AbstractOperation<ArticleDto, String> {
 		var unite = uniteDao.getReferenceById(bean.getUnite().getUniteCode().getValue());
 		dto.setUnite(unite);
 		
+		var fabriquantCode = bean.getFabriquant().getPartnerCode().getValue();
+		if( fabriquantCode != null && partnerDao.existsById(fabriquantCode) ) {
+			var partner = partnerDao.getReferenceById(fabriquantCode);
+			dto.setFabriquant(partner);
+		}
+		
+		var distributeurCode = bean.getDistributeur().getPartnerCode().getValue();
+		if( distributeurCode != null && partnerDao.existsById(distributeurCode) ) {
+			var partner = partnerDao.getReferenceById(distributeurCode);
+			dto.setDistributeur(partner);
+		}
+		
 		setDtoValue(dto::setArticleCode, bean.getArticleCode());
 		setDtoValue(dto::setType, bean.getType());
 		setDtoValue(dto::setDescription, bean.getDescription());
+		setDtoValue(dto::setOrigine, bean.getOrigine());
 		
 		dto = super.save(ctx, dto);		
 	}
@@ -52,6 +69,35 @@ public class ArticleOperation extends AbstractOperation<ArticleDto, String> {
 
 		setDtoChangedValue(dto::setType, bean.getType());
 		setDtoChangedValue(dto::setDescription, bean.getDescription());
+		setDtoChangedValue(dto::setOrigine, bean.getOrigine());
+
+		var fabriquantCode = bean.getFabriquant().getPartnerCode().getValue();
+		var fabriquant = dto.getFabriquant();
+		if( fabriquantCode == null ) {
+			dto.setFabriquant(null);
+		}else {
+			var fabriquantCurrCode = fabriquant == null ? null : fabriquant.getPartnerCode();
+			if( fabriquantCode != null 
+					&& !fabriquantCode.equals(fabriquantCurrCode) 
+					&& partnerDao.existsById(fabriquantCode) ) {
+				var partner = partnerDao.getReferenceById(fabriquantCode);
+				dto.setFabriquant(partner);
+			}
+		}
+		
+		var distributeurCode = bean.getDistributeur().getPartnerCode().getValue();
+		var distributeur = dto.getDistributeur();
+		if( distributeurCode == null ) {
+			dto.setDistributeur(null);
+		}else {
+			var distributeurCurrCode = distributeur == null ? null : distributeur.getPartnerCode();
+			if( distributeurCode != null 
+					&& !distributeurCode.equals(distributeurCurrCode) 
+					&& partnerDao.existsById(distributeurCode) ) {
+				var partner = partnerDao.getReferenceById(distributeurCode);
+				dto.setDistributeur(partner);
+			}
+		}
 		
 		dto = super.save(ctx, dto);		
 	}

@@ -24,13 +24,13 @@ public class InventaireDto extends AbstractDto {
 	@JoinColumn(name = "MAGASIN_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private MagasinDto magasin;
-	
+
 	@Id
 	@ManyToOne()
 	@JoinColumn(name = "ARTICLE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
-	private ArticleDto article;	
-	
+	private ArticleDto article;
+
 	@Id
 	@Column(name = "VARIANT_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
@@ -50,11 +50,11 @@ public class InventaireDto extends AbstractDto {
 
 	@Column(name = "QUANTITE")
 	private Double quantite;
-	
-	@Column(name = "PRIX_UNITAIRE_ACHAT", precision = 16, scale = 4)
+
+	@Column(name = "PRIX_UNITAIRE_ACHAT")
 	private BigDecimal prixUnitaireAchat;
-	
-	@Column(name = "PRIX_UNITAIRE_VENTE", precision = 16, scale = 4)
+
+	@Column(name = "PRIX_UNITAIRE_VENTE")
 	private BigDecimal prixUnitaireVente;
 
 }

@@ -41,7 +41,6 @@ export class SessionStorageService {
     }
     
     set userInfos(value:UserAccountBean){
-        console.log('Les informations utilisateur sont ', value)
         this.setItem<UserAccountBean>(SessionStorageService.USER_INFOS_KEY, value, v => JSON.stringify(v))
     }
 

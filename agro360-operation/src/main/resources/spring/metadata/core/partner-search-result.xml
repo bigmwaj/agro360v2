@@ -20,6 +20,48 @@
 			</list>
 		</property>
 	</bean>		
+	
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search-result/createAccountBtn">
+		<property name="visible">
+			<list>
+				<ref bean="partner/Account/NotExists" />
+			</list>
+		</property>
+	</bean>		
+    
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search-result/updatePasswordBtn">
+		<property name="visible">
+			<list>
+				<ref bean="partner/Account/Exists" />
+			</list>
+		</property>
+	</bean>		
+    
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search-result/updateAccountBtn">
+		<property name="visible">
+			<list>
+				<ref bean="partner/Account/Exists" />
+			</list>
+		</property>
+	</bean>		
+    
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search-result/activateAccountBtn">
+		<property name="visible">
+			<list>
+				<ref bean="partner/Account/Exists" />
+				<ref bean="partner/Account/Activable" />
+			</list>
+		</property>
+	</bean>		
+    
+	<bean class="com.agro360.operation.metadata.FieldMetadataConfig" name="partner-search-result/deactivateAccountBtn">
+		<property name="visible">
+			<list>
+				<ref bean="partner/Account/Exists" />
+				<ref bean="partner/Account/Deactivable" />
+			</list>
+		</property>
+	</bean>		
     
     <bean name="core/partner-search-result" class="com.agro360.operation.metadata.BeanMetadataConfig">
 		<property name="editable">
@@ -31,6 +73,11 @@
 			<map>
 				<entry key="deleteBtn" value-ref="partner-search-result/deleteBtn"/>
 				<entry key="changeStatusBtn" value-ref="partner-search-result/changeStatusBtn"/>
+				<entry key="createAccountBtn" value-ref="partner-search-result/createAccountBtn"/>
+				<entry key="updatePasswordBtn" value-ref="partner-search-result/updatePasswordBtn"/>
+				<entry key="updateAccountBtn" value-ref="partner-search-result/updateAccountBtn"/>
+				<entry key="activateAccountBtn" value-ref="partner-search-result/activateAccountBtn"/>
+				<entry key="deactivateAccountBtn" value-ref="partner-search-result/deactivateAccountBtn"/>
 			</map>
 		</property>
 	</bean>

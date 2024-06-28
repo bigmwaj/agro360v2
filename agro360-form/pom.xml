@@ -18,12 +18,6 @@
 			<groupId>com.agro360</groupId>
 			<artifactId>agro360-operation</artifactId>
 			<version>${project.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.agro360</groupId>
-					<artifactId>agro360-dto</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>

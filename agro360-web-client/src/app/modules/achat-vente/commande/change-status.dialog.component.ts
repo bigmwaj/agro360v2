@@ -56,6 +56,7 @@ export class ChangeStatusDialogComponent implements OnInit {
                     this.bean.status.value = this.data.status                    
                 }
             });
+
     }
 
     changeStatusAction() {

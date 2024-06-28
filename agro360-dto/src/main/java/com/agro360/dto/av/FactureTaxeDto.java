@@ -19,25 +19,25 @@ import lombok.EqualsAndHashCode;
 @Entity(name = "AV_TBL_FACTURE_TAXE")
 @IdClass(FactureTaxePk.class)
 public class FactureTaxeDto extends AbstractDto {
-	
+
 	@Id
 	@Column(name = "FACTURE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String factureCode;
-	
+
 	@Id
 	@EqualsAndHashCode.Include()
 	@JoinColumn(name = "TAXE_CODE", updatable = false)
 	@ManyToOne()
 	private TaxeDto taxe;
-	
+
 	/**
 	 * Historisation
 	 */
 	@Column(name = "TAUX")
-	private Double taux; 
-	
-	@Column(name = "MONTANT", precision = 16, scale = 4)
+	private Double taux;
+
+	@Column(name = "MONTANT")
 	private BigDecimal montant;
-	
+
 }

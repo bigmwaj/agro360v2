@@ -22,26 +22,26 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "AV_TBL_RETOUR")
 public class RetourLigneDto extends AbstractStatusTrackingDto<RetourStatusEnumVd> {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "RETOUR_ID", updatable = false)
 	@EqualsAndHashCode.Include()
 	private Long retourId;
-	
+
 	@Column(name = "COMMANDE_CODE", updatable = false)
 	@EqualsAndHashCode.Include()
 	private String commandeCode;
-	
+
 	@EqualsAndHashCode.Include()
 	@ManyToOne()
 	@JoinColumn(name = "LIGNE_ID", updatable = false)
 	private LigneDto ligne;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "STATUS")
 	private RetourStatusEnumVd status;
-	
+
 	@ManyToOne()
 	@JoinColumn(name = "UNITE_CODE")
 	private UniteDto unite;
@@ -54,6 +54,5 @@ public class RetourLigneDto extends AbstractStatusTrackingDto<RetourStatusEnumVd
 
 	@Column(name = "DESCRIPTION")
 	private String description;
-	
 
 }

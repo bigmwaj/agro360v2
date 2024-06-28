@@ -16,8 +16,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @Entity(name = "CORE_TBL_PARTNER")
 public class PartnerDto extends AbstractStatusTrackingDto<PartnerStatusEnumVd> {
-	
-	public static final int PARTNER_CODE_LENGTH = 16;
 
 	@Id
 	@Column(name = "PARTNER_CODE", updatable = false)
@@ -58,5 +56,5 @@ public class PartnerDto extends AbstractStatusTrackingDto<PartnerStatusEnumVd> {
 
 	@Column(name = "COUNTRY")
 	private String country;
-	
+
 }
